@@ -1,5 +1,5 @@
 from config import OPENAI_API_KEY
-from query_handler import query_qdrant
+from query_handler import determine_collection, query_qdrant_regulations, query_qdrant_academic_calendar
 from openai import OpenAI
 import os
 
@@ -24,8 +24,14 @@ def chat_with_bot(user_query):
     global is_first_message
     
     try:
-        # Get relevant information from the vector store
-        context = "\n".join(query_qdrant(user_query, collection_name='academic_calendar_2025'))
+        print("Querying academic calendar...")
+        # Query both collections and combine results
+        calendar_context = "\n".join(query_qdrant_academic_calendar(user_query))
+        print("Querying regulations...")
+        regulations_context = "\n".join(query_qdrant_regulations(user_query))
+        
+        # Combine contexts with clear separation
+        context = f"=== Academic Calendar Information ===\n{calendar_context}\n\n=== Regulations Information ===\n{regulations_context}"
         
         # Load the system prompt (only once)
         if not messages:
@@ -34,17 +40,17 @@ def chat_with_bot(user_query):
         
         # Add new user message with context
         if is_first_message:
-            user_message = f"Öğrenci ilk sorusunu sordu: {user_query}\n\nAkademik takvim bilgileri:\n{context}"
+            user_message = f"Öğrenci ilk sorusunu sordu: {user_query}\n\n{context}"
             is_first_message = False
         else:
-            user_message = f"Öğrenci: {user_query}\n\nAkademik takvim bilgileri:\n{context}"
+            user_message = f"Öğrenci: {user_query}\n\n{context}"
         
         messages.append({"role": "user", "content": user_message})
         
         # Generate the response
         print("Yanıt oluşturuluyor...")
         completion = client.chat.completions.create(
-            model="google/gemini-2.0-flash-001",  # Try a different model
+            model="google/gemini-2.0-flash-001",
             messages=messages
         )
         

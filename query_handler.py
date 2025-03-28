@@ -1,13 +1,13 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
-from config import EMBEDDING_MODEL2, QDRANT_URL
+from config import EMBEDDING_MODEL3, QDRANT_URL
 import re
 from datetime import datetime
 import argparse
 
 # Loading embedding model once globally to reduce time cost.
-embedding_model = SentenceTransformer(EMBEDDING_MODEL2, trust_remote_code=True)
+embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
 
 def parse_date(date_str):
     """Parse Turkish date format into datetime object"""
@@ -90,15 +90,44 @@ def format_date_range(date1, date2):
         return date1
     return ""
 
-def query_qdrant(user_query, collection_name, top_k=10):
+def determine_collection(query):
+    """Determine which collection to query based on the user's question"""
+    query = query.lower()
+    
+    # Keywords for academic calendar
+    calendar_keywords = [
+        "tarih", "sınav", "tatil", "kayıt", "ders", "final", "vize",
+        "ne zaman", "hangi tarih", "başlangıç", "bitiş", "dönem",
+        "güz", "bahar", "yaz", "semester", "exam", "holiday", "registration"
+    ]
+    
+    # Keywords for regulations
+    regulation_keywords = [
+        "kural", "yönetmelik", "madde", "bölüm", "şart", "koşul",
+        "nasıl", "nedir", "neden", "kim", "hangi", "kaç", "ne kadar",
+        "rule", "regulation", "article", "section", "requirement"
+    ]       
+    
+    # Count matches for each type
+    calendar_matches = sum(1 for keyword in calendar_keywords if keyword in query)
+    regulation_matches = sum(1 for keyword in regulation_keywords if keyword in query)
+    
+    # If both types have matches, prefer the one with more matches  
+    if calendar_matches > regulation_matches:
+        return "academic_calendar_2025"
+    elif regulation_matches > calendar_matches:
+        return "regulations"
+    else:
+        return None # If no clear preference, query both collections    
+    
+
+
+def query_qdrant_academic_calendar(user_query, collection_name="academic_calendar_2025", top_k=10):
     print("\n===== QUERY DEBUG INFO =====")
-    print(f"Query: '{user_query}'")
     
     # Convert user query into embedding
-    # Add the required instruction prefix for Nomic embeddings
-    formatted_query = f"search_query: {user_query}"
-    print(f"Formatted query with prefix: '{formatted_query}'")
-    query_vector = embedding_model.encode(formatted_query)
+    print(f"Query: '{user_query}'")
+    query_vector = embedding_model.encode(user_query)
     print(f"Vector dimension: {len(query_vector)}")
     
     qdrant = QdrantClient(QDRANT_URL)
@@ -151,7 +180,7 @@ def query_qdrant(user_query, collection_name, top_k=10):
     # Process and sort results
     results = []
     for point in search_results.points:
-        text = point.payload.get('text', '').replace('search_document: ', '')
+        text = point.payload.get('text', '')
         metadata = point.payload.get('metadata', {})
         
         # Format the result based on event type
@@ -169,25 +198,71 @@ def query_qdrant(user_query, collection_name, top_k=10):
                 formatted_text = f"{text} (Score: {point.score:.2f})"
         
         results.append(formatted_text)
+        
+    print(results)
+    return results
+
+def query_qdrant_regulations(user_query, collection_name="regulation", top_k=10):
+    """Query regulations collection with section and rule-specific handling"""
+    print("\n===== REGULATIONS QUERY =====")
+    print(f"Query: '{user_query}'")
+    
+    query_vector = embedding_model.encode(user_query)
+    qdrant = QdrantClient(QDRANT_URL)
+    
+    # Simple search for regulations (can be enhanced with regulation-specific filters)
+    search_results = qdrant.query_points(
+        collection_name=collection_name,
+        query=query_vector.tolist(),
+        with_payload=True,
+        limit=top_k
+    )
+    
+    # Format regulation-specific results
+    results = []
+    for point in search_results.points:
+        text = point.payload.get('text', '')
+        metadata = point.payload.get('metadata', {})
+        
+        # Add section/chapter information if available
+        section = metadata.get('section', '')
+        chapter = metadata.get('chapter', '')
+        if section and chapter:
+            formatted_text = f"📖 Chapter {chapter}, Section {section}: {text} (Score: {point.score:.2f})"
+        else:
+            formatted_text = f"📖 {text} (Score: {point.score:.2f})"
+        
+        results.append(formatted_text)
     
     return results
 
 def main():
-    parser = argparse.ArgumentParser(description='Query academic calendar events')
-    parser.add_argument('collection_name', help='Name of the Qdrant collection to query')
+    parser = argparse.ArgumentParser(description='Query academic calendar events and regulations')
     parser.add_argument('--top-k', type=int, default=10, help='Number of results to return (default: 10)')
     parser.add_argument('--interactive', action='store_true', help='Run in interactive mode')
     parser.add_argument('--query', help='Single query to execute (non-interactive mode)')
     parser.add_argument('--join', action='store_true', help='Join results as a single string')
+    parser.add_argument('--collection', choices=['calendar', 'regulations', 'both'], default='both',
+                      help='Which collection to query (default: both)')
     
     args = parser.parse_args()
+    
+    def process_query(query):
+        results = []
+        if args.collection in ['calendar', 'both']:
+            calendar_results = query_qdrant_academic_calendar(query, args.top_k)
+            results.extend(calendar_results)
+        if args.collection in ['regulations', 'both']:
+            regulation_results = query_qdrant_regulations(query, args.top_k)
+            results.extend(regulation_results)
+        return results
     
     if args.interactive:
         while True:
             user_question = input(">> ")
             if user_question.lower() in ['exit', 'quit', 'q']:
                 break
-            results = query_qdrant(user_question, args.collection_name, args.top_k)
+            results = process_query(user_question)
             
             if args.join:
                 print("\n=== Results ===")
@@ -200,7 +275,7 @@ def main():
                     print("-" * 50)
             
     elif args.query:
-        results = query_qdrant(args.query, args.collection_name, args.top_k)
+        results = process_query(args.query)
         
         if args.join:
             print("\n=== Results ===")
