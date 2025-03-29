@@ -6,6 +6,10 @@ from datetime import datetime
 import argparse
 from dotenv import load_dotenv
 import os 
+from typing import List, Dict
+import sys
+sys.path.append("..")  # Add parent directory to Python path
+from indexing.bm25 import BM25, preprocess_text
 
 load_dotenv()
 
@@ -14,6 +18,13 @@ QDRANT_URL = os.getenv("QDRANT_URL")
 
 # Loading embedding model once globally to reduce time cost.
 embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
+
+# Initialize clients
+client = QdrantClient(QDRANT_URL)
+model = SentenceTransformer('intfloat/multilingual-e5-large-instruct')
+
+# Initialize BM25
+bm25 = BM25()
 
 def parse_date(date_str):
     """Parse Turkish date format into datetime object"""
@@ -62,13 +73,13 @@ def extract_event_type_from_query(query):
         return "holiday"
     elif "sınav" in query:
         return "exam"
-    elif "kayıt" in query:
+    elif "kayıt" in query or "kaydı" in query:
         return "registration"
     elif "ders" in query:
         return "course"
     elif "mezuniyet" in query:
         return "graduation"
-    elif "başvuru" in query:
+    elif "başvur" in query:
         return "application"
     elif "duyuru" in query or "ilan" in query:
         return "announcement"
@@ -102,16 +113,18 @@ def determine_collection(query):
     
     # Keywords for academic calendar
     calendar_keywords = [
-        "tarih", "sınav", "tatil", "kayıt", "ders", "final", "vize",
-        "ne zaman", "hangi tarih", "başlangıç", "bitiş", "dönem",
-        "güz", "bahar", "yaz", "semester", "exam", "holiday", "registration"
+        "tarih", "sınav", "tatil", "kaydı", "kayıt", "ders", "final", "vize",
+        "ne zaman", "hangi tarih", "bitiyor", "kapanıyor","başlangıç", "bitiş", "dönem",
+        "güz", "bahar", "yaz", "semester", "exam", "holiday", "registration", "bitcek", 
+        "bitecek", "takvim", "kapan", "bit", "aç"
     ]
     
     # Keywords for regulations
     regulation_keywords = [
         "kural", "yönetmelik", "madde", "bölüm", "şart", "koşul",
         "nasıl", "nedir", "neden", "kim", "hangi", "kaç", "ne kadar",
-        "rule", "regulation", "article", "section", "requirement"
+        "rule", "regulation", "article", "section", "requirement",
+        "azami", "en fazla", "en az", "en kısa", "en uzun", "en küçük", "en büyük",
     ]       
     
     # Count matches for each type
@@ -128,22 +141,11 @@ def determine_collection(query):
     
 
 
-def query_qdrant_academic_calendar(user_query, collection_name="academic_calendar_2025", top_k=10):
-    print("\n===== QUERY DEBUG INFO =====")
-    
-    # Convert user query into embedding
-    print(f"Query: '{user_query}'")
-    query_vector = embedding_model.encode(user_query)
-    print(f"Vector dimension: {len(query_vector)}")
-    
-    qdrant = QdrantClient(QDRANT_URL)
-    
+def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
+    """Query academic calendar collection using both BM25 and semantic search"""
     # Extract event type and academic period from query
-    event_type = extract_event_type_from_query(user_query)
-    academic_period = extract_academic_period_from_query(user_query)
-    
-    print(f"Detected event_type: {event_type}")
-    print(f"Detected academic_period: {academic_period}")
+    event_type = extract_event_type_from_query(query)
+    academic_period = extract_academic_period_from_query(query)
     
     # Create filter based on extracted information
     search_filter = None
@@ -166,81 +168,109 @@ def query_qdrant_academic_calendar(user_query, collection_name="academic_calenda
         )
     
     if filter_conditions:
-        print(f"Applied filters: {filter_conditions}")
         search_filter = Filter(should=filter_conditions)
-    else:
-        print("No filters applied - using semantic search only")
     
-    # Do similarity search inside QdrantDB with optional filtering
-    search_results = qdrant.query_points(
-        collection_name=collection_name,
-        query=query_vector.tolist(),
-        with_payload=True,
-        limit=top_k,
+    # Get semantic search results with filters
+    query_vector = model.encode(get_detailed_instruct(query), convert_to_tensor=True)
+    semantic_results = client.search(
+        collection_name="academic_calendar_2025",
+        query_vector=query_vector.tolist(),
+        limit=top_k * 2,  # Get more results for BM25 filtering
         query_filter=search_filter
     )
     
-    print(f"Number of results: {len(search_results.points)}")
-    print("============================\n")
+    # Use BM25 to rank and filter the semantic results
+    documents = [hit.payload["text"] for hit in semantic_results]
+    bm25.fit(documents)
+    bm25_scores = bm25.score(query, documents)
     
-    # Process and sort results
+    # Combine semantic and BM25 scores
+    combined_scores = []
+    for i, (semantic_score, bm25_score) in enumerate(zip(semantic_results, bm25_scores)):
+        combined_score = 0.7 * semantic_score.score + 0.3 * bm25_score
+        combined_scores.append((i, combined_score))
+    
+    # Sort by combined score and take top_k
+    combined_scores.sort(key=lambda x: x[1], reverse=True)
+    top_indices = [i for i, _ in combined_scores[:top_k]]
+    
+    # Format results
     results = []
-    for point in search_results.points:
-        text = point.payload.get('text', '')
-        metadata = point.payload.get('metadata', {})
+    for idx in top_indices:
+        hit = semantic_results[idx]
+        metadata = hit.payload.get("metadata", {})
         
         # Format the result based on event type
         if metadata.get('event_type') == 'holiday':
-            formatted_text = f"🎉 {text} (Score: {point.score:.2f})"
+            formatted_text = f"🎉 {hit.payload['text']}"
         elif metadata.get('event_type') == 'exam':
-            formatted_text = f"📝 {text} (Score: {point.score:.2f})"
+            formatted_text = f"📝 {hit.payload['text']}"
         elif metadata.get('event_type') == 'deadline':
-            formatted_text = f"⏰ {text} (Score: {point.score:.2f})"
+            formatted_text = f"⏰ {hit.payload['text']}"
         else:
             date_range = format_date_range(metadata.get('date1'), metadata.get('date2'))
             if date_range:
-                formatted_text = f"{date_range}: {metadata.get('event', text)} (Score: {point.score:.2f})"
+                formatted_text = f"{date_range}: {metadata.get('event', hit.payload['text'])}"
             else:
-                formatted_text = f"{text} (Score: {point.score:.2f})"
+                formatted_text = hit.payload['text']
         
-        results.append(formatted_text)
-        
-    print(results)
+        results.append({
+            "text": formatted_text,
+            "score": combined_scores[idx][1],
+            "metadata": metadata
+        })
+    
     return results
 
-def query_qdrant_regulations(user_query, collection_name="regulation", top_k=10):
-    """Query regulations collection with section and rule-specific handling"""
-    print("\n===== REGULATIONS QUERY =====")
-    print(f"Query: '{user_query}'")
-    
-    query_vector = embedding_model.encode(user_query)
-    qdrant = QdrantClient(QDRANT_URL)
-    
-    # Simple search for regulations (can be enhanced with regulation-specific filters)
-    search_results = qdrant.query_points(
-        collection_name=collection_name,
-        query=query_vector.tolist(),
-        with_payload=True,
-        limit=top_k
+def query_qdrant_regulations(query: str, top_k: int = 10) -> List[Dict]:
+    """Query regulations collection using both BM25 and semantic search"""
+    # Get semantic search results
+    query_vector = model.encode(get_detailed_instruct(query), convert_to_tensor=True)
+    semantic_results = client.search(
+        collection_name="regulation",
+        query_vector=query_vector.tolist(),
+        limit=top_k * 2  # Get more results for BM25 filtering
     )
     
-    # Format regulation-specific results
+    # Use BM25 to rank and filter the semantic results
+    documents = [hit.payload["text"] for hit in semantic_results]
+    bm25.fit(documents)
+    bm25_scores = bm25.score(query, documents)
+    
+    # Combine semantic and BM25 scores
+    combined_scores = []
+    for i, (semantic_score, bm25_score) in enumerate(zip(semantic_results, bm25_scores)):
+        combined_score = 0.7 * semantic_score.score + 0.3 * bm25_score
+        combined_scores.append((i, combined_score))
+    
+    # Sort by combined score and take top_k
+    combined_scores.sort(key=lambda x: x[1], reverse=True)
+    top_indices = [i for i, _ in combined_scores[:top_k]]
+    
+    # Format results
     results = []
-    for point in search_results.points:
-        text = point.payload.get('text', '')
-        metadata = point.payload.get('metadata', {})
-        
-        # Add section/chapter information if available
+    for idx in top_indices:
+        hit = semantic_results[idx]
+        metadata = hit.payload.get("metadata", {})
         section = metadata.get('section', '')
         chapter = metadata.get('chapter', '')
-        if section and chapter:
-            formatted_text = f"📖 Chapter {chapter}, Section {section}: {text} (Score: {point.score:.2f})"
-        else:
-            formatted_text = f"📖 {text} (Score: {point.score:.2f})"
         
-        results.append(formatted_text)
+        if section and chapter:
+            formatted_text = f"📖 Chapter {chapter}, Section {section}: {hit.payload['text']}"
+        else:
+            formatted_text = f"📖 {hit.payload['text']}"
+        
+        results.append({
+            "text": formatted_text,
+            "score": combined_scores[idx][1],
+            "metadata": metadata
+        })
     
     return results
+
+def get_detailed_instruct(query: str) -> str:
+    task = "Üniversite yönetmeliği veya akademik takvim ile ilgili Türkçe bir soruya yanıt verebilecek ilgili pasajları getir"
+    return f'Instruct: {task}\nQuery: {query}'
 
 def main():
     parser = argparse.ArgumentParser(description='Query academic calendar events and regulations')

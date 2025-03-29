@@ -26,59 +26,60 @@ def chat_with_bot(user_query):
     global messages
     global is_first_message
     
-    try:
-        print("Querying academic calendar...")
-        # Query both collections and combine results
-        calendar_context = "\n".join(query_qdrant_academic_calendar(user_query))
-        print("Querying regulations...")
-        regulations_context = "\n".join(query_qdrant_regulations(user_query))
+    print("Querying academic calendar...")
+    # Query both collections and combine results
+    calendar_results = query_qdrant_academic_calendar(user_query)
+    calendar_context = "\n".join(result["text"] for result in calendar_results)
+    print("calendar_context", calendar_context)
+    
+    print("Querying regulations...")
+    regulations_results = query_qdrant_regulations(user_query)
+    regulations_context = "\n".join(result["text"] for result in regulations_results)
+    print("regulations_context", regulations_context)
+    
+    # Combine contexts with clear separation
+    context = f"=== Academic Calendar Information ===\n{calendar_context}\n\n=== Regulations Information ===\n{regulations_context}"
+    
+    # Load the system prompt (only once)
+    if not messages:
+        system_prompt = load_system_prompt()
+        messages.append({"role": "system", "content": system_prompt})
+    
+    # Add new user message with context
+    if is_first_message:
+        user_message = f"Öğrenci ilk sorusunu sordu: {user_query}\n\n{context}"
+        is_first_message = False
+    else:
+        user_message = f"Öğrenci: {user_query}\n\n{context}"
+    
+    messages.append({"role": "user", "content": user_message})
+    
+    # Generate the response
+    print("Yanıt oluşturuluyor...")
+    completion = client.chat.completions.create(
+        model="google/gemini-2.0-flash-001",
+        messages=messages
+    )
+    
+    # Print API response for debugging
+    print(f"API response structure: {type(completion)}")
+    
+    # Check if completion has the expected structure
+    if not hasattr(completion, 'choices') or not completion.choices:
+        print("API ERROR: 'choices' field missing or empty in response")
+        print(f"Full API response: {completion}")
+        return "Üzgünüm, teknik bir sorun oluştu. Lütfen tekrar deneyin."
         
-        # Combine contexts with clear separation
-        context = f"=== Academic Calendar Information ===\n{calendar_context}\n\n=== Regulations Information ===\n{regulations_context}"
-        
-        # Load the system prompt (only once)
-        if not messages:
-            system_prompt = load_system_prompt()
-            messages.append({"role": "system", "content": system_prompt})
-        
-        # Add new user message with context
-        if is_first_message:
-            user_message = f"Öğrenci ilk sorusunu sordu: {user_query}\n\n{context}"
-            is_first_message = False
-        else:
-            user_message = f"Öğrenci: {user_query}\n\n{context}"
-        
-        messages.append({"role": "user", "content": user_message})
-        
-        # Generate the response
-        print("Yanıt oluşturuluyor...")
-        completion = client.chat.completions.create(
-            model="google/gemini-2.0-flash-001",
-            messages=messages
-        )
-        
-        # Print API response for debugging
-        print(f"API response structure: {type(completion)}")
-        
-        # Check if completion has the expected structure
-        if not hasattr(completion, 'choices') or not completion.choices:
-            print("API ERROR: 'choices' field missing or empty in response")
-            print(f"Full API response: {completion}")
-            return "Üzgünüm, teknik bir sorun oluştu. Lütfen tekrar deneyin."
-            
-        # Store assistant's response to maintain conversation flow
-        assistant_message = completion.choices[0].message.content
-        messages.append({"role": "assistant", "content": assistant_message})
-        
-        # Keep conversation history manageable (last 5 exchanges)
-        if len(messages) > 11:  # system + 5 pairs of messages
-            messages = [messages[0]] + messages[-10:]
-        
-        return assistant_message
-        
-    except Exception as e:
-        print(f"ERROR: {type(e).__name__}: {str(e)}")
-        return f"Üzgünüm, bir hata oluştu: {str(e)}. Lütfen tekrar deneyin veya sistem yöneticisine başvurun."
+    # Store assistant's response to maintain conversation flow
+    assistant_message = completion.choices[0].message.content
+    messages.append({"role": "assistant", "content": assistant_message})
+    
+    # Keep conversation history manageable (last 5 exchanges)
+    if len(messages) > 11:  # system + 5 pairs of messages
+        messages = [messages[0]] + messages[-10:]
+    
+    return assistant_message
+ 
 
 def reset_conversation():
     """Reset the conversation history"""

@@ -1,4 +1,3 @@
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 import re
 from datetime import datetime
 import argparse

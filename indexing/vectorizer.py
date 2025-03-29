@@ -4,11 +4,14 @@ from qdrant_client.http.models import Distance, VectorParams, PointStruct
 import argparse
 import os
 from dotenv import load_dotenv
+from google import genai
 
 load_dotenv()
 
 EMBEDDING_MODEL3 = os.getenv("EMBEDDING_MODEL3")
 QDRANT_URL = os.getenv("QDRANT_URL")
+client = genai.Client(api_key="GEMINI_API_KEY")
+
 
 def store_embedding(chunks, collection_name):
     """Encode text chunks into embeddings & store them in Qdrant"""
@@ -16,6 +19,8 @@ def store_embedding(chunks, collection_name):
     # Loading embedding model and encoding chunks into multi-dimensional vectors
     print(f"Loading embedding model {EMBEDDING_MODEL3}...")
     embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
+    
+    
     
     # Extract text and metadata from chunks
     # Add the required instruction prefix for Nomic embeddings
