@@ -1,7 +1,10 @@
-from config import OPENAI_API_KEY
-from query_handler import determine_collection, query_qdrant_regulations, query_qdrant_academic_calendar
+from query_handler import query_qdrant_regulations, query_qdrant_academic_calendar
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -11,7 +14,7 @@ client = OpenAI(
 )
 
 def load_system_prompt():
-    with open("system_prompt.txt", "r", encoding="utf-8") as f:
+    with open("../config/prompts/system_prompt.txt", "r", encoding="utf-8") as f:
         return f.read()
 
 # Keep track of conversation to maintain context

@@ -14,24 +14,39 @@ A Retrieval-Augmented Generation (RAG) chatbot that provides information about a
 ## Project Structure
 
 ```
-.
-├── app.py                 # FastAPI server implementation
-├── chatbot.py            # Core chatbot logic and conversation management
-├── config.py             # Configuration settings
-├── pdf_parser.py         # PDF document parsing utilities
-├── query_handler.py      # Vector search and query processing
-├── text_splitter.py      # Document chunking and preprocessing
-├── vector_store.py       # Vector database operations
-├── system_prompt.txt     # LLM system prompt
-├── schedule.txt          # Academic calendar data
-└── yonerge.txt          # University regulations data
+rag-chatbot/
+├── app/
+│   ├── __init__.py
+│   ├── chatbot.py          # Main chatbot logic
+│   ├── query_handler.py    # Qdrant querying
+│   └── api.py             # FastAPI wrapper
+├── config/
+│   ├── __init__.py
+│   └── prompts/
+│       └── system_prompt.txt
+├── data/
+│   ├── processed/         # Processed text files
+│   └── raw/              # Original PDFs
+├── preprocessing/
+│   ├── __init__.py
+│   ├── academic_calendar_parser.py     # Regulations PDF parser
+│   └── regulation_parser.py    # Academic calendar PDF parser
+├── indexing/
+│   ├── __init__.py
+│   ├── text_splitter.py  # Document chunking
+│   └── vectorizer.py     # Document vectorization
+├── tests/
+│   ├── __init__.py
+│   └── test_chatbot.py
+├── .env                  # Environment variables
+└── requirements.txt
 ```
 
 ## Prerequisites
 
 - Python 3.8+
 - Qdrant vector database
-- OpenAI API key (for OpenRouter)
+- OpenAI API key
 
 ## Installation
 
@@ -52,41 +67,46 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Set up your environment variables in `config.py`:
-```python
-QDRANT_URL = "http://localhost:6333"
-OPENAI_API_KEY = "your-api-key"
+4. Create a `.env` file in the root directory:
+```
+OPENAI_API_KEY=your-api-key-here
 ```
 
 ## Usage
 
-### 1. Setting up the Vector Database
+### 1. Document Processing
 
-First, process and store your documents in the vector database:
-
+First, process your PDF documents:
 ```bash
-# Store academic calendar
-python vector_store.py schedule.txt academic_calendar_2025 --type calendar
+# Process regulations PDF
+python preprocessing/pdf_parser.py
 
-# Store regulations
-python vector_store.py yonerge.txt regulations --type regulations
+# Process academic calendar PDF
+python preprocessing/pdf_parser2.py
 ```
 
-### 2. Running the Chatbot
+### 2. Document Indexing
+
+Index the processed documents:
+```bash
+python indexing/vectorizer.py
+```
+
+### 3. Running the Chatbot
 
 #### Command Line Interface
 ```bash
-python chatbot.py
+python app/chatbot.py
 ```
 
 #### API Server
 ```bash
-uvicorn app:app --reload
+uvicorn app.api:app --reload
 ```
 
 Then access the API at `http://localhost:8000`
 
-### 3. Example Queries
+### 4. Example Queries
 
 - Academic Calendar:
   ```
@@ -103,6 +123,7 @@ Then access the API at `http://localhost:8000`
 ## How It Works
 
 1. **Document Processing**:
+   - PDFs are converted to text using preprocessing scripts
    - Documents are split into chunks using `text_splitter.py`
    - Chunks are embedded using a multilingual embedding model
    - Vectors are stored in Qdrant database
@@ -120,7 +141,17 @@ Then access the API at `http://localhost:8000`
 ## API Endpoints
 
 - `GET /`: Welcome message
-- `GET /chat?query=your_question`: Get chatbot response
+- `POST /chat`: Send a message to the chatbot
+- `POST /reset`: Reset conversation history
+
+## Development
+
+The project uses a modular structure:
+- `app/`: Core application logic
+- `config/`: Configuration and environment variables
+- `preprocessing/`: PDF processing utilities
+- `indexing/`: Document vectorization and indexing
+- `tests/`: Test suite
 
 ## License
 

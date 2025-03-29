@@ -1,10 +1,16 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
-from config import EMBEDDING_MODEL3, QDRANT_URL
 import re
 from datetime import datetime
 import argparse
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+
+EMBEDDING_MODEL3 = os.getenv("EMBEDDING_MODEL3")
+QDRANT_URL = os.getenv("QDRANT_URL")
 
 # Loading embedding model once globally to reduce time cost.
 embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)

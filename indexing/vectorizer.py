@@ -2,8 +2,13 @@ from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 import argparse
+import os
+from dotenv import load_dotenv
 
-from config import EMBEDDING_MODEL3, QDRANT_URL
+load_dotenv()
+
+EMBEDDING_MODEL3 = os.getenv("EMBEDDING_MODEL3")
+QDRANT_URL = os.getenv("QDRANT_URL")
 
 def store_embedding(chunks, collection_name):
     """Encode text chunks into embeddings & store them in Qdrant"""
@@ -149,7 +154,7 @@ def main():
     args = parser.parse_args()
     
     # Import here to avoid circular imports
-    from text_splitter import split_text, split_regulation
+    from indexing.text_splitter import split_text, split_regulation
     
     # Split text into chunks
     print(f"Processing file: {args.input_file}")
