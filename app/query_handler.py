@@ -9,15 +9,12 @@ import os
 from typing import List, Dict
 import sys
 sys.path.append("..")  # Add parent directory to Python path
-from indexing.bm25 import BM25, preprocess_text
+from preprocessing.indexing.bm25 import BM25, preprocess_text
 
 load_dotenv()
 
 EMBEDDING_MODEL3 = os.getenv("EMBEDDING_MODEL3")
 QDRANT_URL = os.getenv("QDRANT_URL")
-
-# Loading embedding model once globally to reduce time cost.
-embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
 
 # Initialize clients
 client = QdrantClient(QDRANT_URL)
@@ -178,6 +175,7 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
         limit=top_k * 2,  # Get more results for BM25 filtering
         query_filter=search_filter
     )
+    print("SEMANTIC RESULTS:", semantic_results)
     
     # Use BM25 to rank and filter the semantic results
     documents = [hit.payload["text"] for hit in semantic_results]

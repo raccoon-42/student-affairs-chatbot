@@ -84,39 +84,42 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
     with open(file_path, "r", encoding="utf-8") as f:
         text = f.read()
     
-    # Split into lines first
     lines = text.split('\n')
     chunks = []
     current_event = []
     current_date_info = None
     current_period = None
     
+    
+    def add_chunk():
+        """Helper function to add an event chunk while preventing duplicates."""
+        nonlocal current_event, current_date_info
+
+        if current_event and current_date_info:
+            event_text = ' '.join(current_event).strip()
+
+            chunk = {
+                "text": current_date_info['text'] + ' ' + event_text,
+                "metadata": {
+                    "date1": current_date_info['date1'],
+                    "date2": current_date_info['date2'],
+                    "event": event_text,
+                    "event_type": extract_event_type(event_text),
+                    "academic_period": current_period,
+                    "parsed_date1": current_date_info['parsed_date1'],
+                    "parsed_date2": current_date_info['parsed_date2']
+                }
+            }
+            chunks.append(chunk)
+
     for line in lines:
-        # Skip empty lines
         if not line.strip():
             continue
-            
-        # Check for TITLE prefix
+        
+        # Handle TITLE section
         if line.strip().startswith("TITLE:"):
-            # Process previous event if exists
-            if current_event and current_date_info:
-                # Join all lines of the event
-                event_text = ' '.join(current_event)
-                chunk = {
-                    "text": current_date_info['text'] + ' ' + event_text,
-                    "metadata": {
-                        "date1": current_date_info['date1'],
-                        "date2": current_date_info['date2'],
-                        "event": event_text.strip(),
-                        "event_type": extract_event_type(event_text),
-                        "academic_period": current_period,  # Use the current period from TITLE
-                        "parsed_date1": current_date_info['parsed_date1'],
-                        "parsed_date2": current_date_info['parsed_date2']
-                    }
-                }
-                chunks.append(chunk)
+            add_chunk()  # Save previous event before changing period
             
-            # Extract period from TITLE
             title_text = line.strip().replace("TITLE:", "").strip()
             if "GÜZ YARIYILI" in title_text:
                 current_period = "fall"
@@ -124,86 +127,49 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
                 current_period = "spring"
             elif "YAZ ÖĞRETİMİ" in title_text:
                 current_period = "summer"
-            
-            # Start new event
+
             current_event = []
             current_date_info = None
             continue
             
-        # If line starts with a date, process previous event if exists
+        # Check if line contains a date
         if is_date_line(line):
-            if current_event and current_date_info:
-                # Join all lines of the event
-                event_text = ' '.join(current_event)
-                chunk = {
-                    "text": current_date_info['text'] + ' ' + event_text,
-                    "metadata": {
-                        "date1": current_date_info['date1'],
-                        "date2": current_date_info['date2'],
-                        "event": event_text.strip(),
-                        "event_type": extract_event_type(event_text),
-                        "academic_period": current_period,  # Use the current period from TITLE
-                        "parsed_date1": current_date_info['parsed_date1'],
-                        "parsed_date2": current_date_info['parsed_date2']
-                    }
-                }
-                chunks.append(chunk)
+            add_chunk()  # Save previous event before processing a new one
             
-            # Start new event
-            current_event = []
+            current_event = []  # Reset event
             
-            # Extract date and event information
             date_match = re.match(r'(\d{2}\.[A-Za-zğüşıöçĞÜŞİÖÇ]+\.\d{2})\s+[PÇCPSPÇC]\w+\s+(?:tarihinde|tarihleri arasında)?\s*(.*)', line)
-            
-            if date_match:
-                date_str, event = date_match.groups()
-                
-                # Check if it's a date range
-                date_range_match = re.match(r'(\d{2}\.[A-Za-zğüşıöçĞÜŞİÖÇ]+\.\d{2})\s+[PÇCPSPÇC]\w+\s+ve\s+(\d{2}\.[A-Za-zğüşıöçĞÜŞİÖÇ]+\.\d{2})\s+[PÇCPSPÇC]\w+\s+tarihleri arasında\s*(.*)', line)
-                
-                if date_range_match:
-                    date1, date2, event = date_range_match.groups()
-                    current_date_info = {
-                        "text": line.strip(),
-                        "date1": date1,
-                        "date2": date2,
-                        "parsed_date1": parse_date(date1),
-                        "parsed_date2": parse_date(date2)
-                    }
-                else:
-                    current_date_info = {
-                        "text": line.strip(),
-                        "date1": date_str,
-                        "date2": None,
-                        "parsed_date1": parse_date(date_str),
-                        "parsed_date2": None
-                    }
-                
-                # Add initial event text if exists
-                if event.strip():
-                    current_event.append(event.strip())
+            date_range_match = re.match(r'(\d{2}\.[A-Za-zğüşıöçĞÜŞİÖÇ]+\.\d{2})\s+[PÇCPSPÇC]\w+\s+ve\s+(\d{2}\.[A-Za-zğüşıöçĞÜŞİÖÇ]+\.\d{2})\s+[PÇCPSPÇC]\w+\s+tarihleri arasında\s*(.*)', line)
+
+            if date_range_match:
+                date1, date2, event = date_range_match.groups()
+                current_date_info = {
+                    "text": line.strip(),
+                    "date1": date1,
+                    "date2": date2,
+                    "parsed_date1": parse_date(date1),
+                    "parsed_date2": parse_date(date2)
+                }
+            elif date_match:
+                date1, event = date_match.groups()
+                current_date_info = {
+                    "text": line.strip(),
+                    "date1": date1,
+                    "date2": None,
+                    "parsed_date1": parse_date(date1),
+                    "parsed_date2": None
+                }
+
+            if event.strip():
+                current_event.append(event.strip())
         else:
-            # This is a continuation of the current event
             current_event.append(line.strip())
-    
-    # Process the last event if exists
-    if current_event and current_date_info:
-        event_text = ' '.join(current_event)
-        chunk = {
-            "text": current_date_info['text'] + ' ' + event_text,
-            "metadata": {
-                "date1": current_date_info['date1'],
-                "date2": current_date_info['date2'],
-                "event": event_text.strip(),
-                "event_type": extract_event_type(event_text),
-                "academic_period": current_period,  # Use the current period from TITLE
-                "parsed_date1": current_date_info['parsed_date1'],
-                "parsed_date2": current_date_info['parsed_date2']
-            }
-        }
-        chunks.append(chunk)
+
+    # Process the last event
+    add_chunk()
     
     return chunks
+
 
 def split_regulation(file_path, chunk_size=350, chunk_overlap=30):
     """Split regulation text into chunks with metadata"""
