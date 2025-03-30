@@ -175,7 +175,6 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
         limit=top_k * 2,  # Get more results for BM25 filtering
         query_filter=search_filter
     )
-    print("SEMANTIC RESULTS:", semantic_results)
     
     # Use BM25 to rank and filter the semantic results
     documents = [hit.payload["text"] for hit in semantic_results]
@@ -211,6 +210,7 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
                 formatted_text = f"{date_range}: {metadata.get('event', hit.payload['text'])}"
             else:
                 formatted_text = hit.payload['text']
+        
         
         results.append({
             "text": formatted_text,

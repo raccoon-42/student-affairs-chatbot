@@ -30,13 +30,11 @@ def chat_with_bot(user_query):
     # Query both collections and combine results
     calendar_results = query_qdrant_academic_calendar(user_query)
     calendar_context = "\n".join(result["text"] for result in calendar_results)
-    print("calendar_context", calendar_context)
     
     print("Querying regulations...")
     regulations_results = query_qdrant_regulations(user_query)
     regulations_context = "\n".join(result["text"] for result in regulations_results)
-    print("regulations_context", regulations_context)
-    
+  
     # Combine contexts with clear separation
     context = f"=== Academic Calendar Information ===\n{calendar_context}\n\n=== Regulations Information ===\n{regulations_context}"
     
