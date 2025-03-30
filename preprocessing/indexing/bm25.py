@@ -25,7 +25,10 @@ class BM25:
         """
         self.doc_count = len(documents)
         self.doc_len = [len(doc.split()) for doc in documents]
-        self.avgdl = sum(self.doc_len) / self.doc_count
+        if self.doc_count == 0:
+            self.avgdl = 0  # or raise an exception, or set to None
+        else:
+            self.avgdl = sum(self.doc_len) / self.doc_count
         
         # Compute document frequencies
         for doc in documents:

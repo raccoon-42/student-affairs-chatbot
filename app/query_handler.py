@@ -64,7 +64,7 @@ def extract_event_type_from_query(query):
     # Check for specific event types
     if "son gün" in query or "deadline" in query or "son tarih" in query:
         return "deadline"
-    elif "arasında" in query or "period" in query or "dönem" in query:
+    elif "arasında" in query or "period" in query in query:
         return "period"
     elif "tatil" in query or "bayram" in query:
         return "holiday"
@@ -72,8 +72,8 @@ def extract_event_type_from_query(query):
         return "exam"
     elif "kayıt" in query or "kaydı" in query:
         return "registration"
-    elif "ders" in query:
-        return "course"
+    #elif "ders" in query:
+     #   return "course"
     elif "mezuniyet" in query:
         return "graduation"
     elif "başvur" in query:
@@ -142,7 +142,9 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
     """Query academic calendar collection using both BM25 and semantic search"""
     # Extract event type and academic period from query
     event_type = extract_event_type_from_query(query)
+    print("Detected EVENT TYPE:", event_type)
     academic_period = extract_academic_period_from_query(query)
+    print("Detected ACADEMIC PERIOD:", academic_period)
     
     # Create filter based on extracted information
     search_filter = None
@@ -165,7 +167,7 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
         )
     
     if filter_conditions:
-        search_filter = Filter(should=filter_conditions)
+        search_filter = Filter(must=filter_conditions)
     
     # Get semantic search results with filters
     query_vector = model.encode(get_detailed_instruct(query), convert_to_tensor=True)

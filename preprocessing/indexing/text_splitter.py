@@ -127,6 +127,8 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
                 current_period = "spring"
             elif "YAZ ÖĞRETİMİ" in title_text:
                 current_period = "summer"
+            else:
+                current_period = None
 
             current_event = []
             current_date_info = None
