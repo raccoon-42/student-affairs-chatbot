@@ -99,7 +99,7 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
             event_text = ' '.join(current_event).strip()
 
             chunk = {
-                "text": current_date_info['text'] + ' ' + event_text,
+                "text": event_text,
                 "metadata": {
                     "date1": current_date_info['date1'],
                     "date2": current_date_info['date2'],
@@ -150,6 +150,7 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
                     "parsed_date1": parse_date(date1),
                     "parsed_date2": parse_date(date2)
                 }
+                current_event.append(f"{date1} tarihinden {date2} tarihine kadar")
             elif date_match:
                 date1, event = date_match.groups()
                 current_date_info = {
@@ -159,6 +160,7 @@ def split_text(file_path, chunk_size=350, chunk_overlap=30):
                     "parsed_date1": parse_date(date1),
                     "parsed_date2": None
                 }
+                current_event.append(f"{date1} tarihinde")
 
             if event.strip():
                 current_event.append(event.strip())
