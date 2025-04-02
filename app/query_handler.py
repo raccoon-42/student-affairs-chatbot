@@ -222,7 +222,7 @@ def query_qdrant_academic_calendar(query: str, top_k: int = 10) -> List[Dict]:
     
     return results
 
-def query_qdrant_regulations(query: str, top_k: int = 10) -> List[Dict]:
+def query_qdrant_regulations(query: str, top_k: int = 3) -> List[Dict]:
     """Query regulations collection using both BM25 and semantic search"""
     # Get semantic search results
     query_vector = model.encode(get_detailed_instruct(query), convert_to_tensor=True)
