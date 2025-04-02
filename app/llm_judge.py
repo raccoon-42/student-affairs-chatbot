@@ -9,8 +9,12 @@ class LLMJudge:
     
     def get_response(self, query: str) -> str:
         url = "http://localhost:8000/chat"
-        params = {"query": query}
-        response = requests.get(url, params=params)
+        response = requests.get(url, 
+                        params = {
+                            "query": query,
+                        }
+                    )
+        
         if response.status_code == 200:
             return response.json()["response"]
         else:
@@ -29,17 +33,20 @@ class LLMJudge:
             Dict[str, Any]: Evaluation results including score and reasoning
         """
         evaluation_prompt = f"""
-        Query: {query}
-        Expected Response: {expected_response}
-        Actual Response: {response}
+        Sorulan soru: {query}
+        Beklenen cevap: {expected_response}
+        Verilen cevap: {response}
         
-        Please evaluate the actual response against the expected response.
-        Consider:
-        1. Semantic correctness
-        2. Completeness
-        3. Accuracy
+        Lütfen "verilen cevap" ile "beklenen cevap"a uyup uymadığını puanla.
         
-        Provide a score (0-1) and brief reasoning.
+        Selamlamaları ve ek bilgileri göz ardı ederek, sorulan soruya verilen cevabnın içerilip içerilmediğini kontrol et. Eğer içeriyorsa 1, içermiyorsa 0 puan ver.
+        
+        Eğer verilen cevap sorulan soruya daha net bir cevap vermek amacıyla bir soru soruyorsa buna 1 puan ver.
+
+        Aşağıdaki formatta cevap verin:
+        Puan:
+        Mantık yürütme:
+        
         """
         
         
@@ -55,24 +62,18 @@ class LLMJudge:
         import re
         
         # Try to extract score using regex
-        score_match = re.search(r'Score:\s*(\d+\.\d+)', evaluation_text)
+        score_match = re.search(r'(?<=Puan:\s).*', evaluation_text)
         if score_match:
-            score = float(score_match.group(1))
+            score = int(score_match.group(0))
         else:
-            # Fallback - try to find any float value that could be a score
-            float_matches = re.findall(r'(\d+\.\d+)', evaluation_text)
-            if float_matches and 0 <= float(float_matches[0]) <= 1:
-                score = float(float_matches[0])
-            else:
-                score = 0.0
-                
-        # Extract reasoning - everything after the score
-        if score_match:
-            reasoning_text = evaluation_text[score_match.end():]
-            reasoning = reasoning_text.strip()
-        else:
-            reasoning = evaluation_text
+            score = ""
             
+        reasoning_match = re.search(r'(?<=Mantık yürütme:\s).*', evaluation_text)
+        if reasoning_match:
+            reasoning = reasoning_match.group(0)
+        else:
+            reasoning = ""
+    
         return {
             "score": score,
             "reasoning": reasoning,
