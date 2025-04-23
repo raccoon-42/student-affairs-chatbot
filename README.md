@@ -19,13 +19,16 @@ A Retrieval-Augmented Generation (RAG) chatbot that provides information about a
 rag-chatbot/
 ├── app/
 │   ├── __init__.py
+│   ├── api/                   # API-related code
+│   │   ├── __init__.py
+│   │   └── api.py             # FastAPI endpoints
+│   ├── client/                # Client-related code
+│   │   ├── __init__.py
+│   │   ├── api_client.py      # API client
+│   │   └── ollama_client.py   # Ollama model client
 │   ├── chatbot.py             # Main chatbot logic (OpenAI)
 │   ├── chatbot_local.py       # Local model integration (Ollama)
-│   ├── query_handler.py       # Qdrant query processing
-│   ├── api.py                 # FastAPI wrapper
-│   ├── api_client.py          # API client
-│   ├── ollama_client.py       # Ollama model client
-│   └── llm_judge.py           # Model response evaluation
+│   └── query_handler.py       # Qdrant query processing
 ├── config/
 │   ├── __init__.py
 │   └── prompts/
@@ -45,7 +48,10 @@ rag-chatbot/
 │       └── regulation_parser.py         # Regulations PDF parser
 ├── tests/
 │   ├── __init__.py
-│   └── test_llm_judge.py      # LLM response evaluation
+│   ├── evaluators/            # Evaluation components
+│   │   ├── __init__.py
+│   │   └── llm_judge.py       # Model response evaluation
+│   └── test_llm_judge.py      # LLM response evaluation tests
 ├── .env                       # Environment variables
 └── requirements.txt           # Dependencies
 ```
@@ -146,7 +152,7 @@ cd ..
 #### API Server
 ```bash
 # IMPORTANT: Make sure you're in the project root directory (rag-chatbot/)
-python -m uvicorn app.api:app --reload
+python -m uvicorn app.api.api:app --reload
 ```
 
 Then access the API at `http://localhost:8000`.
@@ -190,59 +196,75 @@ Then access the API at `http://localhost:8000`.
 
 - `GET /`: Welcome message
 - `GET /chat`: Send a message to the OpenAI API-based chatbot
+  - Query parameter: `query` (required) - The text query to process
+  - Query parameter: `model_name` (required) - Specify which OpenAI model to use (e.g., google/gemini-2.0-flash-001)
 - `GET /chat_local`: Send a message to the local model-based chatbot
+  - Query parameter: `query` (required) - The text query to process
+  - Query parameter: `model_name` (required) - The specific Ollama model to use (e.g., "gemma3:4b")
 
 ## Code Reference
 
 ### Using the Chatbot Client
 
 ```python
-from app.api_client import ChatbotClient
+from app.client.api_client import ChatbotClient
 
 # Initialize the client
 client = ChatbotClient()
 
 # Get a response using OpenAI API
-response = client.get_response_openai("When does the spring semester end?")
+response = client.get_response_openai("When does the spring semester end?", "google/gemini-2.0-flash-001")
 print(response)
 
-# Get a response using local model
-response = client.get_response_local("What is the course withdrawal date for undergraduate students?")
+# Get a response using local model with specified model name
+response = client.get_response_local("What is the course withdrawal date?", "gemma3:4b")
 print(response)
 ```
 
-### Integration in Your Own Application
+### Direct API Calls
 
 ```python
 import requests
 
-def get_chatbot_response(query):
-    url = "http://localhost:8000/chat"
-    response = requests.get(url, params={"query": query})
-    
-    if response.status_code == 200:
-        return response.json()["response"]
-    else:
-        return f"Error: {response.status_code}"
+# Using OpenAI model
+response = requests.get(
+    "http://localhost:8000/chat",
+    params={
+         "query": "When do classes start in the fall semester?",
+         "model_name": "google/gemini-2.0-flash-001"
+     }
+)
+if response.status_code == 200:
+    print(response.json()["response"])
 
-# Usage
-print(get_chatbot_response("When do classes start in the fall semester?"))
+# Using local Ollama model
+response = requests.get(
+    "http://localhost:8000/chat_local",
+    params={
+        "query": "What is the course withdrawal date?",
+        "model_name": "gemma3:4b"
+    }
+)
+if response.status_code == 200:
+    print(response.json()["response"])
 ```
 
 ## Development
 
 This project uses a modular structure:
 - `app/`: Core application logic
+  - `api/`: API endpoints and definitions
+  - `client/`: API and model clients
 - `config/`: Configuration and environment variables
 - `preprocessing/`: PDF processing utilities
 - `tests/`: Test suite
 
-### New Model Integration
+### Evaluation
 
-To add a new LLM model:
-1. Create a new client module specific to the model
-2. Implement a new chatbot function
-3. Add a new endpoint to the API
+The project includes an LLM-based evaluation system:
+1. Define expected responses for common queries
+2. Use the `LLMJudge` class to evaluate responses
+3. Run tests with `pytest tests/test_llm_judge.py`
 
 ## License
 

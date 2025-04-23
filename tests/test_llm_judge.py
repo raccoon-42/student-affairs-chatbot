@@ -5,8 +5,11 @@ import os
 # Add the project root directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
-from tests.utils.llm_judge import LLMJudge
+from tests.evaluators.llm_judge import LLMJudge
 from app.client.api_client import ChatbotClient
+
+OPENAI_MODEL_TO_TEST = "google/gemini-2.0-flash-001"
+LOCAL_MODEL_TO_TEST = "gemma3:4b"
 
 @pytest.fixture
 def llm_judge(model_name="gemma3:4b"):
@@ -32,8 +35,8 @@ def test_llm_responses(llm_judge, test_cases):
     
     for i, (query, expected_response) in enumerate(test_cases.items(), 1):
         # Get response from LLM
-        response = client.get_response_openai(query) # openAI
-        #response = client.get_response_local(query, "gemma3:4b") # local
+        response = client.get_response_openai(query, OPENAI_MODEL_TO_TEST) # openAI
+        #response = client.get_response_local(query, LOCAL_MODEL_TO_TEST) # local
         
         # Evaluate the response
         evaluation = llm_judge.evaluate_response(query, response, expected_response)
