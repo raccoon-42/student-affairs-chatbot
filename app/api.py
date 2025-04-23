@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from chatbot import chat_with_bot
+from app.chatbot import chat_with_bot
+from app.chatbot_local import chat_with_bot as chat_with_bot_local
 
 app = FastAPI(
     title="Academic Calendar Chatbot API",
@@ -25,4 +26,12 @@ async def chat(query: str):
         query=query,
         response=response
     )
-    
+
+@app.get("/chat_local", response_model=ChatResponse)
+async def chat(query: str):
+    # Call the actual chatbot implementation
+    response = chat_with_bot_local(query)
+    return ChatResponse(
+        query=query,
+        response=response
+    )

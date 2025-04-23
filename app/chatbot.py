@@ -20,7 +20,9 @@ client = OpenAI(
 )
 
 def load_system_prompt():
-    with open("../config/prompts/system_prompt.txt", "r", encoding="utf-8") as f:
+    base_dir = os.path.dirname(__file__)  # path to chatbot_local.py
+    prompt_path = os.path.join(base_dir, "../config/prompts/system_prompt.txt")
+    with open(os.path.abspath(prompt_path), "r", encoding="utf-8") as f:
         return f.read()
 
 # Keep track of conversation to maintain context
@@ -41,9 +43,28 @@ def chat_with_bot(user_query):
     regulations_results = query_qdrant_regulations(user_query)
     regulations_context = "\n".join(result["text"] for result in regulations_results)
   
-    # Combine contexts with clear separation
-    context = f"=== Academic Calendar Information ===\n{calendar_context}\n\n=== Regulations Information ===\n{regulations_context}"
-    
+    context = f"""
+    <conversation>
+        <student_question>
+        {user_query}
+        </student_question>
+
+        <available_reference_data>
+        # AKADEMİK TAKVİM BİLGİLERİ:
+        {calendar_context}
+
+        # YÖNETMELİK BİLGİLERİ:
+        {regulations_context}
+        </available_reference_data>
+    </conversation>
+
+    GÖREV: 
+    1. SADECE <student_question> etiketleri arasındaki soruyu yanıtla.
+    2. <available_reference_data> içindeki bilgileri SADECE öğrencinin sorusuna yanıt vermek için kullan.
+    3. Eğer öğrencinin sorusu belirsizse veya eksik bilgi varsa, açıklama iste.
+    4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan.
+    """
+
     # Load the system prompt (only once)
     if not messages:
         system_prompt = load_system_prompt()

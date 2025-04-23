@@ -5,12 +5,11 @@ class OllamaClient:
     def __init__(self, local_url="http://localhost:11434"):
         self.local_url = local_url
 
-    def chat_completion(self, model, system_prompt, messages):
+    def chat_completion(self, model, messages):
         url = f"{self.local_url}/api/chat"
         payload = {
             "model": model,
             "messages": messages,
-            "system": system_prompt,
             "stream": False
         }
         
