@@ -70,7 +70,7 @@ def test_llm_responses(llm_judge, test_cases):
     failures = []
     categories = {}
     
-    use_local_model = True  # Set to False to test with OpenAI API instead
+    use_local_model = False  # Set to False to test with OpenAI API instead
     
     for i, test_case in enumerate(test_cases, 1):
         query = test_case["query"]
