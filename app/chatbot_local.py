@@ -81,8 +81,8 @@ def chat_with_bot(user_query, LLM_MODEL="gemma3:4b"):
     messages.append({"role": "assistant", "content": assistant_message})
     
     # Keep conversation history manageable (last 5 exchanges)
-    if len(messages) > 11:  # system + 5 pairs of messages
-        messages = [messages[0]] + messages[-10:]
+    if len(messages) > 2:  # system + 5 pairs of messages
+        messages = [messages[0]] + messages[-1:]
     
     return assistant_message
  

@@ -117,7 +117,7 @@ def main():
     args = parser.parse_args()
     
     # Import here to avoid circular imports
-    from indexing.text_splitter import split_text
+    from preprocessing.indexing.text_splitter import split_text
     
     # Split text into chunks
     print(f"Processing file: {args.input_file}")
