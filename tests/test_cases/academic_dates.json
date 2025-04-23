@@ -1,0 +1,17 @@
+[
+  {
+    "query": "yaz okulu kayıtları ne zaman",
+    "expected": "8-9 temmuz 2025'de başlar",
+    "description": "Yaz okulu kayıt tarihleri"
+  },
+  {
+    "query": "mezuniyet ne zaman?",
+    "expected": "18 temmuz 2025",
+    "description": "Mezuniyet töreni tarihi"
+  },
+  {
+    "query": "bahar dönemi sınavları ne zaman bitiyor?",
+    "expected": "10-23 haziran 2025 arası",
+    "description": "Bahar dönemi sınav bitişi"
+  }
+] 

@@ -1,0 +1,12 @@
+[
+  {
+    "query": "dersten çekilmek için son tarih nedir?",
+    "expected": "hangi dönem çekilmek istediği sorusunu sorar ya da 25 nisan 2025 diye söyler.",
+    "description": "Dersten çekilme tarihi (dönem belirtilmemiş)"
+  },
+  {
+    "query": "bahar dönemi için dersten çekilmek için son tarih nedir?",
+    "expected": "25 nisan 2025 diye söyler.",
+    "description": "Bahar dönemi dersten çekilme tarihi"
+  }
+] 

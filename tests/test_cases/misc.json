@@ -1,0 +1,7 @@
+[
+  {
+    "query": "okul ne zaman kapanıyor?",
+    "expected": "hangi dönem için sorduğunu sorar ya da sınavların ne zaman bittiğini söyler.",
+    "description": "Okulun kapanış tarihi (belirsiz soru)"
+  }
+] 

@@ -29,7 +29,7 @@ def load_system_prompt():
 messages = []
 is_first_message = True
 
-def chat_with_bot(user_query):
+def chat_with_bot(user_query, model_name="google/gemini-2.0-flash-001"):
     """fetches relevant context and generates response"""
     global messages
     global is_first_message
