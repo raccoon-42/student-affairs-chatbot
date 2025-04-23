@@ -8,7 +8,7 @@ import glob
 # Add the project root directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
-from tests.utils.llm_judge import LLMJudge
+from tests.evaluators.llm_judge import LLMJudge
 from app.client.api_client import ChatbotClient
 
 OPENAI_MODEL_TO_TEST = "google/gemini-2.0-flash-001"

@@ -12,10 +12,6 @@ app = FastAPI(
 class ChatResponse(BaseModel):
     query: str
     response: str
-
-class ChatResponseLocal(BaseModel):
-    query: str
-    response: str
     model: str
     
 @app.get("/")
@@ -24,19 +20,20 @@ async def root():
 
 
 @app.get("/chat", response_model=ChatResponse)
-async def chat(query: str):
+async def chat(query: str, model_name: str):
     # Call the actual chatbot implementation
-    response = chat_with_bot(query)
+    response = chat_with_bot(query, model_name)
     return ChatResponse(
         query=query,
-        response=response
+        response=response,
+        model=model_name
     )
 
-@app.get("/chat_local", response_model=ChatResponseLocal)
+@app.get("/chat_local", response_model=ChatResponse)
 async def chat(query: str, model_name: str):
     # Call the actual chatbot implementation
     response = chat_with_bot_local(query, model_name)
-    return ChatResponseLocal(
+    return ChatResponse(
         query=query,
         response=response,
         model=model_name

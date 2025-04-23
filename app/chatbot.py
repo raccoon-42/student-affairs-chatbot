@@ -29,7 +29,11 @@ def load_system_prompt():
 messages = []
 is_first_message = True
 
+<<<<<<< HEAD
 def chat_with_bot(user_query, model_name="google/gemini-2.0-flash-001"):
+=======
+def chat_with_bot(user_query, model_name="gemini-2.0-flash-001"):
+>>>>>>> origin/main
     """fetches relevant context and generates response"""
     global messages
     global is_first_message
@@ -82,7 +86,7 @@ def chat_with_bot(user_query, model_name="google/gemini-2.0-flash-001"):
     # Generate the response
     print("Yanıt oluşturuluyor...")
     completion = client.chat.completions.create(
-        model="google/gemini-2.0-flash-001",
+        model=model_name,
         messages=messages
     )
     

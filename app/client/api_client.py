@@ -7,10 +7,10 @@ class ChatbotClient:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
 
-    def get_response_openai(self, query: str) -> str:
+    def get_response_openai(self, query: str, model_name: str) -> str:
         response = requests.get(
             f"{self.base_url}/chat",
-            params={"query": query}
+            params={"query": query, "model_name": model_name}
         )
         
         if response.status_code == 200:
