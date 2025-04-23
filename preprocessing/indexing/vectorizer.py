@@ -7,15 +7,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-EMBEDDING_MODEL3 = os.getenv("EMBEDDING_MODEL3")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
 QDRANT_URL = os.getenv("QDRANT_URL")
 
 def store_embedding(chunks, collection_name):
     """Encode text chunks into embeddings & store them in Qdrant"""
     
     # Loading embedding model and encoding chunks into multi-dimensional vectors
-    print(f"Loading embedding model {EMBEDDING_MODEL3}...")
-    embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
+    print(f"Loading embedding model {EMBEDDING_MODEL}...")
+    embedding_model = SentenceTransformer(EMBEDDING_MODEL, trust_remote_code=True)
     
     # Extract text and metadata from chunks
     # Add the required instruction prefix for Nomic embeddings
@@ -82,8 +82,8 @@ def store_regulation_embedding(chunks, collection_name):
     """Encode regulation text chunks into embeddings & store them in Qdrant"""
     
     # Loading embedding model and encoding chunks into multi-dimensional vectors
-    print(f"Loading embedding model {EMBEDDING_MODEL3}...")
-    embedding_model = SentenceTransformer(EMBEDDING_MODEL3, trust_remote_code=True)
+    print(f"Loading embedding model {EMBEDDING_MODEL}...")
+    embedding_model = SentenceTransformer(EMBEDDING_MODEL, trust_remote_code=True)
     
     # Extract text and metadata from chunks
     texts = [chunk['text'] for chunk in chunks]

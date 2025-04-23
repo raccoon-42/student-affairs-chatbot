@@ -1,6 +1,8 @@
 import requests
 import json
 
+# Wrapper for Local Ollama Models
+
 class OllamaClient:
     def __init__(self, local_url="http://localhost:11434"):
         self.local_url = local_url

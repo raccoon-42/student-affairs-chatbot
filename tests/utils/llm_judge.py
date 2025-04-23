@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from .ollama_client import OllamaClient
+from app.client.ollama_client import OllamaClient
 import requests
 
 class LLMJudge:

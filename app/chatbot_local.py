@@ -2,13 +2,12 @@ from app.query_handler import query_qdrant_regulations, query_qdrant_academic_ca
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-from app.ollama_client import OllamaClient  
+from app.client.ollama_client import OllamaClient  
 load_dotenv()
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 client = OllamaClient()
-LLM_MODEL = "gemma3:4b"
 
 def load_system_prompt():
     base_dir = os.path.dirname(__file__)  # path to chatbot_local.py
@@ -20,7 +19,7 @@ def load_system_prompt():
 messages = []
 is_first_message = True
 
-def chat_with_bot(user_query):
+def chat_with_bot(user_query, LLM_MODEL="gemma3:4b"):
     """fetches relevant context and generates response"""
     global messages
     global is_first_message

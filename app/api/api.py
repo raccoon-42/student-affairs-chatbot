@@ -13,6 +13,11 @@ class ChatResponse(BaseModel):
     query: str
     response: str
 
+class ChatResponseLocal(BaseModel):
+    query: str
+    response: str
+    model: str
+    
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Academic Calendar Chatbot API"}
@@ -27,11 +32,12 @@ async def chat(query: str):
         response=response
     )
 
-@app.get("/chat_local", response_model=ChatResponse)
-async def chat(query: str):
+@app.get("/chat_local", response_model=ChatResponseLocal)
+async def chat(query: str, model_name: str):
     # Call the actual chatbot implementation
-    response = chat_with_bot_local(query)
-    return ChatResponse(
+    response = chat_with_bot_local(query, model_name)
+    return ChatResponseLocal(
         query=query,
-        response=response
+        response=response,
+        model=model_name
     )
