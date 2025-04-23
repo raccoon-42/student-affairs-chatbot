@@ -1,25 +1,11 @@
 from typing import Dict, Any
 from app.client.ollama_client import OllamaClient
-import requests
 
 class LLMJudge:
     def __init__(self, model_name: str):
         self.__model_name = model_name
         self.ollama_client = OllamaClient()
     
-    def get_response(self, query: str) -> str:
-        url = "http://localhost:8000/chat"
-        response = requests.get(url, 
-                        params = {
-                            "query": query,
-                        }
-                    )
-        
-        if response.status_code == 200:
-            return response.json()["response"]
-        else:
-            raise Exception(f"Error {response.status_code}: {response.text}")
-        
     def evaluate_response(self, query: str, response: str, expected_response: str) -> Dict[str, Any]:
         """
         Evaluate a response against an expected response.

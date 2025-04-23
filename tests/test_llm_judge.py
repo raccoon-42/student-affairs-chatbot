@@ -33,7 +33,7 @@ def test_llm_responses(llm_judge, test_cases):
     for i, (query, expected_response) in enumerate(test_cases.items(), 1):
         # Get response from LLM
         response = client.get_response_openai(query) # openAI
-
+        #response = client.get_response_local(query, "gemma3:4b") # local
         
         # Evaluate the response
         evaluation = llm_judge.evaluate_response(query, response, expected_response)
