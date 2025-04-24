@@ -269,4 +269,4 @@ The project includes an LLM-based evaluation system:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the CC BY-NC 4.0 License. You may use and adapt it for non-commercial purposes only. See the LICENSE file for full terms.
