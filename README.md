@@ -52,8 +52,6 @@ rag-chatbot/
 │   │   ├── __init__.py
 │   │   └── llm_judge.py       # Model response evaluation
 │   ├── test_cases/            # Test case definitions
-│   │   ├── __init__.py
-│   │   └── sample_queries.py  # Sample test queries
 │   └── test_llm_judge.py      # LLM response evaluation tests
 ├── .env                       # Environment variables
 └── requirements.txt           # Dependencies
