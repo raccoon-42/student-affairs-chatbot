@@ -169,7 +169,7 @@ Then access the API at `http://localhost:8000`.
 
 - Regulations:
   ```
-  >> What are the requirements for horizontal transfer?
+  >> What are the requirements for undergraduate transfer?
   >> What are the rules for course retakes?
   >> What are the conditions for course withdrawal?
   ```
