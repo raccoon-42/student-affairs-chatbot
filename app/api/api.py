@@ -4,8 +4,8 @@ from app.chatbot import chat_with_bot
 from app.chatbot_local import chat_with_bot as chat_with_bot_local
 
 app = FastAPI(
-    title="Academic Calendar Chatbot API",
-    description="API for querying academic calendar information",
+    title="Student Affairs Chatbot API",
+    description="API for querying academic calendar and regulations information",
     version="1.0.0"
 )
 
@@ -16,7 +16,7 @@ class ChatResponse(BaseModel):
     
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Academic Calendar Chatbot API"}
+    return {"message": "Welcome to Student Affairs Chatbot API"}
 
 
 @app.get("/chat", response_model=ChatResponse)
