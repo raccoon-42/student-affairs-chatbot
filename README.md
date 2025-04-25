@@ -262,10 +262,10 @@ This project uses a modular structure:
 
 ### Evaluation
 
-The project includes an LLM-based evaluation system:
+The project includes an LLM-as-a-judge evaluation system:
 1. Define expected responses for common queries
 2. Use the `LLMJudge` class to evaluate responses
-3. Run tests with `pytest tests/test_llm_judge.py`
+3. Run tests with `pytest` command
 
 ## License
 
