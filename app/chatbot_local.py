@@ -1,4 +1,4 @@
-from app.query_handler import query_qdrant_regulations, query_qdrant_academic_calendar
+from query_handler import query_qdrant_regulations, query_qdrant_academic_calendar
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
