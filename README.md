@@ -11,7 +11,7 @@ A Retrieval-Augmented Generation (RAG) chatbot that provides information about a
 - Conversation history management
 - Support for Turkish language queries
 - Program-specific information (undergraduate/graduate/preparatory)
-- Two model options (OpenAI API or local Ollama)
+- Two model options (OpenRouter API or local Ollama)
 
 ## Project Structure
 
@@ -26,7 +26,7 @@ rag-chatbot/
 │   │   ├── __init__.py
 │   │   ├── api_client.py      # API client
 │   │   └── ollama_client.py   # Ollama model client
-│   ├── chatbot.py             # Main chatbot logic (OpenAI)
+│   ├── chatbot.py             # Main chatbot logic (OpenRouter)
 │   ├── chatbot_local.py       # Local model integration (Ollama)
 │   └── query_handler.py       # Qdrant query processing
 ├── config/
@@ -61,7 +61,7 @@ rag-chatbot/
 
 - Python 3.8+
 - Qdrant vector database
-- OpenAI API key or Ollama local model
+- OpenRouter API key or Ollama local model
 
 ## Installation
 
@@ -84,7 +84,7 @@ pip install -r requirements.txt
 
 4. Create a `.env` file in the root directory:
 ```
-OPENAI_API_KEY=your-openai-api-key
+OPENROUTER_API_KEY=your-openrouter-api-key
 QDRANT_URL=http://localhost:6333
 EMBEDDING_MODEL=intfloat/multilingual-e5-large-instruct
 ```
@@ -140,7 +140,7 @@ cd ../..
 # Navigate to app directory
 cd app
 
-# With OpenAI API
+# With OpenRouter API
 python chatbot.py
 
 # With local model (Ollama)
@@ -196,9 +196,9 @@ Then access the API at `http://localhost:8000`.
 ## API Endpoints
 
 - `GET /`: Welcome message
-- `GET /chat`: Send a message to the OpenAI API-based chatbot
+- `GET /chat`: Send a message to the OpenRouter API-based chatbot
   - Query parameter: `query` (required) - The text query to process
-  - Query parameter: `model_name` (required) - Specify which OpenAI model to use (e.g., google/gemini-2.0-flash-001)
+  - Query parameter: `model_name` (required) - Specify which OpenRouter model to use (e.g., google/gemini-2.0-flash-001)
 - `GET /chat_local`: Send a message to the local model-based chatbot
   - Query parameter: `query` (required) - The text query to process
   - Query parameter: `model_name` (required) - The specific Ollama model to use (e.g., "gemma3:4b")
@@ -213,8 +213,8 @@ from app.client.api_client import ChatbotClient
 # Initialize the client
 client = ChatbotClient()
 
-# Get a response using OpenAI API
-response = client.get_response_openai("When does the spring semester end?", "google/gemini-2.0-flash-001")
+# Get a response using OpenRouter API
+response = client.get_response_openrouter("When does the spring semester end?", "google/gemini-2.0-flash-001")
 print(response)
 
 # Get a response using local model with specified model name
@@ -227,7 +227,7 @@ print(response)
 ```python
 import requests
 
-# Using OpenAI model
+# Using OpenRouter model
 response = requests.get(
     "http://localhost:8000/chat",
     params={
