@@ -89,7 +89,7 @@ def test_llm_responses(llm_judge, test_cases):
         if use_local_model:
             response = client.get_response_local(query, LOCAL_MODEL_TO_TEST)
         else:
-            response = client.get_response_openai(query, OPENROUTER_MODEL_TO_TEST)
+            response = client.get_response_openrouter(query, OPENROUTER_MODEL_TO_TEST)
         
         # Evaluate the response
         evaluation = llm_judge.evaluate_response(query, response, expected_response)
