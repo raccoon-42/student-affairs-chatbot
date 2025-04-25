@@ -11,11 +11,13 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 from tests.evaluators.llm_judge import LLMJudge
 from app.client.api_client import ChatbotClient
 
-OPENAI_MODEL_TO_TEST = "google/gemini-2.0-flash-001"
+OPENROUTER_MODEL_TO_TEST = "google/gemini-2.0-flash-001"
 LOCAL_MODEL_TO_TEST = "llama3.1:latest"
 
+JUDGE_MODEL_NAME = "gemma3:4b"
+
 @pytest.fixture
-def llm_judge(model_name="gemma3:4b"):
+def llm_judge(model_name=JUDGE_MODEL_NAME):
     # Initialize a new instance of the LLM Judge for each test
     return LLMJudge(model_name=model_name)
 
@@ -87,7 +89,7 @@ def test_llm_responses(llm_judge, test_cases):
         if use_local_model:
             response = client.get_response_local(query, LOCAL_MODEL_TO_TEST)
         else:
-            response = client.get_response_openai(query, OPENAI_MODEL_TO_TEST)
+            response = client.get_response_openai(query, OPENROUTER_MODEL_TO_TEST)
         
         # Evaluate the response
         evaluation = llm_judge.evaluate_response(query, response, expected_response)
@@ -116,7 +118,7 @@ def test_llm_responses(llm_judge, test_cases):
     
     # This will be displayed only if all tests pass
     print("\n===== LLM EVALUATION RESULTS =====")
-    model_info = f"LOCAL: {LOCAL_MODEL_TO_TEST}" if use_local_model else f"OPENAI: {OPENAI_MODEL_TO_TEST}"
+    model_info = f"Local: {LOCAL_MODEL_TO_TEST}" if use_local_model else f"OpenRouter: {OPENROUTER_MODEL_TO_TEST}"
     print(f"Model tested: {model_info}")
     print(f"Total test cases: {len(results)}")
     print(f"Passed: {len(results) - len(failures)}")
@@ -128,3 +130,6 @@ def test_llm_responses(llm_judge, test_cases):
     for category, stats in categories.items():
         success_rate = (stats["passed"] / stats["total"]) * 100 if stats["total"] > 0 else 0
         print(f"{category.capitalize()}: {stats['passed']}/{stats['total']} passed ({success_rate:.1f}%)")
+        
+    print(f"\nLocally evaluated by: {JUDGE_MODEL_NAME}")
+    
