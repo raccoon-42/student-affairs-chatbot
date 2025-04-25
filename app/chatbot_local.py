@@ -9,10 +9,10 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 client = OllamaClient()
 
+SYSTEM_PROMPT_PATH = os.path.join(os.path.dirname(__file__), "../config/prompts/system_prompt.txt")
+
 def load_system_prompt():
-    base_dir = os.path.dirname(__file__)  # path to chatbot_local.py
-    prompt_path = os.path.join(base_dir, "../config/prompts/system_prompt.txt")
-    with open(os.path.abspath(prompt_path), "r", encoding="utf-8") as f:
+    with open(os.path.abspath(SYSTEM_PROMPT_PATH), "r", encoding="utf-8") as f:
         return f.read()
 
 # Keep track of conversation to maintain context

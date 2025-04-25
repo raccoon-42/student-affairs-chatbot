@@ -10,19 +10,19 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=OPENAI_API_KEY
+    api_key=OPENROUTER_API_KEY
 )
 
+SYSTEM_PROMPT_PATH = os.path.join(os.path.dirname(__file__), "../config/prompts/system_prompt.txt")
+
 def load_system_prompt():
-    base_dir = os.path.dirname(__file__)  # path to chatbot_local.py
-    prompt_path = os.path.join(base_dir, "../config/prompts/system_prompt.txt")
-    with open(os.path.abspath(prompt_path), "r", encoding="utf-8") as f:
+    with open(os.path.abspath(SYSTEM_PROMPT_PATH), "r", encoding="utf-8") as f:
         return f.read()
 
 # Keep track of conversation to maintain context
