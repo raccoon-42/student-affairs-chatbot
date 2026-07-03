@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 CALENDAR_COLLECTION = os.getenv("CALENDAR_COLLECTION", "academic_calendar_2025")
 REGULATIONS_COLLECTION = os.getenv("REGULATIONS_COLLECTION", "regulations")
+FAQ_COLLECTION = os.getenv("FAQ_COLLECTION", "faq")
 
 # Embeddings (used by BOTH indexing and querying)
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-large-instruct")

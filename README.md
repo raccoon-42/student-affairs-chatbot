@@ -19,7 +19,8 @@ config/
 preprocessing/
 ├── extraction.py     # date/event extraction (shared by indexing + retrieval)
 ├── indexing/         # text_splitter, vectorizer, bm25
-└── parsers/          # PDF -> text
+├── parsers/          # PDF -> text
+└── scrapers/         # university FAQ sources -> faq.json
 tests/                # offline unit tests + one `integration`-marked E2E eval
 scripts/              # experiments (embedding model comparison)
 ```
@@ -36,8 +37,12 @@ This starts the API (`:8000`), Qdrant (`:6333`), and Ollama (`:11434`).
 Index your documents (once Qdrant is up):
 
 ```bash
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/regulations.txt --type regulations
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/calendar.txt --type calendar
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/yonerge.txt --type regulations
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/new-schedule.txt --type calendar
+
+# FAQ: scrape the university FAQ pages, then index
+uv run python -m preprocessing.scrapers.faq_scraper
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/faq.json --type faq
 ```
 
 To use a local model, pull one into the Ollama container:

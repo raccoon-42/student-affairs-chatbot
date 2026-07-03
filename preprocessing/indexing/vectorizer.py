@@ -1,4 +1,5 @@
 import argparse
+import json
 
 from config import settings
 
@@ -29,6 +30,15 @@ def _regulation_payload(text, metadata):
         "article": metadata.get("article", ""),
         "rule_type": metadata.get("rule_type", ""),
         "category": metadata.get("category", ""),
+    }
+
+
+def _faq_payload(text, metadata):
+    return {
+        "text": text,  # the question — that's what gets embedded and matched
+        "metadata": metadata,  # carries the answer, audience, category, source_url
+        "audience": metadata.get("audience"),
+        "category": metadata.get("category"),
     }
 
 
@@ -80,8 +90,8 @@ def main():
     parser.add_argument('input_file', help='Input text file to process')
     parser.add_argument('--collection', default=None,
                       help='Qdrant collection name (defaults to the configured one for the type)')
-    parser.add_argument('--type', choices=['calendar', 'regulations'], required=True,
-                      help='Type of content being processed (calendar or regulations)')
+    parser.add_argument('--type', choices=['calendar', 'regulations', 'faq'], required=True,
+                      help='Type of content being processed')
 
     args = parser.parse_args()
 
@@ -93,6 +103,13 @@ def main():
         chunks = split_text(args.input_file)
         collection = args.collection or settings.CALENDAR_COLLECTION
         payload = _calendar_payload
+    elif args.type == 'faq':
+        # faq.json from the scraper is already one Q&A per entry; embed the question
+        with open(args.input_file, encoding='utf-8') as f:
+            faqs = json.load(f)
+        chunks = [{"text": faq["question"], "metadata": faq} for faq in faqs]
+        collection = args.collection or settings.FAQ_COLLECTION
+        payload = _faq_payload
     else:
         chunks = split_regulation(args.input_file)
         collection = args.collection or settings.REGULATIONS_COLLECTION

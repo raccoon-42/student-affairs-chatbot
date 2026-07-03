@@ -23,6 +23,9 @@ class FakeRetriever:
     def retrieve_regulations(self, query, top_k=3):
         return [{"text": "📖 Madde 12: sınav tekrarı", "score": 1.0, "metadata": {}}]
 
+    def retrieve_faq(self, query, top_k=3):
+        return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçe verin.", "score": 1.0, "metadata": {}}]
+
 
 def make_conversation(llm=None):
     return Conversation(llm or FakeLLM(), FakeRetriever(), model="test-model")
@@ -37,6 +40,7 @@ def test_context_contains_query_and_retrieved_chunks():
     assert "sınavlar ne zaman" in user_message
     assert "Final sınavları 5 Ocak'ta" in user_message
     assert "Madde 12" in user_message
+    assert "Kimlik kartım kayboldu" in user_message
 
 
 def test_system_prompt_is_first_message_once():

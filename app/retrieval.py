@@ -44,6 +44,12 @@ class QdrantVectorStore:
                 for key, value in filters.items()
             ])
 
+        if not self._client.collection_exists(collection):
+            # a source that hasn't been indexed yet contributes nothing
+            # instead of taking the whole conversation down
+            print(f"Warning: collection '{collection}' does not exist in Qdrant — skipping")
+            return []
+
         results = self._client.query_points(
             collection_name=collection,
             query=vector,
@@ -121,6 +127,14 @@ class Retriever:
             for hit, score in hits
         ]
 
+    def retrieve_faq(self, query: str, top_k: int = 3) -> List[Dict]:
+        # FAQ chunks embed only the question; the answer travels in metadata
+        hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k)
+        return [
+            {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
     def _hybrid_search(self, query, collection, top_k, filters=None):
         """Vector search for candidates, then re-rank with a blend of
         cosine similarity and BM25 over the candidate texts."""
@@ -151,6 +165,13 @@ class Retriever:
         date_range = format_date_range(metadata.get("date1"), metadata.get("date2"))
         if date_range:
             return f"{date_range}: {metadata.get('event', hit.text)}"
+        return hit.text
+
+    @staticmethod
+    def _format_faq(hit: Hit) -> str:
+        answer = hit.metadata.get("answer", "")
+        if answer:
+            return f"Soru: {hit.text}\nCevap: {answer}"
         return hit.text
 
     @staticmethod

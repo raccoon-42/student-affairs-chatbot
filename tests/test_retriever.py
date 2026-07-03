@@ -85,6 +85,20 @@ def test_empty_collection_returns_empty_list():
     assert retriever.retrieve_calendar("sınav") == []
 
 
+def test_faq_returns_question_and_answer():
+    store = InMemoryVectorStore()
+    store.add(settings.FAQ_COLLECTION, "Kimlik kartım kaybolursa ne yapmalıyım?",
+              {"question": "Kimlik kartım kaybolursa ne yapmalıyım?", "answer": "Zayi dilekçesi verin.",
+               "audience": "lisans", "category": "ÖĞRENCİ KİMLİK KARTI"},
+              [0.0, 1.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+
+    results = retriever.retrieve_faq("kayıt kartı")
+
+    assert results[0]["text"] == "Soru: Kimlik kartım kaybolursa ne yapmalıyım?\nCevap: Zayi dilekçesi verin."
+    assert results[0]["metadata"]["audience"] == "lisans"
+
+
 def test_hybrid_score_blends_semantic_and_bm25():
     store = InMemoryVectorStore()
     # Same vector: semantic scores tie, so BM25 on the text must break the tie

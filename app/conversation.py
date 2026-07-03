@@ -19,6 +19,9 @@ CONTEXT_TEMPLATE = """
 
     # YÖNETMELİK BİLGİLERİ:
     {regulations_context}
+
+    # SIKÇA SORULAN SORULAR:
+    {faq_context}
     </available_reference_data>
 </conversation>
 
@@ -64,11 +67,13 @@ class Conversation:
     def _add_user_message(self, query):
         calendar_results = self._retriever.retrieve_calendar(query)
         regulations_results = self._retriever.retrieve_regulations(query)
+        faq_results = self._retriever.retrieve_faq(query)
 
         context = CONTEXT_TEMPLATE.format(
             query=query,
             calendar_context="\n".join(r["text"] for r in calendar_results),
             regulations_context="\n".join(r["text"] for r in regulations_results),
+            faq_context="\n\n".join(r["text"] for r in faq_results),
         )
 
         if not self._messages:

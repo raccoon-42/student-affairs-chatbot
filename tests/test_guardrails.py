@@ -22,6 +22,9 @@ class ExplodingRetriever:
     def retrieve_regulations(self, query, top_k=3):
         raise AssertionError("retrieval must not run for blocked queries")
 
+    def retrieve_faq(self, query, top_k=3):
+        raise AssertionError("retrieval must not run for blocked queries")
+
 
 def test_evet_allows():
     assert ScopeGate(FakeLLM("evet"), "m").allows("sınavlar ne zaman") is True
@@ -71,6 +74,9 @@ def test_allowed_query_flows_through():
             return []
 
         def retrieve_regulations(self, query, top_k=3):
+            return []
+
+        def retrieve_faq(self, query, top_k=3):
             return []
 
     gate = ScopeGate(FakeLLM("evet"), "gate-model")
