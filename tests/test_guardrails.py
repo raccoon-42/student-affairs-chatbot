@@ -14,16 +14,12 @@ class FakeLLM:
 
 
 class ExplodingRetriever:
-    """Fails the test if retrieval is reached at all."""
+    """Retrieval runs speculatively in parallel with the gate, so it MAY
+    be called for a blocked query — but its result (even an exception)
+    must never leak into a refused response."""
 
-    def retrieve_calendar(self, query, top_k=10):
-        raise AssertionError("retrieval must not run for blocked queries")
-
-    def retrieve_regulations(self, query, top_k=3):
-        raise AssertionError("retrieval must not run for blocked queries")
-
-    def retrieve_faq(self, query, top_k=3):
-        raise AssertionError("retrieval must not run for blocked queries")
+    def retrieve_all(self, query):
+        raise RuntimeError("speculative retrieval failed")
 
 
 def test_evet_allows():
@@ -59,6 +55,7 @@ def test_blocked_query_returns_refusal_and_touches_nothing():
     assert answer == REFUSAL_MESSAGE
     assert main_llm.calls == []  # main model never called
     assert conversation._messages == []  # nothing enters history
+    # and the speculative retrieval failure above was discarded silently
 
 
 def test_blocked_query_streams_only_the_refusal():
@@ -70,14 +67,8 @@ def test_blocked_query_streams_only_the_refusal():
 
 def test_allowed_query_flows_through():
     class FakeRetriever:
-        def retrieve_calendar(self, query, top_k=10):
-            return []
-
-        def retrieve_regulations(self, query, top_k=3):
-            return []
-
-        def retrieve_faq(self, query, top_k=3):
-            return []
+        def retrieve_all(self, query):
+            return {"calendar": [], "regulations": [], "faq": []}
 
     gate = ScopeGate(FakeLLM("evet"), "gate-model")
     main_llm = FakeLLM("asıl cevap")

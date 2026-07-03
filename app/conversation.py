@@ -4,6 +4,10 @@ Prompt assembly, retrieval context, and history trimming live here once.
 Which LLM answers is decided by the adapter passed in (OpenRouter, Ollama,
 or a fake in tests) — history is owned by the instance, not the module.
 """
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+
 from app.guardrails import REFUSAL_MESSAGE
 from config import settings
 
@@ -43,42 +47,60 @@ class Conversation:
         self._messages = []
 
     def respond(self, query: str, model: str = None) -> str:
-        if self._gate and not self._gate.allows(query):
+        if not self._prepare(query):
             return REFUSAL_MESSAGE
 
-        self._add_user_message(query)
+        start = time.perf_counter()
         answer = self._llm.chat(model or self._model, self._messages)
+        print(f"[timing] llm {time.perf_counter() - start:.2f}s", file=sys.stderr)
         self._add_assistant_message(answer)
         return answer
 
     def respond_stream(self, query: str, model: str = None):
         """Same as respond(), but yields the answer token by token."""
-        if self._gate and not self._gate.allows(query):
+        if not self._prepare(query):
             yield REFUSAL_MESSAGE
             return
 
-        self._add_user_message(query)
+        start = time.perf_counter()
+        first_token_at = None
         tokens = []
         for token in self._llm.chat_stream(model or self._model, self._messages):
+            if first_token_at is None:
+                first_token_at = time.perf_counter() - start
             tokens.append(token)
             yield token
+        print(f"[timing] llm first token {first_token_at:.2f}s, "
+              f"total {time.perf_counter() - start:.2f}s", file=sys.stderr)
         self._add_assistant_message("".join(tokens))
 
-    def _add_user_message(self, query):
-        calendar_results = self._retriever.retrieve_calendar(query)
-        regulations_results = self._retriever.retrieve_regulations(query)
-        faq_results = self._retriever.retrieve_faq(query)
+    def _prepare(self, query) -> bool:
+        """Gate and retrieval run concurrently: retrieval is speculative,
+        its result is discarded if the gate blocks. Returns False when
+        the query is refused."""
+        start = time.perf_counter()
+        if self._gate is None:
+            results = self._retriever.retrieve_all(query)
+        else:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                allowed = pool.submit(self._gate.allows, query)
+                speculative = pool.submit(self._retriever.retrieve_all, query)
+                if not allowed.result():
+                    return False
+                results = speculative.result()
+        print(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s", file=sys.stderr)
 
         context = CONTEXT_TEMPLATE.format(
             query=query,
-            calendar_context="\n".join(r["text"] for r in calendar_results),
-            regulations_context="\n".join(r["text"] for r in regulations_results),
-            faq_context="\n\n".join(r["text"] for r in faq_results),
+            calendar_context="\n".join(r["text"] for r in results["calendar"]),
+            regulations_context="\n".join(r["text"] for r in results["regulations"]),
+            faq_context="\n\n".join(r["text"] for r in results["faq"]),
         )
 
         if not self._messages:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
         self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
+        return True
 
     def _add_assistant_message(self, answer):
         self._messages.append({"role": "assistant", "content": answer})

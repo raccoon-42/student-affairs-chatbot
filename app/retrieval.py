@@ -8,7 +8,10 @@ The vector store sits behind a seam with two adapters: QdrantVectorStore
 (production) and InMemoryVectorStore (tests). Both answer
 search(collection, vector, limit, filters) -> [Hit].
 """
-from dataclasses import dataclass, field
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -105,7 +108,29 @@ class Retriever:
         self._semantic_weight = semantic_weight
         self._bm25_weight = bm25_weight
 
-    def retrieve_calendar(self, query: str, top_k: int = 10) -> List[Dict]:
+    def retrieve_all(self, query: str) -> Dict[str, List[Dict]]:
+        """Everything the conversation needs, in one call:
+        the query is embedded once, the three collections are searched
+        in parallel."""
+        start = time.perf_counter()
+        vector = self._embed_query(query)
+        embed_seconds = time.perf_counter() - start
+
+        start = time.perf_counter()
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
+            regulations = pool.submit(self.retrieve_regulations, query, 3, vector)
+            faq = pool.submit(self.retrieve_faq, query, 3, vector)
+            results = {
+                "calendar": calendar.result(),
+                "regulations": regulations.result(),
+                "faq": faq.result(),
+            }
+        print(f"[timing] embed {embed_seconds:.2f}s | search {time.perf_counter() - start:.2f}s",
+              file=sys.stderr)
+        return results
+
+    def retrieve_calendar(self, query: str, top_k: int = 10, vector=None) -> List[Dict]:
         filters = {}
         event_type = extract_event_type(query)
         if event_type:
@@ -114,31 +139,35 @@ class Retriever:
         if academic_period:
             filters["academic_period"] = academic_period
 
-        hits = self._hybrid_search(query, settings.CALENDAR_COLLECTION, top_k, filters or None)
+        hits = self._hybrid_search(query, settings.CALENDAR_COLLECTION, top_k, filters or None, vector)
         return [
             {"text": self._format_calendar(hit), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_regulations(self, query: str, top_k: int = 3) -> List[Dict]:
-        hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k)
+    def retrieve_regulations(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+        hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k, vector=vector)
         return [
             {"text": self._format_regulation(hit), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_faq(self, query: str, top_k: int = 3) -> List[Dict]:
+    def retrieve_faq(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
         # FAQ chunks embed only the question; the answer travels in metadata
-        hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k)
+        hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k, vector=vector)
         return [
             {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def _hybrid_search(self, query, collection, top_k, filters=None):
+    def _embed_query(self, query):
+        return self._embedder.embed(f"Instruct: {settings.EMBED_INSTRUCTION}\nQuery: {query}")
+
+    def _hybrid_search(self, query, collection, top_k, filters=None, vector=None):
         """Vector search for candidates, then re-rank with a blend of
         cosine similarity and BM25 over the candidate texts."""
-        vector = self._embedder.embed(f"Instruct: {settings.EMBED_INSTRUCTION}\nQuery: {query}")
+        if vector is None:
+            vector = self._embed_query(query)
         candidates = self._store.search(collection, vector, limit=top_k * 2, filters=filters)
         if not candidates:
             return []

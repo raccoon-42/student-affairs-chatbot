@@ -26,6 +26,13 @@ class FakeRetriever:
     def retrieve_faq(self, query, top_k=3):
         return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçe verin.", "score": 1.0, "metadata": {}}]
 
+    def retrieve_all(self, query):
+        return {
+            "calendar": self.retrieve_calendar(query),
+            "regulations": self.retrieve_regulations(query),
+            "faq": self.retrieve_faq(query),
+        }
+
 
 def make_conversation(llm=None):
     return Conversation(llm or FakeLLM(), FakeRetriever(), model="test-model")

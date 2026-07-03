@@ -85,6 +85,24 @@ def test_empty_collection_returns_empty_list():
     assert retriever.retrieve_calendar("sınav") == []
 
 
+def test_retrieve_all_embeds_the_query_exactly_once():
+    class CountingEmbedder(FakeEmbedder):
+        def __init__(self):
+            self.calls = 0
+
+        def embed(self, text):
+            self.calls += 1
+            return super().embed(text)
+
+    embedder = CountingEmbedder()
+    retriever = Retriever(InMemoryVectorStore(), embedder)
+
+    results = retriever.retrieve_all("sınav ne zaman")
+
+    assert embedder.calls == 1  # one embed shared by all three searches
+    assert set(results) == {"calendar", "regulations", "faq"}
+
+
 def test_faq_returns_question_and_answer():
     store = InMemoryVectorStore()
     store.add(settings.FAQ_COLLECTION, "Kimlik kartım kaybolursa ne yapmalıyım?",
