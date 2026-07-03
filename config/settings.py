@@ -32,15 +32,15 @@ BM25_WEIGHT = 0.3
 # LLM backends
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.0-flash-001")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-sonnet-5")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
 # LLM-as-judge (evaluation) — OpenRouter by default
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "google/gemini-2.0-flash-001")
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5")
 
 # Scope gate: cheap model that decides if a question is university-related
-GUARD_MODEL = os.getenv("GUARD_MODEL", "google/gemini-2.0-flash-001")
+GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-4.5")
 
 # API (used by integration tests)
 API_URL = os.getenv("API_URL", "http://localhost:8000")
