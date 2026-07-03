@@ -47,6 +47,7 @@ def extract_schedule_table(pdf_path, output_file):
                         else:
                             print(f"Tarihsiz Satır veya Genel Başlık: {row}")
 
-pdf_path = "../data/raw/schedule.pdf"
-output_file = "../data/processed/new-schedule.txt"
-extract_schedule_table(pdf_path, output_file)
+if __name__ == "__main__":
+    pdf_path = "../data/raw/schedule.pdf"
+    output_file = "../data/processed/new-schedule.txt"
+    extract_schedule_table(pdf_path, output_file)

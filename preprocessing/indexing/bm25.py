@@ -21,8 +21,12 @@ class BM25:
         
     def fit(self, documents: List[str]):
         """
-        Fit BM25 by computing document frequencies and other statistics
+        Fit BM25 by computing document frequencies and other statistics.
+        Refitting replaces all statistics — nothing carries over from a
+        previous fit.
         """
+        self.doc_freqs = {}
+        self.idf = {}
         self.doc_count = len(documents)
         self.doc_len = [len(doc.split()) for doc in documents]
         if self.doc_count == 0:

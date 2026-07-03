@@ -1,40 +1,50 @@
+from functools import lru_cache
+
 from fastapi import FastAPI
 from pydantic import BaseModel
-from app.chatbot import chat_with_bot
-from app.chatbot_local import chat_with_bot as chat_with_bot_local
+
+from app.conversation import Conversation
+from app.llm import OpenRouterLLM, OllamaLLM
+from app.retrieval import default_retriever
+from config import settings
 
 app = FastAPI(
     title="Student Affairs Chatbot API",
     description="API for querying academic calendar and regulations information",
-    version="1.0.0"
+    version="1.0.0",
 )
+
 
 class ChatResponse(BaseModel):
     query: str
     response: str
     model: str
-    
+
+
+@lru_cache
+def get_conversation(backend: str) -> Conversation:
+    # One shared conversation per backend per process (same behavior as
+    # before, now explicit). Per-user sessions are a TODO.
+    retriever = default_retriever()
+    if backend == "ollama":
+        return Conversation(OllamaLLM(), retriever, settings.OLLAMA_MODEL)
+    return Conversation(OpenRouterLLM(), retriever, settings.OPENROUTER_MODEL)
+
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to Student Affairs Chatbot API"}
 
 
 @app.get("/chat", response_model=ChatResponse)
-async def chat(query: str, model_name: str):
-    # Call the actual chatbot implementation
-    response = chat_with_bot(query, model_name)
-    return ChatResponse(
-        query=query,
-        response=response,
-        model=model_name
-    )
+async def chat(query: str, model_name: str = None):
+    model = model_name or settings.OPENROUTER_MODEL
+    response = get_conversation("openrouter").respond(query, model)
+    return ChatResponse(query=query, response=response, model=model)
+
 
 @app.get("/chat_local", response_model=ChatResponse)
-async def chat(query: str, model_name: str):
-    # Call the actual chatbot implementation
-    response = chat_with_bot_local(query, model_name)
-    return ChatResponse(
-        query=query,
-        response=response,
-        model=model_name
-    )
+async def chat_local(query: str, model_name: str = None):
+    model = model_name or settings.OLLAMA_MODEL
+    response = get_conversation("ollama").respond(query, model)
+    return ChatResponse(query=query, response=response, model=model)

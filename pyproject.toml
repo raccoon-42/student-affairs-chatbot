@@ -1,0 +1,25 @@
+[project]
+name = "rag-chatbot"
+version = "1.0.0"
+description = "Student affairs RAG chatbot (academic calendar + regulations)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.34",
+    "qdrant-client>=1.13",
+    "sentence-transformers>=4.0",
+    "openai>=1.69",
+    "python-dotenv>=1.1",
+    "numpy>=2.2",
+    "requests>=2.32",
+    "pdfplumber>=0.11",
+    "pydantic>=2.11",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+]
+
+[tool.uv]
+package = false

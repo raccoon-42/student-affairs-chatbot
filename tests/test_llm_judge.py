@@ -1,135 +1,94 @@
-import pytest
-import sys
-import os
-import argparse
-import json
+"""End-to-end evaluation: real API server -> real retrieval -> real LLM,
+judged by an LLM. Needs the whole stack running, so it's marked
+`integration` and excluded from a plain `pytest` run.
+
+Run with: pytest -m integration tests/test_llm_judge.py
+"""
 import glob
+import json
+import os
 
-# Add the project root directory to the Python path
-sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
+import pytest
+import requests
 
+from config import settings
+from app.llm import OpenRouterLLM, OllamaLLM
 from tests.evaluators.llm_judge import LLMJudge
-from app.client.api_client import ChatbotClient
 
-OPENROUTER_MODEL_TO_TEST = "google/gemini-2.0-flash-001"
-LOCAL_MODEL_TO_TEST = "llama3.1:latest"
+OPENROUTER_MODEL_TO_TEST = settings.OPENROUTER_MODEL
+LOCAL_MODEL_TO_TEST = settings.OLLAMA_MODEL
 
-JUDGE_MODEL_NAME = "gemma3:4b"
+USE_LOCAL_MODEL = False  # True: chat via Ollama endpoint instead of OpenRouter
+USE_LOCAL_JUDGE = False  # True: judge with Ollama instead of OpenRouter
+
+pytestmark = pytest.mark.integration
+
+
+def ask_chatbot(query: str, model_name: str, local: bool) -> str:
+    endpoint = "/chat_local" if local else "/chat"
+    response = requests.get(
+        f"{settings.API_URL}{endpoint}",
+        params={"query": query, "model_name": model_name},
+    )
+    response.raise_for_status()
+    return response.json()["response"]
+
 
 @pytest.fixture
-def llm_judge(model_name=JUDGE_MODEL_NAME):
-    # Initialize a new instance of the LLM Judge for each test
-    return LLMJudge(model_name=model_name)
+def llm_judge():
+    if USE_LOCAL_JUDGE:
+        return LLMJudge(OllamaLLM(), settings.OLLAMA_MODEL)
+    return LLMJudge(OpenRouterLLM(), settings.JUDGE_MODEL)
+
 
 @pytest.fixture
 def test_cases():
-    """
-    Load test cases from JSON files in the test_cases directory.
-    Each JSON file contains a list of test cases in the format:
-    [
-        {
-            "query": "Question to ask",
-            "expected": "Expected response",
-            "description": "Description of the test"
-        }
-    ]
-    """
+    """Load test cases from JSON files in the test_cases directory."""
     test_cases_dir = os.path.join(os.path.dirname(__file__), 'test_cases')
-    json_files = glob.glob(os.path.join(test_cases_dir, '*.json'))
-    
     all_test_cases = []
-    
-    for json_file in json_files:
-        try:
-            with open(json_file, 'r', encoding='utf-8') as f:
-                file_test_cases = json.load(f)
-                # Add the category based on the filename
-                category = os.path.splitext(os.path.basename(json_file))[0]
-                for test_case in file_test_cases:
-                    test_case["category"] = category
-                all_test_cases.extend(file_test_cases)
-        except Exception as e:
-            print(f"Error loading test cases from {json_file}: {e}")
-    
-    if not all_test_cases:
-        print("Warning: No test cases found. Using fallback test cases.")
-        # Fallback to hardcoded test cases if no files are found or loaded
-        all_test_cases = [
-            {
-                "query": "yaz okulu kayıtları ne zaman",
-                "expected": "8-9 temmuz 2025'de başlar",
-                "description": "Yaz okulu kayıt tarihleri",
-                "category": "fallback"
-            }
-        ]
-    
+
+    for json_file in glob.glob(os.path.join(test_cases_dir, '*.json')):
+        with open(json_file, 'r', encoding='utf-8') as f:
+            file_test_cases = json.load(f)
+        category = os.path.splitext(os.path.basename(json_file))[0]
+        for test_case in file_test_cases:
+            test_case["category"] = category
+        all_test_cases.extend(file_test_cases)
+
+    assert all_test_cases, "No test cases found in tests/test_cases/"
     return all_test_cases
 
-def test_llm_responses(llm_judge, test_cases):
-    client = ChatbotClient()
 
+def test_llm_responses(llm_judge, test_cases):
     results = []
     failures = []
-    categories = {}
-    
-    use_local_model = False  # Set to False to test with OpenAI API instead
-    
+
+    model_name = LOCAL_MODEL_TO_TEST if USE_LOCAL_MODEL else OPENROUTER_MODEL_TO_TEST
+
     for i, test_case in enumerate(test_cases, 1):
         query = test_case["query"]
         expected_response = test_case["expected"]
-        description = test_case["description"]
-        category = test_case.get("category", "uncategorized")
-        
-        # Track results by category
-        if category not in categories:
-            categories[category] = {"total": 0, "passed": 0}
-        categories[category]["total"] += 1
-        
-        # Get response from LLM based on selected model
-        if use_local_model:
-            response = client.get_response_local(query, LOCAL_MODEL_TO_TEST)
-        else:
-            response = client.get_response_openrouter(query, OPENROUTER_MODEL_TO_TEST)
-        
-        # Evaluate the response
+
+        response = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
         evaluation = llm_judge.evaluate_response(query, response, expected_response)
-        evaluation["category"] = category
+        evaluation["category"] = test_case["category"]
         results.append(evaluation)
-        
-        # Always print the evaluation details
-        print(f"\n----- Test Case {i}: {description} [{category}] -----")
+
+        print(f"\n----- Test Case {i}: {test_case['description']} [{test_case['category']}] -----")
         print(f"Sorulan soru: {query}")
         print(f"Beklenen cevap: {expected_response}")
         print(f"Verilen cevap: {response}")
         print(f"Puan: {evaluation['score']}")
         print(f"Mantık yürütme: {evaluation['reasoning']}")
-        print("-" * 50)
-        
-        # Check if it passes the threshold
-        if evaluation["score"] == 0:
+
+        if evaluation["score"] != 1:
             failures.append(evaluation)
-            print(f"❌ FAILED")
-        else:
-            categories[category]["passed"] += 1
-            print(f"✅ PASSED")
-            
-        #assert evaluation["score"] == 1, \
-        #        f"Query: {query}\nExpected: {expected_response}\nGot: {response}\nScore: {evaluation['score']}\nReasoning: {evaluation['reasoning']}"
-    
-    # This will be displayed only if all tests pass
+
     print("\n===== LLM EVALUATION RESULTS =====")
-    model_info = f"Local: {LOCAL_MODEL_TO_TEST}" if use_local_model else f"OpenRouter: {OPENROUTER_MODEL_TO_TEST}"
-    print(f"Model tested: {model_info}")
-    print(f"Total test cases: {len(results)}")
-    print(f"Passed: {len(results) - len(failures)}")
-    print(f"Failed: {len(failures)}")
-    print(f"Average score: {sum(r['score'] for r in results) / len(results):.2f}")
-    
-    # Print category-specific results
-    print("\n----- Results by Category -----")
-    for category, stats in categories.items():
-        success_rate = (stats["passed"] / stats["total"]) * 100 if stats["total"] > 0 else 0
-        print(f"{category.capitalize()}: {stats['passed']}/{stats['total']} passed ({success_rate:.1f}%)")
-        
-    print(f"\nLocally evaluated by: {JUDGE_MODEL_NAME}")
-    
+    print(f"Model tested: {model_name}")
+    print(f"Passed: {len(results) - len(failures)}/{len(results)}")
+
+    assert not failures, (
+        f"{len(failures)}/{len(results)} cases failed: "
+        + "; ".join(f"{f['query']} (score={f['score']})" for f in failures)
+    )
