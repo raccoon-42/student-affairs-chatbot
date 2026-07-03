@@ -43,6 +43,25 @@ class Conversation:
         if self._gate and not self._gate.allows(query):
             return REFUSAL_MESSAGE
 
+        self._add_user_message(query)
+        answer = self._llm.chat(model or self._model, self._messages)
+        self._add_assistant_message(answer)
+        return answer
+
+    def respond_stream(self, query: str, model: str = None):
+        """Same as respond(), but yields the answer token by token."""
+        if self._gate and not self._gate.allows(query):
+            yield REFUSAL_MESSAGE
+            return
+
+        self._add_user_message(query)
+        tokens = []
+        for token in self._llm.chat_stream(model or self._model, self._messages):
+            tokens.append(token)
+            yield token
+        self._add_assistant_message("".join(tokens))
+
+    def _add_user_message(self, query):
         calendar_results = self._retriever.retrieve_calendar(query)
         regulations_results = self._retriever.retrieve_regulations(query)
 
@@ -56,15 +75,13 @@ class Conversation:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
         self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
 
-        answer = self._llm.chat(model or self._model, self._messages)
+    def _add_assistant_message(self, answer):
         self._messages.append({"role": "assistant", "content": answer})
 
         # system prompt + last N user/assistant pairs
         limit = 1 + 2 * self._max_exchanges
         if len(self._messages) > limit:
             self._messages = [self._messages[0]] + self._messages[-(limit - 1):]
-
-        return answer
 
     def reset(self):
         self._messages = []
@@ -97,4 +114,7 @@ if __name__ == "__main__":
         if user_input.lower() in ["sıfırla", "reset"]:
             print(conversation.reset())
             continue
-        print(f"\n{conversation.respond(user_input)}")
+        print()
+        for token in conversation.respond_stream(user_input):
+            print(token, end="", flush=True)
+        print()

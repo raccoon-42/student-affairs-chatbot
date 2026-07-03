@@ -11,6 +11,10 @@ class FakeLLM:
         self.calls.append((model, [dict(m) for m in messages]))
         return self.reply
 
+    def chat_stream(self, model, messages):
+        self.calls.append((model, [dict(m) for m in messages]))
+        yield from self.reply.split(" ")
+
 
 class FakeRetriever:
     def retrieve_calendar(self, query, top_k=10):
@@ -72,6 +76,27 @@ def test_reset_clears_history():
     conversation.respond("soru")
     conversation.reset()
     assert conversation._messages == []
+
+
+def test_stream_yields_tokens_and_stores_full_answer():
+    llm = FakeLLM(reply="parça parça cevap")
+    conversation = make_conversation(llm)
+
+    tokens = list(conversation.respond_stream("soru"))
+
+    assert tokens == ["parça", "parça", "cevap"]
+    # history holds the joined answer, not the pieces
+    assert conversation._messages[-1] == {"role": "assistant", "content": "parçaparçacevap"}
+
+
+def test_stream_history_matches_respond_history():
+    streamed = make_conversation(FakeLLM(reply="cevap"))
+    list(streamed.respond_stream("soru"))
+
+    plain = make_conversation(FakeLLM(reply="cevap"))
+    plain.respond("soru")
+
+    assert streamed._messages == plain._messages
 
 
 def test_per_call_model_override():

@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from app.conversation import Conversation
@@ -47,6 +48,15 @@ async def chat(query: str, model_name: str = None):
     model = model_name or settings.OPENROUTER_MODEL
     response = get_conversation("openrouter").respond(query, model)
     return ChatResponse(query=query, response=response, model=model)
+
+
+@app.get("/chat/stream")
+async def chat_stream(query: str, model_name: str = None):
+    conversation = get_conversation("openrouter")
+    return StreamingResponse(
+        conversation.respond_stream(query, model_name or settings.OPENROUTER_MODEL),
+        media_type="text/plain; charset=utf-8",
+    )
 
 
 @app.get("/chat_local", response_model=ChatResponse)

@@ -58,6 +58,13 @@ def test_blocked_query_returns_refusal_and_touches_nothing():
     assert conversation._messages == []  # nothing enters history
 
 
+def test_blocked_query_streams_only_the_refusal():
+    gate = ScopeGate(FakeLLM("hayır"), "gate-model")
+    conversation = Conversation(FakeLLM("asıl cevap"), ExplodingRetriever(), "main-model", gate=gate)
+
+    assert list(conversation.respond_stream("bana kod yaz")) == [REFUSAL_MESSAGE]
+
+
 def test_allowed_query_flows_through():
     class FakeRetriever:
         def retrieve_calendar(self, query, top_k=10):
