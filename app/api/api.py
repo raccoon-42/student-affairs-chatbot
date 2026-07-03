@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from app.conversation import Conversation
+from app.guardrails import ScopeGate
 from app.llm import OpenRouterLLM, OllamaLLM
 from app.retrieval import default_retriever
 from config import settings
@@ -27,8 +28,13 @@ def get_conversation(backend: str) -> Conversation:
     # before, now explicit). Per-user sessions are a TODO.
     retriever = default_retriever()
     if backend == "ollama":
-        return Conversation(OllamaLLM(), retriever, settings.OLLAMA_MODEL)
-    return Conversation(OpenRouterLLM(), retriever, settings.OPENROUTER_MODEL)
+        # local backend gates locally too, so it stays fully offline
+        llm = OllamaLLM()
+        return Conversation(llm, retriever, settings.OLLAMA_MODEL,
+                            gate=ScopeGate(llm, settings.OLLAMA_MODEL))
+    llm = OpenRouterLLM()
+    return Conversation(llm, retriever, settings.OPENROUTER_MODEL,
+                        gate=ScopeGate(llm, settings.GUARD_MODEL))
 
 
 @app.get("/")

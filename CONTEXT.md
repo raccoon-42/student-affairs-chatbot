@@ -8,3 +8,4 @@
 - **Conversation** (`app/conversation.py`) — assembles the prompt (system prompt + retrieved context + history) and asks an LLM adapter for the answer.
 - **LLM adapter** (`app/llm.py`) — anything with `chat(model, messages) -> str`. Two real ones: OpenRouter and Ollama.
 - **Judge** (`tests/evaluators/llm_judge.py`) — an LLM that scores chatbot answers 0/1 against expected answers during evaluation.
+- **Scope gate** (`app/guardrails.py`) — a cheap LLM call that decides whether a question is university-related before it reaches retrieval or the main model; off-topic questions get a canned refusal.

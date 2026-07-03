@@ -4,6 +4,7 @@ Prompt assembly, retrieval context, and history trimming live here once.
 Which LLM answers is decided by the adapter passed in (OpenRouter, Ollama,
 or a fake in tests) — history is owned by the instance, not the module.
 """
+from app.guardrails import REFUSAL_MESSAGE
 from config import settings
 
 CONTEXT_TEMPLATE = """
@@ -30,14 +31,18 @@ GÖREV:
 
 
 class Conversation:
-    def __init__(self, llm, retriever, model, max_exchanges=5):
+    def __init__(self, llm, retriever, model, max_exchanges=5, gate=None):
         self._llm = llm
         self._retriever = retriever
         self._model = model
         self._max_exchanges = max_exchanges
+        self._gate = gate
         self._messages = []
 
     def respond(self, query: str, model: str = None) -> str:
+        if self._gate and not self._gate.allows(query):
+            return REFUSAL_MESSAGE
+
         calendar_results = self._retriever.retrieve_calendar(query)
         regulations_results = self._retriever.retrieve_regulations(query)
 
@@ -69,6 +74,7 @@ class Conversation:
 if __name__ == "__main__":
     import argparse
 
+    from app.guardrails import ScopeGate
     from app.llm import OpenRouterLLM, OllamaLLM
     from app.retrieval import default_retriever
 
@@ -78,11 +84,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.backend == "openrouter":
-        conversation = Conversation(OpenRouterLLM(), default_retriever(),
-                                    args.model or settings.OPENROUTER_MODEL)
+        llm, model, gate_model = OpenRouterLLM(), args.model or settings.OPENROUTER_MODEL, settings.GUARD_MODEL
     else:
-        conversation = Conversation(OllamaLLM(), default_retriever(),
-                                    args.model or settings.OLLAMA_MODEL)
+        llm, model, gate_model = OllamaLLM(), args.model or settings.OLLAMA_MODEL, args.model or settings.OLLAMA_MODEL
+    conversation = Conversation(llm, default_retriever(), model, gate=ScopeGate(llm, gate_model))
 
     print("Bilgi Bot'a hoş geldiniz. Çıkmak için 'q', sıfırlamak için 'sıfırla'.")
     while True:
