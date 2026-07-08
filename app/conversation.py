@@ -36,14 +36,52 @@ GÖREV:
 4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan.
 """
 
+REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
+- Soruyu CEVAPLAMA, sadece yeniden yaz.
+- Mesaj zaten bağımsız anlaşılıyorsa olduğu gibi döndür.
+- Sadece yeniden yazılmış soruyu döndür, açıklama ekleme.
+
+Sohbet geçmişi:
+{history}
+
+Son mesaj: {query}"""
+
+
+class QueryRewriter:
+    """Turns follow-up messages into standalone queries, so retrieval and
+    the scope gate see the full intent ("lisans için kaç kredi lazım?")
+    instead of the bare reply ("lisans icin soruyorum")."""
+
+    def __init__(self, llm, model):
+        self._llm = llm
+        self._model = model
+
+    def rewrite(self, query: str, history: list) -> str:
+        if not history:
+            return query
+        lines = "\n".join(
+            f"{'Öğrenci' if m['role'] == 'user' else 'Bot'}: {m['content']}" for m in history
+        )
+        try:
+            rewritten = self._llm.chat(self._model, [{
+                "role": "user",
+                "content": REWRITE_PROMPT.format(history=lines, query=query),
+            }]).strip()
+            return rewritten or query
+        except Exception as error:
+            # retrieval on the raw query beats no answer at all
+            print(f"[rewrite] failed, using raw query: {error}", file=sys.stderr)
+            return query
+
 
 class Conversation:
-    def __init__(self, llm, retriever, model, max_exchanges=5, gate=None):
+    def __init__(self, llm, retriever, model, max_exchanges=5, gate=None, rewriter=None):
         self._llm = llm
         self._retriever = retriever
         self._model = model
         self._max_exchanges = max_exchanges
         self._gate = gate
+        self._rewriter = rewriter
         self._messages = []
 
     def respond(self, query: str, model: str = None) -> str:
@@ -79,12 +117,20 @@ class Conversation:
         its result is discarded if the gate blocks. Returns False when
         the query is refused."""
         start = time.perf_counter()
+        # follow-ups get rewritten into standalone questions for the gate
+        # and retrieval; the model itself still sees the original message
+        search_query = query
+        if self._rewriter is not None:
+            search_query = self._rewriter.rewrite(query, self._messages[1:])
+            if search_query != query:
+                print(f"[rewrite] {query!r} -> {search_query!r}", file=sys.stderr)
+
         if self._gate is None:
-            results = self._retriever.retrieve_all(query)
+            results = self._retriever.retrieve_all(search_query)
         else:
             with ThreadPoolExecutor(max_workers=2) as pool:
-                allowed = pool.submit(self._gate.allows, query)
-                speculative = pool.submit(self._retriever.retrieve_all, query)
+                allowed = pool.submit(self._gate.allows, search_query)
+                speculative = pool.submit(self._retriever.retrieve_all, search_query)
                 if not allowed.result():
                     return False
                 results = speculative.result()
@@ -100,9 +146,13 @@ class Conversation:
         if not self._messages:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
         self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
+        self._pending_query = query
         return True
 
     def _add_assistant_message(self, answer):
+        # the reference data was for this turn only — history keeps the bare
+        # question, fresh context is retrieved every turn anyway
+        self._messages[-1] = {"role": "user", "content": self._pending_query}
         self._messages.append({"role": "assistant", "content": answer})
 
         # system prompt + last N user/assistant pairs
@@ -131,7 +181,9 @@ if __name__ == "__main__":
         llm, model, gate_model = OpenRouterLLM(), args.model or settings.OPENROUTER_MODEL, settings.GUARD_MODEL
     else:
         llm, model, gate_model = OllamaLLM(), args.model or settings.OLLAMA_MODEL, args.model or settings.OLLAMA_MODEL
-    conversation = Conversation(llm, default_retriever(), model, gate=ScopeGate(llm, gate_model))
+    conversation = Conversation(llm, default_retriever(), model,
+                                gate=ScopeGate(llm, gate_model),
+                                rewriter=QueryRewriter(llm, gate_model))
 
     print("Bilgi Bot'a hoş geldiniz. Çıkmak için 'q', sıfırlamak için 'sıfırla'.")
     while True:

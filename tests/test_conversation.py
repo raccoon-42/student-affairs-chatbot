@@ -1,5 +1,5 @@
 """Conversation tested with fakes on both seams: no LLM, no vector store."""
-from app.conversation import Conversation
+from app.conversation import Conversation, QueryRewriter
 
 
 class FakeLLM:
@@ -17,6 +17,9 @@ class FakeLLM:
 
 
 class FakeRetriever:
+    def __init__(self):
+        self.queries = []
+
     def retrieve_calendar(self, query, top_k=10):
         return [{"text": "📝 Final sınavları 5 Ocak'ta", "score": 1.0, "metadata": {}}]
 
@@ -27,6 +30,7 @@ class FakeRetriever:
         return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçe verin.", "score": 1.0, "metadata": {}}]
 
     def retrieve_all(self, query):
+        self.queries.append(query)
         return {
             "calendar": self.retrieve_calendar(query),
             "regulations": self.retrieve_regulations(query),
@@ -114,3 +118,55 @@ def test_per_call_model_override():
     llm = FakeLLM()
     make_conversation(llm).respond("soru", model="another-model")
     assert llm.calls[0][0] == "another-model"
+
+
+def test_history_keeps_bare_question_not_reference_data():
+    conversation = make_conversation()
+    conversation.respond("sınavlar ne zaman")
+
+    user_messages = [m for m in conversation._messages if m["role"] == "user"]
+    assert user_messages == [{"role": "user", "content": "sınavlar ne zaman"}]
+
+
+def test_rewriter_feeds_retrieval_but_model_sees_original():
+    rewriter_llm = FakeLLM(reply="lisans için kaç kredi gerekiyor?")
+    retriever = FakeRetriever()
+    main_llm = FakeLLM(reply="cevap")
+    conversation = Conversation(main_llm, retriever, model="test-model",
+                                rewriter=QueryRewriter(rewriter_llm, "small-model"))
+    conversation.respond("kaç kredi lazım")          # first turn: no history, no rewrite
+    conversation.respond("lisans icin soruyorum")    # follow-up: rewritten
+
+    assert retriever.queries == ["kaç kredi lazım", "lisans için kaç kredi gerekiyor?"]
+    _, messages = main_llm.calls[-1]
+    assert "lisans icin soruyorum" in messages[-1]["content"]  # original, not rewrite
+
+
+def test_rewriter_failure_falls_back_to_raw_query():
+    class ExplodingLLM:
+        def chat(self, model, messages):
+            raise RuntimeError("boom")
+
+    retriever = FakeRetriever()
+    conversation = Conversation(FakeLLM(), retriever, model="test-model",
+                                rewriter=QueryRewriter(ExplodingLLM(), "small-model"))
+    conversation.respond("soru 1")
+    conversation.respond("soru 2")
+    assert retriever.queries == ["soru 1", "soru 2"]
+
+
+def test_api_sessions_are_isolated_and_expire():
+    import time as time_module
+    from app.api import api
+
+    a = api.get_conversation("session-a")
+    b = api.get_conversation("session-b")
+    assert a is not b
+    assert api.get_conversation("session-a") is a  # same id -> same history
+
+    # idle sessions are evicted after the TTL
+    key = ("openrouter", "session-a")
+    conversation, last_used = api._sessions[key]
+    api._sessions[key] = (conversation, last_used - api.SESSION_TTL_SECONDS - 1)
+    api.get_conversation("session-b")  # any call triggers eviction
+    assert key not in api._sessions
