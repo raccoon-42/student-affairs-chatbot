@@ -8,7 +8,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-from app.guardrails import REFUSAL_MESSAGE
+from app.guardrails import REFUSALS
 from config import settings
 
 CONTEXT_TEMPLATE = """
@@ -16,6 +16,10 @@ CONTEXT_TEMPLATE = """
     <student_question>
     {query}
     </student_question>
+
+    <student_profile>
+    {profile}
+    </student_profile>
 
     <available_reference_data>
     # AKADEMİK TAKVİM BİLGİLERİ:
@@ -74,6 +78,14 @@ class QueryRewriter:
             return query
 
 
+EDUCATION_LABELS = {
+    "aday": "İYTE'ye gelmeyi düşünen aday öğrenci (henüz kayıtlı değil)",
+    "lisans": "lisans öğrencisi",
+    "yukseklisans": "yüksek lisans öğrencisi",
+    "doktora": "doktora öğrencisi",
+}
+
+
 class Conversation:
     def __init__(self, llm, retriever, model, max_exchanges=5, gate=None, rewriter=None):
         self._llm = llm
@@ -84,9 +96,10 @@ class Conversation:
         self._rewriter = rewriter
         self._messages = []
 
-    def respond(self, query: str, model: str = None) -> str:
-        if not self._prepare(query):
-            return REFUSAL_MESSAGE
+    def respond(self, query: str, model: str = None, education_type: str = None) -> str:
+        verdict = self._prepare(query, education_type)
+        if verdict != "ok":
+            return REFUSALS[verdict]
 
         start = time.perf_counter()
         answer = self._llm.chat(model or self._model, self._messages)
@@ -94,10 +107,11 @@ class Conversation:
         self._add_assistant_message(answer)
         return answer
 
-    def respond_stream(self, query: str, model: str = None):
+    def respond_stream(self, query: str, model: str = None, education_type: str = None):
         """Same as respond(), but yields the answer token by token."""
-        if not self._prepare(query):
-            yield REFUSAL_MESSAGE
+        verdict = self._prepare(query, education_type)
+        if verdict != "ok":
+            yield REFUSALS[verdict]
             return
 
         start = time.perf_counter()
@@ -112,16 +126,18 @@ class Conversation:
               f"total {time.perf_counter() - start:.2f}s", file=sys.stderr)
         self._add_assistant_message("".join(tokens))
 
-    def _prepare(self, query) -> bool:
+    def _prepare(self, query, education_type=None) -> str:
         """Gate and retrieval run concurrently: retrieval is speculative,
-        its result is discarded if the gate blocks. Returns False when
-        the query is refused."""
+        its result is discarded if the gate blocks. Returns "ok" when the
+        query goes through, otherwise the gate's refusal verdict."""
         start = time.perf_counter()
         # follow-ups get rewritten into standalone questions for the gate
         # and retrieval; the model itself still sees the original message
         search_query = query
-        if self._rewriter is not None:
+        if self._rewriter is not None and len(self._messages) > 1:
+            rewrite_start = time.perf_counter()
             search_query = self._rewriter.rewrite(query, self._messages[1:])
+            print(f"[timing] rewrite {time.perf_counter() - rewrite_start:.2f}s", file=sys.stderr)
             if search_query != query:
                 print(f"[rewrite] {query!r} -> {search_query!r}", file=sys.stderr)
 
@@ -129,15 +145,16 @@ class Conversation:
             results = self._retriever.retrieve_all(search_query)
         else:
             with ThreadPoolExecutor(max_workers=2) as pool:
-                allowed = pool.submit(self._gate.allows, search_query)
+                verdict = pool.submit(self._gate.verdict, search_query)
                 speculative = pool.submit(self._retriever.retrieve_all, search_query)
-                if not allowed.result():
-                    return False
+                if verdict.result() != "ok":
+                    return verdict.result()
                 results = speculative.result()
         print(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s", file=sys.stderr)
 
         context = CONTEXT_TEMPLATE.format(
             query=query,
+            profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
             calendar_context="\n".join(r["text"] for r in results["calendar"]),
             regulations_context="\n".join(r["text"] for r in results["regulations"]),
             faq_context="\n\n".join(r["text"] for r in results["faq"]),
@@ -147,7 +164,7 @@ class Conversation:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
         self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
         self._pending_query = query
-        return True
+        return "ok"
 
     def _add_assistant_message(self, answer):
         # the reference data was for this turn only — history keeps the bare
@@ -163,6 +180,16 @@ class Conversation:
     def reset(self):
         self._messages = []
         return "Konuşma sıfırlandı."
+
+    def load_history(self, stored_messages):
+        """Rebuild in-memory context from persisted turns (after a server
+        restart or cache eviction), keeping the usual trimming."""
+        self._messages = [{"role": "system", "content": settings.load_system_prompt()}]
+        for message in stored_messages:
+            self._messages.append({"role": message["role"], "content": message["content"]})
+        limit = 1 + 2 * self._max_exchanges
+        if len(self._messages) > limit:
+            self._messages = [self._messages[0]] + self._messages[-(limit - 1):]
 
 
 if __name__ == "__main__":
@@ -185,7 +212,7 @@ if __name__ == "__main__":
                                 gate=ScopeGate(llm, gate_model),
                                 rewriter=QueryRewriter(llm, gate_model))
 
-    print("Bilgi Bot'a hoş geldiniz. Çıkmak için 'q', sıfırlamak için 'sıfırla'.")
+    print("İyteBot'a hoş geldiniz. Çıkmak için 'q', sıfırlamak için 'sıfırla'.")
     while True:
         user_input = input("\n>> ")
         if user_input.lower() in ["çıkış", "exit", "quit", "q"]:

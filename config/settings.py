@@ -48,6 +48,27 @@ JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5")
 # Scope gate: cheap model that decides if a question is university-related
 GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-4.5")
 
+# Google Sign-In (optional — the UI hides the button when unset)
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+
+# SQLite persistence (users, auth sessions, conversations)
+DB_PATH = os.getenv("DB_PATH", str(ROOT / "data" / "app.db"))
+
+# Chat rate limits (messages per hour); anonymous users are nudged to sign in
+CHAT_LIMIT_ANON = int(os.getenv("CHAT_LIMIT_ANON", "5"))
+CHAT_LIMIT_USER = int(os.getenv("CHAT_LIMIT_USER", "60"))
+
+# Spam brake: this many scope-gate refusals within 10 minutes blocks further
+# messages until the window clears
+CHAT_REFUSAL_LIMIT = int(os.getenv("CHAT_REFUSAL_LIMIT", "3"))
+
+# A single abusive message blocks the sender for this long (minutes)
+ABUSE_BLOCK_MINUTES = int(os.getenv("ABUSE_BLOCK_MINUTES", "10"))
+
+# Comma-separated emails/IPs exempt from the abuse block only (dev use);
+# message limits and the spam brake still apply to these keys
+ABUSE_EXEMPT = {key.strip() for key in os.getenv("ABUSE_EXEMPT", "").split(",") if key.strip()}
+
 # API (used by integration tests)
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 

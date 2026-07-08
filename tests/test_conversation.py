@@ -120,6 +120,36 @@ def test_per_call_model_override():
     assert llm.calls[0][0] == "another-model"
 
 
+def test_loaded_history_is_visible_to_the_model():
+    llm = FakeLLM()
+    conversation = make_conversation(llm)
+    conversation.load_history([
+        {"role": "user", "content": "eski soru"},
+        {"role": "assistant", "content": "eski cevap"},
+    ])
+    conversation.respond("devam sorusu")
+
+    _, messages = llm.calls[0]
+    assert messages[0]["role"] == "system"
+    assert {"role": "assistant", "content": "eski cevap"} in messages
+
+
+def test_education_type_reaches_the_model():
+    llm = FakeLLM()
+    make_conversation(llm).respond("kaç kredi lazım", education_type="lisans")
+
+    _, messages = llm.calls[0]
+    assert "lisans öğrencisi" in messages[-1]["content"]
+
+
+def test_missing_education_type_is_marked_unknown():
+    llm = FakeLLM()
+    make_conversation(llm).respond("kaç kredi lazım")
+
+    _, messages = llm.calls[0]
+    assert "bilinmiyor" in messages[-1]["content"]
+
+
 def test_history_keeps_bare_question_not_reference_data():
     conversation = make_conversation()
     conversation.respond("sınavlar ne zaman")

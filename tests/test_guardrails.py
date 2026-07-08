@@ -1,6 +1,6 @@
 """Scope gate tested offline with a fake LLM."""
 from app.conversation import Conversation
-from app.guardrails import ScopeGate, REFUSAL_MESSAGE
+from app.guardrails import ScopeGate, ABUSE_MESSAGE, REFUSAL_MESSAGE
 
 
 class FakeLLM:
@@ -28,6 +28,18 @@ def test_evet_allows():
 
 def test_hayir_blocks():
     assert ScopeGate(FakeLLM("Hayır."), "m").allows("bana bir şiir yaz") is False
+
+
+def test_kaba_is_flagged_abusive():
+    gate = ScopeGate(FakeLLM("kaba"), "m")
+    assert gate.verdict("aptal bot") == "abusive"
+    assert gate.allows("aptal bot") is False
+
+
+def test_abusive_message_gets_its_own_refusal():
+    gate = ScopeGate(FakeLLM("kaba"), "gate-model")
+    conversation = Conversation(FakeLLM("asıl cevap"), ExplodingRetriever(), "main-model", gate=gate)
+    assert conversation.respond("aptal bot") == ABUSE_MESSAGE
 
 
 def test_unclear_reply_falls_open():
