@@ -1,5 +1,5 @@
 """Conversation tested with fakes on both seams: no LLM, no vector store."""
-from app.conversation import Conversation, QueryRewriter
+from app.conversation import Conversation, QueryRewriter, STAGE_GATING, STAGE_SEARCHING, STAGE_WRITING
 
 
 class FakeLLM:
@@ -29,7 +29,7 @@ class FakeRetriever:
     def retrieve_faq(self, query, top_k=3):
         return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçe verin.", "score": 1.0, "metadata": {}}]
 
-    def retrieve_all(self, query):
+    def retrieve_all(self, query, audience=None):
         self.queries.append(query)
         return {
             "calendar": self.retrieve_calendar(query),
@@ -99,7 +99,8 @@ def test_stream_yields_tokens_and_stores_full_answer():
 
     tokens = list(conversation.respond_stream("soru"))
 
-    assert tokens == ["parça", "parça", "cevap"]
+    # the stage markers lead the stream so the UI can animate the cursor
+    assert tokens == [STAGE_GATING, STAGE_SEARCHING, STAGE_WRITING, "parça", "parça", "cevap"]
     # history holds the joined answer, not the pieces
     assert conversation._messages[-1] == {"role": "assistant", "content": "parçaparçacevap"}
 

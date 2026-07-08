@@ -2,7 +2,9 @@
 judged by an LLM. Needs the whole stack running, so it's marked
 `integration` and excluded from a plain `pytest` run.
 
-Run with: pytest -m integration tests/test_llm_judge.py
+Run with: pytest -m integration tests/test_llm_judge.py -v
+Each test case is its own test, so one bad answer doesn't hide the rest;
+select one with -k, e.g. -k "ilişik".
 """
 import glob
 import json
@@ -34,20 +36,12 @@ def ask_chatbot(query: str, model_name: str, local: bool) -> str:
     return response.json()["response"]
 
 
-@pytest.fixture
-def llm_judge():
-    if USE_LOCAL_JUDGE:
-        return LLMJudge(OllamaLLM(), settings.OLLAMA_MODEL)
-    return LLMJudge(OpenRouterLLM(), settings.JUDGE_MODEL)
-
-
-@pytest.fixture
-def test_cases():
-    """Load test cases from JSON files in the test_cases directory."""
+def load_test_cases():
+    """Collected at import time so pytest can parametrize one test per case."""
     test_cases_dir = os.path.join(os.path.dirname(__file__), 'test_cases')
     all_test_cases = []
 
-    for json_file in glob.glob(os.path.join(test_cases_dir, '*.json')):
+    for json_file in sorted(glob.glob(os.path.join(test_cases_dir, '*.json'))):
         with open(json_file, 'r', encoding='utf-8') as f:
             file_test_cases = json.load(f)
         category = os.path.splitext(os.path.basename(json_file))[0]
@@ -59,36 +53,34 @@ def test_cases():
     return all_test_cases
 
 
-def test_llm_responses(llm_judge, test_cases):
-    results = []
-    failures = []
+TEST_CASES = load_test_cases()
 
+
+@pytest.fixture(scope="module")
+def llm_judge():
+    if USE_LOCAL_JUDGE:
+        return LLMJudge(OllamaLLM(), settings.OLLAMA_MODEL)
+    return LLMJudge(OpenRouterLLM(), settings.JUDGE_MODEL)
+
+
+@pytest.mark.parametrize(
+    "test_case", TEST_CASES,
+    ids=[f"{c['category']}: {c['description']}" for c in TEST_CASES])
+def test_llm_response(llm_judge, test_case):
     model_name = LOCAL_MODEL_TO_TEST if USE_LOCAL_MODEL else OPENROUTER_MODEL_TO_TEST
+    query = test_case["query"]
+    expected_response = test_case["expected"]
 
-    for i, test_case in enumerate(test_cases, 1):
-        query = test_case["query"]
-        expected_response = test_case["expected"]
+    response = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
+    evaluation = llm_judge.evaluate_response(query, response, expected_response)
 
-        response = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
-        evaluation = llm_judge.evaluate_response(query, response, expected_response)
-        evaluation["category"] = test_case["category"]
-        results.append(evaluation)
+    print(f"\nSorulan soru: {query}")
+    print(f"Beklenen cevap: {expected_response}")
+    print(f"Verilen cevap: {response}")
+    print(f"Puan: {evaluation['score']}")
+    print(f"Mantık yürütme: {evaluation['reasoning']}")
 
-        print(f"\n----- Test Case {i}: {test_case['description']} [{test_case['category']}] -----")
-        print(f"Sorulan soru: {query}")
-        print(f"Beklenen cevap: {expected_response}")
-        print(f"Verilen cevap: {response}")
-        print(f"Puan: {evaluation['score']}")
-        print(f"Mantık yürütme: {evaluation['reasoning']}")
-
-        if evaluation["score"] != 1:
-            failures.append(evaluation)
-
-    print("\n===== LLM EVALUATION RESULTS =====")
-    print(f"Model tested: {model_name}")
-    print(f"Passed: {len(results) - len(failures)}/{len(results)}")
-
-    assert not failures, (
-        f"{len(failures)}/{len(results)} cases failed: "
-        + "; ".join(f"{f['query']} (score={f['score']})" for f in failures)
+    assert evaluation["score"] == 1, (
+        f"{test_case['description']}: judge scored {evaluation['score']} — "
+        f"{evaluation['reasoning']}"
     )

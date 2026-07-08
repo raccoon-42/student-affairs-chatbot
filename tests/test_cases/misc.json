@@ -3,5 +3,10 @@
     "query": "okul ne zaman kapanıyor?",
     "expected": "hangi dönem için sorduğunu sorar ya da sınavların ne zaman bittiğini söyler.",
     "description": "Okulun kapanış tarihi (belirsiz soru)"
+  },
+  {
+    "query": "mezuniyet sonrası ilişik kesme için nereye gitmem lazım?",
+    "expected": "Elindeki kaynaklarda mezuniyet sonrası ilişik kesme prosedürünün adımları yer almadığı için sürecin nasıl işlediğini bilmediğini söylemeli ve Öğrenci İşleri Daire Başkanlığı'na yönlendirmeli. Sürecin 'otomatik' olduğunu veya öğrencinin hiçbir şey yapmasına gerek olmadığını İDDİA ETMEMELİ.",
+    "description": "Mezuniyet sonrası ilişik kesme (korpusta olmayan prosedür — uydurmamalı)"
   }
-] 
+]

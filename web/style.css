@@ -721,11 +721,70 @@ header h1 {
 .message.bot.pending::after {
   content: "▋";
   color: var(--muted);
+  display: inline-block; /* transform in the scan animation needs a box */
   animation: blink 1s steps(1) infinite;
+}
+
+/* pipeline stages before the first token: the cursor moves to ::before
+   (sliding scan while the gate and retrieval run, soft pulse while the
+   model warms up) and ::after becomes a shimmering stage label fed by
+   data-stage. Once tokens flow app.js drops the classes and ::after is
+   the plain blinking cursor again. */
+.message.bot.pending.rewriting::before,
+.message.bot.pending.searching::before,
+.message.bot.pending.writing::before {
+  content: "▋";
+  color: var(--muted);
+  display: inline-block;
+}
+
+.message.bot.pending.rewriting::before {
+  animation: tilt 0.9s ease-in-out infinite;
+}
+
+.message.bot.pending.searching::before {
+  animation: scan 1.4s ease-in-out infinite;
+}
+
+.message.bot.pending.writing::before {
+  animation: pulse 0.7s ease-in-out infinite;
+}
+
+.message.bot.pending.rewriting::after,
+.message.bot.pending.searching::after,
+.message.bot.pending.writing::after {
+  content: attr(data-stage);
+  margin-left: 1em; /* clears the 14px scan slide of the cursor */
+  font-size: 0.85em;
+  background: linear-gradient(90deg, var(--muted) 30%, var(--text) 50%, var(--muted) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.8s linear infinite;
 }
 
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(9deg); }
+}
+
+@keyframes scan {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(14px); opacity: 0.35; }
+}
+
+@keyframes pulse {
+  50% { opacity: 0.25; }
 }
 
 /* ---------- composer ---------- */

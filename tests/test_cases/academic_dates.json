@@ -1,17 +1,17 @@
 [
   {
     "query": "yaz okulu kayıtları ne zaman",
-    "expected": "8-9 temmuz 2025'de başlar",
+    "expected": "13-14 Temmuz 2026'da yapılır (2025-2026 yaz öğretimi). 2026-2027 yaz öğretimi için 12-13 Temmuz 2027 de kabul edilir.",
     "description": "Yaz okulu kayıt tarihleri"
   },
   {
     "query": "mezuniyet ne zaman?",
-    "expected": "18 temmuz 2025",
+    "expected": "24 Temmuz 2026 (2025-2026 mezuniyet töreni). 2026-2027 için 23 Temmuz 2027 de kabul edilir.",
     "description": "Mezuniyet töreni tarihi"
   },
   {
     "query": "bahar dönemi sınavları ne zaman bitiyor?",
-    "expected": "10-23 haziran 2025 arası",
+    "expected": "Hangi akademik yılı sorduğunu netleştirir ya da tarih verir: 2025-2026 bahar yarıyıl sonu sınavları 17-30 Haziran 2026 arasındaydı (30 Haziran'da bitti); 2026-2027 için 14-25 Haziran 2027. Bu tarihlerden birini vermesi yeterli.",
     "description": "Bahar dönemi sınav bitişi"
   }
-] 
+]

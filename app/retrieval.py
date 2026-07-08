@@ -95,7 +95,7 @@ class Retriever:
         self._semantic_weight = semantic_weight
         self._bm25_weight = bm25_weight
 
-    def retrieve_all(self, query: str) -> Dict[str, List[Dict]]:
+    def retrieve_all(self, query: str, audience: str = None) -> Dict[str, List[Dict]]:
         """Everything the conversation needs, in one call:
         the query is embedded once, the three collections are searched
         in parallel."""
@@ -107,7 +107,7 @@ class Retriever:
         with ThreadPoolExecutor(max_workers=3) as pool:
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
             regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
-            faq = pool.submit(self.retrieve_faq, query, 5, vector)
+            faq = pool.submit(self.retrieve_faq, query, 5, vector, audience)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
@@ -142,13 +142,23 @@ class Retriever:
             for hit, score in hits
         ]
 
-    def retrieve_faq(self, query: str, top_k: int = 5, vector=None) -> List[Dict]:
-        # FAQ chunks embed only the question; the answer travels in metadata
-        hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k, vector=vector)
-        return [
-            {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata}
-            for hit, score in hits
-        ]
+    def retrieve_faq(self, query: str, top_k: int = 5, vector=None,
+                     audience: str = None) -> List[Dict]:
+        # FAQ chunks embed only the question; the answer travels in metadata.
+        # 34 questions exist verbatim in both the lisans and lisansüstü FAQ
+        # PDFs — the session's audience picks the right copy, and without a
+        # profile the text dedupe below keeps the duplicate out of the top_k
+        filters = {"audience": audience} if audience else None
+        hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k,
+                                   filters=filters, vector=vector)
+        results, seen = [], set()
+        for hit, score in hits:
+            if hit.text in seen:
+                continue
+            seen.add(hit.text)
+            results.append(
+                {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata})
+        return results
 
     def _embed_query(self, query):
         # any model-specific instruction prefix lives in the embedder

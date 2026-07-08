@@ -11,6 +11,18 @@ from concurrent.futures import ThreadPoolExecutor
 from app.guardrails import REFUSALS
 from config import settings
 
+# In-band stage markers for streaming consumers. Control characters so
+# they can never collide with answer text; the web UI switches the cursor
+# animation on them, every other consumer must filter them out.
+# \x02: the query rewrite is done, the gate is checking (retrieval runs
+#       alongside, but the gate verdict is what resolves first).
+# \x03: the gate passed, only retrieval is still running.
+# \x01: retrieval is done, the model is about to write.
+STAGE_GATING = "\x02"
+STAGE_SEARCHING = "\x03"
+STAGE_WRITING = "\x01"
+STAGE_MARKERS = (STAGE_GATING, STAGE_SEARCHING, STAGE_WRITING)
+
 CONTEXT_TEMPLATE = """
 <conversation>
     <current_datetime>
@@ -127,6 +139,17 @@ EDUCATION_LABELS = {
     "doktora": "doktora öğrencisi",
 }
 
+# which FAQ corpus copy fits the profile: the lisans and lisansüstü FAQ
+# PDFs repeat 34 questions verbatim, so retrieval filters to one audience.
+# Prospective students get the lisans copy; no profile means no filter
+# (the retriever dedupes by question text instead).
+FAQ_AUDIENCES = {
+    "aday": "lisans",
+    "lisans": "lisans",
+    "yukseklisans": "lisansustu",
+    "doktora": "lisansustu",
+}
+
 
 class Conversation:
     def __init__(self, llm, retriever, model, max_exchanges=5, gate=None, rewriter=None):
@@ -158,11 +181,20 @@ class Conversation:
     def respond_stream(self, query: str, model: str = None, education_type: str = None,
                        image: str = None):
         """Same as respond(), but yields the answer token by token."""
-        verdict = self._prepare(query, education_type, image)
+        query, search_query = self._resolve_search_query(query, image)
+        yield STAGE_GATING
+        stages = self._gate_and_build(query, search_query, education_type, image)
+        while True:
+            try:
+                yield next(stages)  # STAGE_SEARCHING once the gate passes
+            except StopIteration as done:
+                verdict = done.value
+                break
         if verdict != "ok":
             yield REFUSALS[verdict]
             return
 
+        yield STAGE_WRITING
         start = time.perf_counter()
         first_token_at = None
         tokens = []
@@ -176,17 +208,24 @@ class Conversation:
         self._add_assistant_message("".join(tokens))
 
     def _prepare(self, query, education_type=None, image=None) -> str:
-        """Gate and retrieval run concurrently: retrieval is speculative,
-        its result is discarded if the gate blocks. Returns "ok" when the
-        query goes through, otherwise the gate's refusal verdict.
+        """Rewrite, then gate + retrieve; see the two halves below."""
+        query, search_query = self._resolve_search_query(query, image)
+        stages = self._gate_and_build(query, search_query, education_type, image)
+        while True:  # non-streaming path: drain the stage events, keep the verdict
+            try:
+                next(stages)
+            except StopIteration as done:
+                return done.value
 
-        An image (data URL) rides along for this turn only: the gate,
-        rewriter and retrieval see just the text, and history keeps the
-        bare question, so the image never bloats later requests."""
-        start = time.perf_counter()
+    def _resolve_search_query(self, query, image=None):
+        """First pipeline stage: turn the raw message into a search query.
+
+        Follow-ups get rewritten into standalone questions for the gate
+        and retrieval; the model itself still sees the original message.
+        Returns (query, search_query) — query changes only for image-only
+        messages, where the extracted question stands in as the student's
+        text for the prompt and the history."""
         self.last_debug = []
-        # follow-ups get rewritten into standalone questions for the gate
-        # and retrieval; the model itself still sees the original message
         search_query = query
         if self._rewriter is not None and image is not None:
             extract_start = time.perf_counter()
@@ -195,8 +234,6 @@ class Conversation:
             if search_query != query:
                 self._log(f"[image] search query: {search_query!r}")
             if not query:
-                # image-only message: the extracted question stands in as
-                # the student's text for the prompt and the history
                 query = search_query
         elif self._rewriter is not None and len(self._messages) > 1:
             rewrite_start = time.perf_counter()
@@ -204,20 +241,41 @@ class Conversation:
             self._log(f"[timing] rewrite {time.perf_counter() - rewrite_start:.2f}s")
             if search_query != query:
                 self._log(f"[rewrite] {query!r} -> {search_query!r}")
+        return query, search_query
 
+    def _gate_and_build(self, query, search_query, education_type=None, image=None):
+        """Second pipeline stage: gate and retrieval run concurrently —
+        retrieval is speculative, its result is discarded if the gate
+        blocks. A generator: yields STAGE_SEARCHING once the gate verdict
+        is in (only retrieval still running), and returns "ok" when the
+        query goes through, otherwise the gate's refusal verdict.
+
+        An image (data URL) rides along for this turn only: the gate,
+        rewriter and retrieval see just the text, and history keeps the
+        bare question, so the image never bloats later requests."""
+        start = time.perf_counter()
+        audience = FAQ_AUDIENCES.get(education_type)
         if self._gate is None:
-            results = self._retriever.retrieve_all(search_query)
+            yield STAGE_SEARCHING
+            results = self._retriever.retrieve_all(search_query, audience=audience)
         else:
             with ThreadPoolExecutor(max_workers=2) as pool:
                 verdict = pool.submit(self._gate.verdict, search_query)
-                speculative = pool.submit(self._retriever.retrieve_all, search_query)
-                if verdict.result() != "ok":
-                    return verdict.result()
+                speculative = pool.submit(self._retriever.retrieve_all, search_query,
+                                          audience)
+                answer = verdict.result()
+                self._log(f"[timing] gate {time.perf_counter() - start:.2f}s "
+                          f"(verdict: {answer})")
+                if answer != "ok":
+                    return answer
+                yield STAGE_SEARCHING
                 results = speculative.result()
         timings = getattr(self._retriever, "last_timings", None)
         if timings:
-            self._log(f"[timing] embed {timings['embed']:.2f}s | search {timings['search']:.2f}s")
-        self._log(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s")
+            self._log(f"[timing] retrieval {timings['embed'] + timings['search']:.2f}s "
+                      f"(embed {timings['embed']:.2f}s | search {timings['search']:.2f}s, "
+                      f"alongside the gate)")
+        self._log(f"[timing] gate + retrieval combined {time.perf_counter() - start:.2f}s")
         self._log("[retrieval] " + ", ".join(
             f"{corpus}: {len(results[corpus])}" for corpus in ("calendar", "regulations", "faq")))
 
@@ -325,5 +383,6 @@ if __name__ == "__main__":
             continue
         print()
         for token in conversation.respond_stream(user_input):
-            print(token, end="", flush=True)
+            if token not in STAGE_MARKERS:
+                print(token, end="", flush=True)
         print()

@@ -2,7 +2,7 @@ import sys
 import time
 import uuid
 from functools import lru_cache
-from threading import Lock
+from threading import Lock, Thread
 
 import requests
 
@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app import auth, storage
-from app.conversation import Conversation, QueryRewriter
+from app.conversation import Conversation, QueryRewriter, STAGE_MARKERS
 from app.ratelimit import RateLimiter
 from app.guardrails import ScopeGate, ABUSE_MESSAGE, REFUSALS
 from app.llm import OpenRouterLLM, OllamaLLM
@@ -94,6 +94,8 @@ def _limit_key(request: Request, user) -> str:
 def _enforce_rate_limit(request: Request, user) -> None:
     """Per-email for signed-in users, per-IP for anonymous. The anonymous
     429 message doubles as the sign-in nudge shown by the UI."""
+    if _limit_key(request, user) in settings.RATELIMIT_EXEMPT:
+        return  # judge suite / local eval runs
     if (_limit_key(request, user) not in settings.ABUSE_EXEMPT
             and _abuse_limiter.is_blocked(_limit_key(request, user))):
         raise HTTPException(status_code=429,
@@ -256,7 +258,15 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
     _authorize_conversation(session_id, user)
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
-    return {"sources": cached[0].last_sources if cached else []}
+    if cached and cached[0].last_sources:
+        return {"sources": cached[0].last_sources}
+    # the cache is per-process: a restart (e.g. --reload in dev) between
+    # streaming and this call would lose the sources — fall back to the
+    # persisted transcript's latest assistant message
+    for message in reversed(storage.conversation_messages(session_id)):
+        if message["role"] == "assistant" and message["sources"]:
+            return {"sources": message["sources"]}
+    return {"sources": []}
 
 
 @app.get("/chat/debug")
@@ -323,7 +333,10 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
         tokens = []
         try:
             for token in stream:
-                tokens.append(token)
+                # stage markers go to the browser (cursor animation) but
+                # must stay out of the persisted/refusal-checked answer
+                if token not in STAGE_MARKERS:
+                    tokens.append(token)
                 yield token
         except Exception as error:
             # an upstream failure (e.g. out of OpenRouter credits) must not
@@ -338,11 +351,15 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
         # persist only after the full answer arrived; refusals aren't
-        # part of the transcript
+        # part of the transcript. The write happens off-thread: the HTTP
+        # stream stays open until this generator returns, so a slow SQLite
+        # write would show as a hang after the last visible token.
         if user and answer not in REFUSALS.values():
             # image-only messages have no text; the image itself isn't stored
-            storage.record_exchange(session_id, user["email"], query or "(görsel)",
-                                    answer, sources=conversation.last_sources)
+            Thread(target=storage.record_exchange,
+                   args=(session_id, user["email"], query or "(görsel)", answer),
+                   kwargs={"sources": conversation.last_sources},
+                   daemon=True).start()
 
     return StreamingResponse(
         recorded(),

@@ -39,6 +39,9 @@ const STRINGS = {
     yesterday: "Dün",
     previous7: "Önceki 7 gün",
     older: "Daha eski",
+    stageRewriting: "ton ayarlanıyor…",
+    stageSearching: "kaynaklarda aranıyor…",
+    stageWriting: "yanıt yazılıyor…",
   },
   en: {
     chats: "Chats",
@@ -78,6 +81,9 @@ const STRINGS = {
     yesterday: "Yesterday",
     previous7: "Previous 7 days",
     older: "Older",
+    stageRewriting: "toning your voice…",
+    stageSearching: "searching sources…",
+    stageWriting: "writing…",
   },
 };
 
@@ -353,20 +359,20 @@ function showDebugCard(anchor, text) {
 }
 
 /* the model cites reference chunks as [n]; swap each marker for a chip
- * right where it stands in the sentence */
+ * right where it stands in the sentence. The model tends to repeat the
+ * same citation on every line it touches — one chip per document (its
+ * first mention) is enough, later repeats are dropped as clutter. */
 function withCitations(html, sources) {
   if (!sources?.length) return html;
-  const withChips = html.replace(/\[(\d+)\]/g, (marker, n) => {
+  const seen = new Set();
+  return html.replace(/( ?)\[(\d+)\]/g, (marker, space, n) => {
     const source = sources[Number(n) - 1];
-    return source ? chipHTML(source) : marker;
+    if (!source) return marker;
+    const label = source.title || source.type;
+    if (seen.has(label)) return "";
+    seen.add(label);
+    return space + chipHTML(source);
   });
-  // adjacent markers often resolve to the same document (e.g. [4][5] both
-  // from the FAQ) — collapse each same-label run into a single chip. The
-  // label, not the whole tag, decides: chips of different chunks carry
-  // different hover-card data but look identical to the reader.
-  return withChips.replace(
-    /((?:<a|<span) class="source-chip"[^>]*>([^<]*)<\/(?:a|span)>)(\s*(?:<a|<span) class="source-chip"[^>]*>\2<\/(?:a|span)>)+/g,
-    "$1");
 }
 
 function setBubbleText(el, role, text, sources) {
@@ -430,10 +436,16 @@ function showSources(message) {
   const list = document.createElement("div");
   list.className = "popover-sources";
   const sources = message.sources || [];
-  if (!sources.length) {
+  // retrieval hands the model ~20 chunks; list only the ones the answer
+  // actually cites. Messages without inline markers (old transcripts,
+  // pre-citation answers) fall back to the full list.
+  const cited = new Set(
+    [...(message.text || "").matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])));
+  const used = cited.size ? sources.filter((_, i) => cited.has(i + 1)) : sources;
+  if (!used.length) {
     list.textContent = t("noSources");
   }
-  for (const source of sources) {
+  for (const source of used) {
     const item = document.createElement(source.url ? "a" : "div");
     item.className = "source-item";
     if (source.url) {
@@ -517,7 +529,8 @@ async function send(query, image = null) {
     userEl.prepend(thumb);
   }
   const botEl = addBubble("bot", "");
-  botEl.classList.add("pending");
+  botEl.classList.add("pending", "rewriting");
+  botEl.dataset.stage = t("stageRewriting"); // shimmer label next to the cursor
   input.disabled = true;
   setStreaming(true); // send button stays clickable, now as stop
   activeController = new AbortController();
@@ -541,13 +554,59 @@ async function send(query, image = null) {
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      answer += decoder.decode(value, { stream: true });
-      setBubbleText(botEl, "bot", answer);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    // tokens arrive in whatever bursts the provider emits; buffer them in
+    // `received` and reveal at a steady rate (ChatGPT-style) so the text
+    // flows instead of jumping. The reveal speeds up with the backlog, so
+    // it never falls far behind the wire.
+    let received = "";
+    let readDone = false;
+    let readError = null;
+    const pump = (async () => {
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += decoder.decode(value, { stream: true });
+          // backend stage markers: \x02 = rewrite done, \x03 = gate
+          // passed, \x01 = retrieval done. Cursor: rewriting (tilt) ->
+          // searching (scan) -> writing (pulse) -> blink.
+          // \u0002 (gate checking) and \u0003 (gate passed) both show as
+          // "searching": retrieval genuinely runs through the whole gate
+          // window, and surfacing moderation at every turn reads hostile
+          if (received.includes("\u0002") || received.includes("\u0003")) {
+            received = received.replaceAll("\u0002", "").replaceAll("\u0003", "");
+            botEl.classList.remove("rewriting");
+            botEl.classList.add("searching");
+            botEl.dataset.stage = t("stageSearching");
+          }
+          if (received.includes("\u0001")) {
+            received = received.replaceAll("\u0001", "");
+            botEl.classList.remove("rewriting", "searching");
+            botEl.classList.add("writing");
+            botEl.dataset.stage = t("stageWriting");
+          }
+        }
+      } catch (error) {
+        readError = error;
+      } finally {
+        readDone = true;
+      }
+    })();
+
+    while ((!readDone || answer.length < received.length) && !readError) {
+      await new Promise((resolve) => setTimeout(resolve, 24));
+      if (answer.length < received.length) {
+        const backlog = received.length - answer.length;
+        answer = received.slice(0, answer.length + Math.max(2, Math.round(backlog / 15)));
+        botEl.classList.remove("rewriting", "searching", "writing");
+        setBubbleText(botEl, "bot", answer);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
     }
+    await pump;
+    if (readError) throw readError;
+    answer = received;
     if (answer === appConfig.abuse_message) {
       botEl.remove(); // no bot reply in the chat — the popup is the response
       showAbuseDialog();

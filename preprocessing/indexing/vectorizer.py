@@ -1,5 +1,6 @@
 import argparse
 import json
+import re
 from datetime import date
 from pathlib import Path
 
@@ -62,6 +63,9 @@ def calendar_chunks_from_json(input_file):
     for event in events:
         text = render_line(event)
         start, end = event.get("start_date"), event.get("end_date")
+        # the term carries the academic year ("2025-2026 Güz Yarıyılı") —
+        # it picks that year's PDF so citation chips link to the right one
+        year = re.match(r"\d{4}-\d{4}", event.get("term") or "")
         chunks.append({
             "text": text,
             "metadata": {
@@ -72,6 +76,7 @@ def calendar_chunks_from_json(input_file):
                 "academic_period": extract_academic_period(event.get("term") or ""),
                 "parsed_date1": date.fromisoformat(start) if start else None,
                 "parsed_date2": date.fromisoformat(end) if end else None,
+                "source_url": settings.CALENDAR_SOURCE_URLS.get(year.group()) if year else None,
             },
         })
     return chunks

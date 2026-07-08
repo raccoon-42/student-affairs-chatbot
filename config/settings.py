@@ -5,6 +5,7 @@ hardcoding constants itself, so the indexer and the retriever can never
 disagree on which model or collection is in force.
 """
 import os
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -35,6 +36,16 @@ EMBED_INSTRUCTION = (
 # own (calendar/regulations come from PDFs; FAQ entries carry their page)
 CALENDAR_SOURCE_URL = os.getenv("CALENDAR_SOURCE_URL", "")
 REGULATIONS_SOURCE_URL = os.getenv("REGULATIONS_SOURCE_URL", "")
+
+# Per-year calendar PDFs: CALENDAR_25_26_URL="https://..." becomes
+# {"2025-2026": "https://..."}. The vectorizer stamps each calendar chunk
+# with its year's URL at index time, so citation chips link to the right
+# PDF; add a new env var when a new academic year is published.
+CALENDAR_SOURCE_URLS = {
+    f"20{m.group(1)}-20{m.group(2)}": value
+    for key, value in os.environ.items()
+    if (m := re.fullmatch(r"CALENDAR_(\d{2})_(\d{2})_URL", key))
+}
 
 # Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
 SEMANTIC_WEIGHT = 0.7
@@ -82,6 +93,11 @@ ABUSE_BLOCK_MINUTES = int(os.getenv("ABUSE_BLOCK_MINUTES", "10"))
 # Comma-separated emails/IPs exempt from the abuse block only (dev use);
 # message limits and the spam brake still apply to these keys
 ABUSE_EXEMPT = {key.strip() for key in os.getenv("ABUSE_EXEMPT", "").split(",") if key.strip()}
+
+# Keys (IPs or signed-in emails) exempt from ALL rate limiting — for the
+# judge suite and local eval runs, which burn through the anonymous
+# quota by design. Don't put real users here.
+RATELIMIT_EXEMPT = {key.strip() for key in os.getenv("RATELIMIT_EXEMPT", "").split(",") if key.strip()}
 
 # API (used by integration tests)
 API_URL = os.getenv("API_URL", "http://localhost:8000")

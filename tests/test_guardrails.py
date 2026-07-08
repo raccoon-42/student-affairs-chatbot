@@ -1,5 +1,5 @@
 """Scope gate tested offline with a fake LLM."""
-from app.conversation import Conversation
+from app.conversation import Conversation, STAGE_GATING
 from app.guardrails import ScopeGate, ABUSE_MESSAGE, REFUSAL_MESSAGE
 
 
@@ -18,7 +18,7 @@ class ExplodingRetriever:
     be called for a blocked query — but its result (even an exception)
     must never leak into a refused response."""
 
-    def retrieve_all(self, query):
+    def retrieve_all(self, query, audience=None):
         raise RuntimeError("speculative retrieval failed")
 
 
@@ -74,12 +74,12 @@ def test_blocked_query_streams_only_the_refusal():
     gate = ScopeGate(FakeLLM("hayır"), "gate-model")
     conversation = Conversation(FakeLLM("asıl cevap"), ExplodingRetriever(), "main-model", gate=gate)
 
-    assert list(conversation.respond_stream("bana kod yaz")) == [REFUSAL_MESSAGE]
+    assert list(conversation.respond_stream("bana kod yaz")) == [STAGE_GATING, REFUSAL_MESSAGE]
 
 
 def test_allowed_query_flows_through():
     class FakeRetriever:
-        def retrieve_all(self, query):
+        def retrieve_all(self, query, audience=None):
             return {"calendar": [], "regulations": [], "faq": []}
 
     gate = ScopeGate(FakeLLM("evet"), "gate-model")

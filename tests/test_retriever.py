@@ -125,3 +125,34 @@ def test_hybrid_score_blends_semantic_and_bm25():
     retriever = Retriever(store, FakeEmbedder())
     results = retriever.retrieve_regulations("kayıt dondurma")
     assert "kayıt dondurma" in results[0]["text"]
+
+
+def make_faq_retriever():
+    store = InMemoryVectorStore()
+    # the same question exists in both audience corpora, like the 34
+    # verbatim duplicates across the lisans / lisansüstü FAQ PDFs
+    for audience in ("lisans", "lisansustu"):
+        store.add(settings.FAQ_COLLECTION, "Sınav sonucuna itiraz edebilir miyim?",
+                  {"audience": audience, "answer": f"{audience} cevabı"},
+                  [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.FAQ_COLLECTION, "Kayıt dondurma nasıl yapılır?",
+              {"audience": "lisans", "answer": "dilekçe ile"},
+              [0.0, 1.0, 0.0, 0.1])
+    return Retriever(InMemoryVectorStoreWrapper(store), FakeEmbedder())
+
+
+def test_faq_audience_filter_selects_the_matching_copy():
+    retriever = make_faq_retriever()
+    results = retriever.retrieve_faq("sınav sonucuna itiraz", audience="lisansustu")
+    assert retriever._store.last_filters == {"audience": "lisansustu"}
+    matches = [r for r in results if "itiraz" in r["text"]]
+    assert len(matches) == 1
+    assert matches[0]["metadata"]["audience"] == "lisansustu"
+
+
+def test_faq_without_profile_dedupes_duplicate_questions():
+    retriever = make_faq_retriever()
+    results = retriever.retrieve_faq("sınav sonucuna itiraz")
+    assert retriever._store.last_filters is None
+    matches = [r for r in results if "itiraz" in r["text"]]
+    assert len(matches) == 1
