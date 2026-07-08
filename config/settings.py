@@ -19,6 +19,7 @@ QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 CALENDAR_COLLECTION = os.getenv("CALENDAR_COLLECTION", "academic_calendar_2025")
 REGULATIONS_COLLECTION = os.getenv("REGULATIONS_COLLECTION", "regulations")
 FAQ_COLLECTION = os.getenv("FAQ_COLLECTION", "faq")
+FORMS_COLLECTION = os.getenv("FORMS_COLLECTION", "forms")
 
 # Embeddings (used by BOTH indexing and querying)
 # "openrouter" (hosted) or "local" (sentence-transformers). Collections
@@ -36,6 +37,8 @@ EMBED_INSTRUCTION = (
 # own (calendar/regulations come from PDFs; FAQ entries carry their page)
 CALENDAR_SOURCE_URL = os.getenv("CALENDAR_SOURCE_URL", "")
 REGULATIONS_SOURCE_URL = os.getenv("REGULATIONS_SOURCE_URL", "")
+# forms chunks always carry their own PDF URL; this is just the fallback
+FORMS_SOURCE_URL = os.getenv("FORMS_SOURCE_URL", "https://ogrenciisleri.iyte.edu.tr/formlar/")
 
 # Per-year calendar PDFs: CALENDAR_25_26_URL="https://..." becomes
 # {"2025-2026": "https://..."}. The vectorizer stamps each calendar chunk

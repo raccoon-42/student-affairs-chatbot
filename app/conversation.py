@@ -46,6 +46,9 @@ CONTEXT_TEMPLATE = """
 
     # SIKÇA SORULAN SORULAR:
     {faq_context}
+
+    # FORM VE DİLEKÇELER (başlık + kullanım amacı; bağlantı için kaynak işareti yeterli):
+    {forms_context}
     </available_reference_data>
 </conversation>
 
@@ -276,15 +279,16 @@ class Conversation:
                       f"(embed {timings['embed']:.2f}s | search {timings['search']:.2f}s, "
                       f"alongside the gate)")
         self._log(f"[timing] gate + retrieval combined {time.perf_counter() - start:.2f}s")
+        corpora = ("calendar", "regulations", "faq", "forms")
         self._log("[retrieval] " + ", ".join(
-            f"{corpus}: {len(results[corpus])}" for corpus in ("calendar", "regulations", "faq")))
+            f"{corpus}: {len(results.get(corpus, []))}" for corpus in corpora))
 
         # every chunk gets a [n] marker; the model cites them inline and
         # last_sources[n-1] is what marker [n] points to
-        numbered = {"calendar": [], "regulations": [], "faq": []}
+        numbered = {corpus: [] for corpus in corpora}
         self.last_sources = []
-        for corpus in ("calendar", "regulations", "faq"):
-            for result in results[corpus]:
+        for corpus in corpora:
+            for result in results.get(corpus, []):
                 self.last_sources.append(self._source_entry(corpus, result))
                 numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
 
@@ -295,6 +299,7 @@ class Conversation:
             calendar_context="\n".join(numbered["calendar"]),
             regulations_context="\n".join(numbered["regulations"]),
             faq_context="\n\n".join(numbered["faq"]),
+            forms_context="\n\n".join(numbered["forms"]),
         )
 
         if not self._messages:
@@ -313,9 +318,11 @@ class Conversation:
         """One 'view sources' entry. Labels are the stored chunk texts, so
         they're readable as-is; FAQ entries carry their own page URL,
         calendar/regulations fall back to the configured corpus page."""
-        corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik", "faq": "SSS"}
+        corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik",
+                        "faq": "SSS", "forms": "Form"}
         corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
-                       "regulations": settings.REGULATIONS_SOURCE_URL, "faq": ""}
+                       "regulations": settings.REGULATIONS_SOURCE_URL, "faq": "",
+                       "forms": settings.FORMS_SOURCE_URL}
         metadata = result.get("metadata") or {}
         # chips labeled by hostname all look alike — the document's own
         # title (indexed with each mevzuat chunk) tells sources apart

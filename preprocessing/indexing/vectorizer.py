@@ -38,6 +38,14 @@ def _regulation_payload(text, metadata):
     }
 
 
+def _forms_payload(text, metadata):
+    return {
+        "text": text,  # title + use-case description + aliases — all retrieval signal
+        "metadata": metadata,  # carries title, source_url, form_code, category
+        "category": metadata.get("category"),
+    }
+
+
 def _faq_payload(text, metadata):
     return {
         "text": text,  # the question — that's what gets embedded and matched
@@ -139,6 +147,32 @@ def mevzuat_chunks_from_dir(input_dir):
     return chunks
 
 
+def forms_chunks_from_json(input_file):
+    """Chunks from the describer's forms.json (one link-catalog entry each).
+
+    The embedded text stacks title, description and alias keywords so both
+    the semantic and BM25 channels see how students actually ask; the URL
+    rides in metadata and surfaces as the citation chip."""
+    with open(input_file, encoding="utf-8") as f:
+        forms = json.load(f)
+
+    chunks = []
+    for form in forms:
+        lines = [form["title"], form.get("description", "")]
+        if form.get("aliases"):
+            lines.append("Anahtar kelimeler: " + ", ".join(form["aliases"]))
+        chunks.append({
+            "text": "\n".join(line for line in lines if line),
+            "metadata": {
+                "document_title": form["title"],
+                "source_url": form["source_url"],
+                "form_code": form.get("form_code"),
+                "category": form.get("category"),
+            },
+        })
+    return chunks
+
+
 def calendar_chunks_from_dir(input_dir):
     """Chunks from every parsed calendar JSON (one file per academic year)."""
     chunks = []
@@ -195,7 +229,7 @@ def main():
                       help='Input file, or a directory of parsed JSONs to index as one collection')
     parser.add_argument('--collection', default=None,
                       help='Qdrant collection name (defaults to the configured one for the type)')
-    parser.add_argument('--type', choices=['calendar', 'regulations', 'faq'], required=True,
+    parser.add_argument('--type', choices=['calendar', 'regulations', 'faq', 'forms'], required=True,
                       help='Type of content being processed')
 
     args = parser.parse_args()
@@ -217,6 +251,10 @@ def main():
             chunks = calendar_chunks_from_json(args.input_file) if is_json else split_text(args.input_file)
         collection = args.collection or settings.CALENDAR_COLLECTION
         payload = _calendar_payload
+    elif args.type == 'forms':
+        chunks = forms_chunks_from_json(args.input_file)
+        collection = args.collection or settings.FORMS_COLLECTION
+        payload = _forms_payload
     elif args.type == 'faq':
         # faq.json from the scraper is already one Q&A per entry; embed the question
         with open(args.input_file, encoding='utf-8') as f:

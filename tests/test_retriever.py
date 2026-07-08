@@ -99,8 +99,8 @@ def test_retrieve_all_embeds_the_query_exactly_once():
 
     results = retriever.retrieve_all("sınav ne zaman")
 
-    assert embedder.calls == 1  # one embed shared by all three searches
-    assert set(results) == {"calendar", "regulations", "faq"}
+    assert embedder.calls == 1  # one embed shared by all four searches
+    assert set(results) == {"calendar", "regulations", "faq", "forms"}
 
 
 def test_faq_returns_question_and_answer():
@@ -115,6 +115,23 @@ def test_faq_returns_question_and_answer():
 
     assert results[0]["text"] == "Soru: Kimlik kartım kaybolursa ne yapmalıyım?\nCevap: Zayi dilekçesi verin."
     assert results[0]["metadata"]["audience"] == "lisans"
+
+
+def test_forms_return_stored_text_with_link_metadata():
+    store = InMemoryVectorStore()
+    store.add(settings.FORMS_COLLECTION,
+              "Öğrenci Kimlik Kartı Formu\nKayıp kimlik yerine yenisini almak için doldurulur.\n"
+              "Anahtar kelimeler: kimlik kaybettim, kimlik zayi",
+              {"document_title": "Öğrenci Kimlik Kartı Formu",
+               "source_url": "https://example.test/kimlik-formu.pdf",
+               "form_code": "İYTE-ÖİDB-0010", "category": "form"},
+              [0.0, 1.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+
+    results = retriever.retrieve_forms("kayıt kartı")
+
+    assert "Öğrenci Kimlik Kartı Formu" in results[0]["text"]
+    assert results[0]["metadata"]["source_url"] == "https://example.test/kimlik-formu.pdf"
 
 
 def test_hybrid_score_blends_semantic_and_bm25():

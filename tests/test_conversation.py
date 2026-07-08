@@ -29,12 +29,19 @@ class FakeRetriever:
     def retrieve_faq(self, query, top_k=3):
         return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçe verin.", "score": 1.0, "metadata": {}}]
 
+    def retrieve_forms(self, query, top_k=3):
+        return [{"text": "Öğrenci Kimlik Kartı Formu\nKayıp kimlik yerine yenisini almak için doldurulur.",
+                 "score": 1.0,
+                 "metadata": {"document_title": "Öğrenci Kimlik Kartı Formu",
+                              "source_url": "https://example.test/kimlik-formu.pdf"}}]
+
     def retrieve_all(self, query, audience=None):
         self.queries.append(query)
         return {
             "calendar": self.retrieve_calendar(query),
             "regulations": self.retrieve_regulations(query),
             "faq": self.retrieve_faq(query),
+            "forms": self.retrieve_forms(query),
         }
 
 

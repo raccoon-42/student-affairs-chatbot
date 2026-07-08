@@ -97,21 +97,23 @@ class Retriever:
 
     def retrieve_all(self, query: str, audience: str = None) -> Dict[str, List[Dict]]:
         """Everything the conversation needs, in one call:
-        the query is embedded once, the three collections are searched
+        the query is embedded once, the four collections are searched
         in parallel."""
         start = time.perf_counter()
         vector = self._embed_query(query)
         embed_seconds = time.perf_counter() - start
 
         start = time.perf_counter()
-        with ThreadPoolExecutor(max_workers=3) as pool:
+        with ThreadPoolExecutor(max_workers=4) as pool:
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
             regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
             faq = pool.submit(self.retrieve_faq, query, 5, vector, audience)
+            forms = pool.submit(self.retrieve_forms, query, 3, vector)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
                 "faq": faq.result(),
+                "forms": forms.result(),
             }
         # the conversation logs these per turn (CLI + dev mode in the UI);
         # last-write-wins across sessions is fine for diagnostics
@@ -159,6 +161,15 @@ class Retriever:
             results.append(
                 {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata})
         return results
+
+    def retrieve_forms(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+        # a link catalog, not documents: the chunk is title + use-case
+        # description, the payoff is the source_url in metadata
+        hits = self._hybrid_search(query, settings.FORMS_COLLECTION, top_k, vector=vector)
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
 
     def _embed_query(self, query):
         # any model-specific instruction prefix lives in the embedder

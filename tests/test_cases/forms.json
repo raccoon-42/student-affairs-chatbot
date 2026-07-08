@@ -1,0 +1,22 @@
+[
+  {
+    "query": "öğrenci kimliğimi kaybettim, ne yapmam gerekiyor?",
+    "expected": "Öğrenci Kimlik Kartı Formu'ndan bahseder ve kaynak işaretiyle forma atıfta bulunur; kayıp/zayi durumunda bu formun doldurulacağını söyler.",
+    "description": "Kayıp kimlik -> Öğrenci Kimlik Kartı Formu'na yönlendirme"
+  },
+  {
+    "query": "bir dersten çekilmek istiyorum, dilekçeyi nereden bulabilirim?",
+    "expected": "Dersten Çekilme Talep Formu'nu adıyla söyler ve kaynak işaretiyle atıfta bulunur.",
+    "description": "Dersten çekilme -> Dersten Çekilme Talep Formu"
+  },
+  {
+    "query": "kendi isteğimle okuldan kaydımı sildirmek istiyorum, hangi formu doldurmalıyım?",
+    "expected": "Kendi İsteği İle İlişik Kesme Formu'nu adıyla söyler ve kaynak işaretiyle atıfta bulunur; süreç adımları kaynaklarda yoksa öğrenci işlerine yönlendirir.",
+    "description": "Kendi isteğiyle kayıt sildirme -> Kendi İsteği İle İlişik Kesme Formu"
+  },
+  {
+    "query": "erasmus başvuru formunu nereden indirebilirim?",
+    "expected": "Elindeki form listesinde Erasmus başvuru formu olmadığını söyler, form uydurmaz veya alakasız bir form önermez; ilgili birime (Uluslararası İlişkiler / Erasmus ofisi veya öğrenci işleri) yönlendirebilir.",
+    "description": "Listede olmayan form (Erasmus) -> uydurmamalı"
+  }
+]
