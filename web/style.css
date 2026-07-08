@@ -8,6 +8,7 @@
   display: none !important;
 }
 
+/* monochrome palette: black on white, white on black — no color accents */
 :root {
   --bg: #f7f7f5;
   --surface: #ffffff;
@@ -15,9 +16,8 @@
   --text: #1c1917;
   --muted: #8a8580;
   --border: #e5e3e0;
-  --accent: #4f46e5;
+  --accent: #1c1917;
   --accent-text: #ffffff;
-  --user-bubble: #4f46e5;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
@@ -28,9 +28,8 @@
   --text: #e7e5e4;
   --muted: #8a8580;
   --border: #2e2e2e;
-  --accent: #818cf8;
+  --accent: #e7e5e4;
   --accent-text: #131313;
-  --user-bubble: #4338ca;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
@@ -68,22 +67,50 @@ button {
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
+  padding-top: 4rem; /* clears the fixed hamburger */
   gap: 0.75rem;
+  /* visibility rides along so the slide-out stays visible, then hides */
+  transition: margin-left 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
+/* desktop collapse: slide the sidebar out of the layout */
+@media (min-width: 769px) {
+  body.sidebar-collapsed #sidebar {
+    margin-left: -260px;
+    visibility: hidden;
+  }
+}
+
+/* fixed top-left cluster: its position never changes, whether the
+ * sidebar is open (it overlays the sidebar top) or collapsed */
+#top-controls {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* a sidebar row like ChatGPT's New chat — borderless, icon + label */
 #new-conversation {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6rem;
-  border: 1px solid var(--border);
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  border: none;
   border-radius: 10px;
-  background: var(--surface-2);
+  background: none;
+  color: var(--text);
+  font-size: 0.95rem;
+  text-align: left;
 }
 
 #new-conversation:hover {
-  border-color: var(--accent);
+  background: var(--surface-2);
 }
 
 #conversation-list {
@@ -94,16 +121,24 @@ button {
   gap: 2px;
 }
 
+#chats-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0 0.5rem;
+}
+
 .conversation-item {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.55rem 0.35rem 0.55rem 0.75rem;
+  padding: 0.6rem 0.4rem 0.6rem 0.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: none;
   text-align: left;
   color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
 .conversation-item:hover {
@@ -112,7 +147,6 @@ button {
 
 .conversation-item.active {
   background: var(--surface-2);
-  font-weight: 600;
 }
 
 .conversation-item .title {
@@ -368,6 +402,7 @@ dialog .dialog-close:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative; /* the composer floats over the scroll area */
 }
 
 header {
@@ -380,12 +415,24 @@ header {
   background: var(--surface);
 }
 
+/* keep the title clear of the fixed hamburger when it floats over the chat */
+body.sidebar-collapsed header {
+  padding-left: 3.6rem;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding-left: 3.6rem;
+  }
+}
+
 header h1 {
   font-size: 1rem;
   flex: 1;
 }
 
 #menu,
+#lang-toggle,
 #theme-toggle {
   display: flex;
   align-items: center;
@@ -398,14 +445,16 @@ header h1 {
   color: var(--muted);
 }
 
+#lang-toggle {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 #menu:hover,
+#lang-toggle:hover,
 #theme-toggle:hover {
   color: var(--text);
   border-color: var(--muted);
-}
-
-#menu {
-  display: none;
 }
 
 :root[data-theme="dark"] #icon-moon { display: none; }
@@ -413,13 +462,16 @@ header h1 {
 
 #messages {
   width: 100%;
-  max-width: 760px;
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  padding: 1.25rem 1rem;
+  gap: 1.5rem;
+  font-size: 1.05rem;
+  /* full-width scroll container so the scrollbar sits at the far right;
+   * the horizontal padding keeps the content in a centered 760px band,
+   * the bottom padding keeps messages clear of the floating composer */
+  padding: 2rem max(1.5rem, calc((100% - 760px) / 2)) 8.5rem;
   scroll-behavior: smooth;
 }
 
@@ -432,26 +484,45 @@ header h1 {
 }
 
 .message {
-  max-width: 85%;
-  padding: 0.65rem 1rem;
-  border-radius: 16px;
   white-space: pre-wrap;
-  line-height: 1.5;
-  box-shadow: var(--shadow);
+  line-height: 1.6;
 }
 
+/* user: compact pill on the right — bot: plain text on the background */
 .message.user {
   align-self: flex-end;
-  background: var(--user-bubble);
-  color: #ffffff;
-  border-bottom-right-radius: 6px;
+  max-width: 70%;
+  padding: 0.55rem 1.1rem;
+  border-radius: 22px;
+  background: var(--surface-2);
 }
 
 .message.bot {
   align-self: flex-start;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-bottom-left-radius: 6px;
+  max-width: 100%;
+}
+
+.msg-actions {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: -0.5rem;
+}
+
+.msg-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--muted);
+}
+
+.msg-actions button:hover {
+  color: var(--text);
+  background: var(--surface-2);
 }
 
 .message code {
@@ -475,42 +546,164 @@ header h1 {
 /* ---------- composer ---------- */
 
 form {
+  /* floats over the bottom of the scroll area, so the scrollbar runs
+   * all the way to the bottom-right corner */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   width: 100%;
   max-width: 760px;
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  padding: 0.75rem 1rem 1.1rem;
+  padding: 1.75rem 1.5rem 0.6rem;
+  background: linear-gradient(to top, var(--bg) 65%, transparent);
+}
+
+/* one large pill with the send arrow inside, ChatGPT-style */
+#composer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+#composer:focus-within {
+  border-color: var(--muted);
 }
 
 #input {
   flex: 1;
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: none;
+  background: none;
   font-size: 1rem;
-  background: var(--surface);
   color: var(--text);
+  padding: 0.55rem 0;
 }
 
 #input:focus {
-  outline: 2px solid var(--accent);
-  border-color: transparent;
+  outline: none;
 }
 
 #send {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   border: none;
-  border-radius: 12px;
-  background: var(--accent);
-  color: var(--accent-text);
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
 }
 
 #send:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: default;
+}
+
+#disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ---------- message popover (timestamp + sources) ---------- */
+
+#msg-popover {
+  position: fixed;
+  z-index: 40;
+  min-width: 240px;
+  max-width: 320px;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.popover-time {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.5rem;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--text);
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.popover-item:hover {
+  background: var(--surface-2);
+}
+
+.popover-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.25rem;
+  max-height: 300px;
+  overflow-y: auto;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.source-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 9px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.source-item:hover {
+  background: var(--surface-2);
+}
+
+.source-type {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* inline citation pill at the end of a bot answer */
+.source-chip {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+a.source-chip:hover {
+  color: var(--text);
 }
 
 /* ---------- mobile ---------- */
@@ -538,9 +731,5 @@ form {
     inset: 0;
     z-index: 10;
     background: rgba(0, 0, 0, 0.4);
-  }
-
-  #menu {
-    display: flex;
   }
 }

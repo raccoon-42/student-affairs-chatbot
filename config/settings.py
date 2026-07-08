@@ -31,6 +31,11 @@ EMBED_INSTRUCTION = (
     "yanıt verebilecek ilgili pasajları getir"
 )
 
+# Where "view sources" links point for chunks that have no URL of their
+# own (calendar/regulations come from PDFs; FAQ entries carry their page)
+CALENDAR_SOURCE_URL = os.getenv("CALENDAR_SOURCE_URL", "")
+REGULATIONS_SOURCE_URL = os.getenv("REGULATIONS_SOURCE_URL", "")
+
 # Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
 SEMANTIC_WEIGHT = 0.7
 BM25_WEIGHT = 0.3

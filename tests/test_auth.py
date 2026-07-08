@@ -110,8 +110,8 @@ def test_import_adopts_anonymous_conversation(monkeypatch):
     [conversation] = client.get("/conversations").json()
     assert conversation["title"] == "soru"
     messages = client.get("/conversations/anon-conv").json()["messages"]
-    assert messages == [{"role": "user", "content": "soru"},
-                        {"role": "assistant", "content": "cevap"}]
+    assert [(m["role"], m["content"]) for m in messages] == [
+        ("user", "soru"), ("assistant", "cevap")]
 
     # someone else's conversation id can't be hijacked
     veli = {"email": "veli@gmail.com", "name": "Veli", "picture": "", "member": False}

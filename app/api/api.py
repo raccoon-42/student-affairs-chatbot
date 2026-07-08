@@ -139,6 +139,7 @@ async def auth_config(request: Request, auth_token: str = Cookie(None)):
     # duplicating the string; abuse_exempt lets a dev skip the client lock.
     user = auth.sessions.get(auth_token)
     return {"client_id": settings.GOOGLE_CLIENT_ID, "abuse_message": ABUSE_MESSAGE,
+            "off_topic_message": REFUSALS["off_topic"],
             "abuse_block_seconds": settings.ABUSE_BLOCK_MINUTES * 60,
             "abuse_exempt": _limit_key(request, user) in settings.ABUSE_EXEMPT}
 
@@ -241,6 +242,17 @@ async def conversation_delete(conversation_id: str, auth_token: str = Cookie(Non
     return {"ok": True}
 
 
+@app.get("/chat/sources")
+async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
+    """What the current conversation's latest answer was grounded on.
+    Reads the cached conversation only — never creates one."""
+    user = auth.sessions.get(auth_token)
+    _authorize_conversation(session_id, user)
+    with _sessions_lock:
+        cached = _sessions.get(("openrouter", session_id))
+    return {"sources": cached[0].last_sources if cached else []}
+
+
 @app.get("/chat", response_model=ChatResponse)
 async def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
                auth_token: str = Cookie(None)):
@@ -249,11 +261,13 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
     _enforce_rate_limit(request, user)
     _authorize_conversation(session_id, user)
     model = model_name or settings.OPENROUTER_MODEL
-    response = get_conversation(session_id).respond(
+    conversation = get_conversation(session_id)
+    response = conversation.respond(
         query, model, education_type=user["education_type"] if user else None)
     _register_refusal(request, user, response)
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
-        storage.record_exchange(session_id, user["email"], query, response)
+        storage.record_exchange(session_id, user["email"], query, response,
+                                sources=conversation.last_sources)
     return ChatResponse(query=query, response=response, model=model, session_id=session_id)
 
 
@@ -279,7 +293,8 @@ async def chat_stream(request: Request, query: str, session_id: str = None,
         # persist only after the full answer arrived; refusals aren't
         # part of the transcript
         if user and answer not in REFUSALS.values():
-            storage.record_exchange(session_id, user["email"], query, answer)
+            storage.record_exchange(session_id, user["email"], query, answer,
+                                    sources=conversation.last_sources)
 
     return StreamingResponse(
         recorded(),

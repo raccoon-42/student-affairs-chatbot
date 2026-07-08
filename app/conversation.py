@@ -95,6 +95,7 @@ class Conversation:
         self._gate = gate
         self._rewriter = rewriter
         self._messages = []
+        self.last_sources = []  # what the latest answer was grounded on
 
     def respond(self, query: str, model: str = None, education_type: str = None) -> str:
         verdict = self._prepare(query, education_type)
@@ -152,12 +153,21 @@ class Conversation:
                 results = speculative.result()
         print(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s", file=sys.stderr)
 
+        # every chunk gets a [n] marker; the model cites them inline and
+        # last_sources[n-1] is what marker [n] points to
+        numbered = {"calendar": [], "regulations": [], "faq": []}
+        self.last_sources = []
+        for corpus in ("calendar", "regulations", "faq"):
+            for result in results[corpus]:
+                self.last_sources.append(self._source_entry(corpus, result))
+                numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
+
         context = CONTEXT_TEMPLATE.format(
             query=query,
             profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
-            calendar_context="\n".join(r["text"] for r in results["calendar"]),
-            regulations_context="\n".join(r["text"] for r in results["regulations"]),
-            faq_context="\n\n".join(r["text"] for r in results["faq"]),
+            calendar_context="\n".join(numbered["calendar"]),
+            regulations_context="\n".join(numbered["regulations"]),
+            faq_context="\n\n".join(numbered["faq"]),
         )
 
         if not self._messages:
@@ -165,6 +175,20 @@ class Conversation:
         self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
         self._pending_query = query
         return "ok"
+
+    @staticmethod
+    def _source_entry(corpus, result):
+        """One 'view sources' entry. Labels are the stored chunk texts, so
+        they're readable as-is; FAQ entries carry their own page URL,
+        calendar/regulations fall back to the configured corpus page."""
+        corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik", "faq": "SSS"}
+        corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
+                       "regulations": settings.REGULATIONS_SOURCE_URL, "faq": ""}
+        source = {"type": corpus_names[corpus], "label": result["text"][:120]}
+        url = (result.get("metadata") or {}).get("source_url") or corpus_urls[corpus]
+        if url:
+            source["url"] = url
+        return source
 
     def _add_assistant_message(self, answer):
         # the reference data was for this turn only — history keeps the bare

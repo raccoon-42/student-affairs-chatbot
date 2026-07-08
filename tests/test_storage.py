@@ -32,12 +32,22 @@ def test_exchanges_accumulate_with_title_from_first_question():
 
     [conversation] = storage.list_conversations(USER["email"])
     assert conversation["title"] == "ilk soru"
-    assert storage.conversation_messages("conv1") == [
-        {"role": "user", "content": "ilk soru"},
-        {"role": "assistant", "content": "ilk cevap"},
-        {"role": "user", "content": "ikinci soru"},
-        {"role": "assistant", "content": "ikinci cevap"},
+    messages = storage.conversation_messages("conv1")
+    assert [(m["role"], m["content"]) for m in messages] == [
+        ("user", "ilk soru"), ("assistant", "ilk cevap"),
+        ("user", "ikinci soru"), ("assistant", "ikinci cevap"),
     ]
+    assert all(m["created_at"] for m in messages)
+
+
+def test_sources_roundtrip():
+    storage.upsert_user(USER)
+    sources = [{"type": "SSS", "label": "Kaç AKTS ile mezun olabilirim?", "url": "https://x"}]
+    storage.record_exchange("conv-s", USER["email"], "soru", "cevap", sources=sources)
+
+    messages = storage.conversation_messages("conv-s")
+    assert messages[0]["sources"] is None       # user message carries none
+    assert messages[1]["sources"] == sources    # assistant message does
 
 
 def test_ownership_and_delete():

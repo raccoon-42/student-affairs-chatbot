@@ -1,3 +1,71 @@
+/* ---------- interface language ----------
+ * UI chrome only — the bot's answers follow the user's own language. */
+const STRINGS = {
+  tr: {
+    chats: "Sohbetler",
+    newConversation: "Yeni konuşma",
+    emptyState: "Akademik takvim, kayıtlar ve yönetmelikler hakkında soru sorabilirsin.",
+    placeholder: "Sorunu yaz...",
+    limitTitle: "Mesaj limitine ulaştın",
+    limitFallback: "Mesaj limitine ulaştın. Lütfen bir süre sonra tekrar dene.",
+    abuseTitle: "Uygunsuz dil",
+    abuseNote: "Uygunsuz dil nedeniyle mesaj gönderimi engellendi.",
+    profileTitle: "Seni tanıyalım",
+    profileText: "Sorularını daha iyi yanıtlayabilmek için eğitim durumunu seç.",
+    eduAday: "Aday öğrenci (İYTE'yi düşünüyorum)",
+    eduLisans: "Lisans öğrencisi",
+    eduYl: "Yüksek lisans öğrencisi",
+    eduDoktora: "Doktora öğrencisi",
+    save: "Kaydet",
+    error: (message) => `Bir şeyler ters gitti (${message}). Tekrar dener misin?`,
+    disclaimer: "İyteBot hata yapabilir. Önemli bilgileri öğrenci işlerinden doğrulayın.",
+    viewSources: "Kaynakları görüntüle",
+    noSources: "Bu yanıt için kaynak bilgisi yok.",
+    today: "Bugün",
+  },
+  en: {
+    chats: "Chats",
+    newConversation: "New chat",
+    emptyState: "Ask about the academic calendar, registration and regulations.",
+    placeholder: "Type your question...",
+    limitTitle: "Message limit reached",
+    limitFallback: "You have reached the message limit. Please try again later.",
+    abuseTitle: "Inappropriate language",
+    abuseNote: "Messaging has been disabled due to inappropriate language.",
+    profileTitle: "Tell us about yourself",
+    profileText: "Pick your education status so answers fit you better.",
+    eduAday: "Prospective student (considering IZTECH)",
+    eduLisans: "Undergraduate student",
+    eduYl: "Master's student",
+    eduDoktora: "PhD student",
+    save: "Save",
+    error: (message) => `Something went wrong (${message}). Please try again.`,
+    disclaimer: "İyteBot can make mistakes. Verify important info with student affairs.",
+    viewSources: "View sources",
+    noSources: "No source info for this answer.",
+    today: "Today",
+  },
+};
+
+let lang = localStorage.getItem("lang") || "tr";
+let gisReady = false; // declared early: applyTheme() runs before the auth section
+
+function t(key, ...args) {
+  const entry = STRINGS[lang][key];
+  return typeof entry === "function" ? entry(...args) : entry;
+}
+
+function applyLanguage() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.getElementById("lang-toggle").textContent = lang === "tr" ? "EN" : "TR";
+}
+
 const messagesEl = document.getElementById("messages");
 const listEl = document.getElementById("conversation-list");
 const form = document.getElementById("form");
@@ -43,7 +111,7 @@ function current() {
 function newConversation() {
   const conversation = {
     id: crypto.randomUUID().replaceAll("-", ""),
-    title: "Yeni konuşma",
+    title: t("newConversation"),
     updated: Date.now(),
     messages: [],
   };
@@ -61,6 +129,8 @@ async function select(id) {
     conversation.messages = (data?.messages ?? []).map((m) => ({
       role: m.role === "assistant" ? "bot" : "user",
       text: m.content,
+      at: m.created_at ? m.created_at * 1000 : null,
+      sources: m.sources,
     }));
   }
 
@@ -118,9 +188,14 @@ function renderMessages() {
     return;
   }
   for (const message of conversation.messages) {
-    addBubble(message.role, message.text);
+    const el = addBubble(message.role, message.text);
+    if (message.role === "bot") {
+      setBubbleText(el, "bot", message.text, message.sources);
+      addBotActions(el, message.text, message);
+    }
   }
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  // jump straight to the end — smooth scrolling is for streaming only
+  messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: "instant" });
 }
 
 /* Minimal markdown for bot answers: HTML is escaped first, then bold,
@@ -137,8 +212,30 @@ function renderMarkdown(text) {
     .replace(/^[-*] /gm, "• ");
 }
 
-function setBubbleText(el, role, text) {
-  if (role === "bot") el.innerHTML = renderMarkdown(text);
+function chipHTML(source) {
+  let label = source.type;
+  if (source.url) {
+    try { label = new URL(source.url).hostname.replace(/^www\./, ""); } catch {}
+  }
+  if (!source.url) return `<span class="source-chip">${label}</span>`;
+  // URLs from the scraper are already percent-encoded — re-encoding 404s
+  // them; only neutralize characters that could break the attribute
+  const href = source.url.replaceAll('"', "%22").replaceAll("<", "%3C");
+  return `<a class="source-chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
+}
+
+/* the model cites reference chunks as [n]; swap each marker for a chip
+ * right where it stands in the sentence */
+function withCitations(html, sources) {
+  if (!sources?.length) return html;
+  return html.replace(/\[(\d+)\]/g, (marker, n) => {
+    const source = sources[Number(n) - 1];
+    return source ? chipHTML(source) : marker;
+  });
+}
+
+function setBubbleText(el, role, text, sources) {
+  if (role === "bot") el.innerHTML = withCitations(renderMarkdown(text), sources);
   else el.textContent = text;
 }
 
@@ -151,6 +248,104 @@ function addBubble(role, text) {
   return el;
 }
 
+const COPY_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const CHECK_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const MORE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>';
+const BOOK_ICON = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5c-2-1.5-5-2-8-2v16c3 0 6 .5 8 2 2-1.5 5-2 8-2V3c-3 0-6 .5-8 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>';
+
+const msgPopover = document.getElementById("msg-popover");
+
+function formatTimestamp(at) {
+  if (!at) return "";
+  const date = new Date(at);
+  const time = date.toLocaleTimeString(lang === "tr" ? "tr-TR" : "en-US",
+    { hour: "2-digit", minute: "2-digit" });
+  const isToday = date.toDateString() === new Date().toDateString();
+  if (isToday) return `${t("today")}, ${time}`;
+  return `${date.toLocaleDateString(lang === "tr" ? "tr-TR" : "en-US",
+    { day: "numeric", month: "long" })}, ${time}`;
+}
+
+function openMsgPopover(anchor, message) {
+  msgPopover.replaceChildren();
+
+  const header = document.createElement("div");
+  header.className = "popover-time";
+  header.textContent = formatTimestamp(message.at);
+  msgPopover.appendChild(header);
+
+  const sourcesItem = document.createElement("button");
+  sourcesItem.className = "popover-item";
+  sourcesItem.innerHTML = `${BOOK_ICON}<span>${t("viewSources")}</span>`;
+  sourcesItem.addEventListener("click", (event) => {
+    event.stopPropagation();
+    showSources(message);
+  });
+  msgPopover.appendChild(sourcesItem);
+
+  msgPopover.hidden = false;
+  const rect = anchor.getBoundingClientRect();
+  msgPopover.style.left = `${Math.min(rect.left, window.innerWidth - 320)}px`;
+  msgPopover.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+}
+
+function showSources(message) {
+  msgPopover.replaceChildren();
+  const list = document.createElement("div");
+  list.className = "popover-sources";
+  const sources = message.sources || [];
+  if (!sources.length) {
+    list.textContent = t("noSources");
+  }
+  for (const source of sources) {
+    const item = document.createElement(source.url ? "a" : "div");
+    item.className = "source-item";
+    if (source.url) {
+      item.href = source.url;
+      item.target = "_blank";
+      item.rel = "noopener";
+    }
+    const type = document.createElement("span");
+    type.className = "source-type";
+    type.textContent = source.type;
+    const label = document.createElement("span");
+    label.textContent = source.label;
+    item.append(type, label);
+    list.appendChild(item);
+  }
+  msgPopover.appendChild(list);
+}
+
+document.addEventListener("click", (event) => {
+  if (!msgPopover.hidden && !msgPopover.contains(event.target)) msgPopover.hidden = true;
+});
+
+function addBotActions(messageEl, text, message = {}) {
+  const row = document.createElement("div");
+  row.className = "msg-actions";
+
+  const copy = document.createElement("button");
+  copy.innerHTML = COPY_ICON;
+  copy.ariaLabel = "Kopyala";
+  copy.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(text);
+    copy.innerHTML = CHECK_ICON;
+    setTimeout(() => { copy.innerHTML = COPY_ICON; }, 1200);
+  });
+  row.appendChild(copy);
+
+  const more = document.createElement("button");
+  more.innerHTML = MORE_ICON;
+  more.ariaLabel = "Daha fazla";
+  more.addEventListener("click", (event) => {
+    event.stopPropagation();
+    openMsgPopover(more, message);
+  });
+  row.appendChild(more);
+
+  messageEl.after(row);
+}
+
 /* ---------- chat ---------- */
 
 async function send(query) {
@@ -160,7 +355,7 @@ async function send(query) {
   if (conversation.messages.length === 0) {
     conversation.title = query.length > 40 ? query.slice(0, 40) + "…" : query;
   }
-  conversation.messages.push({ role: "user", text: query });
+  conversation.messages.push({ role: "user", text: query, at: Date.now() });
   conversation.updated = Date.now();
   saveConversations();
   renderSidebar();
@@ -198,11 +393,22 @@ async function send(query) {
       showAbuseDialog();
       return;
     }
-    conversation.messages.push({ role: "bot", text: answer });
+    let sources = [];
+    if (answer !== appConfig.off_topic_message) {
+      const params = new URLSearchParams({ session_id: conversation.id });
+      sources = await fetch(`/chat/sources?${params}`)
+        .then((r) => (r.ok ? r.json() : { sources: [] }))
+        .then((data) => data.sources)
+        .catch(() => []);
+    }
+    const botMessage = { role: "bot", text: answer, at: Date.now(), sources };
+    conversation.messages.push(botMessage);
     conversation.updated = Date.now();
     saveConversations();
+    setBubbleText(botEl, "bot", answer, sources); // final pass turns [n] into chips
+    addBotActions(botEl, answer, botMessage);
   } catch (error) {
-    botEl.textContent = `Bir şeyler ters gitti (${error.message}). Tekrar dener misin?`;
+    botEl.textContent = t("error", error.message);
   } finally {
     botEl.classList.remove("pending");
     input.disabled = sendButton.disabled = abuseBlocked;
@@ -229,6 +435,7 @@ document.getElementById("new-conversation").addEventListener("click", () => {
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("theme", theme);
+  renderSigninButton(); // the Google button carries its own theme
 }
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
@@ -262,17 +469,12 @@ document.querySelectorAll("dialog [data-close]").forEach((button) =>
   button.addEventListener("click", () => button.closest("dialog").close()));
 
 function showLimitDialog(detail) {
-  document.getElementById("limit-text").textContent =
-    detail || "Mesaj limitine ulaştın. Lütfen bir süre sonra tekrar dene.";
+  document.getElementById("limit-text").textContent = detail || t("limitFallback");
   const signinSlot = document.getElementById("limit-signin");
   signinSlot.replaceChildren();
   // anonymous users get a sign-in button right inside the dialog
   if (!signedIn && appConfig.client_id && window.google?.accounts?.id) {
-    google.accounts.id.renderButton(signinSlot, {
-      theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
-      size: "large",
-      text: "signin_with",
-    });
+    google.accounts.id.renderButton(signinSlot, googleButtonOptions(240));
   }
   limitDialog.showModal();
 }
@@ -375,9 +577,47 @@ async function onGoogleCredential(response) {
   }
 }
 
-function whenGoogleReady(callback, attempts = 50) {
-  if (window.google?.accounts?.id) return callback();
-  if (attempts > 0) setTimeout(() => whenGoogleReady(callback, attempts - 1), 100);
+let gisScript = null;
+
+function loadGoogleScript() {
+  // the button iframe takes its language from the script's ?hl= param —
+  // the locale render option alone doesn't switch it
+  return new Promise((resolve) => {
+    if (gisScript) gisScript.remove();
+    gisScript = document.createElement("script");
+    gisScript.src = `https://accounts.google.com/gsi/client?hl=${lang}`;
+    gisScript.async = true;
+    gisScript.onload = resolve;
+    document.head.appendChild(gisScript);
+  });
+}
+
+async function setupGoogleButton() {
+  if (!appConfig.client_id || signedIn) return;
+  await loadGoogleScript();
+  google.accounts.id.initialize({
+    client_id: appConfig.client_id,
+    callback: onGoogleCredential,
+  });
+  gisReady = true;
+  renderSigninButton();
+}
+
+function googleButtonOptions(width) {
+  return {
+    theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
+    shape: "pill",
+    size: "large",
+    text: "signin_with",
+    locale: lang === "tr" ? "tr" : "en",
+    width,
+  };
+}
+
+function renderSigninButton() {
+  if (!gisReady || signedIn) return;
+  signinEl.replaceChildren(); // re-render must not stack buttons
+  google.accounts.id.renderButton(signinEl, googleButtonOptions(232));
 }
 
 async function initAuth() {
@@ -392,19 +632,7 @@ async function initAuth() {
     return enterServerMode();
   }
 
-  whenGoogleReady(() => {
-    google.accounts.id.initialize({
-      client_id: appConfig.client_id,
-      callback: onGoogleCredential,
-    });
-    signinEl.replaceChildren(); // re-init after logout must not stack buttons
-    google.accounts.id.renderButton(signinEl, {
-      theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
-      size: "medium",
-      text: "signin_with",
-      width: 230,
-    });
-  });
+  setupGoogleButton();
 }
 
 document.getElementById("logout").addEventListener("click", async () => {
@@ -414,20 +642,42 @@ document.getElementById("logout").addEventListener("click", async () => {
 
 initAuth();
 
-/* ---------- mobile sidebar ---------- */
+/* ---------- sidebar toggle ----------
+ * Mobile: off-canvas drawer with overlay. Desktop: collapses like
+ * ChatGPT's sidebar, remembered across visits. */
+
+function isMobile() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
 
 function closeSidebar() {
   document.body.classList.remove("sidebar-open");
 }
 
 document.getElementById("menu").addEventListener("click", () => {
-  document.body.classList.toggle("sidebar-open");
+  if (isMobile()) {
+    document.body.classList.toggle("sidebar-open");
+  } else {
+    const collapsed = document.body.classList.toggle("sidebar-collapsed");
+    localStorage.setItem("sidebar_collapsed", collapsed ? "1" : "");
+  }
 });
 
 document.getElementById("overlay").addEventListener("click", closeSidebar);
 
+document.getElementById("lang-toggle").addEventListener("click", () => {
+  lang = lang === "tr" ? "en" : "tr";
+  localStorage.setItem("lang", lang);
+  applyLanguage();
+  setupGoogleButton(); // reload the Google SDK with the new ?hl= locale
+});
+
 /* ---------- init ---------- */
 
+if (localStorage.getItem("sidebar_collapsed") === "1" && !isMobile()) {
+  document.body.classList.add("sidebar-collapsed");
+}
+applyLanguage();
 renderSidebar();
 renderMessages();
 input.focus();

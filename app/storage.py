@@ -8,6 +8,7 @@ conversation cache.
 sqlite3 from the stdlib, one short-lived connection per operation:
 no pooling, no ORM, no extra dependency. Fine at this scale.
 """
+import json
 import sqlite3
 import time
 from pathlib import Path
@@ -51,6 +52,10 @@ def _connect():
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
+    # migration: sources column arrived after the first deployments
+    columns = [row[1] for row in conn.execute("PRAGMA table_info(messages)")]
+    if "sources" not in columns:
+        conn.execute("ALTER TABLE messages ADD COLUMN sources TEXT")
     return conn
 
 
@@ -111,9 +116,10 @@ def drop_auth_session(token):
 
 # ---------- conversations & messages ----------
 
-def record_exchange(conversation_id: str, email: str, query: str, answer: str):
+def record_exchange(conversation_id: str, email: str, query: str, answer: str, sources=None):
     """One completed turn: creates the conversation row on first use
-    (titled by the first question) and appends both messages."""
+    (titled by the first question) and appends both messages. `sources`
+    documents what the answer was grounded on."""
     now = time.time()
     title = query if len(query) <= 60 else query[:60] + "…"
     with _connect() as conn:
@@ -124,8 +130,11 @@ def record_exchange(conversation_id: str, email: str, query: str, answer: str):
             (conversation_id, email, title, now, now),
         )
         conn.executemany(
-            "INSERT INTO messages (conversation_id, role, content, created_at) VALUES (?, ?, ?, ?)",
-            [(conversation_id, "user", query, now), (conversation_id, "assistant", answer, now)],
+            """INSERT INTO messages (conversation_id, role, content, created_at, sources)
+               VALUES (?, ?, ?, ?, ?)""",
+            [(conversation_id, "user", query, now, None),
+             (conversation_id, "assistant", answer, now,
+              json.dumps(sources, ensure_ascii=False) if sources else None)],
         )
 
 
@@ -166,9 +175,13 @@ def list_conversations(email: str) -> list:
 def conversation_messages(conversation_id: str) -> list:
     with _connect() as conn:
         rows = conn.execute(
-            """SELECT role, content FROM messages
+            """SELECT role, content, created_at, sources FROM messages
                WHERE conversation_id = ? ORDER BY id""", (conversation_id,)).fetchall()
-    return [{"role": r["role"], "content": r["content"]} for r in rows]
+    return [
+        {"role": r["role"], "content": r["content"], "created_at": r["created_at"],
+         "sources": json.loads(r["sources"]) if r["sources"] else None}
+        for r in rows
+    ]
 
 
 def delete_conversation(conversation_id: str, email: str):
