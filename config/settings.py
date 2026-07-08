@@ -44,6 +44,8 @@ BM25_WEIGHT = 0.3
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-sonnet-5")
+# answer length cap; unset upstream defaults have truncated mid-sentence
+LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2048"))
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
@@ -52,6 +54,10 @@ JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5")
 
 # Scope gate: cheap model that decides if a question is university-related
 GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-4.5")
+
+# Speech-to-text: Groq-hosted Whisper (the UI hides the mic button when unset)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3")
 
 # Google Sign-In (optional — the UI hides the button when unset)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
@@ -62,6 +68,9 @@ DB_PATH = os.getenv("DB_PATH", str(ROOT / "data" / "app.db"))
 # Chat rate limits (messages per hour); anonymous users are nudged to sign in
 CHAT_LIMIT_ANON = int(os.getenv("CHAT_LIMIT_ANON", "5"))
 CHAT_LIMIT_USER = int(os.getenv("CHAT_LIMIT_USER", "60"))
+
+# Voice transcriptions per hour (per user/IP, separate from the chat quota)
+STT_LIMIT = int(os.getenv("STT_LIMIT", "30"))
 
 # Spam brake: this many scope-gate refusals within 10 minutes blocks further
 # messages until the window clears

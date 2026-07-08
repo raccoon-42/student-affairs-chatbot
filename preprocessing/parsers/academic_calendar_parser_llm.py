@@ -12,12 +12,15 @@ Fixes over the rule-based parser:
 - every line carries its term, so chunks keep context
 - no .lower() mangling of Turkish dotted-I
 
-Run: uv run python preprocessing/parsers/academic_calendar_parser_llm.py
+Run: uv run python preprocessing/parsers/academic_calendar_parser_llm.py <pdf-path>
+e.g. preprocessing/data/raw/takvim/2025-2026-akademik-takvimi.pdf
+Outputs land in preprocessing/data/processed/takvim/<name>.{txt,json}.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
 import re
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -28,9 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
 
-PDF_PATH = Path(__file__).resolve().parent.parent / "data" / "raw" / "schedule.pdf"
-OUTPUT_TXT = Path(__file__).resolve().parent.parent / "data" / "processed" / "schedule-llm.txt"
-OUTPUT_JSON = Path(__file__).resolve().parent.parent / "data" / "processed" / "schedule-llm.json"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "takvim"
 
 MONTHS_TR = [
     "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -62,16 +63,26 @@ def extract_raw_text(pdf_path):
 
 
 def call_llm(raw_text):
-    response = requests.post(
-        f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-        headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-        json={
-            "model": settings.OPENROUTER_MODEL,
-            "messages": [{"role": "user", "content": PROMPT + raw_text}],
-            "temperature": 0,
-        },
-        timeout=300,
-    )
+    # transient TLS resets happen on long uploads — retry before giving up
+    for attempt in range(3):
+        try:
+            response = requests.post(
+                f"{settings.OPENROUTER_BASE_URL}/chat/completions",
+                headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
+                json={
+                    "model": settings.OPENROUTER_MODEL,
+                    "messages": [{"role": "user", "content": PROMPT + raw_text}],
+                    "temperature": 0,
+                },
+                timeout=300,
+            )
+            break
+        except (requests.ConnectionError, requests.Timeout) as e:
+            if attempt == 2:
+                raise
+            wait = 5 * (attempt + 1)
+            print(f"{e.__class__.__name__}, retrying in {wait}s...")
+            time.sleep(wait)
     response.raise_for_status()
     content = response.json()["choices"][0]["message"]["content"]
     # Strip a possible ```json fence before parsing
@@ -102,15 +113,22 @@ def render_line(event):
 def main():
     if not settings.OPENROUTER_API_KEY:
         sys.exit("OPENROUTER_API_KEY is not set.")
+    if len(sys.argv) != 2:
+        sys.exit(f"Usage: {sys.argv[0]} <pdf-path>")
 
-    raw_text = extract_raw_text(PDF_PATH)
+    pdf_path = Path(sys.argv[1])
+    output_json = OUTPUT_DIR / f"{pdf_path.stem}.json"
+    output_txt = OUTPUT_DIR / f"{pdf_path.stem}.txt"
+
+    raw_text = extract_raw_text(pdf_path)
     print(f"Extracted {len(raw_text)} chars, sending to {settings.OPENROUTER_MODEL}...")
     events = call_llm(raw_text)
     print(f"LLM returned {len(events)} events.")
 
-    OUTPUT_JSON.write_text(json.dumps(events, ensure_ascii=False, indent=2), encoding="utf-8")
-    OUTPUT_TXT.write_text("\n".join(render_line(e) for e in events) + "\n", encoding="utf-8")
-    print(f"Wrote {OUTPUT_TXT.name} and {OUTPUT_JSON.name}")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    output_json.write_text(json.dumps(events, ensure_ascii=False, indent=2), encoding="utf-8")
+    output_txt.write_text("\n".join(render_line(e) for e in events) + "\n", encoding="utf-8")
+    print(f"Wrote {output_txt.name} and {output_json.name}")
 
 
 if __name__ == "__main__":

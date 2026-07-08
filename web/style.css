@@ -127,17 +127,31 @@ button {
   padding: 0 0.5rem;
 }
 
+.conversation-group {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0 0.5rem;
+  margin: 0.9rem 0 0.2rem;
+}
+
+.conversation-group:first-child {
+  margin-top: 0.2rem;
+}
+
 .conversation-item {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.6rem 0.4rem 0.6rem 0.5rem;
+  padding: 0.45rem 0.4rem 0.45rem 0.5rem;
   border: none;
   border-radius: 10px;
   background: none;
   text-align: left;
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
@@ -376,7 +390,8 @@ dialog .dialog-close:focus-visible {
   border-color: var(--accent);
 }
 
-#profile-form input[type="radio"] {
+#profile-form input[type="radio"],
+.settings-panel input[type="radio"] {
   accent-color: var(--accent);
 }
 
@@ -392,6 +407,171 @@ dialog .dialog-close:focus-visible {
 
 .user-info {
   cursor: pointer;
+}
+
+/* ---------- settings dialog ---------- */
+
+#settings-dialog {
+  max-width: 640px;
+  width: 92%;
+  padding: 0;
+  overflow: hidden;
+}
+
+#settings-layout {
+  display: flex;
+  min-height: 380px;
+}
+
+#settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 190px;
+  flex-shrink: 0;
+  padding: 1rem 0.75rem;
+  border-right: 1px solid var(--border);
+}
+
+#settings-nav .dialog-close {
+  position: static;
+  margin-bottom: 0.75rem;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.settings-tab:hover {
+  background: var(--surface-2);
+}
+
+.settings-tab.active {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+#settings-content {
+  flex: 1;
+  padding: 1.5rem 1.75rem;
+  overflow-y: auto;
+}
+
+#settings-content h2 {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.2rem;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.settings-row select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.settings-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0.2rem 0 0;
+}
+
+.settings-panel > p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0.9rem 0 0.6rem;
+}
+
+.settings-panel > label:not(.switch) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+/* monochrome toggle switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.switch-track {
+  display: block;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--border);
+  transition: background 0.15s;
+}
+
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  transition: transform 0.15s;
+}
+
+.switch input:checked + .switch-track {
+  background: var(--text);
+}
+
+.switch input:checked + .switch-track::after {
+  transform: translateX(18px);
+}
+
+@media (max-width: 600px) {
+  #settings-layout {
+    flex-direction: column;
+  }
+
+  #settings-nav {
+    flex-direction: row;
+    width: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #settings-nav .dialog-close {
+    margin-bottom: 0;
+  }
 }
 
 /* ---------- chat column ---------- */
@@ -508,6 +688,11 @@ header h1 {
   margin-top: -0.5rem;
 }
 
+/* dev-mode log toggle sits alone at the right edge of the row */
+.msg-actions .debug-toggle {
+  margin-left: auto;
+}
+
 .msg-actions button {
   display: flex;
   align-items: center;
@@ -545,7 +730,7 @@ header h1 {
 
 /* ---------- composer ---------- */
 
-form {
+#form {
   /* floats over the bottom of the scroll area, so the scrollbar runs
    * all the way to the bottom-right corner */
   position: absolute;
@@ -607,6 +792,145 @@ form {
 #send:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+#mic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: none;
+  color: var(--text);
+}
+
+#mic:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#attach {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-left: -0.9rem; /* composer's left padding is sized for text */
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+}
+
+#attach:hover {
+  color: var(--text);
+}
+
+#attachment-preview {
+  position: relative;
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+#attachment-preview img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+#attachment-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+}
+
+.msg-image {
+  display: block;
+  max-width: 240px;
+  max-height: 240px;
+  border-radius: 12px;
+  margin-bottom: 0.4rem;
+}
+
+#debug-card {
+  position: fixed;
+  z-index: 60;
+  max-width: 520px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  white-space: pre-wrap;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* recording swaps the composer for the waveform strip */
+#composer.recording #input,
+#composer.recording #mic,
+#composer.recording #attach,
+#composer.recording #send {
+  display: none;
+}
+
+#recorder {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#recorder[hidden] {
+  display: none;
+}
+
+#waveform {
+  flex: 1;
+  height: 40px;
+  min-width: 0;
+}
+
+#rec-cancel,
+#rec-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+}
+
+#rec-cancel {
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+}
+
+#rec-done {
+  background: var(--text);
+  color: var(--bg);
 }
 
 #disclaimer {
@@ -700,10 +1024,49 @@ a.source-item:hover {
   text-decoration: none;
   vertical-align: middle;
   white-space: nowrap;
+  /* document titles can be long — clip, full title on hover */
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 a.source-chip:hover {
   color: var(--text);
+}
+
+/* hover card with the cited document's details */
+#chip-card {
+  position: fixed;
+  z-index: 60;
+  max-width: 360px;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.chip-card-host {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.35rem;
+}
+
+.chip-card-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.chip-card-text {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  margin-top: 0.3rem;
 }
 
 /* ---------- mobile ---------- */

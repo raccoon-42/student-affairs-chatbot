@@ -48,6 +48,6 @@ def extract_schedule_table(pdf_path, output_file):
                             print(f"Tarihsiz Satır veya Genel Başlık: {row}")
 
 if __name__ == "__main__":
-    pdf_path = "../data/raw/schedule.pdf"
-    output_file = "../data/processed/new-schedule.txt"
+    pdf_path = "../data/raw/takvim/schedule.pdf"
+    output_file = "../data/processed/takvim/new-schedule.txt"
     extract_schedule_table(pdf_path, output_file)

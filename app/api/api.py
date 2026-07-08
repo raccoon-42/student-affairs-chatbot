@@ -1,7 +1,10 @@
+import sys
 import time
 import uuid
 from functools import lru_cache
 from threading import Lock
+
+import requests
 
 from fastapi import Cookie, FastAPI, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
@@ -80,6 +83,8 @@ _user_limiter = RateLimiter(settings.CHAT_LIMIT_USER)
 _refusal_limiter = RateLimiter(settings.CHAT_REFUSAL_LIMIT, window_seconds=600)
 # abuse block: a single abusive message locks the sender out for the window
 _abuse_limiter = RateLimiter(limit=1, window_seconds=settings.ABUSE_BLOCK_MINUTES * 60)
+# voice input has its own quota so a transcription doesn't eat a chat slot
+_stt_limiter = RateLimiter(settings.STT_LIMIT)
 
 
 def _limit_key(request: Request, user) -> str:
@@ -141,7 +146,8 @@ async def auth_config(request: Request, auth_token: str = Cookie(None)):
     return {"client_id": settings.GOOGLE_CLIENT_ID, "abuse_message": ABUSE_MESSAGE,
             "off_topic_message": REFUSALS["off_topic"],
             "abuse_block_seconds": settings.ABUSE_BLOCK_MINUTES * 60,
-            "abuse_exempt": _limit_key(request, user) in settings.ABUSE_EXEMPT}
+            "abuse_exempt": _limit_key(request, user) in settings.ABUSE_EXEMPT,
+            "stt": bool(settings.GROQ_API_KEY)}
 
 
 @app.post("/auth/google")
@@ -253,6 +259,17 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
     return {"sources": cached[0].last_sources if cached else []}
 
 
+@app.get("/chat/debug")
+async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
+    """CLI-style log lines for the current conversation's latest turn —
+    shown in the UI when developer mode is on. Cached conversation only."""
+    user = auth.sessions.get(auth_token)
+    _authorize_conversation(session_id, user)
+    with _sessions_lock:
+        cached = _sessions.get(("openrouter", session_id))
+    return {"debug": cached[0].last_debug if cached else []}
+
+
 @app.get("/chat", response_model=ChatResponse)
 async def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
                auth_token: str = Cookie(None)):
@@ -271,9 +288,28 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
     return ChatResponse(query=query, response=response, model=model, session_id=session_id)
 
 
-@app.get("/chat/stream")
-async def chat_stream(request: Request, query: str, session_id: str = None,
-                      model_name: str = None, auth_token: str = Cookie(None)):
+MAX_IMAGE_CHARS = 8_000_000  # ~6 MB of image as a base64 data URL
+
+
+class ChatStreamBody(BaseModel):
+    query: str
+    session_id: str | None = None
+    model_name: str | None = None
+    image: str | None = None  # data URL, current turn only
+    lang: str | None = None  # UI language, for error messages
+
+
+STREAM_ERRORS = {
+    "tr": ("Şu anda yanıt veremiyorum — hizmette geçici bir sorun var. "
+           "Lütfen daha sonra tekrar dene.",
+           "\n\n*(Bağlantı hatası — yanıtın devamı alınamadı.)*"),
+    "en": ("I can't answer right now — the service is having a temporary issue. "
+           "Please try again later.",
+           "\n\n*(Connection error — the rest of the answer could not be retrieved.)*"),
+}
+
+
+def _stream_chat(request, query, session_id, model_name, auth_token, image=None, lang="tr"):
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -281,26 +317,109 @@ async def chat_stream(request: Request, query: str, session_id: str = None,
     conversation = get_conversation(session_id)
     stream = conversation.respond_stream(
         query, model_name or settings.OPENROUTER_MODEL,
-        education_type=user["education_type"] if user else None)
+        education_type=user["education_type"] if user else None, image=image)
 
     def recorded():
         tokens = []
-        for token in stream:
-            tokens.append(token)
-            yield token
+        try:
+            for token in stream:
+                tokens.append(token)
+                yield token
+        except Exception as error:
+            # an upstream failure (e.g. out of OpenRouter credits) must not
+            # abort the HTTP stream — the browser would show a raw
+            # NetworkError instead of a readable message
+            print(f"[error] llm stream failed: {error}", file=sys.stderr)
+            failed, broke_off = STREAM_ERRORS.get(lang, STREAM_ERRORS["tr"])
+            # partial answer already on screen: say it broke instead of
+            # stopping silently mid-sentence
+            yield broke_off if tokens else failed
+            return
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
         # persist only after the full answer arrived; refusals aren't
         # part of the transcript
         if user and answer not in REFUSALS.values():
-            storage.record_exchange(session_id, user["email"], query, answer,
-                                    sources=conversation.last_sources)
+            # image-only messages have no text; the image itself isn't stored
+            storage.record_exchange(session_id, user["email"], query or "(görsel)",
+                                    answer, sources=conversation.last_sources)
 
     return StreamingResponse(
         recorded(),
         media_type="text/plain; charset=utf-8",
         headers={"X-Session-Id": session_id},
     )
+
+
+@app.get("/chat/stream")
+async def chat_stream(request: Request, query: str, session_id: str = None,
+                      model_name: str = None, auth_token: str = Cookie(None)):
+    return _stream_chat(request, query, session_id, model_name, auth_token)
+
+
+@app.post("/chat/stream")
+async def chat_stream_post(request: Request, body: ChatStreamBody,
+                           auth_token: str = Cookie(None)):
+    """Same as the GET route, but a JSON body can carry an image
+    (data URL) that the model sees for this turn."""
+    if body.image is not None:
+        if not body.image.startswith("data:image/"):
+            raise HTTPException(status_code=400, detail="Geçersiz görsel.")
+        if len(body.image) > MAX_IMAGE_CHARS:
+            raise HTTPException(status_code=413, detail="Görsel çok büyük.")
+    query = body.query.strip()
+    if not query and body.image is None:
+        raise HTTPException(status_code=400, detail="Boş mesaj.")
+    # an image-only message is fine: the conversation extracts the search
+    # query from the image itself (see QueryRewriter.image_query)
+    return _stream_chat(request, query, body.session_id, body.model_name,
+                        auth_token, image=body.image, lang=body.lang or "tr")
+
+
+MAX_AUDIO_BYTES = 10 * 1024 * 1024  # a minute of browser opus is ~0.5 MB
+
+
+@app.post("/transcribe")
+async def transcribe(request: Request, auth_token: str = Cookie(None)):
+    """Voice input: the UI posts the recorded audio blob as the raw request
+    body (no multipart, so no extra dependency) and gets back the text to
+    put in the composer. Groq hosts the Whisper model. No language param:
+    forcing one makes Whisper translate into it — the UI language says
+    nothing about which language the student speaks, so auto-detect."""
+    if not settings.GROQ_API_KEY:
+        raise HTTPException(status_code=503, detail="Ses tanıma yapılandırılmamış.")
+
+    user = auth.sessions.get(auth_token)
+    key = _limit_key(request, user)
+    if key not in settings.ABUSE_EXEMPT and _abuse_limiter.is_blocked(key):
+        raise HTTPException(status_code=429,
+                            detail="Uygunsuz dil nedeniyle mesaj gönderimin geçici "
+                                   "olarak engellendi.",
+                            headers={"X-Block-Reason": "abuse"})
+    if not _stt_limiter.allow(key):
+        raise HTTPException(status_code=429,
+                            detail="Ses tanıma limitine ulaştın. Lütfen bir süre "
+                                   "sonra tekrar dene.")
+
+    audio = await request.body()
+    if not audio:
+        raise HTTPException(status_code=400, detail="Ses verisi yok.")
+    if len(audio) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="Kayıt çok uzun.")
+
+    content_type = request.headers.get("content-type") or "audio/webm"
+    extension = "mp4" if "mp4" in content_type else "ogg" if "ogg" in content_type else "webm"
+
+    groq = requests.post(
+        "https://api.groq.com/openai/v1/audio/transcriptions",
+        headers={"Authorization": f"Bearer {settings.GROQ_API_KEY}"},
+        files={"file": (f"audio.{extension}", audio, content_type)},
+        data={"model": settings.GROQ_WHISPER_MODEL},
+        timeout=60,
+    )
+    if groq.status_code != 200:
+        raise HTTPException(status_code=502, detail="Ses tanıma başarısız oldu.")
+    return {"text": groq.json().get("text", "").strip()}
 
 
 @app.get("/chat_local", response_model=ChatResponse)

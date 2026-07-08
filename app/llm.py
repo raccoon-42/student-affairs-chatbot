@@ -6,6 +6,7 @@ yielding text deltas — and never on a concrete provider. Tests pass in a
 fake with the same methods.
 """
 import json
+import sys
 
 import requests
 
@@ -27,17 +28,27 @@ class OpenRouterLLM:
 
     def chat(self, model, messages):
         self._ensure_client()
-        completion = self._client.chat.completions.create(model=model, messages=messages)
+        completion = self._client.chat.completions.create(
+            model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS)
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")
         return completion.choices[0].message.content
 
     def chat_stream(self, model, messages):
+        # without an explicit max_tokens OpenRouter picks its own cap, which
+        # has cut answers mid-sentence on large (image) requests
         self._ensure_client()
-        stream = self._client.chat.completions.create(model=model, messages=messages, stream=True)
+        stream = self._client.chat.completions.create(
+            model=model, messages=messages, stream=True,
+            max_tokens=settings.LLM_MAX_TOKENS)
+        finish_reason = None
         for chunk in stream:
-            if chunk.choices and chunk.choices[0].delta.content:
-                yield chunk.choices[0].delta.content
+            if chunk.choices:
+                finish_reason = chunk.choices[0].finish_reason or finish_reason
+                if chunk.choices[0].delta.content:
+                    yield chunk.choices[0].delta.content
+        if finish_reason and finish_reason != "stop":
+            print(f"[llm] stream ended early, finish_reason={finish_reason}", file=sys.stderr)
 
 
 class OllamaLLM:

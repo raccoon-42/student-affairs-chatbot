@@ -1,8 +1,11 @@
 import argparse
 import json
 from datetime import date
+from pathlib import Path
 
 from config import settings
+
+MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 
 
 def _calendar_payload(text, metadata):
@@ -75,7 +78,7 @@ def calendar_chunks_from_json(input_file):
 
 
 def regulation_chunks_from_json(input_file):
-    """Chunks from the LLM parser's yonerge-llm.json (one article per entry)."""
+    """Chunks from an LLM-parsed regulation JSON (one article per entry)."""
     from preprocessing.parsers.regulation_parser_llm import render_article
 
     with open(input_file, encoding="utf-8") as f:
@@ -85,15 +88,58 @@ def regulation_chunks_from_json(input_file):
         {
             "text": render_article(article),
             "metadata": {
-                "article_number": str(article["madde"]),
+                "article_number": str(article["madde"]) if article.get("madde") is not None else None,
                 "article_title": article.get("baslik"),
                 "section": article.get("bolum"),
-                "article": str(article["madde"]),
+                "article": str(article["madde"]) if article.get("madde") is not None else None,
                 "content_type": "regulation",
             },
         }
         for article in articles
     ]
+
+
+def mevzuat_chunks_from_dir(input_dir):
+    """Chunks from every parsed mevzuat JSON, tagged with its document.
+
+    The scrape manifest supplies title/category/source_url per document.
+    The embedded text is prefixed with the document title: all 25
+    regulations contain a "MADDE 5", so a chunk must say which document
+    it belongs to or retrieval and citations blur across documents.
+    source_url in metadata makes each citation chip link to its own PDF.
+    """
+    with open(MEVZUAT_MANIFEST, encoding="utf-8") as f:
+        by_stem = {Path(entry["file"]).stem: entry for entry in json.load(f)}
+
+    chunks = []
+    parsed = sorted(Path(input_dir).glob("*.json"))
+    for path in parsed:
+        doc = by_stem.get(path.stem)
+        if doc is None:
+            print(f"Warning: {path.name} not in mevzuat manifest — skipping")
+            continue
+        for chunk in regulation_chunks_from_json(path):
+            chunk["text"] = f"{doc['title']}\n{chunk['text']}"
+            chunk["metadata"].update({
+                "document_title": doc["title"],
+                "category": doc["category"],
+                "source_url": doc["source_url"],
+            })
+            chunks.append(chunk)
+
+    missing = sorted(set(by_stem) - {p.stem for p in parsed})
+    if missing:
+        print(f"Warning: {len(missing)} scraped documents not parsed yet, "
+              f"indexing without them: {', '.join(missing)}")
+    return chunks
+
+
+def calendar_chunks_from_dir(input_dir):
+    """Chunks from every parsed calendar JSON (one file per academic year)."""
+    chunks = []
+    for path in sorted(Path(input_dir).glob("*.json")):
+        chunks.extend(calendar_chunks_from_json(path))
+    return chunks
 
 
 def store_embedding(chunks, collection_name, build_payload=_calendar_payload):
@@ -140,7 +186,8 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload):
 
 def main():
     parser = argparse.ArgumentParser(description='Store text chunks in Qdrant vector database')
-    parser.add_argument('input_file', help='Input text file to process')
+    parser.add_argument('input_file',
+                      help='Input file, or a directory of parsed JSONs to index as one collection')
     parser.add_argument('--collection', default=None,
                       help='Qdrant collection name (defaults to the configured one for the type)')
     parser.add_argument('--type', choices=['calendar', 'regulations', 'faq'], required=True,
@@ -150,12 +197,19 @@ def main():
 
     from preprocessing.indexing.text_splitter import split_text, split_regulation
 
-    print(f"Processing file: {args.input_file}")
+    print(f"Processing: {args.input_file}")
 
+    # The collection is recreated from scratch on every run, so a
+    # multi-document corpus must be indexed from its directory in one go —
+    # indexing file-by-file would leave only the last file's chunks.
+    is_dir = Path(args.input_file).is_dir()
     is_json = args.input_file.endswith('.json')
 
     if args.type == 'calendar':
-        chunks = calendar_chunks_from_json(args.input_file) if is_json else split_text(args.input_file)
+        if is_dir:
+            chunks = calendar_chunks_from_dir(args.input_file)
+        else:
+            chunks = calendar_chunks_from_json(args.input_file) if is_json else split_text(args.input_file)
         collection = args.collection or settings.CALENDAR_COLLECTION
         payload = _calendar_payload
     elif args.type == 'faq':
@@ -166,7 +220,10 @@ def main():
         collection = args.collection or settings.FAQ_COLLECTION
         payload = _faq_payload
     else:
-        chunks = regulation_chunks_from_json(args.input_file) if is_json else split_regulation(args.input_file)
+        if is_dir:
+            chunks = mevzuat_chunks_from_dir(args.input_file)
+        else:
+            chunks = regulation_chunks_from_json(args.input_file) if is_json else split_regulation(args.input_file)
         collection = args.collection or settings.REGULATIONS_COLLECTION
         payload = _regulation_payload
 

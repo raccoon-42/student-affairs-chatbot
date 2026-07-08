@@ -37,12 +37,20 @@ This starts the API (`:8000`), Qdrant (`:6333`), and Ollama (`:11434`).
 Index your documents (once Qdrant is up):
 
 ```bash
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/yonerge.txt --type regulations
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/new-schedule.txt --type calendar
+# Regulations: scrape all mevzuat PDFs, parse them, index the whole set
+uv run python -m preprocessing.scrapers.mevzuat_scraper
+uv run python preprocessing/parsers/regulation_parser_llm.py --all
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/mevzuat --type regulations
+
+# Calendar: scrape, parse each academic year, index the whole set
+uv run python -m preprocessing.scrapers.takvim_scraper
+uv run python preprocessing/parsers/academic_calendar_parser_llm.py preprocessing/data/raw/takvim/2025-2026-akademik-takvimi.pdf
+uv run python preprocessing/parsers/academic_calendar_parser_llm.py preprocessing/data/raw/takvim/2026-2027-akademik-takvimi.pdf
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/takvim --type calendar
 
 # FAQ: scrape the university FAQ pages, then index
 uv run python -m preprocessing.scrapers.faq_scraper
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/faq.json --type faq
+uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/faq/faq.json --type faq
 ```
 
 To use a local model, pull one into the Ollama container:

@@ -22,6 +22,23 @@ const STRINGS = {
     viewSources: "Kaynakları görüntüle",
     noSources: "Bu yanıt için kaynak bilgisi yok.",
     today: "Bugün",
+    micDenied: "Mikrofon izni verilmedi.",
+    micError: "Ses tanıma başarısız oldu.",
+    settingsTitle: "Ayarlar",
+    imageError: "Görsel eklenemedi.",
+    imageMessage: "Görsel",
+    devMode: "Geliştirici modu",
+    devModeNote: "Her yanıtın altında sunucu loglarını gösterir.",
+    tabGeneral: "Genel",
+    tabProfile: "Profil",
+    tabDeveloper: "Geliştirici",
+    rowLanguage: "Dil",
+    rowTheme: "Tema",
+    themeLight: "Açık",
+    themeDark: "Koyu",
+    yesterday: "Dün",
+    previous7: "Önceki 7 gün",
+    older: "Daha eski",
   },
   en: {
     chats: "Chats",
@@ -44,6 +61,23 @@ const STRINGS = {
     viewSources: "View sources",
     noSources: "No source info for this answer.",
     today: "Today",
+    micDenied: "Microphone permission was denied.",
+    micError: "Transcription failed.",
+    settingsTitle: "Settings",
+    imageError: "Could not attach the image.",
+    imageMessage: "Image",
+    devMode: "Developer mode",
+    devModeNote: "Shows server logs under every answer.",
+    tabGeneral: "General",
+    tabProfile: "Profile",
+    tabDeveloper: "Developer",
+    rowLanguage: "Language",
+    rowTheme: "Theme",
+    themeLight: "Light",
+    themeDark: "Dark",
+    yesterday: "Yesterday",
+    previous7: "Previous 7 days",
+    older: "Older",
   },
 };
 
@@ -154,9 +188,29 @@ function removeConversation(id) {
 
 /* ---------- rendering ---------- */
 
+function dateGroup(timestamp) {
+  const day = 24 * 60 * 60 * 1000;
+  const startOfToday = new Date().setHours(0, 0, 0, 0);
+  if (timestamp >= startOfToday) return "today";
+  if (timestamp >= startOfToday - day) return "yesterday";
+  if (timestamp >= startOfToday - 7 * day) return "previous7";
+  return "older";
+}
+
 function renderSidebar() {
   listEl.replaceChildren();
-  for (const conversation of conversations) {
+  // newest first, grouped under ChatGPT-style date headers
+  const ordered = [...conversations].sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  let lastGroup = null;
+  for (const conversation of ordered) {
+    const group = dateGroup(conversation.updated || 0);
+    if (group !== lastGroup) {
+      const header = document.createElement("div");
+      header.className = "conversation-group";
+      header.textContent = t(group);
+      listEl.appendChild(header);
+      lastGroup = group;
+    }
     const item = document.createElement("div");
     item.className = "conversation-item" + (conversation.id === currentId ? " active" : "");
 
@@ -212,26 +266,107 @@ function renderMarkdown(text) {
     .replace(/^[-*] /gm, "• ");
 }
 
+function escapeAttr(value) {
+  return String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
+}
+
 function chipHTML(source) {
-  let label = source.type;
+  // the document's own title tells sources apart; hostname is the legacy
+  // fallback for messages stored before titles existed
+  let host = "";
   if (source.url) {
-    try { label = new URL(source.url).hostname.replace(/^www\./, ""); } catch {}
+    try { host = new URL(source.url).hostname.replace(/^www\./, ""); } catch {}
   }
-  if (!source.url) return `<span class="source-chip">${label}</span>`;
+  const label = escapeAttr(source.title || host || source.type);
+  // the hover card reads these; the excerpt is the cited chunk's text
+  const data = ` data-host="${escapeAttr(host)}" data-title="${escapeAttr(source.title || source.type)}"` +
+               ` data-text="${escapeAttr(source.label || "")}"`;
+  if (!source.url) return `<span class="source-chip"${data}>${label}</span>`;
   // URLs from the scraper are already percent-encoded — re-encoding 404s
   // them; only neutralize characters that could break the attribute
   const href = source.url.replaceAll('"', "%22").replaceAll("<", "%3C");
-  return `<a class="source-chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
+  return `<a class="source-chip" href="${href}" target="_blank" rel="noopener"${data}>${label}</a>`;
+}
+
+/* ---------- citation hover card ----------
+ * One shared card, repositioned to whichever chip is hovered. */
+const chipCard = document.createElement("div");
+chipCard.id = "chip-card";
+chipCard.hidden = true;
+document.body.appendChild(chipCard);
+
+const GLOBE_ICON = '<svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 2.4 4 5.5 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.5-4-9s1.5-6.6 4-9z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+
+function showChipCard(chip) {
+  chipCard.replaceChildren();
+  if (chip.dataset.host) {
+    const host = document.createElement("div");
+    host.className = "chip-card-host";
+    host.innerHTML = `${GLOBE_ICON}<span></span>`;
+    host.querySelector("span").textContent = chip.dataset.host;
+    chipCard.appendChild(host);
+  }
+  const title = document.createElement("div");
+  title.className = "chip-card-title";
+  title.textContent = chip.dataset.title;
+  chipCard.appendChild(title);
+  if (chip.dataset.text) {
+    const text = document.createElement("div");
+    text.className = "chip-card-text";
+    text.textContent = chip.dataset.text;
+    chipCard.appendChild(text);
+  }
+  chipCard.hidden = false;
+  const rect = chip.getBoundingClientRect();
+  const card = chipCard.getBoundingClientRect();
+  let left = Math.min(rect.left, window.innerWidth - card.width - 12);
+  let top = rect.bottom + 8;
+  if (top + card.height > window.innerHeight - 8) top = rect.top - card.height - 8;
+  chipCard.style.left = `${Math.max(8, left)}px`;
+  chipCard.style.top = `${Math.max(8, top)}px`;
+}
+
+messagesEl.addEventListener("mouseover", (event) => {
+  const chip = event.target.closest(".source-chip");
+  if (chip?.dataset.title) showChipCard(chip);
+});
+messagesEl.addEventListener("mouseout", (event) => {
+  if (event.target.closest(".source-chip")) chipCard.hidden = true;
+});
+
+/* dev-mode logs float over the terminal icon the same way */
+const debugCard = document.createElement("pre");
+debugCard.id = "debug-card";
+debugCard.hidden = true;
+document.body.appendChild(debugCard);
+
+function showDebugCard(anchor, text) {
+  debugCard.textContent = text;
+  debugCard.hidden = false;
+  const rect = anchor.getBoundingClientRect();
+  const card = debugCard.getBoundingClientRect();
+  const left = Math.max(8, Math.min(rect.right - card.width, window.innerWidth - card.width - 8));
+  let top = rect.top - card.height - 8; // above the icon by default
+  if (top < 8) top = rect.bottom + 8;
+  debugCard.style.left = `${left}px`;
+  debugCard.style.top = `${top}px`;
 }
 
 /* the model cites reference chunks as [n]; swap each marker for a chip
  * right where it stands in the sentence */
 function withCitations(html, sources) {
   if (!sources?.length) return html;
-  return html.replace(/\[(\d+)\]/g, (marker, n) => {
+  const withChips = html.replace(/\[(\d+)\]/g, (marker, n) => {
     const source = sources[Number(n) - 1];
     return source ? chipHTML(source) : marker;
   });
+  // adjacent markers often resolve to the same document (e.g. [4][5] both
+  // from the FAQ) — collapse each same-label run into a single chip. The
+  // label, not the whole tag, decides: chips of different chunks carry
+  // different hover-card data but look identical to the reader.
+  return withChips.replace(
+    /((?:<a|<span) class="source-chip"[^>]*>([^<]*)<\/(?:a|span)>)(\s*(?:<a|<span) class="source-chip"[^>]*>\2<\/(?:a|span)>)+/g,
+    "$1");
 }
 
 function setBubbleText(el, role, text, sources) {
@@ -252,6 +387,7 @@ const COPY_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><rect x="9" y
 const CHECK_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MORE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>';
 const BOOK_ICON = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5c-2-1.5-5-2-8-2v16c3 0 6 .5 8 2 2-1.5 5-2 8-2V3c-3 0-6 .5-8 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>';
+const TERMINAL_ICON = '<svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 17l6-5-6-5M12 19h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 const msgPopover = document.getElementById("msg-popover");
 
@@ -348,12 +484,24 @@ function addBotActions(messageEl, text, message = {}) {
 
 /* ---------- chat ---------- */
 
-async function send(query) {
+// while streaming, the send button becomes a stop button that aborts
+// the request; the partial answer stays in the chat
+const SEND_ICON = sendButton.innerHTML;
+const STOP_ICON = '<svg viewBox="0 0 24 24" width="16" height="16"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>';
+let activeController = null;
+
+function setStreaming(active) {
+  sendButton.innerHTML = active ? STOP_ICON : SEND_ICON;
+  sendButton.ariaLabel = active ? "Durdur" : "Gönder";
+}
+
+async function send(query, image = null) {
   if (!current()) newConversation();
   const conversation = current();
 
   if (conversation.messages.length === 0) {
-    conversation.title = query.length > 40 ? query.slice(0, 40) + "…" : query;
+    const titleBase = query || t("imageMessage");
+    conversation.title = titleBase.length > 40 ? titleBase.slice(0, 40) + "…" : titleBase;
   }
   conversation.messages.push({ role: "user", text: query, at: Date.now() });
   conversation.updated = Date.now();
@@ -361,14 +509,27 @@ async function send(query) {
   renderSidebar();
 
   if (emptyState.parentNode) emptyState.remove();
-  addBubble("user", query);
+  const userEl = addBubble("user", query);
+  if (image) {
+    const thumb = document.createElement("img");
+    thumb.className = "msg-image";
+    thumb.src = image;
+    userEl.prepend(thumb);
+  }
   const botEl = addBubble("bot", "");
   botEl.classList.add("pending");
-  input.disabled = sendButton.disabled = true;
+  input.disabled = true;
+  setStreaming(true); // send button stays clickable, now as stop
+  activeController = new AbortController();
 
+  let answer = "";
   try {
-    const params = new URLSearchParams({ query, session_id: conversation.id });
-    const response = await fetch(`/chat/stream?${params}`);
+    const response = await fetch("/chat/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, session_id: conversation.id, image, lang }),
+      signal: activeController.signal,
+    });
     if (response.status === 429) {
       const body = await response.json().catch(() => null);
       botEl.remove(); // the dialog carries the message instead of a bubble
@@ -380,7 +541,6 @@ async function send(query) {
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    let answer = "";
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -407,9 +567,44 @@ async function send(query) {
     saveConversations();
     setBubbleText(botEl, "bot", answer, sources); // final pass turns [n] into chips
     addBotActions(botEl, answer, botMessage);
+    if (devMode) {
+      const params = new URLSearchParams({ session_id: conversation.id });
+      const { debug } = await fetch(`/chat/debug?${params}`)
+        .then((r) => (r.ok ? r.json() : { debug: [] }))
+        .catch(() => ({ debug: [] }));
+      if (debug?.length) {
+        // a terminal icon at the right end of the actions row; this
+        // answer's server logs float over it on hover
+        const row = botEl.nextElementSibling; // .msg-actions
+        const toggle = document.createElement("button");
+        toggle.className = "debug-toggle";
+        toggle.innerHTML = TERMINAL_ICON;
+        toggle.ariaLabel = "Debug";
+        const logText = debug.join("\n");
+        toggle.addEventListener("mouseenter", () => showDebugCard(toggle, logText));
+        toggle.addEventListener("mouseleave", () => { debugCard.hidden = true; });
+        row.appendChild(toggle);
+      }
+    }
   } catch (error) {
-    botEl.textContent = t("error", error.message);
+    if (error.name === "AbortError") {
+      // user hit stop — keep whatever streamed, drop an empty bubble
+      if (answer) {
+        const botMessage = { role: "bot", text: answer, at: Date.now(), sources: [] };
+        conversation.messages.push(botMessage);
+        conversation.updated = Date.now();
+        saveConversations();
+        setBubbleText(botEl, "bot", answer);
+        addBotActions(botEl, answer, botMessage);
+      } else {
+        botEl.remove();
+      }
+    } else {
+      botEl.textContent = t("error", error.message);
+    }
   } finally {
+    activeController = null;
+    setStreaming(false);
     botEl.classList.remove("pending");
     input.disabled = sendButton.disabled = abuseBlocked;
     if (!abuseBlocked) input.focus();
@@ -418,11 +613,219 @@ async function send(query) {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  if (activeController) {
+    activeController.abort(); // the button is a stop button mid-stream
+    return;
+  }
   const query = input.value.trim();
-  if (!query || input.disabled) return;
+  if ((!query && !pendingImage) || input.disabled) return; // image alone is enough
   input.value = "";
-  send(query);
+  const image = pendingImage;
+  clearAttachment();
+  send(query, image);
 });
+
+/* ---------- image attachment ----------
+ * The + button picks an image; it is downscaled client-side (long edge
+ * 1568px, JPEG) so the payload stays small, previewed above the composer,
+ * and sent with the next message for that turn only. */
+const fileInput = document.getElementById("file-input");
+const attachmentPreview = document.getElementById("attachment-preview");
+const attachmentThumb = document.getElementById("attachment-thumb");
+let pendingImage = null;
+
+function clearAttachment() {
+  pendingImage = null;
+  attachmentThumb.src = "";
+  attachmentPreview.hidden = true;
+}
+
+async function downscaleImage(file) {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1568 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL("image/jpeg", 0.85);
+}
+
+async function attachImage(file) {
+  try {
+    pendingImage = await downscaleImage(file);
+  } catch {
+    flashPlaceholder(t("imageError"));
+    return;
+  }
+  attachmentThumb.src = pendingImage;
+  attachmentPreview.hidden = false;
+  input.focus();
+}
+
+document.getElementById("attach").addEventListener("click", () => fileInput.click());
+document.getElementById("attachment-remove").addEventListener("click", clearAttachment);
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  fileInput.value = ""; // re-selecting the same file must fire change again
+  if (file) attachImage(file);
+});
+
+// pasting an image (screenshot in the clipboard) attaches it too
+input.addEventListener("paste", (event) => {
+  const item = [...event.clipboardData.items].find((i) => i.type.startsWith("image/"));
+  if (!item) return;
+  event.preventDefault();
+  attachImage(item.getAsFile());
+});
+
+/* ---------- voice input ----------
+ * The mic swaps the composer for a live waveform strip with cancel (×)
+ * and confirm (✓), ChatGPT-style. Confirm posts the blob to /transcribe
+ * (Groq Whisper); the text lands in the input for review — it is never
+ * sent automatically. Button shows only when the server has a key. */
+const micButton = document.getElementById("mic");
+const composerEl = document.getElementById("composer");
+const recorderEl = document.getElementById("recorder");
+const waveCanvas = document.getElementById("waveform");
+let recorder = null;
+let audioCtx = null;
+let waveTimer = null;
+let waveRAF = null;
+let waveLevels = [];
+let lastSampleAt = 0;
+let recordingCancelled = false;
+const WAVE_SAMPLE_MS = 100;
+
+function flashPlaceholder(text) {
+  input.placeholder = text;
+  setTimeout(() => { input.placeholder = t("placeholder"); }, 3000);
+}
+
+function setRecordingUI(active) {
+  composerEl.classList.toggle("recording", active);
+  recorderEl.hidden = !active;
+}
+
+function renderWave() {
+  const dpr = window.devicePixelRatio || 1;
+  const width = (waveCanvas.width = waveCanvas.offsetWidth * dpr);
+  const height = (waveCanvas.height = waveCanvas.offsetHeight * dpr);
+  const ctx = waveCanvas.getContext("2d");
+  const step = 5 * dpr; // bar + gap
+  // frac is the sub-sample progress: bars glide left between samples
+  // instead of jumping one slot per tick, and the newest eases in.
+  const frac = Math.min((performance.now() - lastSampleAt) / WAVE_SAMPLE_MS, 1);
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = getComputedStyle(document.body).color;
+  for (let back = 0; back <= Math.ceil(width / step); back++) { // back = bars from newest
+    const index = waveLevels.length - 1 - back;
+    const level = index >= 0 ? waveLevels[index] : 0; // idle slots render as dots
+    const x = width - (back + frac) * step;
+    if (x < -step) break;
+    let bar = Math.min(Math.max(2 * dpr, level * height * 3), height * 0.9);
+    if (back === 0) bar = Math.max(2 * dpr, bar * frac);
+    ctx.beginPath();
+    ctx.roundRect(x, (height - bar) / 2, 2.5 * dpr, bar, 2 * dpr);
+    ctx.fill();
+  }
+}
+
+function startWaveform(stream) {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioCtx();
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  audioCtx.createMediaStreamSource(stream).connect(analyser);
+  const data = new Uint8Array(analyser.fftSize);
+  waveLevels = [];
+  lastSampleAt = performance.now();
+  waveTimer = setInterval(() => {
+    analyser.getByteTimeDomainData(data);
+    let sum = 0;
+    for (const value of data) {
+      const deviation = (value - 128) / 128;
+      sum += deviation * deviation;
+    }
+    const rms = Math.sqrt(sum / data.length);
+    // blend with the previous sample so single spikes don't jag
+    const previous = waveLevels.length ? waveLevels[waveLevels.length - 1] : rms;
+    waveLevels.push(previous * 0.3 + rms * 0.7);
+    lastSampleAt = performance.now();
+  }, WAVE_SAMPLE_MS);
+  const loop = () => {
+    renderWave();
+    waveRAF = requestAnimationFrame(loop);
+  };
+  waveRAF = requestAnimationFrame(loop);
+}
+
+function stopWaveform() {
+  clearInterval(waveTimer);
+  cancelAnimationFrame(waveRAF);
+  if (audioCtx) audioCtx.close();
+  audioCtx = null;
+}
+
+async function transcribe(blob, mimeType) {
+  micButton.disabled = true;
+  input.placeholder = "…";
+  try {
+    const response = await fetch("/transcribe", {
+      method: "POST",
+      headers: { "Content-Type": mimeType || "audio/webm" },
+      body: blob,
+    });
+    if (response.status === 429) {
+      const body = await response.json().catch(() => null);
+      if (response.headers.get("X-Block-Reason") === "abuse") showAbuseDialog();
+      else flashPlaceholder(body?.detail || t("micError"));
+      return;
+    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const { text } = await response.json();
+    if (text) {
+      input.value = input.value ? `${input.value} ${text}` : text;
+      input.focus();
+    }
+  } catch {
+    flashPlaceholder(t("micError"));
+  } finally {
+    micButton.disabled = false;
+    input.placeholder = t("placeholder");
+  }
+}
+
+async function startRecording() {
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch {
+    flashPlaceholder(t("micDenied"));
+    return;
+  }
+  recordingCancelled = false;
+  const chunks = [];
+  recorder = new MediaRecorder(stream); // browser picks the codec (webm/mp4)
+  recorder.ondataavailable = (event) => chunks.push(event.data);
+  recorder.onstop = () => {
+    stream.getTracks().forEach((track) => track.stop());
+    stopWaveform();
+    setRecordingUI(false);
+    if (recordingCancelled) return;
+    transcribe(new Blob(chunks, { type: recorder.mimeType }), recorder.mimeType);
+  };
+  recorder.start();
+  startWaveform(stream);
+  setRecordingUI(true);
+}
+
+micButton.addEventListener("click", startRecording);
+document.getElementById("rec-cancel").addEventListener("click", () => {
+  recordingCancelled = true;
+  recorder.stop();
+});
+document.getElementById("rec-done").addEventListener("click", () => recorder.stop());
 
 document.getElementById("new-conversation").addEventListener("click", () => {
   const conversation = current();
@@ -464,6 +867,7 @@ const abuseDialog = document.getElementById("abuse-dialog");
 
 let appConfig = { client_id: null, abuse_message: null };
 let signedIn = false;
+let currentUser = null;
 
 document.querySelectorAll("dialog [data-close]").forEach((button) =>
   button.addEventListener("click", () => button.closest("dialog").close()));
@@ -519,27 +923,87 @@ abuseDialog.addEventListener("cancel", (event) => event.preventDefault());
 
 function showUser(user) {
   signedIn = true;
+  currentUser = user;
   signinEl.hidden = true;
   chipEl.hidden = false;
   document.getElementById("user-name").textContent = user.name || user.email;
   document.getElementById("user-picture").src = user.picture || "";
   document.getElementById("user-badge").hidden = !user.member;
-  if (!user.education_type) profileDialog.showModal();
+  if (!user.education_type) openProfileDialog();
 }
 
-profileForm.addEventListener("submit", async () => {
-  const education_type = new FormData(profileForm).get("education_type");
+// forced once at first login; day-to-day changes live in the settings dialog
+function openProfileDialog() {
+  profileForm.querySelectorAll("input[name=education_type]").forEach((radio) => {
+    radio.checked = radio.value === currentUser?.education_type;
+  });
+  profileDialog.showModal();
+}
+
+async function saveEducationType(education_type) {
+  if (currentUser) currentUser.education_type = education_type;
   await fetch("/auth/profile", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ education_type }),
   });
+}
+
+profileForm.addEventListener("submit", () => {
+  saveEducationType(new FormData(profileForm).get("education_type"));
 });
 
-// clicking your own name reopens the dialog to change the answer
-document.querySelector(".user-info").addEventListener("click", () => {
-  profileDialog.showModal();
+/* ---------- settings dialog ----------
+ * ChatGPT-style: section tabs on the left, label/control rows on the
+ * right. Every control applies immediately — there is no save button. */
+const settingsDialog = document.getElementById("settings-dialog");
+let devMode = localStorage.getItem("devmode") === "1";
+
+function openSettings() {
+  document.getElementById("set-lang").value = lang;
+  document.getElementById("set-theme").value = document.documentElement.dataset.theme;
+  document.getElementById("devmode-toggle").checked = devMode;
+  settingsDialog.querySelectorAll("input[name=settings_education]").forEach((radio) => {
+    radio.checked = radio.value === currentUser?.education_type;
+  });
+  settingsDialog.showModal();
+}
+
+settingsDialog.querySelectorAll(".settings-tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    settingsDialog.querySelectorAll(".settings-tab").forEach((other) =>
+      other.classList.toggle("active", other === tab));
+    settingsDialog.querySelectorAll(".settings-panel").forEach((panel) => {
+      panel.hidden = panel.dataset.panel !== tab.dataset.tab;
+    });
+    const title = document.getElementById("settings-title");
+    title.dataset.i18n = tab.querySelector("span").dataset.i18n;
+    title.textContent = t(title.dataset.i18n);
+  });
 });
+
+document.getElementById("set-lang").addEventListener("change", (event) => {
+  lang = event.target.value;
+  localStorage.setItem("lang", lang);
+  applyLanguage();
+  renderSidebar();
+  setupGoogleButton();
+});
+
+document.getElementById("set-theme").addEventListener("change", (event) => {
+  applyTheme(event.target.value);
+});
+
+document.getElementById("devmode-toggle").addEventListener("change", (event) => {
+  devMode = event.target.checked;
+  localStorage.setItem("devmode", devMode ? "1" : "0");
+});
+
+settingsDialog.querySelectorAll("input[name=settings_education]").forEach((radio) => {
+  radio.addEventListener("change", () => saveEducationType(radio.value));
+});
+
+document.querySelector(".user-info").addEventListener("click", openSettings);
 
 async function adoptCurrentConversation() {
   // hand the active anonymous chat to the account so it continues seamlessly
@@ -623,6 +1087,7 @@ function renderSigninButton() {
 async function initAuth() {
   appConfig = await fetch("/auth/config").then((r) => r.json());
   checkAbuseBlock(); // needs the config, so it lives here
+  micButton.hidden = !(appConfig.stt && navigator.mediaDevices);
   if (!appConfig.client_id) return; // sign-in not configured — keep it hidden
 
   authEl.hidden = false;
@@ -669,6 +1134,7 @@ document.getElementById("lang-toggle").addEventListener("click", () => {
   lang = lang === "tr" ? "en" : "tr";
   localStorage.setItem("lang", lang);
   applyLanguage();
+  renderSidebar(); // date group headers are rendered text, not data-i18n
   setupGoogleButton(); // reload the Google SDK with the new ?hl= locale
 });
 

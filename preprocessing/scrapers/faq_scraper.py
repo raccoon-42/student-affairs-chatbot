@@ -5,7 +5,7 @@ All three share the same text shape — ALL-CAPS category headers,
 question lines ending with "?", answer paragraphs below — so one
 line-based parser handles them; fetching is per-format.
 
-Output: preprocessing/data/processed/faq.json, one object per Q&A pair.
+Output: preprocessing/data/processed/faq/faq.json, one object per Q&A pair.
 Run again whenever the university updates the pages.
 """
 import io
@@ -34,7 +34,7 @@ SOURCES = [
     },
 ]
 
-OUTPUT_PATH = settings.ROOT / "preprocessing" / "data" / "processed" / "faq.json"
+OUTPUT_PATH = settings.ROOT / "preprocessing" / "data" / "processed" / "faq" / "faq.json"
 
 
 def parse_faq_lines(lines, audience, source_url):

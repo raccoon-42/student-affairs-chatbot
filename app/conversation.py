@@ -13,6 +13,10 @@ from config import settings
 
 CONTEXT_TEMPLATE = """
 <conversation>
+    <current_datetime>
+    {now}
+    </current_datetime>
+
     <student_question>
     {query}
     </student_question>
@@ -38,7 +42,21 @@ GÖREV:
 2. <available_reference_data> içindeki bilgileri SADECE öğrencinin sorusuna yanıt vermek için kullan.
 3. Eğer öğrencinin sorusu belirsizse veya eksik bilgi varsa, açıklama iste.
 4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan.
+5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Referans verilerdeki bu tarihten
+   önce kalan tarihleri gelecekmiş gibi sunma; geçmişse bunu açıkça belirt ve varsa bir
+   sonraki/güncel tarihi öne çıkar. Referans verilerde güncel bilgi yoksa bunu söyle.
 """
+
+MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+             "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+WEEKDAYS_TR = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"]
+
+
+def _now_tr():
+    from datetime import datetime
+    now = datetime.now()
+    return (f"{now.day} {MONTHS_TR[now.month - 1]} {now.year} "
+            f"{WEEKDAYS_TR[now.weekday()]}, saat {now:%H:%M}")
 
 REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
 - Soruyu CEVAPLAMA, sadece yeniden yaz.
@@ -49,6 +67,12 @@ Sohbet geçmişi:
 {history}
 
 Son mesaj: {query}"""
+
+IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönderdi.
+{typed}Görseldeki metni ve niyeti kullanarak öğrencinin sormak istediği soruyu tek bir bağımsız Türkçe cümle olarak yaz.
+- Soruyu CEVAPLAMA, sadece yaz.
+- Görselde soru yoksa, görselin neyle ilgili olduğunu kısa bir arama sorgusu olarak yaz.
+- Sadece soruyu/sorguyu döndür, açıklama ekleme."""
 
 
 class QueryRewriter:
@@ -77,6 +101,24 @@ class QueryRewriter:
             print(f"[rewrite] failed, using raw query: {error}", file=sys.stderr)
             return query
 
+    def image_query(self, query: str, image: str) -> str:
+        """Turn an attached image (plus whatever the student typed) into a
+        standalone search query, so the gate and retrieval work on what the
+        image actually asks — the vector search can't see pixels."""
+        typed = f"Öğrencinin yazdığı mesaj: {query}\n" if query else ""
+        try:
+            extracted = self._llm.chat(self._model, [{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": IMAGE_QUERY_PROMPT.format(typed=typed)},
+                    {"type": "image_url", "image_url": {"url": image}},
+                ],
+            }]).strip()
+            return extracted or query
+        except Exception as error:
+            print(f"[image] query extraction failed, using text only: {error}", file=sys.stderr)
+            return query
+
 
 EDUCATION_LABELS = {
     "aday": "İYTE'ye gelmeyi düşünen aday öğrenci (henüz kayıtlı değil)",
@@ -96,6 +138,11 @@ class Conversation:
         self._rewriter = rewriter
         self._messages = []
         self.last_sources = []  # what the latest answer was grounded on
+        self.last_debug = []  # CLI-style log lines for the latest turn
+
+    def _log(self, line):
+        print(line, file=sys.stderr)
+        self.last_debug.append(line)
 
     def respond(self, query: str, model: str = None, education_type: str = None) -> str:
         verdict = self._prepare(query, education_type)
@@ -104,13 +151,14 @@ class Conversation:
 
         start = time.perf_counter()
         answer = self._llm.chat(model or self._model, self._messages)
-        print(f"[timing] llm {time.perf_counter() - start:.2f}s", file=sys.stderr)
+        self._log(f"[timing] llm {time.perf_counter() - start:.2f}s")
         self._add_assistant_message(answer)
         return answer
 
-    def respond_stream(self, query: str, model: str = None, education_type: str = None):
+    def respond_stream(self, query: str, model: str = None, education_type: str = None,
+                       image: str = None):
         """Same as respond(), but yields the answer token by token."""
-        verdict = self._prepare(query, education_type)
+        verdict = self._prepare(query, education_type, image)
         if verdict != "ok":
             yield REFUSALS[verdict]
             return
@@ -123,24 +171,39 @@ class Conversation:
                 first_token_at = time.perf_counter() - start
             tokens.append(token)
             yield token
-        print(f"[timing] llm first token {first_token_at:.2f}s, "
-              f"total {time.perf_counter() - start:.2f}s", file=sys.stderr)
+        self._log(f"[timing] llm first token {first_token_at:.2f}s, "
+                  f"total {time.perf_counter() - start:.2f}s")
         self._add_assistant_message("".join(tokens))
 
-    def _prepare(self, query, education_type=None) -> str:
+    def _prepare(self, query, education_type=None, image=None) -> str:
         """Gate and retrieval run concurrently: retrieval is speculative,
         its result is discarded if the gate blocks. Returns "ok" when the
-        query goes through, otherwise the gate's refusal verdict."""
+        query goes through, otherwise the gate's refusal verdict.
+
+        An image (data URL) rides along for this turn only: the gate,
+        rewriter and retrieval see just the text, and history keeps the
+        bare question, so the image never bloats later requests."""
         start = time.perf_counter()
+        self.last_debug = []
         # follow-ups get rewritten into standalone questions for the gate
         # and retrieval; the model itself still sees the original message
         search_query = query
-        if self._rewriter is not None and len(self._messages) > 1:
+        if self._rewriter is not None and image is not None:
+            extract_start = time.perf_counter()
+            search_query = self._rewriter.image_query(query, image)
+            self._log(f"[timing] image query {time.perf_counter() - extract_start:.2f}s")
+            if search_query != query:
+                self._log(f"[image] search query: {search_query!r}")
+            if not query:
+                # image-only message: the extracted question stands in as
+                # the student's text for the prompt and the history
+                query = search_query
+        elif self._rewriter is not None and len(self._messages) > 1:
             rewrite_start = time.perf_counter()
             search_query = self._rewriter.rewrite(query, self._messages[1:])
-            print(f"[timing] rewrite {time.perf_counter() - rewrite_start:.2f}s", file=sys.stderr)
+            self._log(f"[timing] rewrite {time.perf_counter() - rewrite_start:.2f}s")
             if search_query != query:
-                print(f"[rewrite] {query!r} -> {search_query!r}", file=sys.stderr)
+                self._log(f"[rewrite] {query!r} -> {search_query!r}")
 
         if self._gate is None:
             results = self._retriever.retrieve_all(search_query)
@@ -151,7 +214,12 @@ class Conversation:
                 if verdict.result() != "ok":
                     return verdict.result()
                 results = speculative.result()
-        print(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s", file=sys.stderr)
+        timings = getattr(self._retriever, "last_timings", None)
+        if timings:
+            self._log(f"[timing] embed {timings['embed']:.2f}s | search {timings['search']:.2f}s")
+        self._log(f"[timing] gate + retrieval {time.perf_counter() - start:.2f}s")
+        self._log("[retrieval] " + ", ".join(
+            f"{corpus}: {len(results[corpus])}" for corpus in ("calendar", "regulations", "faq")))
 
         # every chunk gets a [n] marker; the model cites them inline and
         # last_sources[n-1] is what marker [n] points to
@@ -164,6 +232,7 @@ class Conversation:
 
         context = CONTEXT_TEMPLATE.format(
             query=query,
+            now=_now_tr(),
             profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
             calendar_context="\n".join(numbered["calendar"]),
             regulations_context="\n".join(numbered["regulations"]),
@@ -172,7 +241,12 @@ class Conversation:
 
         if not self._messages:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
-        self._messages.append({"role": "user", "content": f"Öğrenci: {query}\n\n{context}"})
+        text = f"Öğrenci: {query}\n\n{context}"
+        content = text if image is None else [
+            {"type": "text", "text": text},
+            {"type": "image_url", "image_url": {"url": image}},
+        ]
+        self._messages.append({"role": "user", "content": content})
         self._pending_query = query
         return "ok"
 
@@ -184,8 +258,13 @@ class Conversation:
         corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik", "faq": "SSS"}
         corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
                        "regulations": settings.REGULATIONS_SOURCE_URL, "faq": ""}
-        source = {"type": corpus_names[corpus], "label": result["text"][:120]}
-        url = (result.get("metadata") or {}).get("source_url") or corpus_urls[corpus]
+        metadata = result.get("metadata") or {}
+        # chips labeled by hostname all look alike — the document's own
+        # title (indexed with each mevzuat chunk) tells sources apart
+        source = {"type": corpus_names[corpus],
+                  "title": metadata.get("document_title") or corpus_names[corpus],
+                  "label": result["text"][:120]}
+        url = metadata.get("source_url") or corpus_urls[corpus]
         if url:
             source["url"] = url
         return source

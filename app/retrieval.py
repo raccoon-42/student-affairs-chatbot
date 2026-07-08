@@ -8,7 +8,6 @@ The vector store sits behind a seam with two adapters: QdrantVectorStore
 (production) and InMemoryVectorStore (tests). Both answer
 search(collection, vector, limit, filters) -> [Hit].
 """
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -107,15 +106,16 @@ class Retriever:
         start = time.perf_counter()
         with ThreadPoolExecutor(max_workers=3) as pool:
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
-            regulations = pool.submit(self.retrieve_regulations, query, 3, vector)
-            faq = pool.submit(self.retrieve_faq, query, 3, vector)
+            regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
+            faq = pool.submit(self.retrieve_faq, query, 5, vector)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
                 "faq": faq.result(),
             }
-        print(f"[timing] embed {embed_seconds:.2f}s | search {time.perf_counter() - start:.2f}s",
-              file=sys.stderr)
+        # the conversation logs these per turn (CLI + dev mode in the UI);
+        # last-write-wins across sessions is fine for diagnostics
+        self.last_timings = {"embed": embed_seconds, "search": time.perf_counter() - start}
         return results
 
     def retrieve_calendar(self, query: str, top_k: int = 10, vector=None) -> List[Dict]:
@@ -135,14 +135,14 @@ class Retriever:
             for hit, score in hits
         ]
 
-    def retrieve_regulations(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_regulations(self, query: str, top_k: int = 5, vector=None) -> List[Dict]:
         hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k, vector=vector)
         return [
             {"text": self._format_regulation(hit), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_faq(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_faq(self, query: str, top_k: int = 5, vector=None) -> List[Dict]:
         # FAQ chunks embed only the question; the answer travels in metadata
         hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k, vector=vector)
         return [
