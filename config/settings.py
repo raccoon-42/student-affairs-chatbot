@@ -20,6 +20,11 @@ REGULATIONS_COLLECTION = os.getenv("REGULATIONS_COLLECTION", "regulations")
 FAQ_COLLECTION = os.getenv("FAQ_COLLECTION", "faq")
 
 # Embeddings (used by BOTH indexing and querying)
+# "openrouter" (hosted) or "local" (sentence-transformers). Collections
+# embedded with one backend are not searchable with the other — re-index
+# from the source files (vectorizer) after switching.
+EMBEDDING_BACKEND = os.getenv("EMBEDDING_BACKEND", "openrouter")
+OPENROUTER_EMBEDDING_MODEL = os.getenv("OPENROUTER_EMBEDDING_MODEL", "google/gemini-embedding-2")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-large-instruct")
 EMBED_INSTRUCTION = (
     "Üniversite yönetmeliği veya akademik takvim ile ilgili Türkçe bir soruya "

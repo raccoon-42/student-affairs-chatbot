@@ -7,7 +7,7 @@ from config import settings
 class FakeEmbedder:
     """Maps any text to a tiny vector based on keyword presence."""
 
-    def embed(self, text):
+    def embed_query(self, text):
         text = text.lower()
         return [
             1.0 if "sınav" in text else 0.0,
@@ -52,7 +52,7 @@ class InMemoryVectorStoreWrapper:
 def test_query_filter_extraction_reaches_the_store():
     retriever = make_retriever()
     retriever.retrieve_calendar("güz dönemi sınavları ne zaman")
-    assert retriever._store.last_filters == {"event_type": "exam", "academic_period": "fall"}
+    assert retriever._store.last_filters == {"academic_period": "fall"}
 
 
 def test_no_signals_means_no_filter():
@@ -68,16 +68,16 @@ def test_most_relevant_calendar_chunk_ranks_first():
     assert "sınav" in results[0]["text"].lower()
 
 
-def test_calendar_formatting_uses_event_type_icon():
+def test_calendar_returns_stored_text_verbatim():
     retriever = make_retriever()
     results = retriever.retrieve_calendar("sınav ne zaman")
-    assert results[0]["text"].startswith("📝")
+    assert results[0]["text"] == "Final sınavları başlıyor"
 
 
-def test_regulations_formatting_includes_chapter_and_section():
+def test_regulations_return_stored_text_verbatim():
     retriever = make_retriever()
     results = retriever.retrieve_regulations("sınav tekrarı")
-    assert results[0]["text"].startswith("📖 Chapter 1, Section 2:")
+    assert results[0]["text"] == "Sınav tekrarı kuralları"
 
 
 def test_empty_collection_returns_empty_list():
@@ -90,9 +90,9 @@ def test_retrieve_all_embeds_the_query_exactly_once():
         def __init__(self):
             self.calls = 0
 
-        def embed(self, text):
+        def embed_query(self, text):
             self.calls += 1
-            return super().embed(text)
+            return super().embed_query(text)
 
     embedder = CountingEmbedder()
     retriever = Retriever(InMemoryVectorStore(), embedder)

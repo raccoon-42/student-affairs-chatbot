@@ -17,7 +17,7 @@ from typing import Dict, List, Optional
 import numpy as np
 
 from config import settings
-from preprocessing.extraction import extract_event_type, extract_academic_period, format_date_range
+from preprocessing.extraction import extract_academic_period
 from preprocessing.indexing.bm25 import BM25, preprocess_text
 
 
@@ -87,18 +87,6 @@ class InMemoryVectorStore:
         return hits[:limit]
 
 
-class SentenceTransformerEmbedder:
-    def __init__(self, model_name=None):
-        self._model_name = model_name or settings.EMBEDDING_MODEL
-        self._model = None  # loaded on first use — importing this module stays cheap
-
-    def embed(self, text: str) -> List[float]:
-        if self._model is None:
-            from sentence_transformers import SentenceTransformer
-            self._model = SentenceTransformer(self._model_name)
-        return self._model.encode(text).tolist()
-
-
 class Retriever:
     def __init__(self, store, embedder,
                  semantic_weight=settings.SEMANTIC_WEIGHT,
@@ -131,10 +119,12 @@ class Retriever:
         return results
 
     def retrieve_calendar(self, query: str, top_k: int = 10, vector=None) -> List[Dict]:
+        # academic_period is a reliable hard filter; event_type is not — the
+        # query's intent ("son tarih" -> deadline) and the event's class
+        # ("Kayıt işlemleri" -> registration) often disagree, and a hard
+        # filter then excludes the right answer. Hybrid scoring already
+        # rewards matching terms, so event_type stays out of the filter.
         filters = {}
-        event_type = extract_event_type(query)
-        if event_type:
-            filters["event_type"] = event_type
         academic_period = extract_academic_period(query)
         if academic_period:
             filters["academic_period"] = academic_period
@@ -161,7 +151,8 @@ class Retriever:
         ]
 
     def _embed_query(self, query):
-        return self._embedder.embed(f"Instruct: {settings.EMBED_INSTRUCTION}\nQuery: {query}")
+        # any model-specific instruction prefix lives in the embedder
+        return self._embedder.embed_query(query)
 
     def _hybrid_search(self, query, collection, top_k, filters=None, vector=None):
         """Vector search for candidates, then re-rank with a blend of
@@ -186,14 +177,8 @@ class Retriever:
 
     @staticmethod
     def _format_calendar(hit: Hit) -> str:
-        metadata = hit.metadata
-        icons = {"holiday": "🎉", "exam": "📝", "deadline": "⏰"}
-        icon = icons.get(metadata.get("event_type"))
-        if icon:
-            return f"{icon} {hit.text}"
-        date_range = format_date_range(metadata.get("date1"), metadata.get("date2"))
-        if date_range:
-            return f"{date_range}: {metadata.get('event', hit.text)}"
+        # render_line already produced a readable line (term + dates +
+        # description) at index time — reformatting from metadata loses it
         return hit.text
 
     @staticmethod
@@ -205,13 +190,11 @@ class Retriever:
 
     @staticmethod
     def _format_regulation(hit: Hit) -> str:
-        section = hit.metadata.get("section", "")
-        chapter = hit.metadata.get("chapter", "")
-        if section and chapter:
-            return f"📖 Chapter {chapter}, Section {section}: {hit.text}"
-        return f"📖 {hit.text}"
+        # render_article already leads with MADDE n (BÖLÜM ...)
+        return hit.text
 
 
 def default_retriever() -> Retriever:
-    """The production wiring: Qdrant + sentence-transformers."""
-    return Retriever(QdrantVectorStore(), SentenceTransformerEmbedder())
+    """The production wiring: Qdrant + the configured embedding backend."""
+    from app.embeddings import default_embedder
+    return Retriever(QdrantVectorStore(), default_embedder())
