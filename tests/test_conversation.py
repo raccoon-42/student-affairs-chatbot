@@ -35,6 +35,21 @@ class FakeRetriever:
                  "metadata": {"document_title": "Öğrenci Kimlik Kartı Formu",
                               "source_url": "https://example.test/kimlik-formu.pdf"}}]
 
+    def retrieve_sks(self, query, top_k=4):
+        return [{"text": "YEMEKHANE HİZMETİ\nKart sistemine para yüklenir.", "score": 1.0,
+                 "metadata": {"document_title": "YEMEKHANE HİZMETİ", "topic": "yemekhane",
+                              "source_url": "https://example.test/yemekhane/"}}]
+
+    def retrieve_programs(self, query, top_k=3):
+        return [{"text": "Bilgisayar Mühendisliği (Lisans, Mühendislik Fakültesi)", "score": 1.0,
+                 "metadata": {"document_title": "Bilgisayar Mühendisliği", "level": "lisans",
+                              "source_url": "https://example.test/ceng/"}}]
+
+    def retrieve_people(self, query, top_k=3):
+        return [{"text": "Selma Tekir — Associate Professor, Bilgisayar Mühendisliği", "score": 1.0,
+                 "metadata": {"document_title": "Selma Tekir", "department": "Bilgisayar Mühendisliği",
+                              "role": "akademik", "source_url": "https://example.test/selma-tekir/"}}]
+
     def retrieve_all(self, query, audience=None):
         self.queries.append(query)
         return {
@@ -42,6 +57,9 @@ class FakeRetriever:
             "regulations": self.retrieve_regulations(query),
             "faq": self.retrieve_faq(query),
             "forms": self.retrieve_forms(query),
+            "sks": self.retrieve_sks(query),
+            "programs": self.retrieve_programs(query),
+            "people": self.retrieve_people(query),
         }
 
 

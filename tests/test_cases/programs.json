@@ -1,0 +1,22 @@
+[
+  {
+    "query": "İYTE'de bilgisayar mühendisliği var mı?",
+    "expected": "Evet der; Bilgisayar Mühendisliği'nin Mühendislik Fakültesi'nde lisans programı olduğunu söyler ve kaynak işaretiyle atıfta bulunur.",
+    "description": "Var olan bölüm -> evet + fakülte"
+  },
+  {
+    "query": "İYTE'de hangi lisans bölümleri var?",
+    "expected": "Lisans programlarını fakültelere göre sayar (Fen, Mühendislik, Mimarlık fakülteleri); listenin tamamını veya fakülte bazında özetini verir.",
+    "description": "Tam bölüm listesi sorusu"
+  },
+  {
+    "query": "İYTE'de endüstri mühendisliği okumak istiyorum, var mı?",
+    "expected": "İYTE'de endüstri mühendisliği lisans programı OLMADIĞINI söyler; benzer bölüm önerebilir ama endüstri mühendisliği varmış gibi cevap vermemeli.",
+    "description": "Olmayan bölüm -> yok demeli (tam liste chunk'ı)"
+  },
+  {
+    "query": "yüksek lisansta yazılım mühendisliği programı var mı?",
+    "expected": "Yazılım Mühendisliği ve Veri Bilimleri (tezsiz, ikinci öğretim) yüksek lisans programından bahseder.",
+    "description": "Lisansüstü program sorgusu (alias: yazılım)"
+  }
+]

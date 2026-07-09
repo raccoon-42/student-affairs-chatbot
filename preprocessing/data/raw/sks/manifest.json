@@ -1,0 +1,56 @@
+[
+  {
+    "title": "SPOR",
+    "topic": "spor",
+    "source_url": "https://sks.iyte.edu.tr/spor/",
+    "file": "spor.html"
+  },
+  {
+    "title": "SPOR TESİSLERİ ÇALIŞMA SAATLERİ VE ÜCRETLERİ",
+    "topic": "spor",
+    "source_url": "https://sks.iyte.edu.tr/spor-tesisleri-calisma-saatleri-ve-ucretleri/",
+    "file": "spor-tesisleri-calisma-saatleri-ve-ucretleri.html"
+  },
+  {
+    "title": "İYTE TESİS REZERVASYON SİSTEMİ",
+    "topic": "spor",
+    "source_url": "https://sks.iyte.edu.tr/spor/rezervasyon/",
+    "file": "rezervasyon.html"
+  },
+  {
+    "title": "ÖĞRENCİ TOPLULUKLARI",
+    "topic": "topluluklar",
+    "source_url": "https://sks.iyte.edu.tr/kultur/topluluklar/",
+    "file": "topluluklar.html"
+  },
+  {
+    "title": "ÖĞRENCİ TOPLULUKLARINA NASIL ÜYE OLUNUR ?",
+    "topic": "topluluklar",
+    "source_url": "https://sks.iyte.edu.tr/duyuru/ogrenci-topluluklarina-nasil-uye-olunur/",
+    "file": "ogrenci-topluluklarina-nasil-uye-olunur.html"
+  },
+  {
+    "title": "ÖĞRENCİ TOPLULUKLARININ KURULMASI VE ÇALIŞMA KOŞULLARI",
+    "topic": "topluluklar",
+    "source_url": "https://sks.iyte.edu.tr/kultur/kultur-ogrenci-topluluklari/",
+    "file": "kultur-ogrenci-topluluklari.html"
+  },
+  {
+    "title": "BESLENME HİZMETLERİ",
+    "topic": "yemekhane",
+    "source_url": "https://sks.iyte.edu.tr/beslenme-hizmetleri/",
+    "file": "beslenme-hizmetleri.html"
+  },
+  {
+    "title": "YEMEKHANE HİZMETİ",
+    "topic": "yemekhane",
+    "source_url": "https://sks.iyte.edu.tr/beslenme-hizmetleri/yemekhane-hizmeti/",
+    "file": "yemekhane-hizmeti.html"
+  },
+  {
+    "title": "İYTE YEMEK BURSU",
+    "topic": "yemekhane",
+    "source_url": "https://sks.iyte.edu.tr/burs/iyte-yemek-bursu/",
+    "file": "iyte-yemek-bursu.html"
+  }
+]

@@ -1,0 +1,522 @@
+[
+  {
+    "baslik": "Öğrenci Topluluklarına Nasıl Üye Olunur?",
+    "metin": "İzmir Yüksek Teknoloji Enstitüsü'nde öğrenci toplulukları; öğrencilerin sosyal, kültürel, bilimsel, sanatsal ve sportif faaliyetlerle kişilik gelişimlerini desteklemek, toplum bilincinin oluşmasını sağlamak, boş zamanlarını değerlendirmek ve akademik gelişimlerine katkı sağlamak amaçları ile kurulur. İzmir Yüksek Teknoloji Enstitüsünde öğrenim gören ön lisans, lisans, lisansüstü programlarına kayıtlı olan tüm öğrenciler öğrenci topluluklarına üye olabilirler. Bir öğrenci birden fazla kulübe üye olabilir. Her Eğitim Öğretim Dönemi başında öğrenci topluluklarının kendilerini tanıtmaları ve üye kaydı yapmaları maksadıyla Topluluklar Toplanıyor etkinliği gerçekleştirilmektedir. Enstitü öğrencileri bu etkinlikte tercih ettikleri topluluk veya topluluklara üye olabilmektedir. Etkinlik dışında da yılın herhangi bir zamanında ilgili topluluk yönetimine ulaşarak veya Daire Başkanlığı aracılığı ile istenilen topluluğa üye olunabilmektedir."
+  },
+  {
+    "baslik": "IEEE Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına, araştırıcı ve yaratıcı bireyler olarak yetişmesine katkıda bulunmak; iş dünyası ile etkileşimde olmak, robotik yarışmalar düzenlemek, teknoloji konulu eğitimler vermek, teknik geziler düzenlemek gibi faaliyetlerle üyelerin gelişimine katkı sağlamaktır. Akademik Danışman: Prof.Dr. Mustafa Aziz Altınkaya. Topluluk Başkanı: Eyüpcan Günerhan. İletişim: ieee@iyte.edu.tr. Web sayfası: (bağlantı: https://ieee.iyte.edu.tr/). Sosyal medya: (bağlantı: https://www.instagram.com/ieeeiyte/)"
+  },
+  {
+    "baslik": "Yazılım Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; yazılım konusuna ilgi duyan öğrencilere rehberlik etmek, proje ve araştırma konularında çalışmalar yapmak, teknopark ve diğer Enstitü dışı platformlarda yazılım ihtiyacı olan firmalarla iletişim sağlamaktır. Akademik Danışman: Prof.Dr. Tolga Ayav. Topluluk Başkanı: Ahmet Kaplan. İletişim: yazilim@iyte.edu.tr. Web sayfası: (bağlantı: http://www.yazilimiyte.com). Sosyal medya: (bağlantı: https://www.instagram.com/iyte_yazilim/)"
+  },
+  {
+    "baslik": "IAESTE Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Erdal Uzunlar. İletişim: iaeste@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/groups/155645691133654/)"
+  },
+  {
+    "baslik": "Atak Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Barış Atakan. İletişim: atak@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_atak/)"
+  },
+  {
+    "baslik": "Bilim ve Teknoloji Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; bilim ve teknoloji konularına ilgi duyan öğrencilere rehberlik etmek, seminer, kongre benzeri etkinlikler ve eğitimler düzenlemektir. İletişim: biltet@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/iytebiltet/)"
+  },
+  {
+    "baslik": "Antropoloji Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Ozan Uştuk. Topluluk Başkanı: Ayşe Melike Baş. İletişim: antropoloji@iyte.edu.tr. Web sayfası: (bağlantı: https://antropoloji.iyte.edu.tr/). Sosyal medya: (bağlantı: https://www.instagram.com/iyteanthropo/)"
+  },
+  {
+    "baslik": "Iztech Mun Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Sinem Bezircilioğlu. Topluluk Başkanı: Öykü Özlav. İletişim: iztechmun@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechmun/)"
+  },
+  {
+    "baslik": "Endüstriyel Proje Geliştirme ve İşbirliği Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; üniversite projelerinde ve AR-GE çalışmalarında aktif olmalarını sağlamak, yaratıcılığı ön planda tutup özgünlüğü sağlamak, İYTE'ye duyulan sorumluluk bilinciyle sosyal yanı güçlü, vizyonu geniş üyeler hazırlamaktır. Akademik Danışman: Öğr.Gör. Mahmut Cenk Efeler. Topluluk Başkanı: Aydın Akbarov. İletişim: endustri@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/iytepgik/?locale=tr_TR). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/sRsGRHEbIbkiVs5)"
+  },
+  {
+    "baslik": "Yaşam Bilimleri Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; disiplinlerarası harmanlaşmış bilgiyi ulusal ve uluslararası düzeyde yaymak, Türkiye'nin gelişen bilim ve teknolojisinin sürdürülebilirliğini sağlamak, seminerler, teknik geziler ve çalıştaylar ile öğrenci, öğretim üyesi ve sanayi birlikteliğini sağlamaktır. Akademik Danışman: Dr.Öğr.Üy. Hüseyin Atakan Ekiz. Topluluk Başkanı: Nisa Akgün. İletişim: yasambilimleri@iyte.edu.tr. Web sayfası: (bağlantı: https://bilfest.iyte.edu.tr/yasam-bilimleri-toplulugu/). Sosyal medya: (bağlantı: https://www.instagram.com/iztech.yabito/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/mlvFxOrL5c08Y2F)"
+  },
+  {
+    "baslik": "İYTE Genç Tema Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Abhishek Dutta. Topluluk Başkanı: Barış Irmak. İletişim: cevre@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytegenctema/)"
+  },
+  {
+    "baslik": "Gıda Beslenme ve Sağlık Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; sağlık ve beslenme alanlarındaki güncel ve bilimsel araştırmaları öğrencilere bülten olarak sunmak, öğrencilere akademik ve iş hayatında inovatif bakış açısı kazandırmak, teknik gezi ve sunumlarla iş hayatı hakkında bilinci artırmaktır. Akademik Danışman: Dr.Öğr.Üy. Şükrü Güleç. Topluluk Başkanı: Gül Nazlıcan İnce. İletişim: gidabeslenmevesaglik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/111244060436358/photos/a.133049971589100/147102243517206/?type=3). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/8fZD4q5pBhY1HQZ)"
+  },
+  {
+    "baslik": "Bioteknoloji ve Sanayi İşbirliği Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; biyoteknoloji alanında kullanılan üretim prosesleri, metotlar, cihazlar ve ekipmanlar hakkında eğitimler ve kurslar organize ederek uzman kişilerin bilgi ve deneyimlerini üyelere ve öğrencilere kazandırmaktır. Akademik Danışman: Dr.Öğr.Üy. Nur Başak Sürmeli. Topluluk Başkanı: Nida Demirçak. İletişim: bioteknolojivesanayi@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/OijKy78eDDdpo1Q)"
+  },
+  {
+    "baslik": "Yapı Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; öğrenilen teorik bilgileri pratiğe dökecek bir platform oluşturmak, çeşitli etkinlikler düzenleyerek nitelikli olma yolunda ilerlemektir. Akademik Danışman: Doç.Dr. Engin Aktaş. Topluluk Başkanı: Meryem Keleş. İletişim: yapi@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteyapi/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/SBu0YoFdOd6mBzX)"
+  },
+  {
+    "baslik": "Matematik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; dünya çapındaki bilimsel gelişmeleri matematikle bağlantılı incelemek, matematik ağırlıklı seminerler ve çalıştaylar düzenleyerek temel bilimlere ilgiyi artırmak, matematik yarışmaları düzenlemek ve diğer üniversite toplulukları ile ortak çalışmalar yapmaktır. Akademik Danışman: Dr.Öğr.Üy. Haydar Göral. Topluluk Başkanı: Emre Özkeriş. İletişim: matematik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechmath/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/cWUH5JxIfpLZCXg)"
+  },
+  {
+    "baslik": "Biyomühendislik Öğrenci Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; öğrencileri edinecekleri meslek hakkında bilgilendirmek, ilgili sektörde çalışanlar ile öğrencileri buluşturmak, öğrencilere deneyim kazandıracak aktiviteler düzenlemektir. Akademik Danışman: Dr.Öğr.Üy. Betül Aldemir Dikici. Topluluk Başkanı: Havvanas Kulalı. İletişim: besc@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/bescoiztech/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/IYzTLJT9uLW7N5U)"
+  },
+  {
+    "baslik": "Google Developer Student Clubs Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Yalçın Baştanlar. Topluluk Başkanı: Ahmet Mete Yazıcı. İletişim: dsciztech@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/p/DBZRYoNqLMp/+). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/0stUYChus9V78Sy)"
+  },
+  {
+    "baslik": "Alternatif Enerji Sistemleri Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Erdal Çetkin. Topluluk Başkanı: Hakan Emre Yiğit. İletişim: aest@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/4Hq7NAynK0iBz3K)"
+  },
+  {
+    "baslik": "Astronomi Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; astronomi ve uzay bilimleri hakkında bilinen yanlışları düzeltmek, insanları yakın zamandaki uzay çalışmaları hakkında bilgilendirmek ve özendirmek, ülkemizde yeni kurulan Uzay Ajansına hayal gücü yüksek ve bilgili insanları kanalize etmektir. Akademik Danışman: Doç.Dr. Özgenç Ebil. Topluluk Başkanı: Asra Fırat. İletişim: astronomitoplulugu@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechastronomy/?hl=tr). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/RADk9rdIHIcCpgo)"
+  },
+  {
+    "baslik": "Optik ve Fotonik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Canan Varlıklı. Topluluk Başkanı: Ilgın Şerifoğlu. İletişim: iztechopt@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechops/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/vz4iuXF7FTvRMqo)"
+  },
+  {
+    "baslik": "Malzeme Bilimi Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Nurunnisa Atçeken. Topluluk Başkanı: Emirhan Geylan. İletişim: iytembt@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytembt/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/KlbGraM7XiWOqaj)"
+  },
+  {
+    "baslik": "Kimya Mühendisliği Öğrenci Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; Kimya Mühendisliği öğrencileri arasında dayanışmayı artırmak, mesleki bilinç kazandırmak, üyelerin sektörle iletişimini sağlamaktır. Akademik Danışman: Prof.Dr. Erol Şeker. Topluluk Başkanı: Ceren Tanrıverdi. İletişim: iyteches@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteches/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/FowDFnvQgBiYuz6)"
+  },
+  {
+    "baslik": "Kadın Hakları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; cinsiyet eşitliği bilincini yaymak, insanları haklar konusunda bilinçlendirmek, haksızlığa ve saldırıya uğrayanlara destek olmak, psikolojik destek sağlayacak seminerler düzenlemek, istismara uğrayan insanlara özel hayatın sınırlarını ihlal etmeden destek sağlamaktır. Akademik Danışman: Dr.Öğr.Üy. Bahar Engin Şavk. Topluluk Başkanı: Yağmur Ece Sandıklı. İletişim: kadinhaklari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte.kadinhaklari/)"
+  },
+  {
+    "baslik": "Eco Motion Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; sürdürülebilirlik kavramını atölye, söyleşi ve seminerler ile tanıtmak, çeşitli proje ve fikirlerle bu kavramı pekiştirmek için toplu çalışma ortamı sağlamak, öğrencileri çevreci ve ekolojik tasarımlara yönlendirmek ve çeşitli yarışmalara katılmak isteyen öğrencileri bir araya getirmektir. Akademik Danışman: Prof.Dr. İpek Akpınar. Topluluk Başkanı: Gülce Aksu. İletişim: ecomotion@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/ecomotion_iyte/)"
+  },
+  {
+    "baslik": "Kuantum Türkiye Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; kuantum teknolojileri alanında uluslararası düzeyde etkinlik düzenlemek, öğrenciler ile Kuantum Fiziği alanındaki çalışmalara ortak olmak, uluslararası bir ağa sahip olan QWorld ile işbirliği içinde dünya çapında etkinlikler düzenlemektir. Akademik Danışman: Prof.Dr. Lütfi Özyüzer. Topluluk Başkanı: Emirhan Güler. İletişim: kuantunturkiye@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/kuantum_turkiye/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/DRGu1CJrxNVQigz)"
+  },
+  {
+    "baslik": "Siber Güvenlik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; siber güvenlik ile ilgili farkındalık yaratmaktır. Akademik Danışman: Doç.Dr. Tuğkan Tuğlular. Topluluk Başkanı: Ayşenur Sivaslıgil. İletişim: siberguvenlik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztech.cybersec/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/8UEz8VyVqaOGfCz)"
+  },
+  {
+    "baslik": "Ekonomi Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; ekonomi bilincinin çalışma alanları üzerinde araştırmalar yapmak, finansal okuryazarlığı artırmak, Enstitü kültürüne ve sosyal hayata ekonomi bilimi aracılığıyla katkı sağlamaktır. Akademik Danışman: Dr.Öğr.Üy. Burak Dindaroğlu. Topluluk Başkanı: Atakan Cebe. İletişim: ekonomi@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte.ekonomi/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/sMbL4jJFzX7KOM4)"
+  },
+  {
+    "baslik": "Enerji Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; enerji alanında farkındalığı artırmak, akademik ve iş hayatında daha donanımlı olunmasını sağlamak, enerji sektöründeki kurum ve kuruluşlarla bağlantı kurup fikir alışverişi yapabilecek ortam hazırlamaktır. Akademik Danışman: Doç.Dr. Z. Haktan Karadeniz. Topluluk Başkanı: Samet Aslan. İletişim: iyteenerji@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytenerjitoplulugu/)"
+  },
+  {
+    "baslik": "Women in Business Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin akademik, sosyal ve kişisel yönden gelişmelerine katkıda bulunmak; kadının sosyal ve iş yaşamındaki rolü hakkında farkındalık yaratmak, İYTE'nin adını uluslararası platformda duyurmaktır. Akademik Danışman: Öğr.Gör. Pelin Kızılata. Topluluk Başkanı: Yaren Erdem. İletişim: wib@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytewib/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/o83KoKPFv6AjHBv)"
+  },
+  {
+    "baslik": "ESD Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Ünver Özkol. Topluluk Başkanı: Kaan Bağdiken. İletişim: esd@iyte.edu.tr"
+  },
+  {
+    "baslik": "Makine Mühendisliği Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; akademik ve kariyer hayatına destek olacak eğitimler vermek, geziler ile çalışma hayatının gözlenmesini sağlamak, organize sanayi ile Enstitü arasındaki işbirliğini güçlendirmektir. Akademik Danışman: Dr.Öğr.Üy. Benay Uzer Yılmaz. Topluluk Başkanı: Eren Meydan. İletişim: mechsocieyt@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/p/DGhwLwKMYX4/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/ta8o5EsfpmcrtOL)"
+  },
+  {
+    "baslik": "Kimya Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; öğrencilerin kimya alanındaki sektörden haberdar olmalarını sağlamak, öğrencilerin akademik bilgilerini projeye dökmeleri için fırsatlar yaratmak, alanında uzman kişilerle öğrencileri buluşturarak ufuk kaynağı olmaktır. Akademik Danışman: Doç.Dr. Ü. Hakan Yıldız. Topluluk Başkanı: Sedanur Baş. İletişim: chemsociety@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztech_chem/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/7UDasgDyMHwVyoZ)"
+  },
+  {
+    "baslik": "Fizik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; öğrencilere teknik ve teorik anlamda yeterli alan tanıyarak üretkenliği artırmak, öğrencilerin diğer üniversitelerin Fizik Bölümü öğrencileriyle ilişki içinde olmasını ve iş birliği yapmalarını sağlamak, İYTE Fizik Bölümünü aday öğrenciler öncelikli olmak üzere ülke genelinde ve uluslararası çapta tanıtmak, alanda yetkin kişilerin etkinlikleriyle öğrenci ufkunun genişlemesini sağlamaktır. Akademik Danışman: Dr.Öğr.Üy. Enver Ataman. Topluluk Başkanı: Yiğit Güngör. İletişim: iztech-phycics-society@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechphysicsociety/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/M0AC5rO5EOD61Zq)"
+  },
+  {
+    "baslik": "Ombudsmanlık Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/rkskFvIW8TMBoQR)"
+  },
+  {
+    "baslik": "Kalite Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; yükseköğretimde kalite kültürünün öğrenciler tarafından içselleştirilmesini ve yaygınlaştırılmasını sağlamak, öğrenciler ve kurum arasında köprü görevi üstlenerek kalite güvencesi süreçlerinde bilgi ve deneyim sahibi olmak, öğrencilerin yükseköğretimdeki kalite güvencesi süreçlerine katılımlarını artırmaktır. Akademik Danışman: Öğr.Gör. Nuriye Ağar Demir. Topluluk Başkanı: İlgim Efetürk. İletişim: iytekalite@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/2o0Ve6Nf8smdrT0)"
+  },
+  {
+    "baslik": "Industrial Design Community Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Yankı Göktepe. Topluluk Başkanı: Nazlıcım Kabak. İletişim: industrialdesigncommunity@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/xnnWb0ImuXy2vJ5)"
+  },
+  {
+    "baslik": "Food Engineering Society Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. A. Handan Baysal. Topluluk Başkanı: Miray Kocabalkan. İletişim: foodengineeringsociety@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechfoodengsociety/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/XGmXCe6UFn18z4n)"
+  },
+  {
+    "baslik": "Interart Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; her türlü sanat dalında interdisipliner etkinlikler düzenlemek, üyelerin interart bünyesi altında sanatsal üretimde bulunmalarını eğitimlerle desteklemek, sanat dallarında eğitimler vermektir. Akademik Danışman: Dr.Öğr.Üy. Altuğ Kasalı. Topluluk Başkanı: Elif Öykü Karabulut. İletişim: interart@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/cafJmAjR5iKKoSj)"
+  },
+  {
+    "baslik": "Çevre Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; güncel çevre teknolojilerini takip etmek ve Enstitüye tanıtmak, hayat kalitesini etkileyen çevre sorunları hakkında proje üretmek, kampüs içinde ve dışında sıfır atık, geri dönüşüm, karbon ayak izi ve sürdürülebilirlik konularında çevre bilincini artırmaktır. Akademik Danışman: Dr.Öğr.Üy. Mehmet Ali Küçüker. Topluluk Başkanı: Sude Kırdağ. İletişim: cevretoplulugu@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/4ZfjM3gvMjw80iK)"
+  },
+  {
+    "baslik": "Isawe Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Gülden Gökçek. İletişim: isawe@iyte.edu.tr"
+  },
+  {
+    "baslik": "Yapay Zeka ve Veri Bilimi Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; konferans ve söyleşiler düzenlemek, yarışma ve farkındalık etkinlikleri düzenlemek, proje ekipleri kurmak, rehberlik hizmeti vermek ve sektör ziyaretleri yaparak staj ve iş imkanı sağlamaktır. Akademik Danışman: Dr.Öğr.Üy. Abdurrahman Gümüş. Topluluk Başkanı: Görkem Gümüşboğa. İletişim: aisociety@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/yazvebthku/)"
+  },
+  {
+    "baslik": "Blockchain Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; blockchain alanında projeler geliştirmek, bu teknolojinin öğrenciler tarafından keşfedilmesini sağlamak, blockchain alanında seminerler düzenlemektir. Akademik Danışman: Doç.Dr. Orhan Kara. Topluluk Başkanı: Ömer Faruk Çoban. İletişim: iyteblockchain@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_blockchain/)"
+  },
+  {
+    "baslik": "Makers Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; çeşitli yarışmalara katılmak, projeler üretmek, kollektif bir çalışma ortamında makers kültüründe workshoplar düzenlemektir. Akademik Danışman: Öğr.Gör. Canberk Yurt. Topluluk Başkanı: Sudenaz Direm. İletişim: makerssociety@iyte.edu.tr"
+  },
+  {
+    "baslik": "Neuroscience Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Altuğ Didikoğlu. Topluluk Başkanı: Bertan Korkmaz. İletişim: izneuro@iyte.edu.tr"
+  },
+  {
+    "baslik": "İYTE Gelişen Teknolojiler ve Ar-Ge Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Berat Alper Erol. Topluluk Başkanı: Canse Coşar. İletişim: iztechnextgen@iyte.edu.tr"
+  },
+  {
+    "baslik": "Şehircilik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; Mimarlık ve Şehir Bölge Planlama bölümlerinde okuyan öğrencilerin farklı üniversitelerden akademisyenlerle düzenlenecek söyleşilerle kentsel gelişim ve tasarım süreçlerine dair bilgi edinmelerini ve disiplinler arası bakış açısı kazanmalarını sağlamak, İzmir'de yapılacak teknik geziler ve etkinliklerle öğrencilerin kent dokusunu ve mekânsal deneyimleri daha iyi analiz etme yeteneği kazanarak şehir planlama ve mimarlıkta yenilikçi yaklaşımlar geliştirmesini sağlamaktır. Akademik Danışman: Doç.Dr. Mehmet Penpecioğlu. Topluluk Başkanı: Ceren Özel. İletişim: sehircilik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_sehirciliktoplulugu/)"
+  },
+  {
+    "baslik": "Huawei Student Developers IYTE Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; teknolojik yenilikleri takip etmek ve üyelerin bu konuda bilgi sahibi olmasını sağlamak, inovasyon ve girişimcilik alanlarında faaliyetler düzenlemek, proje geliştirme süreçlerinde birbirine destek olmak ve fikir alışverişi yaparak projeleri geliştirmektir. Akademik Danışman: Dr.Öğr.Üy. Tolga Ercan. Topluluk Başkanı: Berfin Eminoğlu. İletişim: hsdiyte@iyte.edu.tr"
+  },
+  {
+    "baslik": "Rise Topluluğu",
+    "metin": "Kuruluş amacı: Nadir ve genetik hastalıklar konusunda bilimsel ve toplumsal farkındalık oluşturmak, bu hastalıkların biyolojik, psikolojik ve sosyal boyutlarını ele alan etkinlikler düzenlemek; seminer, kongre ve atölye çalışmalarıyla öğrencilerin bilgi ve duyarlılık kazanmalarını sağlamak; farklı disiplinlerden öğrencilerin katılımıyla bilimsel projeler, hackathonlar ve fikir maratonları düzenleyerek yenilikçi çözüm önerileri üretmektir. Akademik Danışman: Dr.Öğr.Üy. Arzu Uyar. Topluluk Başkanı: Kardelen Özkan. İletişim: rise@iyte.edu.tr. Sosyal medya: instagram.com/iztech_rise. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/RİSE-TOPLULUĞU.pdf)"
+  },
+  {
+    "baslik": "Sürdürülebilir Kalkınma Topluluğu",
+    "metin": "Kuruluş amacı: Bireylerin farkındalıklarını artırmak, toplumsal sürdürülebilirlik farkındalığı aşılamak, öğrencilerin yaratıcılık becerilerini geliştirmektir. Akademik Danışman: Prof.Dr. Orhan Gündüz. Topluluk Başkanı: Yekta Eren Kazanç. İletişim: sdgiztech@iyte.edu.tr. Sosyal medya: instagram.com/@sdg_iztech. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/SÜRDÜRÜLEBİLİR-KALKINMA-TOPLULUĞU.pdf)"
+  },
+  {
+    "baslik": "Teknoloji, Oyun, Sanat ve Tasarım Topluluğu",
+    "metin": "Kuruluş amacı: Oyun geliştirme alanında etkinlik ve eğitimler düzenlemek, öğrencilerin ekipler halinde projeler geliştirmesine yardımcı olmak, öğrencilerin oyun geliştirmelerine ve ilgili şirketlerle tanışmalarına yardımcı olmaktır. Akademik Danışman: Dr. Emrah İnan. Topluluk Başkanı: Erkut Kılınç. İletişim: tosttiyte@iyte.edu.tr. Sosyal medya: instagram.com/iyte.tostt. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/TEKNOLOJİOYUNSANAT-VE-TASARIM-TOPLULUĞU.pdf)"
+  },
+  {
+    "baslik": "Avrupa Çalışmaları Topluluğu",
+    "metin": "Kuruluş amacı: Sürdürülebilir kalkınma hedefleri konusunda bilgilendirmeyi hedefleyen etkinlikler yapmak, Avrupa çalışmaları konusunda farkındalığı artırıcı çalışmalar yapmak, sosyal sorumluluk projeleriyle sosyal etki yaratmaktır. Akademik Danışman: Öğr.Gör. Safiye Horoz. Topluluk Başkanı: Selmin Nefise Emir. İletişim: eustudiessociety@iyte.edu.tr. Sosyal medya: instagram.com/avrupacalismalaritoplulugu. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/AVRUPA-ÇALIŞMALARI.pdf)"
+  },
+  {
+    "baslik": "Ekoloji Koruma Topluluğu",
+    "metin": "Kuruluş amacı: Kampüs arazisi ve çevre bölgelerde endemik türlerin tespiti ve korunması için çalışmalar yapmak, flora, funga ve fauna ekipleriyle tespit edilen türleri kataloglamak ve düzenli takip etmek, gerekli araştırmalar yapılarak eksikleri tespit etmek ve kapatılması için çalışmalar yürütmektir. Akademik Danışman: Prof.Dr. Anne Frary. Topluluk Başkanı: Kenan Kömürcüoğlu. İletişim: iyteekot@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/EKOLOJİ-KORUMA-TOPLULULĞU.pdf)"
+  },
+  {
+    "baslik": "Iztech Nova Topluluğu",
+    "metin": "Kuruluş amacı: Öğrencilerin sosyal ve mesleki alanlarda tecrübe kazanmasını sağlamak, ulusal ve uluslararası network artırmaya yönelik çalışmalar yürütmek, katılımcıların yaratıcılık ve liderlik becerilerini geliştirmektir. Akademik Danışman: Öğr.Gör. Ebru Aslan Çallıoğlu. Topluluk Başkanı: Yunus Emre Aynas. İletişim: iztechnova@iyte.edu.tr. Sosyal medya: instagram.com/iztechnova. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/İZTECH-NOVA-TOPLULUĞU.pdf)"
+  },
+  {
+    "baslik": "Mimar Mühendisler Grubu Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin mesleki ve kişisel gelişimlerine katkıda bulunmak amacıyla sektörün önde gelen mimar ve mühendisleriyle söyleşiler, paneller ve seminerler düzenlemek; teorik bilgiyi pratikle birleştirmek için mimarlık ofislerine, şantiyelere, fabrikalara ve teknoloji merkezlerine teknik geziler düzenlemek; mimarlık ve mühendislik alanlarındaki güncel gelişmeleri takip ederek üyeler arasında bilgi paylaşımı ve ortak proje üretimini teşvik eden bir platform oluşturmaktır. Akademik Danışman: Dr.Öğr.Üy. Mehmet Zübeyr Ünli. Topluluk Başkanı: İsmail Sakci. İletişim: mmg@iyte.edu.tr. Sosyal medya: instagram.com/iytemmgt. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/MİMAR-MÜHENDİSLER-GRUBU.pdf)"
+  },
+  {
+    "baslik": "Mimarlık Topluluğu",
+    "metin": "Kuruluş amacı: Mimarlık alanında tanınmış isimlerin katılımıyla düzenlenecek söyleşi ve seminerlerde üyelerin mesleki gelişimine katkıda bulunmak; uygulama atölyeleri ve eğitici programlarla üyelerin teknik becerilerini ve kariyer gelişimini desteklemek amacıyla sertifikalı etkinlikler düzenlemek; mimarlık dernekleriyle iş birliği yapıp yürütülecek projeler ve teknik gezilerle öğrencilerin sektörel farkındalığını ve kültürel birikimini geliştirmektir. Akademik Danışman: Doç.Dr. Altuğ Kasalı. Topluluk Başkanı: Berke Nur Solmaz. İletişim: mimarliktoplulugu@iyte.edu.tr. Sosyal medya: instagram.com/iyte_mimarliktoplulugu. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/MİMARLIK-TOPLULUĞU.pdf)"
+  },
+  {
+    "baslik": "Halk Dansları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Nüket Dalcı. Topluluk Başkanı: Tayfun Özel. İletişim: halkdanslari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_hdt/)"
+  },
+  {
+    "baslik": "Dünya Dansları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Zeynep Aktüre. Topluluk Başkanı: Nur Sena Uğurlubaş. İletişim: dunyadanslari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_ddt/)"
+  },
+  {
+    "baslik": "Modern Dans Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Beste Bayramoğlu. Topluluk Başkanı: Yağmur Öztürk. İletişim: moderndans@iyte.edu.tr"
+  },
+  {
+    "baslik": "Müzik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Tolga Ayav. Topluluk Başkanı: Sevgi Dilara Maden. İletişim: muzik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytemuzik/)"
+  },
+  {
+    "baslik": "Türkü Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Barış Atakan. İletişim: turku@iyte.edu.tr"
+  },
+  {
+    "baslik": "Oda Orkestrası Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Işın Can. İletişim: odaorkestrasi@iyte.edu.tr"
+  },
+  {
+    "baslik": "Polifoni Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Barış Atakan. Topluluk Başkanı: Ada Şahin. İletişim: iytepolifoni@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytepolifoni/)"
+  },
+  {
+    "baslik": "Tango Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Hüseyin Atakan Ekiz. Topluluk Başkanı: Gülsüm Yazıcı. İletişim: iytetango@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte.tango/)"
+  },
+  {
+    "baslik": "Türk Japon Kültürü Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hayat Gürdal. Topluluk Başkanı: Oğuz Erdoğan. İletişim: turkjaponkulturu@iyte.edu.tr. Web sayfası: (bağlantı: https://iytego.iyte.edu.tr/). Sosyal medya: (bağlantı: https://www.instagram.com/iyteturkjaponkulturu/)"
+  },
+  {
+    "baslik": "Tiyatro Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Gaye Alevok Kılınç. Topluluk Başkanı: Muhammed Demir. İletişim: tiyatro@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteoyunculari/)"
+  },
+  {
+    "baslik": "Sinema Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Fulya Ertem Başkaya. Topluluk Başkanı: Ebrar İleri. İletişim: sinema@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytesinema/)"
+  },
+  {
+    "baslik": "Edebiyat Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Yasemin Özcan Gönülal. Topluluk Başkanı: Batuhan Köşker. İletişim: edebiyat@iyte.edu.tr. Web sayfası: (bağlantı: https://edebiyat.iyte.edu.tr/). Sosyal medya: (bağlantı: https://www.instagram.com/iyte.edebiyattoplulugu/)"
+  },
+  {
+    "baslik": "Düşünce Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Tonguç Akış. Topluluk Başkanı: İnan Deniz Bal. İletişim: dusunce@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytedusunce/)"
+  },
+  {
+    "baslik": "Atatürkçü Düşünce Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Ferit Acar Savacı. Topluluk Başkanı: Süleyman Baran Çelik. İletişim: ataturkcudusunce@iyte.edu.tr. Web sayfası: (bağlantı: https://iyte.edu.tr/event-organizer/ataturkcu-dusunce-toplulugu/). Sosyal medya: (bağlantı: https://www.instagram.com/iyteadt/)"
+  },
+  {
+    "baslik": "Bilim Kurgu ve Fantastik Kurgu Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Ahmet Arda Yiğitoğlu. Topluluk Başkanı: İzim Akkuş. İletişim: bilimkurgu@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytebkfk/)"
+  },
+  {
+    "baslik": "Toplum Gönüllüleri Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Ozan Uştuk. Topluluk Başkanı: İpek Gümüş. İletişim: toplumgonulluleri@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/tog.iyte/)"
+  },
+  {
+    "baslik": "Hayvan Dostları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Adile Arslan Avar. Topluluk Başkanı: Zeynep Evlivan. İletişim: hayvandostlari@iyte.edu.tr. Web sayfası: (bağlantı: https://www.mamakumbarasi.com/iyte-hayvan-dostlari). Sosyal medya: (bağlantı: https://www.instagram.com/iytehaydos/?hl=tr)"
+  },
+  {
+    "baslik": "AEGEE Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Emrah Dönmez. Topluluk Başkanı: Alişen Berat Özer. İletişim: aegee@iyte.edu.tr"
+  },
+  {
+    "baslik": "Seramik Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Coşgu Ateş. Topluluk Başkanı: Nehir Kaya. İletişim: seramik@iyte.edu.tr"
+  },
+  {
+    "baslik": "Fotoğrafçılık Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Coşgu Ateş. Topluluk Başkanı: Beyza Yıldız. İletişim: fotografcilik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytefotografcilik/)"
+  },
+  {
+    "baslik": "Çağdaş Yaşamı Destekleme Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Tonguç Akış. Topluluk Başkanı: Berna Bilir. İletişim: cagdasyasam@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytecagdasgenclik/)"
+  },
+  {
+    "baslik": "Moda Takı ve Tasarım Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Pelin Okyay. Topluluk Başkanı: Tuğba Yaşar. İletişim: modataki@iyte.edu.tr"
+  },
+  {
+    "baslik": "Doğa Araştırmaları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Anne Frary. Topluluk Başkanı: Ece Vahide Zeybek. İletişim: dogaarastirmalari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytedat/)"
+  },
+  {
+    "baslik": "Bilinçli Gençler Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. İletişim: bilincligencler@iyte.edu.tr"
+  },
+  {
+    "baslik": "Gastronomi ve Dünya Mutfakları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hayat Gürdal. Topluluk Başkanı: Ceren Gülşen Anar. İletişim: gastronomi@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte.gastronomi/)"
+  },
+  {
+    "baslik": "Enstalasyon Sanat Üretim Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Fatma Şenol. Topluluk Başkanı: Bedri Hızkan. İletişim: esut@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte.esut/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/qk9EwAOH8M19SFz)"
+  },
+  {
+    "baslik": "Türk Dünyası Araştırma Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Ahmet Arda Yiğitoğlu. Topluluk Başkanı: Demir Can Kabakçı. İletişim: turkdunyasiarastirmalari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytetudat/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/TO5B7cqZzCtMawg)"
+  },
+  {
+    "baslik": "Uniyardım Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. İletişim: uniyardim@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/groups/959268067503342/?locale=tr_TR)"
+  },
+  {
+    "baslik": "Permakültür ve Ekolojik Yaşam Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Nazlı Eren. Topluluk Başkanı: Tunç Kubilay İsak. İletişim: permakultur@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/eEfcLMKIhLuGCAH)"
+  },
+  {
+    "baslik": "İnsan ve Medeniyet Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Hatice Eser Ökten. Topluluk Başkanı: Gizem Mertsoylu. İletişim: insanvemedeniyet@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteinsanvemedeniyet/)"
+  },
+  {
+    "baslik": "International Exchange Student Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Gizem Köfünyeli. Topluluk Başkanı: Cemre Ceren Kavdır. İletişim: internationalexchangestudent@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iesciztech/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/2DMi335gXSTYlI6)"
+  },
+  {
+    "baslik": "Iztech Connecting Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Topluluk Başkanı: Ömer Faruk Koçhan. İletişim: iztechconnecting@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/s9zH0iT3Feq3f9C)"
+  },
+  {
+    "baslik": "Sağlık ve Sosyal Dayanışma Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına, araştırıcı ve yaratıcı nitelikli bireyler olarak yetişmesine katkıda bulunmaktır."
+  },
+  {
+    "baslik": "Görsel Sanatlar Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Numan Coşku Ateş. Topluluk Başkanı: Harun Önler. İletişim: gorselsanatlar@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/p/Cy3ne8Yrfrd/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/KTRXXsNRB7uMDmd)"
+  },
+  {
+    "baslik": "Destination İmagination Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Gaye Alevok Kılınç. Topluluk Başkanı: Sera Ekin İnciler. İletişim: destinationimagination@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/AlNEF4E2sdOlRdt)"
+  },
+  {
+    "baslik": "Tanıtım Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Yusuf Baran. Topluluk Başkanı: Rasim Emre Gülmez. İletişim: iytetanitim@iyte.edu.tr. Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/PvLe6OTwSed4BYs)"
+  },
+  {
+    "baslik": "Tartışma Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Yasemin Özcan Gönülal. Topluluk Başkanı: Onur Bayram. İletişim: tartisma-iyte2021@iyte.edu.tr"
+  },
+  {
+    "baslik": "Kültürel Arşiv Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Şeniz Çıkış. Topluluk Başkanı: Ramazan Emetli. İletişim: kulturelarsiv-kat@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte__kat/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/op7XjLQIQ0OnXiG)"
+  },
+  {
+    "baslik": "Handcraft Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Huriye Aksoy. Topluluk Başkanı: Cemre Aran. İletişim: iztechhandcraft@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechhandcraft/)"
+  },
+  {
+    "baslik": "1907 Üniversiteli Fenerbahçeliler İYTE Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; Enstitüdeki Fenerbahçe'ye gönül veren öğrencileri bir araya getirerek topluma ve Fenerbahçe'ye artı değer katacak projeler üretmek, Fenerbahçe Spor Kulübü'ne üniversiteli olmanın gerektirdiği bilinç ve ahlakla destek olmak, Fenerbahçeli öğrencileri bir araya getirerek sosyalleşme ortamı sağlamak, mezuniyet sonrası gerekli iş ağı ortamı oluşturmaktır. Akademik Danışman: Doç.Dr. Mehmet Yağmurcukardeş. Topluluk Başkanı: Yalın Sonat Kılıç. İletişim: 1907unifeb@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/ufb.iyte/), (bağlantı: https://x.com/ufbiyte)"
+  },
+  {
+    "baslik": "TEDX Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Yusuf Baran. Topluluk Başkanı: Dilara Saylar. İletişim: tedxiztech@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/tedxiyte_/)"
+  },
+  {
+    "baslik": "Münazara Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Pelin Okyay. Topluluk Başkanı: Zeynep Kayar. İletişim: iytemunazara@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytemunazara/)"
+  },
+  {
+    "baslik": "Fayda Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Nazlı Eren. Topluluk Başkanı: Melisa Çanlı. İletişim: iytefayda@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytefayda/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/iSzvZxBBdljfF2q)"
+  },
+  {
+    "baslik": "İYTE Ege Çağdaş Eğitim Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Dikmen Yakalı. Topluluk Başkanı: Ozan Güvenç. İletişim: cagdasegitimtoplulugu@iyte.edu.tr"
+  },
+  {
+    "baslik": "Tarih Topluluğu",
+    "metin": "Kuruluş amacı: Tarihsel olguların farklı perspektifler üzerinden değerlendirilmesini sağlamak, üyeleri tarihsel konularda bilgilendirmek, saygı kuralları çerçevesinde tartışma ortamı oluşturmak, İYTE'nin geleneklerine uygun olarak teknolojik mirasın tarihsel değerlendirmesini yapmak, İYTE'nin kurumsal hafızasını kayıt altına almak ve gelecek öğrencilere aktarmaktır. Akademik Danışman: Öğr.Gör.Dr. Mustafa İlter. Topluluk Başkanı: Mehmet Bakırcıoğlu. İletişim: tarihtoplulugu@iyte.edu.tr. Sosyal medya: instagram.com/tarih_toplulugu_iyte. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/TAR%C4%B0H-TOPLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "Kore Kültür Topluluğu",
+    "metin": "Kuruluş amacı: Sosyal ve kültürel etkinlikler yaparak kültür tanıtımı yapmak, yurt dışında eğitim gören yabancı öğrencilerle ortak çalışmalar yaparak kültürel etkileşime geçmek, toplumsal farkındalık alanında kampüs içi ve dışında sorumluluk sahibi öncü bireyler olmaktır. Akademik Danışman: Doç.Dr. Kıvanç Kılınç. Topluluk Başkanı: Cemre Erşen. İletişim: korekulturiyte@iyte.edu.tr. Sosyal medya: instagram.com/@iytekorekultur. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/KORE-K%C3%9CLT%C3%9CR-TOPLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "Göztepe Uniforce Topluluğu",
+    "metin": "Kuruluş amacı: Öğrencilerin sosyalleşmelerine katkıda bulunmak, sosyal sorumluluk projeleri içerisinde bulunmak, spora özendirmek ve yönlendirmelerde bulunmaktır. Akademik Danışman: Öğr.Gör. Taygun Uzelli. Topluluk Başkanı: Baran Öcal. İletişim: goztepeuniforce@iyte.edu.tr. Sosyal medya: instagram.com/@goztepeuniforce. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/G%C3%96ZTEPE-TOPLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "Yeşilay Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Elif Uğurlu Sağın. Topluluk Başkanı: Mehmet Sergen Çatal. İletişim: iyteyesilay@iyte.edu.tr. Sosyal medya: instagram.com/@iytegencyesilay. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/YE%C5%9E%C4%B0LAY-TOPLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "The Newztech Topluluğu",
+    "metin": "Kuruluş amacı: İngilizce iletişim becerilerinin gelişmesine katkı sağlamak ve İngilizceyi yaymaktır. Akademik Danışman: Dr.Öğr.Gör. Sinem Bezircilioğlu. Topluluk Başkanı: Eylül Bütüner. İletişim: thenewztech@iyte.edu.tr. Sosyal medya: instagram.com/@thenewztech. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/NEWZTECH-TOPLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "Müzik Bilim Topluluğu",
+    "metin": "Kuruluş amacı: Kurumun teknik bir enstitü olması göz önünde bulundurularak güzel sanatların müzik alanına bilimsel ve teknik bir yaklaşım sağlamak; tonal ve makamsal müzik nazariyatı, gelişim süreci ve uygulamaları üzerine eğitimler, atölyeler, seminerler, söyleşiler düzenleyerek özgün müzikal çalışmalar yapmak; müziğin üretim aşamaları olan beste, aranjman, kayıt, prodüksiyon, mix, mastering konularında kampüsteki topluluk üyelerinin müzikal becerilerini geliştirebilecekleri imkan ve mekanı yaratmak; Klasik Türk Müziğinin özünü koruyarak çok sesli müzikle ve orkestrasyonla zenginleştirmek, kar, Mevlevi ayini, nakış, peşrev gibi unutulmuş formları yeni bir yorumla tekrar gün yüzüne çıkarmak; çalgı yapımından notaların frekans değerine kadar temel bilimleri ve mühendislik bilgilerini müziğe dahil etmektir. Akademik Danışman: Prof.Dr. Barış Atakan. Topluluk Başkanı: Zeynep Öcal. İletişim: muzikbilim@iyte.edu.tr. Sosyal medya: instagram.com/@iytemuzikbilim. Topluluk Tüzüğü: (bağlantı: https://sks.iyte.edu.tr/wp-content/uploads/sites/107/2026/01/M%C3%9CZ%C4%B0K-B%C4%B0L%C4%B0M-TOPOLULU%C4%9EU.pdf)"
+  },
+  {
+    "baslik": "Basketbol Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hakim Özgür. İletişim: basket@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytekadinbasketbol/), (bağlantı: https://www.instagram.com/iyteerkekbasketbol/)"
+  },
+  {
+    "baslik": "Badminton Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hakim Özgür. İletişim: badminton@iyte.edu.tr"
+  },
+  {
+    "baslik": "Futbol Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Sema Doğan. Topluluk Başkanı: Derin Mahmut Külah. İletişim: futbol@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytefutbol/)"
+  },
+  {
+    "baslik": "Tenis Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hakim Özgür. İletişim: tenis@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_tenis/)"
+  },
+  {
+    "baslik": "Masa Tenisi Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Hakim Özgür. İletişim: masatenisi@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytenis/)"
+  },
+  {
+    "baslik": "Su Altı Sporları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Alev Devrim Güçlü. Topluluk Başkanı: Derin Yamaner. İletişim: sualtiarastirma@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytesat/)"
+  },
+  {
+    "baslik": "Dağcılık ve Doğa Sporları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Hatice Seçil Artem. Topluluk Başkanı: Aysun Aydın. İletişim: dogadagcilik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteddst/)"
+  },
+  {
+    "baslik": "Bisiklet Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Dr.Öğr.Üy. Gürsoy Turan. Topluluk Başkanı: Zehra Betül Tekin. İletişim: bisiklet@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztech_bike/)"
+  },
+  {
+    "baslik": "Su Üstü Sporları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Haktan Karadeniz. Topluluk Başkanı: Deniz Çelik. İletişim: suustusporlari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/p/CYHPzxVqoiw/)"
+  },
+  {
+    "baslik": "Havacılık Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Özlem Çağlar Duvarcı. Topluluk Başkanı: Tarık Yiğit. İletişim: havacilik@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytehavk/)"
+  },
+  {
+    "baslik": "Capoeria Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Aksu Altınayar Calabria. Topluluk Başkanı: Ayçelen Sağlık. İletişim: capoeria@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/groups/110353295661641/)"
+  },
+  {
+    "baslik": "Okçuluk Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Sami Doğanlar. Topluluk Başkanı: Hasan Beydoğan. İletişim: okculuk@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteokculuk/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/5TtqT1AzeJt4JYk)"
+  },
+  {
+    "baslik": "Koşu Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Mertol Gökelma. Topluluk Başkanı: Zerda Yurdakul. İletişim: iyteatletizm@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyteatletizm/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/bOeP550GcFq35uP)"
+  },
+  {
+    "baslik": "Satranç Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Ceyda Öksel Karakuş. Topluluk Başkanı: Doğukan Güreke. İletişim: satranc@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytesatranc/)"
+  },
+  {
+    "baslik": "Yüzme ve Su Topu Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Tonguç Akış. Topluluk Başkanı: Deniz Eren Gündüz. İletişim: yuzme@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/groups/464966137020076/)"
+  },
+  {
+    "baslik": "Motor Sporları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Özgür Günelsu. Topluluk Başkanı: Ali Haykır. İletişim: motorsporlari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.facebook.com/IztechMost/?locale=tr_TR)"
+  },
+  {
+    "baslik": "Curling Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Ahmet Arda Yiğitoğlu. İletişim: curling@iyte.edu.tr"
+  },
+  {
+    "baslik": "Sağlıklı Yaşam ve Crossfit Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. İbrahim Çelik. Topluluk Başkanı: Burak Kınır. İletişim: saglikliyasam@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytesaglikliyasam_crossfit/)"
+  },
+  {
+    "baslik": "Savunma Sporları Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Adile Avar. Topluluk Başkanı: Hilal Barış. İletişim: savunmasporlari@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_taekwondo/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/l0QVOSk96PID2yC)"
+  },
+  {
+    "baslik": "Iztech Racing Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Büşra Karaş. Topluluk Başkanı: Hüseyin Poyraz Kocamış. İletişim: iztechracing@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechracingteam/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/Sqkbi6ptV4hvmea)"
+  },
+  {
+    "baslik": "Ekstrem Sporlar Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Topluluk Başkanı: Kemal Berke Özyiğit. İletişim: iyteekstreme@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytextreme/)"
+  },
+  {
+    "baslik": "Korumalı Futbol Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Prof.Dr. Yusuf Baran. Topluluk Başkanı: Berzan Tan. İletişim: korumalifutbol@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iztechcaracals/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/6FOIqiro392n2S1)"
+  },
+  {
+    "baslik": "Briç Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Topluluk Başkanı: Onur Kansoy. İletişim: iytebric@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iyte_bric/). Topluluk Tüzüğü: (bağlantı: https://cloud.iyte.edu.tr/index.php/s/ylmKG0nN5AJI2FS)"
+  },
+  {
+    "baslik": "Ultimate Frisbee Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Öğr.Gör. Seda Çırak Gelme. Topluluk Başkanı: Denizhan Öngün. İletişim: ultimatefrizbi@iyte.edu.tr"
+  },
+  {
+    "baslik": "Voleybol Topluluğu",
+    "metin": "Kuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. Akademik Danışman: Doç.Dr. Ceyda Öksel Karakuş. Topluluk Başkanı: Yasemin Türemen. İletişim: voleybol@iyte.edu.tr. Sosyal medya: (bağlantı: https://www.instagram.com/iytevoleybol/)"
+  }
+]

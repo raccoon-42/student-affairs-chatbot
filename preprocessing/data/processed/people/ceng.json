@@ -1,0 +1,668 @@
+[
+  {
+    "name": "Altuğ Yiğit",
+    "title": "Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "112",
+      "e-posta": "altugyigit@iyte.edu.tr",
+      "telefon": "+90 232 750 7874"
+    },
+    "bio": "Research Assistant Altuğ Yiğit received his B.Sc. (2015) and M.Sc. (2017) from Trakya University, Computer Engineering Department. He worked on online insurance systems and reporting social media data in various companies. In 2017, he has started Ph.D. at Dokuz Eylül University, Computer Engineering department under supervision of Asst. Prof. Zerrin Işık. He conducts research on the processing of medical images and deep learning algorithms. Research interests: Deep Learning, Data mining, Image processing",
+    "source_url": "https://ceng.iyte.edu.tr/people/altug-yigit/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "bilgisayar görüşü",
+      "veri madenciliği"
+    ]
+  },
+  {
+    "name": "Aytuğ Onan",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "140",
+      "web": "https://aytugonan.github.io/"
+    },
+    "bio": "Dr. Aytuğ Onan received his B.Sc. degree in Computer Engineering from Izmir University of Economics, Turkey, in 2010. He completed his M.Sc. and Ph.D. degrees in Computer Engineering in 2013 and 2016, respectively, both at Ege University, Turkey. Since September 2025, he has been serving as a Full Professor of Computer Science in the Department of Computer Engineering at İzmir Institute of Technology (IZTECH), Turkey. Dr. Onan has made significant contributions to the fields of machine learning, natural language processing, and computational linguistics, publishing numerous research papers in prestigious international journals and conferences. He actively serves as an associate editor and reviewer for several high-impact journals, including Expert Systems with Applications, PLOS ONE, and the International Journal of Machine Learning and Cybernetics. His research primarily focuses on the development of advanced machine learning methodologies, contrastive learning techniques, and large language model–based frameworks for data-driven problem-solving in diverse domains. Dr. Onan has been recognized globally for his impactful research and has been included in the “Most Influential Scientists of the World” list for six consecutive years (2020–2025), compiled by a research team led by Dr. John Ioannidis from Stanford University, USA.",
+    "source_url": "https://ceng.iyte.edu.tr/people/aytug-onan/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Belgin Ergenç Bostanoğlu",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "104/C",
+      "e-posta": "belginergenc@iyte.edu.tr",
+      "telefon": "+90 232 750 7870",
+      "web": "www.iyte.edu.tr/~belginergenc, dworld.iyte.edu.tr"
+    },
+    "bio": "Belgin Ergenç Bostanoğlu received the Diploma Degree in Computer Science from Middle East Technical University, Ankara,Turkey in 1983. She worked with different titles and responsibilities in IT industry during 1983 – 2000. She received the MS Degree in Computer Engineering from Izmir Institute of Technology, Turkey in 2002 and Ph.D. degree from Paul Sabatier University of Toulouse, France, in 2008 respectively. She is an associate professor in the Department of Computer Engineering at Izmir Institute of Technology, Turkey. Her main research interests include query optimization in distributed databases, association rule mining.She is managing the research laboratory of Dworld. She likes reading, travelling, photography, cinema and jazz music. Her favorite sports are walking, swimming and pilates.",
+    "source_url": "https://ceng.iyte.edu.tr/people/belgin-ergenc/",
+    "areas": [
+      "veri tabanları",
+      "veri madenciliği"
+    ]
+  },
+  {
+    "name": "Berat Alper Erol",
+    "title": "Lecturer Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "110",
+      "e-posta": "beraterol@iyte.edu.tr",
+      "telefon": "+90 232 750 7846"
+    },
+    "bio": "Berat Alper Erol earned his B.S. degree in Mathematics from Kocaeli University, his MSc degree in Software Engineering from St. Mary’s University, and his MSc and PhD degrees in Electrical and Computer Engineering from The University of Texas at San Antonio (UTSA), in 2007, 2012, and 2018, respectively. Under Mo Jamshidi’s supervision, his doctoral research at UTSA Autonomous Control Engineering Laboratories has been sponsored by the U.S. Department of Defense (DoD), Air Force Research Laboratory (AFRL), Bank of America and 80|20 Foundation. After his doctoral program, he worked as a post-doctoral research associate in TECHLAV DoD Center of Excellence in Autonomy at North Carolina A&T State University, Greensboro, USA. During his post-doctoral assignment, Dr. Erol was a member of the team which delivered a DoD contract, and worked in a few multi-institutional research grants including AFRL, Georgia Tech Research Institute, Lockheed Martin Corporation and NASA Langley Research Center. His current research interests include manned-unmanned teaming, unmanned autonomous systems, intelligent robotics, machine learning, testing and evaluation (TRL5 +), human robot interactions, and the Internet of robotic things. He is a Member of the IEEE, AIAA, and IEEE Eta Kappa Nu honor society.",
+    "source_url": "https://ceng.iyte.edu.tr/people/berat-alper-erol/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "robotik"
+    ]
+  },
+  {
+    "name": "Buket Erşahin",
+    "title": "Lecturer Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "139",
+      "e-posta": "buketoksuzoglu@iyte.edu.tr",
+      "telefon": "+90 232 750 7864"
+    },
+    "bio": "Buket Erşahin received her B.Sc. in Computer Engineering Department from Dokuz Eylul University (2007). She obtained her MSc in Computer Engineering Department from Ege University (2009). She has received the Ph.D. degree in computer engineering at Dokuz Eylul University. Research interests:",
+    "source_url": "https://ceng.iyte.edu.tr/people/buket-ersahin/",
+    "areas": []
+  },
+  {
+    "name": "Burak Galip Aslan",
+    "title": "Lecturer Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "133",
+      "e-posta": "burakaslan@iyte.edu.tr",
+      "telefon": "+90 232 750 7865",
+      "web": "http://web.iyte.edu.tr/~burakaslan/main.htm"
+    },
+    "bio": "Dr. Burak Galip Aslan received his B.Sc. in Electrical and Electronical Engineering from Dokuz Eylul University in 2000. He received his M.Sc. Degree in Computer Engineering from Izmir Institute of Technology in 2003. He received his Ph.D degree in Computer Engineering from Ege University in 2010. He is working in our department since 2000. His research areas include decision-support systems, expert systems, forecasting, soft computing, user modeling and web-based learning systems.",
+    "source_url": "https://ceng.iyte.edu.tr/people/burak-galip-aslan/",
+    "areas": [
+      "yapay zeka"
+    ]
+  },
+  {
+    "name": "Cüneyt F. Bazlamaçcı",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "105",
+      "e-posta": "cuneytbazlamacci@iyte.edu.tr",
+      "telefon": "+90 232 750 7877",
+      "web": "http://web.iyte.edu.tr/~cuneytbazlamacci/"
+    },
+    "bio": "Cüneyt F. Bazlamaçcı received his B.Sc. and M.Sc. degrees both in Electrical and Electronics Engineering from the Middle East Technical University, Ankara, Turkey, in 1988 and 1991, respectively. He received his Ph.D. degree in Computing from the University of Manchester Institute of Science and Technology, Manchester, UK, in 1996. After serving at the Middle East Technical University Electrical and Electronics Engineering Department for many years, he has joined İzmir Institute of Technology Computer Engineering Department in February 2020. He has extensive undergraduate and graduate-level teaching experience in a wide range of software and hardware related courses including data structures, operating systems, algorithms, automata theory, computer networks, logic design, microprocessors, and computer architecture. His major research areas are",
+    "source_url": "https://ceng.iyte.edu.tr/people/cuneyt-f-bazlamacci/",
+    "areas": []
+  },
+  {
+    "name": "Damla Oğuz",
+    "title": "Assistant Professor / Vice Chair",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "107",
+      "e-posta": "damlaoguz@iyte.edu.tr",
+      "telefon": "+90 232 750 7885",
+      "web": "http://damla.oguz.name.tr/"
+    },
+    "bio": "Damla Oğuz received B.Sc. degrees in Software Engineering and Industrial Systems Engineering from İzmir University of Economics in 2008 and 2009, respectively. She obtained her M.Sc. degree in Computer Engineering from İzmir Institute of Technology in 2012. She continued her education under joint supervision between Paul Sabatier University and Ege University. She received her Ph.D. degree from both Paul Sabatier University and Ege University in 2017. She worked as an assistant professor in Department of Software Engineering at Yaşar University between 2018 and July 2019. She was employed as an assistant professor at İzmir Institute of Technology in the Department of Computer Engineering in December 2019. Her current research interests are data mining and query optimization in distributed databases.",
+    "source_url": "https://ceng.iyte.edu.tr/people/damla-oguz/",
+    "areas": [
+      "veri madenciliği",
+      "veri tabanları"
+    ]
+  },
+  {
+    "name": "Emrah İnan",
+    "title": "Associate Professor / Vice Chair",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "140",
+      "e-posta": "emrahinan@iyte.edu.tr"
+    },
+    "bio": "Emrah İnan received B.Sc. degree in Software Engineering from İzmir University of Economics in 2008. He obtained his M.Sc. degree in Computer Engineering from İzmir Institute of Technology in 2012. İnan received his PhD degree in Computer Engineering from Ege University in 2018. He worked as a postdoctoral researcher at the National Centre for Text Mining (NaCTeM) at the University of Manchester, UK. His research interests include deep learning, natural language processing, and knowledge graphs. He was employed as an assistant professor at İzmir Institute of Technology in the Department of Computer Engineering in March 2023.",
+    "source_url": "https://ceng.iyte.edu.tr/people/emrah-inan/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Ersin Çine",
+    "title": "Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "138",
+      "e-posta": "ersincine@iyte.edu.tr",
+      "telefon": "+90 232 750 7845"
+    },
+    "bio": "Dr. Ersin Çine holds a BSc degree in Computer Engineering from Süleyman Demirel University (2015) and both MSc (2018) and PhD (2024) degrees in Computer Engineering from İzmir Institute of Technology. He is currently a research assistant in the Computer Engineering department at İzmir Institute of Technology. His research interests broadly encompass artificial intelligence.",
+    "source_url": "https://ceng.iyte.edu.tr/people/ersin-cine/",
+    "areas": [
+      "yapay zeka"
+    ]
+  },
+  {
+    "name": "Furkan Eren Uzyıldırım",
+    "title": "Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "138",
+      "e-posta": "furkanuzyildirim@iyte.edu.tr",
+      "telefon": "+90 232 750 7845",
+      "web": "virg.iyte.edu.tr"
+    },
+    "bio": "Furkan Eren Uzyıldırım obtained his BSc (2014) as a high honour student and MSc (2016) degrees from Computer Engineering Department of İzmir Institute of Technology (IZTECH). Since 2015, he has been working in Izmir Institute of Technology in Computer Engineering Department as research assistant and studying on computer vision as member of Visual Intelligence Research Group(VIRG). He received his PhD Degree in the same department. Research Interests:",
+    "source_url": "https://ceng.iyte.edu.tr/people/furkan-eren-uzyildirim/",
+    "areas": [
+      "yapay zeka",
+      "bilgisayar görüşü"
+    ]
+  },
+  {
+    "name": "Hüseyin Ünlü",
+    "title": "Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "138",
+      "e-posta": "huseyinunlu@iyte.edu.tr",
+      "telefon": "+90 232 750 7874"
+    },
+    "bio": "Hüseyin Ünlü received his BSc (2016) in Computer Engineering and MSc (2019) in Sustainable Energy and Environment Systems from Middle East Technical University Northern Cyprus Campus. During his MSc, he worked as teaching assistant at the same institution. He continues his PhD studies at Computer Engineering Department of İzmir Institute Of Technology (IZTECH) under supervision of Prof. Dr. Onur Demirörs. His research areas include software process improvement, software quality management, software measurement and energy efficient web. He started as research assistant at IZTECH in 2020.",
+    "source_url": "https://ceng.iyte.edu.tr/people/huseyin-unlu/",
+    "areas": [
+      "yazılım mühendisliği"
+    ]
+  },
+  {
+    "name": "Işıl Öz",
+    "title": "Associate Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "101",
+      "e-posta": "isiloz@iyte.edu.tr",
+      "telefon": "+90 232 750 7879",
+      "web": "http://web.iyte.edu.tr/~isiloz/, https://parsiyte.github.io/"
+    },
+    "bio": "Işıl Öz received the B.Sc. and M.Sc. degrees in computer engineering from Marmara University. She received the Ph.D. degree in computer engineering at Bogazici University. After completing her Ph.D. studies, she worked as a postdoctoral researcher, ERCIM/Marie Curie Fellow, at Swedish Institute of Computer Science (SICS). She joined IZTECH Computer Engineering Department in 2018. Her research interests include computer architecture, performance and reliability of multi-core systems, and fault-tolerant computing.",
+    "source_url": "https://ceng.iyte.edu.tr/people/isil-oz/",
+    "areas": [
+      "bilgisayar mimarisi",
+      "yüksek başarımlı hesaplama"
+    ]
+  },
+  {
+    "name": "Mahdi Hashemzadeh",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "127",
+      "e-posta": "mahdihashemzadeh@iyte.edu.tr",
+      "telefon": "+90 232 750 7844"
+    },
+    "bio": "Prof. Dr. Mahdi Hashemzadeh received his B.S. and M.S. degrees in Software Engineering from Qazvin Azad University, in 2002 and 2006, respectively, and earned his Ph.D. in Computer Science and Technology from Zhejiang University, China, in 2013. From 2009 to 2013, he was a member of the CCNT Biometrics Laboratory at Zhejiang University. Between 2013 and 2024, Prof. Hashemzadeh served as a tenured faculty member at the Faculty of Information Technology and Computer Engineering, Azarbaijan Shahid Madani University, Iran, where he held the rank of Full Professor. He also founded and directed the Artificial Intelligence and Machine Learning Research Laboratory at the same university. Prof. Hashemzadeh has received numerous International, national and institutional awards in recognition of his excellence in teaching and research. Notably,",
+    "source_url": "https://ceng.iyte.edu.tr/people/mahdi-hashemzadeh/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "bilgisayar görüşü"
+    ]
+  },
+  {
+    "name": "Nesli Erdoğmuş (on leave)",
+    "title": "Associate Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "138",
+      "e-posta": "neslierdogmus@iyte.edu.tr",
+      "telefon": "+90 232 750 7887",
+      "web": "csigb.iyte.edu.tr"
+    },
+    "bio": "Assistant Professor Nesli Erdoğmuş received her B.S. and M.S degrees from the Electrical and Electronics Department of Middle East Technical University. After completing her Ph.D. studies at EURECOM Sophia-Antipolis, France and graduating from Télécom ParisTech, she did a two-year post-doc at Idiap in Switzerland. In 2014, she was awarded scholarship via a TUBITAK BIDEB project and she joined IZTECH Computer Engineering Department in 2014 as a researcher. Later in 2016, she started as an assistant professor in the same department. In the CSIGB research group that she founded in parallel to her field of interest, research is mainly conducted on face and fingerprint recognition.",
+    "source_url": "https://ceng.iyte.edu.tr/people/nesli-erdogmus/",
+    "areas": [
+      "yapay zeka",
+      "bilgisayar görüşü"
+    ]
+  },
+  {
+    "name": "Onur Demirörs",
+    "title": "Professor / Chair",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "107",
+      "e-posta": "onurdemirors@iyte.edu.tr",
+      "telefon": "+90 232 750 7881"
+    },
+    "bio": "Prof. Dr. Onur Demirörs received his B.Sc. in Computer Engineering from Middle East Technical University. He got two M.Sc. degrees; one from Ege University in Izmir in 1990 and another from Southern Methodist University, Dallas Texas, USA in 1993. He received is Ph.D degree in the latter in 1995. After a lengthy and productive academic experience in the Southern Methodist University, Dokuz Eylul University and Middle East Technical University, he started at our department in 2017. His research areas include software process improvement, process models: methods, tools, techniques, business process management, software quality management, software measurement, software project management and conceptual modelling.",
+    "source_url": "https://ceng.iyte.edu.tr/people/onur-demirors/",
+    "areas": [
+      "yazılım mühendisliği"
+    ]
+  },
+  {
+    "name": "Samet Tenekeci",
+    "title": "Dr.",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "138",
+      "e-posta": "samettenekeci@iyte.edu.tr",
+      "telefon": "+90 232 750 7876"
+    },
+    "bio": "Dr. Samet Tenekeci received his B.Sc. (2014), M.Sc. (2019), and Ph.D. (2025) degrees in Computer Engineering from İzmir University, Dokuz Eylül University, and İzmir Institute of Technology, respectively. He also studied Computer Science at Witelon University of Applied Sciences. He previously worked as a Software Engineer at BroadAngle (2014) and AirTies Wireless Networks (2017). He is conducting research with the Data Analytics Research Group (DARG) and the Software Engineering and Artificial Intelligence Research Group (SOFTWAI).",
+    "source_url": "https://ceng.iyte.edu.tr/people/samet-tenekeci/",
+    "areas": [
+      "yapay zeka",
+      "yazılım mühendisliği",
+      "veri madenciliği"
+    ]
+  },
+  {
+    "name": "Selma Tekir",
+    "title": "Associate Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "014",
+      "e-posta": "selmatekir@iyte.edu.tr",
+      "telefon": "+90 232 750 7886",
+      "web": "https://selmatekir.github.io/, darg.iyte.edu.tr"
+    },
+    "bio": "Selma Tekir is an Associate Professor in the Department of Computer Engineering at the İzmir Institute of Technology, where she leads the Data Analytics Research Group. She received her Ph.D. degree in Computer Engineering from Ege University in 2010. She has held visiting research positions at the University of Konstanz, Germany (2009) and the University of Edinburgh, UK (2025). Her research interests include machine learning for natural language processing (NLP), NLP applications, and the integration of NLP with symbolic reasoning.",
+    "source_url": "https://ceng.iyte.edu.tr/people/selma-tekir/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Tolga Ayav",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "103",
+      "e-posta": "tolgaayav@iyte.edu.tr",
+      "telefon": "+90 232 750 7878",
+      "web": "www.iyte.edu.tr/~tolgaayav, http://web.iyte.edu.tr/~tolgaayav/DCSoC"
+    },
+    "bio": "Tolga Ayav received his B.Sc. (1995) in Electronics Engineering, M.Sc. (1999) and Ph.D. (2004) degrees in Computer Engineering from 9 Eylül University, İzmir Institute of Technology and Ege University, respectively. He worked as research fellow in INRIA Rhone-Alpes in 2005. In addition to his administrative duties, he also manages the Dependable Components and Systems Lab in our department. His current research interests are:",
+    "source_url": "https://ceng.iyte.edu.tr/people/tolga-ayav/",
+    "areas": []
+  },
+  {
+    "name": "Tuğkan Tuğlular",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "027",
+      "e-posta": "tugkantuglular@iyte.edu.tr",
+      "telefon": "+90 232 750 7875",
+      "web": "www.iyte.edu.tr/~tugkantuglular"
+    },
+    "bio": "Prof. Dr. Tuğkan Tuğlular received the B.S., M.S., and Ph.D. degrees in Computer Engineering from Ege University, Turkey in 1993, 1995 and 1999, respectively. He worked as a research associate at Purdue University from 1996 to 1998. He has been with Izmir Institute of Technology since 2000. After he became Assistant Professor at Izmir Institute of Technology, he worked as Chief Information Officer in the university from 2003-2007. Currently, in addition to his academic duties, he acts as IT advisor to the Rector. He has more than 60 publications and active record of duties with international and national conferences. His current research interests include model-based testing and model-based software development.",
+    "source_url": "https://ceng.iyte.edu.tr/people/tugkan-tuglular/",
+    "areas": [
+      "yazılım mühendisliği"
+    ]
+  },
+  {
+    "name": "Yalın Baştanlar",
+    "title": "Professor",
+    "role": "akademik",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "012",
+      "e-posta": "yalinbastanlar@iyte.edu.tr",
+      "telefon": "+90 232 750 7883",
+      "web": "web.iyte.edu.tr/~yalinbastanlar, cvrg.iyte.edu.tr"
+    },
+    "bio": "Professor Yalın Baştanlar studied civil engineering at the Middle East Technical University (METU) and obtained B.S. degree in 2001. He started to work on computer vision for his graduate studies and he obtained his M.S. (2005) and Ph.D. (2009) from the Information Systems Department of Informatics Institute. Apart from his administrative duties, he also runs the Computer Vision Research Group in the department.",
+    "source_url": "https://ceng.iyte.edu.tr/people/yalin-bastanlar/",
+    "areas": [
+      "yapay zeka",
+      "bilgisayar görüşü"
+    ]
+  },
+  {
+    "name": "Bengisu Şahin",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "136",
+      "e-posta": "bengisusahin@iyte.edu.tr",
+      "web": "https://github.com/bengisu-sahin"
+    },
+    "bio": "Bengisu Şahin holds a B.Sc. in Computer Engineering from Eskişehir Osmangazi University (2024) and is currently pursuing an M.Sc. at İzmir Institute of Technology. Since March 2025, she has been working as a Research Assistant.",
+    "source_url": "https://ceng.iyte.edu.tr/people/bengisu-sahin/",
+    "areas": []
+  },
+  {
+    "name": "Berra Yıldız Avcı",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "112",
+      "e-posta": "berraavci@iyte.edu.tr"
+    },
+    "bio": "Berra Yıldız Avcı received her B.Sc. degree in Computer Engineering from Izmir Institute of Technology in 2023. She started her M.Sc. studies in the same department in 2024 and has been working as a research assistant since 2025. She is currently pursuing her graduate research under the supervision of Assoc. Prof. Dr. Selma Tekir. Her research interests include Artificial Intelligence, Machine Learning, Natural Language Processing, and Large Language Models.",
+    "source_url": "https://ceng.iyte.edu.tr/people/berra-yildiz-avci/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Burak Korcuklu",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "109",
+      "e-posta": "burakkorcuklu@iyte.edu.tr",
+      "telefon": "+90 232 750 7869"
+    },
+    "bio": null,
+    "source_url": "https://ceng.iyte.edu.tr/people/burak-korcuklu/",
+    "areas": []
+  },
+  {
+    "name": "Cansu Özkan",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "142",
+      "e-posta": "cansuozkan@iyte.edu.tr",
+      "telefon": "+90 232 750 7868"
+    },
+    "bio": "Cansu Özkan received her B.Sc. degree (2020) from İzmir University of Economics Computer Engineering Department as the highest-ranking student. In October 2020, she started the Computer Engineering Master of Science program at Izmir University of Economics where she focuses on Speech Emotion Recognition with her advisor, Asst. Prof. Dr. Kaya Oğuz. She has recently been appointed as a teaching assistant at the Computer Engineering Department at Izmir Institute of Technology.",
+    "source_url": "https://ceng.iyte.edu.tr/people/cansu-ozkan/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi"
+    ]
+  },
+  {
+    "name": "Ceren Sözeri",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "e-posta": "cerensozeri@iyte.edu.tr"
+    },
+    "bio": "She obtained her Bachelor’s degree in Computer Engineering from Karabük University in 2021. In February 2022, she began her Master’s studies in Computer Engineering at Çanakkale Onsekiz Mart University, successfully completing the program in February 2025. In November 2024, she joined İzmir Institute of Technology as a research assistant. As of February 2025, she has started her Ph.D. studies at İzmir Institute of Technology.",
+    "source_url": "https://ceng.iyte.edu.tr/people/ceren-sozeri/",
+    "areas": []
+  },
+  {
+    "name": "Dilek Öztürk",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "112",
+      "e-posta": "dilekozturk@iyte.edu.tr",
+      "telefon": "+90 232 750 7874"
+    },
+    "bio": "Dilek Öztürk who is a research assistant in our department received B. Sc. Degree from Izmir Institute of Technology, Computer Engineering department in 2017, June. She continues M. Sc. from 2017,September at the same school and department. Her advisor is Assistant Professor Tuğkan Tuğlular. Research Interests:",
+    "source_url": "https://ceng.iyte.edu.tr/people/dilek-ozturk/",
+    "areas": [
+      "yazılım mühendisliği"
+    ]
+  },
+  {
+    "name": "Ege Yiğit Çelik",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "142",
+      "e-posta": "egecelik@iyte.edu.tr",
+      "telefon": "+90 232 750 7868"
+    },
+    "bio": "Research Assistant Ege Yiğit Çelik received his B.Sc. (2021) from Izmir Institute of Technology, Computer Engineering Department. In 2022, he has started M.Sc. at Izmir Institute of Technology, Computer Engineering department. He conducts research on the deep learning and natural language processing areas.",
+    "source_url": "https://ceng.iyte.edu.tr/people/ege-yigit-celik/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Egemen Kaçıkan",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "109",
+      "e-posta": "egemenkacikan@iyte.edu.tr"
+    },
+    "bio": "Egemen Kaçıkan received his B.Sc. degree in Computer Engineering from İzmir Katip Çelebi University in 2025, graduating as the valedictorian of the department and ranking 2nd in the faculty. In January 2026, he joined the Department of Computer Engineering at İzmir Institute of Technology (İYTE) as a Research Assistant and started his Integrated Ph.D. studies. His research interests focus on Artificial Intelligence, Natural Language Processing (NLP), Large Language Models (LLMs), and Deep Learning.",
+    "source_url": "https://ceng.iyte.edu.tr/people/egemen-kacikan/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Ertuğrul Demir",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "Z29",
+      "e-posta": "ertugruldemir@iyte.edu.tr",
+      "telefon": "+90 232 750 7873"
+    },
+    "bio": "Ertuğrul Demir received his BS degree from Izmir Institute of Technology in Computer Engineering in 2023. He started his master’s degree in Computer Engineering at Izmir Institute of Technology in the same year. He has been working as a Research Assistant since 2024.",
+    "source_url": "https://ceng.iyte.edu.tr/people/ertugrul-demir/",
+    "areas": []
+  },
+  {
+    "name": "Furkan Zeki Türkzeybek",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "136",
+      "e-posta": "furkanturkzeybek@iyte.edu.tr"
+    },
+    "bio": "Received his B.Sc. degree in Computer Engineering at Izmir University of Economics in 2023. In 2024, he started the M.Sc programme at Izmir Institute of Technology. He has been working as a research assistant since 2025.",
+    "source_url": "https://ceng.iyte.edu.tr/people/furkan-zeki-turkzeybek/",
+    "areas": []
+  },
+  {
+    "name": "Güliz Akkaya",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "Z29",
+      "e-posta": "gulizakkaya@iyte.edu.tr",
+      "telefon": "+90 232 750 7873"
+    },
+    "bio": "Güliz Akkaya received her undergraduate degree from the Department of Computer Engineering, Izmir University of Economics in 2020. After graduation, she started her master’s studies in the Department of Computer Engineering, Izmir Institute of Technology in the same year. Currently, she continues her thesis studies in the field of cryptology with her advisor, Asst. Prof. Mete Akgün. She started to work as a research assistant in March 2022.",
+    "source_url": "https://ceng.iyte.edu.tr/people/guliz-akkaya/",
+    "areas": [
+      "kriptografi"
+    ]
+  },
+  {
+    "name": "Hakan Çoban",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {},
+    "bio": "Hakan Çoban graduated with a Bachelor’s degree in Computer Engineering from Izmir Institute of Technology in 2024. In March 2025, he began his Master’s studies in Computer Engineering at the same institute. He is currently supervising his thesis work under the supervision of Assoc. Prof. Dr. Işıl Öz. He has been working as a research assistant in the same department since 2026. His research areas include parallel programming, high-performance computing, and processor and graphics card architectures.",
+    "source_url": "https://ceng.iyte.edu.tr/people/hakan-coban/",
+    "areas": [
+      "yüksek başarımlı hesaplama",
+      "bilgisayar mimarisi"
+    ]
+  },
+  {
+    "name": "Mahmut Ağralı",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "142",
+      "e-posta": "mahmutagrali@iyte.edu.tr",
+      "telefon": "+90 232 750 7868"
+    },
+    "bio": "Mahmut Ağralı received his BSc (2021) and MSc (2023) degrees in Electrical and Electronics Engineering from Izmir Kâtip Çelebi University. He is currently pursuing his PhD in the Department of Computer Engineering at Izmir Institute of Technology and working on deep learning.",
+    "source_url": "https://ceng.iyte.edu.tr/people/mahmut-agrali/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi"
+    ]
+  },
+  {
+    "name": "Nuri Furkan Pala",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "109",
+      "e-posta": "nuripala@iyte.edu.tr",
+      "web": "https://nurifurkanpala.github.io/"
+    },
+    "bio": "Nuri Furkan Pala completed his pre-university education in İzmir. He graduated from the software engineering program at Yaşar University with second place in the department and got a minor in computer engineering. He also graduated from the computer engineering master’s program with a thesis at the same university with the computational number theory and cryptography research areas. He worked as a part-time research assistant in the Computer Engineering Department at Yaşar University for two and a half years. He is a Ph.D. student and full-time research assistant in the Computer Engineering Department at Izmir Institute of Technology.",
+    "source_url": "https://ceng.iyte.edu.tr/people/nuri-furkan-pala/",
+    "areas": [
+      "kriptografi"
+    ]
+  },
+  {
+    "name": "Serhat Caner",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "Z29",
+      "e-posta": "serhatcaner@iyte.edu.tr",
+      "telefon": "+90 232 750 7867"
+    },
+    "bio": "Serhat Caner received his bachelor’s and master’s degrees from Izmir Institute of Technology. He worked as a Software Engineer at Accenture Turkey. He is currently pursuing his Ph.D. at Izmir Institute of Technology under the supervision of Prof. Dr. Yalın Baştanlar and Assistant Professor Emrah İnan. Areas of Interest:",
+    "source_url": "https://ceng.iyte.edu.tr/people/serhat-caner/",
+    "areas": [
+      "yapay zeka",
+      "bilgisayar görüşü",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Sezin Çağla Serficeli",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "136",
+      "e-posta": "sezinserficeli@iyte.edu.tr"
+    },
+    "bio": "Sezin Çağla Serficeli received her Bachelor’s degree in Computer Engineering from İzmir Institute of Technology in 2024. She is currently pursuing her Master’s degree in Computer Engineering at the same institution, where she conducts her thesis research under the supervision of Associate Professor Dr. Emrah İnan. Since 2026, she has been serving as a Research Assistant in the department. Her research interests include artificial intelligence, machine learning, deep learning, natural language processing, and large language models.",
+    "source_url": "https://ceng.iyte.edu.tr/people/sezin-cagla-serficeli/",
+    "areas": [
+      "yapay zeka",
+      "makine öğrenmesi",
+      "doğal dil işleme"
+    ]
+  },
+  {
+    "name": "Uğurcan Akdemir",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "109",
+      "e-posta": "ugurcanakdemir@iyte.edu.tr"
+    },
+    "bio": "Uğurcan Akdemir was born in Van in 1995. He received his B.Sc. from Antalya Bilim University in 2021. He continues his M.Sc. studies in Akdeniz Univesity since 2022.",
+    "source_url": "https://ceng.iyte.edu.tr/people/ugurcan-akdemir/",
+    "areas": []
+  },
+  {
+    "name": "Yunus Emre Şahbaz",
+    "title": null,
+    "role": "arastirma-gorevlisi",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "e-posta": "yunussahbaz@iyte.edu.tr",
+      "web": "https://github.com/yunusemreshahbaz, https://yunusemreshahbaz.github.io/"
+    },
+    "bio": "Yunus Emre Şahbaz, İzmir Ekonomi Üniversitesi Bilgisayar Mühendisliği bölümünden lisans derecesini almıştır. Şu anda Ege Üniversitesi’nde Bilgisayar Mühendisliği alanında yüksek lisans eğitimine devam etmektedir. Çalışma ve ilgi alanları arasında yapay zeka, veri bilimi, backend programlama ve büyük dil modelleri (LLM) yer almaktadır. Yüksek lisans tezinde akıllı kütüphaneler için ontoloji tabanlı kaynak öneri sistemleri üzerine çalışmaktadır.",
+    "source_url": "https://ceng.iyte.edu.tr/people/yunus-emre-sahbaz/",
+    "areas": [
+      "yapay zeka",
+      "doğal dil işleme",
+      "veri bilimi"
+    ]
+  },
+  {
+    "name": "Zafer Ateş",
+    "title": null,
+    "role": "idari",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "ofis": "117",
+      "e-posta": "zaferates@iyte.edu.tr",
+      "telefon": "+90 232 750 7859"
+    },
+    "bio": "Zafer Ateş was born in 1972 in Erzurum, where he completed his primary and secondary education. He moved to Izmir in 1994, firstlt worked as a technician in various firms and institutions and then he started as electronics technician in İzmir Institute of Technology in 1997. He graduated from Mersin University Vocational School, Electronics Technology Department in 2014. He worked in IZTECH Computer Applications and Research Center and various departments and he is currently a staff of Computer Engineering Department.",
+    "source_url": "https://ceng.iyte.edu.tr/people/zafer-ates/",
+    "areas": []
+  },
+  {
+    "name": "Zeynep Erdem",
+    "title": null,
+    "role": "idari",
+    "department": "Bilgisayar Mühendisliği",
+    "contact": {
+      "e-posta": "zeyneperdem@iyte.edu.tr",
+      "telefon": "+90 232 750 7860"
+    },
+    "bio": null,
+    "source_url": "https://ceng.iyte.edu.tr/people/zeynep-erdem/",
+    "areas": []
+  }
+]

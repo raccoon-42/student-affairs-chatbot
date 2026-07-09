@@ -99,8 +99,8 @@ def test_retrieve_all_embeds_the_query_exactly_once():
 
     results = retriever.retrieve_all("sınav ne zaman")
 
-    assert embedder.calls == 1  # one embed shared by all four searches
-    assert set(results) == {"calendar", "regulations", "faq", "forms"}
+    assert embedder.calls == 1  # one embed shared by all seven searches
+    assert set(results) == {"calendar", "regulations", "faq", "forms", "sks", "programs", "people"}
 
 
 def test_faq_returns_question_and_answer():
@@ -132,6 +132,58 @@ def test_forms_return_stored_text_with_link_metadata():
 
     assert "Öğrenci Kimlik Kartı Formu" in results[0]["text"]
     assert results[0]["metadata"]["source_url"] == "https://example.test/kimlik-formu.pdf"
+
+
+def test_sks_returns_stored_text_with_page_metadata():
+    store = InMemoryVectorStore()
+    store.add(settings.SKS_COLLECTION,
+              "YEMEKHANE HİZMETİ\nYemekhane Kart Sistemi\nKimlik kartlarına para yükleme "
+              "cihazları Merkezi Kafeterya binasındadır.",
+              {"document_title": "YEMEKHANE HİZMETİ", "topic": "yemekhane",
+               "source_url": "https://sks.iyte.edu.tr/beslenme-hizmetleri/yemekhane-hizmeti/",
+               "section": "Yemekhane Kart Sistemi"},
+              [0.0, 1.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+
+    results = retriever.retrieve_sks("kayıt kartı")
+
+    assert "Yemekhane Kart Sistemi" in results[0]["text"]
+    assert results[0]["metadata"]["topic"] == "yemekhane"
+
+
+def make_people_retriever():
+    store = InMemoryVectorStore()
+    # FakeEmbedder axes (sınav/kayıt/tatil) let each query pick its
+    # winner: a person chunk, the roster, and one area enumeration
+    store.add(settings.PEOPLE_COLLECTION, "Ali Hoca — sınav sorumlusu",
+              {"kind": "person", "document_title": "Ali Hoca"},
+              [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.PEOPLE_COLLECTION, "Kadro tam listesi: kayıt dönemi görevlileri",
+              {"kind": "roster", "document_title": "Kadro (tam liste)"},
+              [0.0, 1.0, 0.0, 0.1])
+    store.add(settings.PEOPLE_COLLECTION, "tatil planlaması alanında çalışan öğretim üyeleri",
+              {"kind": "area", "document_title": "tatil planlaması"},
+              [0.0, 0.0, 1.0, 0.1])
+    return Retriever(store, FakeEmbedder())
+
+
+def test_people_list_chunk_admitted_only_when_it_wins():
+    retriever = make_people_retriever()
+    # collective-style query: the roster outscores -> leads the results
+    results = retriever.retrieve_people("kayıt görevlileri kimler")
+    assert results[0]["metadata"]["kind"] == "roster"
+    # person query: the individual wins -> no list chunk crowds the top-k
+    results = retriever.retrieve_people("sınav sorumlusu hoca")
+    assert all(r["metadata"]["kind"] == "person" for r in results)
+
+
+def test_people_roster_rides_along_when_an_area_chunk_wins():
+    retriever = make_people_retriever()
+    # area-flavored collective query: the area chunk wins the gate, and
+    # the roster joins it — grouping/counting needs the complete table
+    results = retriever.retrieve_people("tatil planlaması çalışan hocalar")
+    kinds = [r["metadata"]["kind"] for r in results]
+    assert kinds[0] == "area" and kinds[1] == "roster"
 
 
 def test_hybrid_score_blends_semantic_and_bm25():

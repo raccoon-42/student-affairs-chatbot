@@ -1,0 +1,914 @@
+[
+  {
+    "title": "Fizik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Maddenin ve enerjinin temel yasalarını, mekanik, elektromanyetizma ve kuantum fiziği gibi konularla inceler.",
+    "aliases": [
+      "physics",
+      "fizik bölümü",
+      "physics engineering",
+      "fizikçi"
+    ]
+  },
+  {
+    "title": "Fotonik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://photonics.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Işığın üretimi, iletimi ve kontrolüne dayanan optik teknolojileri ve lazer sistemlerini inceler.",
+    "aliases": [
+      "photonics",
+      "fotonik bölümü",
+      "optik mühendisliği",
+      "lazer teknolojisi"
+    ]
+  },
+  {
+    "title": "Kimya",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://chemistry.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Maddenin yapısını, bileşimini ve kimyasal reaksiyonlarını inceler.",
+    "aliases": [
+      "chemistry",
+      "kimya bölümü",
+      "chem"
+    ]
+  },
+  {
+    "title": "Matematik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://math.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Cebir, analiz, geometri gibi temel matematik alanlarını ve uygulamalarını inceler.",
+    "aliases": [
+      "mathematics",
+      "math",
+      "matematik bölümü"
+    ]
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://mbg.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Canlıların genetik yapısını ve moleküler düzeydeki biyolojik süreçlerini inceler.",
+    "aliases": [
+      "molecular biology and genetics",
+      "mbg",
+      "genetik bölümü",
+      "moleküler biyoloji"
+    ]
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://ceng.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Yazılım, donanım ve algoritma tasarımı gibi bilgisayar sistemlerinin geliştirilmesini kapsar.",
+    "aliases": [
+      "computer engineering",
+      "ceng",
+      "yazılım",
+      "bilgisayar bölümü",
+      "bilgisayar müh"
+    ]
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Biyolojik sistemleri mühendislik prensipleriyle birleştirerek biyoteknolojik çözümler geliştirir.",
+    "aliases": [
+      "bioengineering",
+      "bioeng",
+      "biyomüh",
+      "biyomühendislik bölümü"
+    ]
+  },
+  {
+    "title": "Çevre Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://enve.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Su, hava ve toprak kirliliğinin önlenmesi ve çevresel sürdürülebilirlik konularını ele alır.",
+    "aliases": [
+      "environmental engineering",
+      "cevre muh",
+      "çevre bölümü",
+      "env eng"
+    ]
+  },
+  {
+    "title": "Enerji Sistemleri Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://ese.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Yenilenebilir ve geleneksel enerji sistemlerinin tasarımı ve yönetimini inceler.",
+    "aliases": [
+      "energy systems engineering",
+      "enerji müh",
+      "energy engineering",
+      "enerji sistemleri"
+    ]
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Elektronik devreler, sinyal işleme ve iletişim sistemleri üzerine çalışır.",
+    "aliases": [
+      "electronics and communication engineering",
+      "eee",
+      "elektronik müh",
+      "haberleşme mühendisliği"
+    ]
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Gıda üretim süreçleri, güvenliği ve kalitesi üzerine mühendislik uygulamalarını kapsar.",
+    "aliases": [
+      "food engineering",
+      "gıda müh",
+      "food eng",
+      "gıda bölümü"
+    ]
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://civil.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Bina, yol, köprü gibi yapıların tasarımı, analizi ve inşasını kapsar.",
+    "aliases": [
+      "civil engineering",
+      "inşaat müh",
+      "civeng",
+      "insaat"
+    ]
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Kimyasal süreçlerin tasarımı, üretimi ve endüstriyel ölçekte uygulanmasını inceler.",
+    "aliases": [
+      "chemical engineering",
+      "kimya müh",
+      "cheng",
+      "chem eng"
+    ]
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Mekanik sistemlerin tasarımı, üretimi ve enerji dönüşümü konularını kapsar.",
+    "aliases": [
+      "mechanical engineering",
+      "makine müh",
+      "meng",
+      "mak muh"
+    ]
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Metal, seramik, polimer gibi malzemelerin özelliklerini ve üretim süreçlerini inceler.",
+    "aliases": [
+      "materials science and engineering",
+      "mse",
+      "malzeme müh",
+      "malzeme bölümü"
+    ]
+  },
+  {
+    "title": "Endüstriyel Tasarım",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://id.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Ürünlerin işlevsel, estetik ve kullanıcı odaklı tasarımını kapsar.",
+    "aliases": [
+      "industrial design",
+      "id",
+      "endüstri tasarım",
+      "product design"
+    ]
+  },
+  {
+    "title": "Mimarlık",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Bina ve mekanların tasarımı, planlanması ve inşa süreçlerini kapsar.",
+    "aliases": [
+      "architecture",
+      "mimarlık bölümü",
+      "arch",
+      "mimarlik"
+    ]
+  },
+  {
+    "title": "Şehir ve Bölge Planlama",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/",
+    "description": "Kentlerin ve bölgelerin fiziksel, sosyal ve ekonomik gelişiminin planlanmasını inceler.",
+    "aliases": [
+      "city and regional planning",
+      "şehir plancılığı",
+      "urban planning",
+      "şbp"
+    ]
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Yazılım, donanım ve algoritma tasarımı üzerine ileri düzey araştırma ve uygulama sunar.",
+    "aliases": [
+      "computer engineering",
+      "ceng ms",
+      "bilgisayar yüksek lisans",
+      "master computer engineering"
+    ]
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Biyolojik sistemler ve mühendislik prensiplerinin ileri düzeyde birleştirilmesini kapsar.",
+    "aliases": [
+      "bioengineering",
+      "bioeng ms",
+      "biyomüh yüksek lisans"
+    ]
+  },
+  {
+    "title": "Çevre Mühendisliği (Çevre Kirliliği ve Kontrolü)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://enve.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Çevre kirliliğinin kaynakları, kontrolü ve arıtma teknolojileri üzerine odaklanır.",
+    "aliases": [
+      "environmental pollution and control",
+      "çevre kirliliği",
+      "environmental engineering ms",
+      "çevre yüksek lisans"
+    ]
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Elektronik ve iletişim sistemleri üzerine ileri araştırma ve tasarım çalışmaları yapılır.",
+    "aliases": [
+      "electronics and communication engineering",
+      "eee ms",
+      "elektronik yüksek lisans"
+    ]
+  },
+  {
+    "title": "Endüstriyel Tasarım",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://id.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Ürün tasarımı alanında ileri düzey araştırma ve tasarım süreçlerini kapsar.",
+    "aliases": [
+      "industrial design",
+      "id ms",
+      "endüstriyel tasarım yüksek lisans"
+    ]
+  },
+  {
+    "title": "Fizik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Fizik alanında ileri düzey teorik ve deneysel araştırmalar yapılır.",
+    "aliases": [
+      "physics",
+      "fizik yüksek lisans",
+      "physics ms"
+    ]
+  },
+  {
+    "title": "Fotonik Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://photonics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Optik ve lazer teknolojileri üzerine ileri düzey bilimsel ve mühendislik çalışmaları yapılır.",
+    "aliases": [
+      "photonics science and engineering",
+      "fotonik yüksek lisans",
+      "photonics ms"
+    ]
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Gıda üretimi, güvenliği ve teknolojisi üzerine ileri düzey araştırmalar yapılır.",
+    "aliases": [
+      "food engineering",
+      "gıda yüksek lisans",
+      "food eng ms"
+    ]
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://civil.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Yapısal analiz, geoteknik ve inşaat teknolojileri üzerine ileri araştırmalar sunar.",
+    "aliases": [
+      "civil engineering",
+      "inşaat yüksek lisans",
+      "civeng ms"
+    ]
+  },
+  {
+    "title": "Kimya",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://chemistry.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kimya alanında ileri düzey teorik ve deneysel araştırmalar yapılır.",
+    "aliases": [
+      "chemistry",
+      "kimya yüksek lisans",
+      "chem ms"
+    ]
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kimyasal proses tasarımı ve üretim teknolojileri üzerine ileri araştırmalar yapılır.",
+    "aliases": [
+      "chemical engineering",
+      "kimya müh yüksek lisans",
+      "cheng ms"
+    ]
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Mekanik sistemler ve enerji dönüşümü üzerine ileri düzey araştırmalar sunar.",
+    "aliases": [
+      "mechanical engineering",
+      "makine yüksek lisans",
+      "meng ms"
+    ]
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Malzeme özellikleri ve üretim süreçleri üzerine ileri düzey araştırmalar yapılır.",
+    "aliases": [
+      "materials science and engineering",
+      "mse ms",
+      "malzeme yüksek lisans"
+    ]
+  },
+  {
+    "title": "Matematik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Matematik alanında ileri düzey teorik araştırmalar ve tez çalışmaları yapılır.",
+    "aliases": [
+      "mathematics",
+      "math ms",
+      "matematik yüksek lisans"
+    ]
+  },
+  {
+    "title": "Matematik (Tezsiz)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tez yazma zorunluluğu olmadan matematik alanında ileri düzey eğitim sunar.",
+    "aliases": [
+      "mathematics non-thesis",
+      "matematik tezsiz",
+      "math non thesis"
+    ]
+  },
+  {
+    "title": "Mimari Restorasyon",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tarihi yapıların korunması, onarımı ve restorasyonu üzerine ileri düzey eğitim sunar.",
+    "aliases": [
+      "architectural restoration",
+      "restorasyon yüksek lisans",
+      "mimari restorasyon ms"
+    ]
+  },
+  {
+    "title": "Mimari Restorasyon (Tezsiz)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tez yazma zorunluluğu olmadan mimari restorasyon alanında ileri düzey eğitim sunar.",
+    "aliases": [
+      "architectural restoration non-thesis",
+      "restorasyon tezsiz",
+      "mimari restorasyon tezsiz"
+    ]
+  },
+  {
+    "title": "Mimarlık",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Mimarlık alanında ileri düzey tasarım ve araştırma çalışmaları yapılır.",
+    "aliases": [
+      "architecture",
+      "mimarlık yüksek lisans",
+      "arch ms"
+    ]
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://mbg.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Genetik ve moleküler biyoloji alanında ileri düzey araştırmalar yapılır.",
+    "aliases": [
+      "molecular biology and genetics",
+      "mbg ms",
+      "genetik yüksek lisans"
+    ]
+  },
+  {
+    "title": "Şehir Planlama",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kentsel planlama ve gelişim stratejileri üzerine ileri düzey eğitim sunar.",
+    "aliases": [
+      "urban planning",
+      "şehir planlama ms",
+      "city planning"
+    ]
+  },
+  {
+    "title": "Şehir Tasarımı",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kentsel mekanların tasarımı ve dönüşümü üzerine ileri düzey eğitim sunar.",
+    "aliases": [
+      "urban design",
+      "şehir tasarım ms",
+      "kent tasarımı"
+    ]
+  },
+  {
+    "title": "Yazılım Mühendisliği ve Veri Bilimleri (Tezsiz, İkinci Öğretim)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Yazılım geliştirme ve veri bilimi konularında ikinci öğretim tezsiz yüksek lisans eğitimi sunar.",
+    "aliases": [
+      "software engineering and data science",
+      "yazılım müh",
+      "veri bilimi",
+      "software and data science ms"
+    ]
+  },
+  {
+    "title": "Biyoteknoloji",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/biyoteknoloji-yuksek-lisans/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Biyolojik süreçlerin endüstriyel ve tıbbi uygulamalar için kullanılmasını inceler.",
+    "aliases": [
+      "biotechnology",
+      "biyoteknoloji ms",
+      "biotech"
+    ]
+  },
+  {
+    "title": "Enerji Mühendisliği (Enerji ve Güç Sistemleri)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://ese.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Enerji üretimi, dağıtımı ve güç sistemleri üzerine ileri düzey eğitim sunar.",
+    "aliases": [
+      "energy engineering",
+      "power systems",
+      "enerji ve güç sistemleri",
+      "energy eng ms"
+    ]
+  },
+  {
+    "title": "Hesaplamalı Bilim ve Mühendislik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://cse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Bilimsel ve mühendislik problemlerinin hesaplamalı yöntemlerle çözümünü inceler.",
+    "aliases": [
+      "computational science and engineering",
+      "cse",
+      "hesaplamalı bilim"
+    ]
+  },
+  {
+    "title": "Mühendislik İşletmeciliği (Tezsiz, İkinci Öğretim)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://emp.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Mühendislik ve işletme yönetimi konularında ikinci öğretim tezsiz yüksek lisans eğitimi sunar.",
+    "aliases": [
+      "engineering management",
+      "mühendislik işletme",
+      "mba engineering"
+    ]
+  },
+  {
+    "title": "Polimer Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://pse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Polimer malzemelerin sentezi, özellikleri ve uygulamaları üzerine ileri düzey eğitim sunar.",
+    "aliases": [
+      "polymer science and engineering",
+      "polimer müh",
+      "polymer eng"
+    ]
+  },
+  {
+    "title": "Teknoloji, Tasarım ve İnovasyon Yönetimi",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://tdim.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Teknoloji geliştirme, tasarım süreçleri ve inovasyon yönetimini kapsar.",
+    "aliases": [
+      "technology design and innovation management",
+      "inovasyon yönetimi",
+      "tasarım yönetimi"
+    ]
+  },
+  {
+    "title": "Tasarım Çalışmaları",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://designstudies.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tasarım kuramları, yöntemleri ve uygulamaları üzerine disiplinler arası eğitim sunar.",
+    "aliases": [
+      "design studies",
+      "tasarım ms",
+      "design studies ms"
+    ]
+  },
+  {
+    "title": "Uluslararası Su Kaynakları",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://iwr.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Su kaynaklarının yönetimi, sürdürülebilirliği ve uluslararası politikalarını inceler.",
+    "aliases": [
+      "international water resources",
+      "su kaynakları ms",
+      "iwr"
+    ]
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Bilgisayar bilimleri alanında özgün ve ileri düzey araştırmalar yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "computer engineering phd",
+      "ceng phd",
+      "bilgisayar doktora"
+    ]
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Biyomühendislik alanında özgün ve ileri düzey araştırmalar yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "bioengineering phd",
+      "bioeng phd",
+      "biyomüh doktora"
+    ]
+  },
+  {
+    "title": "Çevre Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://enve.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Çevresel süreçler ve mühendislik çözümleri üzerine özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "environmental science and engineering phd",
+      "çevre doktora",
+      "env sci eng phd"
+    ]
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Elektronik ve iletişim sistemleri alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "electronics and communication engineering phd",
+      "eee phd",
+      "elektronik doktora"
+    ]
+  },
+  {
+    "title": "Fizik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Fizik alanında özgün ve ileri düzey bilimsel araştırmalar yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "physics phd",
+      "fizik doktora"
+    ]
+  },
+  {
+    "title": "Fotonik Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://photonics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Fotonik ve optik teknolojiler alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "photonics science and engineering phd",
+      "fotonik doktora",
+      "photonics phd"
+    ]
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Gıda teknolojisi ve mühendisliği alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "food engineering phd",
+      "gıda doktora",
+      "food eng phd"
+    ]
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://civil.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Yapısal, geoteknik ve inşaat teknolojileri alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "civil engineering phd",
+      "inşaat doktora",
+      "civeng phd"
+    ]
+  },
+  {
+    "title": "Kimya",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://chemistry.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kimya alanında özgün ve ileri düzey bilimsel araştırmalar yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "chemistry phd",
+      "kimya doktora"
+    ]
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kimyasal proses ve üretim teknolojileri alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "chemical engineering phd",
+      "kimya müh doktora",
+      "cheng phd"
+    ]
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Mekanik sistemler ve enerji dönüşümü alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "mechanical engineering phd",
+      "makine doktora",
+      "meng phd"
+    ]
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Malzeme özellikleri ve üretim teknolojileri alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "materials science and engineering phd",
+      "mse phd",
+      "malzeme doktora"
+    ]
+  },
+  {
+    "title": "Matematik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Matematik alanında özgün ve ileri düzey teorik araştırmalar yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "mathematics phd",
+      "matematik doktora"
+    ]
+  },
+  {
+    "title": "Mimari Restorasyon",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tarihi yapıların korunması ve restorasyonu alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "architectural restoration phd",
+      "restorasyon doktora"
+    ]
+  },
+  {
+    "title": "Mimarlık",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Mimarlık alanında özgün ve ileri düzey tasarım araştırmaları yapılarak doktora eğitimi sunar.",
+    "aliases": [
+      "architecture phd",
+      "mimarlık doktora",
+      "arch phd"
+    ]
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://mbg.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Genetik ve moleküler biyoloji alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "molecular biology and genetics phd",
+      "mbg phd",
+      "genetik doktora"
+    ]
+  },
+  {
+    "title": "Şehir Planlama",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Kentsel planlama ve politika alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "urban planning phd",
+      "şehir planlama doktora",
+      "city planning phd"
+    ]
+  },
+  {
+    "title": "Endüstriyel Biyoteknoloji",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Biyoteknolojinin endüstriyel süreçlerde uygulanması üzerine özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "industrial biotechnology phd",
+      "endüstriyel biyoteknoloji doktora"
+    ]
+  },
+  {
+    "title": "Enerji Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://ese.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Enerji sistemleri ve teknolojileri alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "energy engineering phd",
+      "enerji doktora",
+      "energy eng phd"
+    ]
+  },
+  {
+    "title": "Medikal Biyoteknoloji",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Tıbbi uygulamalar için biyoteknolojik yöntemler üzerine özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "medical biotechnology phd",
+      "medikal biyoteknoloji doktora"
+    ]
+  },
+  {
+    "title": "Uluslararası Su Kaynakları",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://iwr.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/",
+    "description": "Su kaynaklarının yönetimi ve sürdürülebilirliği alanında özgün doktora araştırmaları yapılır.",
+    "aliases": [
+      "international water resources phd",
+      "su kaynakları doktora",
+      "iwr phd"
+    ]
+  }
+]

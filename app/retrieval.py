@@ -104,16 +104,22 @@ class Retriever:
         embed_seconds = time.perf_counter() - start
 
         start = time.perf_counter()
-        with ThreadPoolExecutor(max_workers=4) as pool:
+        with ThreadPoolExecutor(max_workers=7) as pool:
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
             regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
             faq = pool.submit(self.retrieve_faq, query, 5, vector, audience)
             forms = pool.submit(self.retrieve_forms, query, 3, vector)
+            sks = pool.submit(self.retrieve_sks, query, 4, vector)
+            programs = pool.submit(self.retrieve_programs, query, 3, vector)
+            people = pool.submit(self.retrieve_people, query, 3, vector)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
                 "faq": faq.result(),
                 "forms": forms.result(),
+                "sks": sks.result(),
+                "programs": programs.result(),
+                "people": people.result(),
             }
         # the conversation logs these per turn (CLI + dev mode in the UI);
         # last-write-wins across sessions is fine for diagnostics
@@ -166,6 +172,52 @@ class Retriever:
         # a link catalog, not documents: the chunk is title + use-case
         # description, the payoff is the source_url in metadata
         hits = self._hybrid_search(query, settings.FORMS_COLLECTION, top_k, vector=vector)
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
+    def retrieve_sks(self, query: str, top_k: int = 4, vector=None) -> List[Dict]:
+        # campus life (spor, topluluklar, yemekhane) — chunk text already
+        # leads with the page title, so it renders as-is like mevzuat
+        hits = self._hybrid_search(query, settings.SKS_COLLECTION, top_k, vector=vector)
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
+    def retrieve_programs(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+        # degree-program catalog; per-level "tam liste" chunks ride along
+        # so the model can ground "İYTE'de X bölümü yok" answers
+        hits = self._hybrid_search(query, settings.PROGRAMS_COLLECTION, top_k, vector=vector)
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
+    def retrieve_people(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+        """Instructors and staff, in three tiers: person chunks, the
+        department roster, and per-area enumerations. List-type chunks
+        are long and term-dense, so they'd gravitate into every people
+        top-k; one is admitted only when it outscores the best individual
+        — the scores themselves say whether the query is about the
+        collective ("hocalar kimler") or one person ("maili ne"). And
+        whenever ANY list chunk wins, the roster rides along: it is the
+        data-complete table, so grouping/counting/"tüm hocalar" queries
+        work even when an area chunk happens to win the scoring."""
+        persons = self._hybrid_search(query, settings.PEOPLE_COLLECTION, top_k,
+                                      filters={"kind": "person"}, vector=vector)
+        roster = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
+                                     filters={"kind": "roster"}, vector=vector)
+        areas = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
+                                    filters={"kind": "area"}, vector=vector)
+        hits = persons
+        lists = sorted(roster + areas, key=lambda pair: pair[1], reverse=True)
+        if lists and (not persons or lists[0][1] >= persons[0][1]):
+            chosen = [lists[0]]
+            if roster and roster[0][0] is not lists[0][0]:
+                chosen.append(roster[0])
+            hits = chosen + persons[:max(0, top_k - len(chosen))]
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits

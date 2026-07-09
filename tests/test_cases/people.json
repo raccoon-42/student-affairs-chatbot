@@ -1,0 +1,42 @@
+[
+  {
+    "query": "bilgisayar mühendisliği hocaları kimler?",
+    "expected": "Bölümün öğretim üyesi kadrosunu tam roster listesinden sayar (Onur Demirörs, Selma Tekir, Tolga Ayav, Tuğkan Tuğlular, Yalın Baştanlar dahil çok sayıda isim); yalnızca 2-3 isim verip listeyi eksik bırakMAZ.",
+    "description": "Bölüm kadrosu -> tam roster listesi (top-k değil)"
+  },
+  {
+    "query": "bilgisayar mühendisliği hocalarını çalışma alanlarına göre grupla",
+    "expected": "Kadro listesindeki alan bilgisini kullanarak hocaları alan başlıklarına göre (yapay zeka, yazılım mühendisliği vb.) madde imli gruplar; 'tüm hocaların listesi elimde yok' DEMEZ, tek bir alanla sınırlı kalmaz.",
+    "description": "Alanlara göre gruplama -> roster tablosundan in-context dönüşüm"
+  },
+  {
+    "query": "bilgisayar mühendisliği asistanları hangi alanlarda çalışıyor?",
+    "expected": "Araştırma görevlilerinin çalışma alanlarını (kadro/alan listelerindeki etiketlere dayanarak) madde imli verir; alanı belirtilmemiş asistanlar için bilgi olmadığını söyleyebilir. 'Hiç bilgim yok' deyip tamamen boş dönmemeli.",
+    "description": "Asistanların çalışma alanları"
+  },
+  {
+    "query": "Selma Tekir hangi bölümde ve maili ne?",
+    "expected": "Bilgisayar Mühendisliği'nde öğretim üyesi (Associate Professor) olduğunu ve e-postasının selmatekir@iyte.edu.tr olduğunu söyler; kaynak işaretiyle profiline atıfta bulunur.",
+    "description": "Hoca bölüm + e-posta sorgusu"
+  },
+  {
+    "query": "bilgisayar mühendisliğinde doğal dil işleme çalışan hoca var mı?",
+    "expected": "NLP/doğal dil işleme çalışan öğretim üyesini (ör. Selma Tekir) söyler.",
+    "description": "Araştırma alanına göre hoca bulma"
+  },
+  {
+    "query": "yapay zeka alanında çalışan hangi hocalar var?",
+    "expected": "Yapay zeka alan listesinden birden fazla öğretim üyesini (Selma Tekir ve Aytuğ Onan dahil) madde imli olarak sayar; 1-2 isimle bırakmaz. Listenin biyografi bilgisine dayandığını belirtebilir.",
+    "description": "Alan bazlı hoca listesi (filtreli enumerasyon)"
+  },
+  {
+    "query": "Onur Demirörs'ün ofisi nerede?",
+    "expected": "Ofis/oda bilgisini referans veriden verir; referansta oda bilgisi yoksa bilmediğini söyler ve profil sayfasına ya da bölüme yönlendirir; bir oda numarası UYDURMAZ.",
+    "description": "Ofis sorgusu -> veri varsa ver, yoksa uydurma"
+  },
+  {
+    "query": "makine mühendisliğinden bir hocanın mailini verir misin?",
+    "expected": "Makine Mühendisliği öğretim üyeleri henüz elindeki verilerde olmadığı için bilmediğini söyler; bölüm web sitesine yönlendirebilir. Bilgisayar Mühendisliği hocalarını makine mühendisi gibi sunmamalı.",
+    "description": "Henüz indekslenmemiş bölüm -> uydurmamalı (pilot sadece ceng)"
+  }
+]

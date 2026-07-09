@@ -1,0 +1,485 @@
+[
+  {
+    "title": "Fizik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Fotonik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://photonics.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Kimya",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://chemistry.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Matematik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://math.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "lisans",
+    "faculty": "Fen Fakültesi",
+    "source_url": "http://mbg.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://ceng.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Çevre Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://enve.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Enerji Sistemleri Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://ese.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://civil.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "lisans",
+    "faculty": "Mühendislik Fakültesi",
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Endüstriyel Tasarım",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://id.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Mimarlık",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Şehir ve Bölge Planlama",
+    "level": "lisans",
+    "faculty": "Mimarlık Fakültesi",
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://iyte.edu.tr/akademik/lisans-programlari/"
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Çevre Mühendisliği (Çevre Kirliliği ve Kontrolü)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://enve.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Endüstriyel Tasarım",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://id.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Fizik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Fotonik Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://photonics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://civil.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Kimya",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://chemistry.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Matematik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Matematik (Tezsiz)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mimari Restorasyon",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mimari Restorasyon (Tezsiz)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mimarlık",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://mbg.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Şehir Planlama",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Şehir Tasarımı",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Yazılım Mühendisliği ve Veri Bilimleri (Tezsiz, İkinci Öğretim)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Biyoteknoloji",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/biyoteknoloji-yuksek-lisans/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Enerji Mühendisliği (Enerji ve Güç Sistemleri)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://ese.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Hesaplamalı Bilim ve Mühendislik",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://cse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mühendislik İşletmeciliği (Tezsiz, İkinci Öğretim)",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "http://emp.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Polimer Bilimi ve Mühendisliği",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://pse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Teknoloji, Tasarım ve İnovasyon Yönetimi",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://tdim.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Tasarım Çalışmaları",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://designstudies.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Uluslararası Su Kaynakları",
+    "level": "yukseklisans",
+    "faculty": null,
+    "source_url": "https://iwr.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Bilgisayar Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://ceng.iyte.edu.tr/tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Biyomühendislik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://bioeng.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Çevre Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://enve.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Elektronik ve Haberleşme Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://eee.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Fizik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://physics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Fotonik Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://photonics.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Gıda Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://food.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "İnşaat Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://civil.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Kimya",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://chemistry.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Kimya Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://che.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Makina Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://me.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Malzeme Bilimi ve Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://mse.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Matematik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://math.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mimari Restorasyon",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://restoration.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Mimarlık",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://architecture.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Moleküler Biyoloji ve Genetik",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://mbg.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Şehir Planlama",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "http://city.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Endüstriyel Biyoteknoloji",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Enerji Mühendisliği",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://ese.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Medikal Biyoteknoloji",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://biotech.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  },
+  {
+    "title": "Uluslararası Su Kaynakları",
+    "level": "doktora",
+    "faculty": null,
+    "source_url": "https://iwr.iyte.edu.tr/",
+    "page_url": "https://lee.iyte.edu.tr/lisansustu-programlar/"
+  }
+]

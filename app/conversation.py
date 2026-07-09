@@ -49,6 +49,15 @@ CONTEXT_TEMPLATE = """
 
     # FORM VE DİLEKÇELER (başlık + kullanım amacı; bağlantı için kaynak işareti yeterli):
     {forms_context}
+
+    # KAMPÜS YAŞAMI (SPOR TESİSLERİ, ÖĞRENCİ TOPLULUKLARI, YEMEKHANE):
+    {sks_context}
+
+    # BÖLÜM VE PROGRAMLAR:
+    {programs_context}
+
+    # ÖĞRETİM ÜYELERİ VE PERSONEL:
+    {people_context}
     </available_reference_data>
 </conversation>
 
@@ -279,7 +288,7 @@ class Conversation:
                       f"(embed {timings['embed']:.2f}s | search {timings['search']:.2f}s, "
                       f"alongside the gate)")
         self._log(f"[timing] gate + retrieval combined {time.perf_counter() - start:.2f}s")
-        corpora = ("calendar", "regulations", "faq", "forms")
+        corpora = ("calendar", "regulations", "faq", "forms", "sks", "programs", "people")
         self._log("[retrieval] " + ", ".join(
             f"{corpus}: {len(results.get(corpus, []))}" for corpus in corpora))
 
@@ -300,6 +309,9 @@ class Conversation:
             regulations_context="\n".join(numbered["regulations"]),
             faq_context="\n\n".join(numbered["faq"]),
             forms_context="\n\n".join(numbered["forms"]),
+            sks_context="\n\n".join(numbered["sks"]),
+            programs_context="\n\n".join(numbered["programs"]),
+            people_context="\n\n".join(numbered["people"]),
         )
 
         if not self._messages:
@@ -319,10 +331,14 @@ class Conversation:
         they're readable as-is; FAQ entries carry their own page URL,
         calendar/regulations fall back to the configured corpus page."""
         corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik",
-                        "faq": "SSS", "forms": "Form"}
+                        "faq": "SSS", "forms": "Form", "sks": "SKS", "programs": "Bölüm",
+                        "people": "Kişi"}
         corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
                        "regulations": settings.REGULATIONS_SOURCE_URL, "faq": "",
-                       "forms": settings.FORMS_SOURCE_URL}
+                       "forms": settings.FORMS_SOURCE_URL,
+                       "sks": settings.SKS_SOURCE_URL,
+                       "programs": settings.PROGRAMS_SOURCE_URL,
+                       "people": ""}
         metadata = result.get("metadata") or {}
         # chips labeled by hostname all look alike — the document's own
         # title (indexed with each mevzuat chunk) tells sources apart

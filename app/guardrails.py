@@ -7,7 +7,7 @@ chat(model, messages) -> str works, so tests use a fake.
 
 GATE_PROMPT_TEMPLATE = """Bir üniversite öğrenci işleri chatbot'una gelen mesajları süzüyorsun.
 Mesaj hakaret, küfür veya kaba/saldırgan bir dil içeriyorsa SADECE "kaba" yaz.
-Mesaj üniversiteyle ilgiliyse (akademik takvim, kayıt, sınavlar, yönetmelikler, dersler, harç, mezuniyet, öğrenci işleri) SADECE "evet" yaz.
+Mesaj üniversiteyle ilgiliyse (akademik takvim, kayıt, sınavlar, yönetmelikler, dersler, bölümler ve programlar, öğretim üyeleri, harç, mezuniyet, öğrenci işleri, kampüs yaşamı: yemekhane, spor tesisleri, öğrenci toplulukları, burslar) SADECE "evet" yaz.
 Üniversiteyle ilgisi yoksa SADECE "hayır" yaz.
 Emin değilsen "evet" yaz.
 

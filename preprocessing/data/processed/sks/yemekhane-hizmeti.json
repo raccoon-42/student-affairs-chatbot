@@ -1,0 +1,14 @@
+[
+  {
+    "baslik": "Yemekhane Kart Sistemi",
+    "metin": "Merkezi Kafeteryada yemekhane hizmetlerinden faydalanmak için kartlı geçiş sistemi kullanılmaktadır. Öğrenci ve personel kimlik kartları aynı zamanda yemek kartı olarak da işlev görmektedir. Kimlik kartlarına para yükleme işlemi şu şekilde yapılabilir: Merkezi Kafeterya binasının 1. katında 2 adet kredi/banka kartı ile para yükleme cihazı ve 2 adet nakit para yükleme cihazı bulunmaktadır. 2. katta 1 adet kredi/banka kartı ile para yükleme cihazı bulunmaktadır. Yabancı Diller Bölümü binasındaki yemek salonunda 1 adet nakit para yükleme cihazı bulunmaktadır. Toplamda 6 adet para yükleme cihazı mevcuttur. Ayrıca yemekhane sistemi web sayfası üzerinden de para yükleme işlemi gerçekleştirilebilir (bağlantı: https://yks.iyte.edu.tr/Login.aspx). Kredi/Banka kartı ile para yükleme işlemine dair bir video da mevcuttur."
+  },
+  {
+    "baslik": "Kartsız Yemek Hizmeti Kullanımı (QR Kod ile Giriş)",
+    "metin": "Yemekhane kullanıcıları, kimlik kartlarının yanlarında bulunmadığı durumlarda da yemek hizmetinden faydalanabilmektedir. Bu durumda, Yemekhane Kontrol Sistemi web sayfasına kullanıcı bilgileriyle giriş yapılarak (bağlantı: https://yks.iyte.edu.tr/Login.aspx), sol menüde yer alan 'Yemekhane İşlemleri > Karekod Oluştur' adımlarının takip edilmesi yeterlidir. Oluşturulan QR kod, yemekhane girişlerinde bulunan kart okuma cihazlarına okutularak kimlik kartı yerine geçmekte ve kullanıcıların kartsız olarak yemek hizmetinden yararlanmasına olanak sağlamaktadır."
+  },
+  {
+    "baslik": "Yemek Hizmetinden Yararlanma Kuralları",
+    "metin": "Aynı gün içerisinde öğrenci ve personel, yemek hizmetinden yalnızca bir kez yararlanabilmektedir. Kartın aynı gün içerisinde ikinci kez kullanılması halinde, misafir yemek ücreti tutarı (bağlantı: https://sks.iyte.edu.tr/beslenme-hizmetleri/yemek-bedeli-katki-payi/) kartta yüklü bulunan bakiyeden otomatik olarak tahsil edilmektedir. Burslu öğrenciler, kartlarına herhangi bir yükleme yapmaksızın yemek hizmetinden belirtilen tarihler arasında ücretsiz olarak faydalanabilmektedir. İYTE Yemekhane Sisteminin web sitesinden (bağlantı: https://yks.iyte.edu.tr/Login.aspx) aylık menüler, bakiye hareketleri ve belirli menülere özgü rezervasyonlar incelenebilir."
+  }
+]

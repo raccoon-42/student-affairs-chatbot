@@ -1,0 +1,27 @@
+[
+  {
+    "query": "yemekhane kartıma nasıl para yüklerim?",
+    "expected": "Para yükleme yollarını anlatır: kampüsteki para yükleme cihazları (Merkezi Kafeterya ve Yabancı Diller binası) ve/veya yemekhane sistemi web sayfası. Kaynak işaretiyle SKS sayfasına atıfta bulunur.",
+    "description": "Yemekhane kartına para yükleme"
+  },
+  {
+    "query": "kimliğim yanımda yok, yemekhaneye girebilir miyim?",
+    "expected": "QR kod / karekod ile kartsız girişin mümkün olduğunu, Yemekhane Kontrol Sistemi üzerinden karekod oluşturulacağını söyler.",
+    "description": "Kartsız yemekhane girişi (QR kod)"
+  },
+  {
+    "query": "bir öğrenci topluluğuna nasıl üye olabilirim?",
+    "expected": "Tüm kayıtlı öğrencilerin topluluklara üye olabildiğini, dönem başındaki Topluluklar Toplanıyor etkinliğinde veya yıl içinde topluluk yönetimine/SKS'ye başvurarak üye olunabileceğini söyler.",
+    "description": "Öğrenci topluluğuna üyelik"
+  },
+  {
+    "query": "kapalı spor salonunda hangi gün voleybol var?",
+    "expected": "Haftalık çalışma programından voleybol gün ve saatlerini verir; programın değişebileceğini belirtebilir.",
+    "description": "Spor salonu haftalık program (tablo verisi)"
+  },
+  {
+    "query": "yemekhanede yemek kaç lira?",
+    "expected": "Rakam VERMEZ; ücretlerin her yıl değiştiğini ve güncel tarifenin SKS/beslenme sayfasından öğrenilebileceğini söyler. Herhangi bir tutar uydurmamalı.",
+    "description": "Yemek ücreti -> tutar vermemeli, SKS'ye yönlendirmeli"
+  }
+]
