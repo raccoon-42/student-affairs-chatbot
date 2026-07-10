@@ -23,5 +23,10 @@
     "query": "yemekhanede yemek kaç lira?",
     "expected": "Rakam VERMEZ; ücretlerin her yıl değiştiğini ve güncel tarifenin SKS/beslenme sayfasından öğrenilebileceğini söyler. Herhangi bir tutar uydurmamalı.",
     "description": "Yemek ücreti -> tutar vermemeli, SKS'ye yönlendirmeli"
+  },
+  {
+    "query": "yeni bir kulüp kurmak istiyorum, ne yapmam gerekiyor?",
+    "expected": "İlk başvuruda sunulması gereken belgeleri sayar: topluluk tüzüğü (elektronik ortamda), akademik danışman listesi ve kabul dilekçeleri, topluluk başkanı ile geçici yönetim/denetim kurulu üyeleri, not ortalamaları ve üye listesi. Belgelerden en az birkaçını somut olarak vermeli; sadece 'SKS'ye sorun' deyip geçmemeli. ('kulüp' kelimesiyle sorulsa da 'topluluk' içeriğini bulmalı.)",
+    "description": "Yeni öğrenci topluluğu/kulübü kurma (başvuru belgeleri; kulüp-topluluk eşleşmesi)"
   }
 ]
