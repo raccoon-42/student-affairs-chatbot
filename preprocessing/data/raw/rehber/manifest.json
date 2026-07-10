@@ -1,0 +1,76 @@
+[
+  {
+    "title": "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme",
+    "topic": "ders-secimi",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/ders-secimi-ile-ilgili-bilgilendirme/",
+    "file": "ders-secimi-ile-ilgili-bilgilendirme.html"
+  },
+  {
+    "title": "Kurum İçi Yatay Geçiş",
+    "topic": "yatay-gecis",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/kurum-ici-yatay-gecis/",
+    "file": "kurum-ici-yatay-gecis.html"
+  },
+  {
+    "title": "Kurumlar Arası Yatay Geçiş",
+    "topic": "yatay-gecis",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/kurumlar-arasi-yatay-gecis/",
+    "file": "kurumlar-arasi-yatay-gecis.html"
+  },
+  {
+    "title": "Merkezi Yerleştirme Puanı ile Yatay Geçiş",
+    "topic": "yatay-gecis",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/merkezi-yerlestirme-puani-ile-yatay-gecis/",
+    "file": "merkezi-yerlestirme-puani-ile-yatay-gecis.html"
+  },
+  {
+    "title": "Lisansüstü Programlara Yatay Geçiş",
+    "topic": "yatay-gecis",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/lisansustu-programlara-yatay-gecis/",
+    "file": "lisansustu-programlara-yatay-gecis.html"
+  },
+  {
+    "title": "Çift Anadal",
+    "topic": "cift-anadal-yandal",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/cift-anadal/",
+    "file": "cift-anadal.html"
+  },
+  {
+    "title": "Yan Dal",
+    "topic": "cift-anadal-yandal",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/yan-dal/",
+    "file": "yan-dal.html"
+  },
+  {
+    "title": "Lisansüstü Programlara Başvuru Bilgileri",
+    "topic": "basvuru",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/lisansustu-programlara-basvuru-bilgileri/",
+    "file": "lisansustu-programlara-basvuru-bilgileri.html"
+  },
+  {
+    "title": "Lisans Programlarına Yurtdışından Öğrenci Başvuru Bilgileri",
+    "topic": "basvuru",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/lisans-programlarina-yabanci-uyruklu-ogrenci-basvuru-bilgileri/",
+    "file": "lisans-programlarina-yabanci-uyruklu-ogrenci-basvuru-bilgileri.html"
+  },
+  {
+    "title": "Askerlik İşlemleri",
+    "topic": "askerlik",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/lisansustu-askerlik-islemleri/",
+    "file": "lisansustu-askerlik-islemleri.html"
+  },
+  {
+    "title": "Öğrenci Ders Kayıt Kılavuzu (PDF)",
+    "topic": "ders-secimi",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/wp-content/uploads/sites/99/2024/09/ÖĞRENCİ-DERS-SEÇİM-KILAVUZU.pdf",
+    "kind": "link",
+    "description": "ÖBS/UBYS üzerinden ders seçiminin nasıl yapıldığını ekran görüntüleriyle adım adım gösteren kılavuz. Ders kaydı, ders seçme ekranı, şube seçimi ve danışman onayına gönderme adımlarını görsel olarak anlatır."
+  },
+  {
+    "title": "Ders Kayıtlanma Adımları (PDF)",
+    "topic": "ders-secimi",
+    "source_url": "https://ogrenciisleri.iyte.edu.tr/wp-content/uploads/sites/99/2025/09/DERS-KAYITLANMA-ADIMLARI.pdf",
+    "kind": "link",
+    "description": "Ders kayıt sürecinin işlem adımlarını sırasıyla özetleyen belge: katkı payı, ders seçimi ve danışman onayı."
+  }
+]

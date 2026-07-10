@@ -15,10 +15,10 @@ import json
 import re
 import sys
 
-import requests
 from bs4 import BeautifulSoup
 
 from config import settings
+from preprocessing.scrapers.fetch import fetch
 
 DEFAULT_PAGE_URL = "https://ogrenciisleri.iyte.edu.tr/formlar/"
 
@@ -60,8 +60,7 @@ def main():
                     if entry.get("page_url") != page_url]
 
     print(f"Fetching {page_url}")
-    resp = requests.get(page_url, timeout=30)
-    resp.raise_for_status()
+    resp = fetch(page_url)
 
     scraped = list(extract_forms(resp.text, page_url))
     if not scraped:

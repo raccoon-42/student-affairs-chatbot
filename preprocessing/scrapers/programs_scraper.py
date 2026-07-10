@@ -14,10 +14,10 @@ Run again whenever the university adds a program.
 import json
 import re
 
-import requests
 from bs4 import BeautifulSoup
 
 from config import settings
+from preprocessing.scrapers.fetch import fetch
 
 LISANS_URL = "https://iyte.edu.tr/akademik/lisans-programlari/"
 LISANSUSTU_URL = "https://lee.iyte.edu.tr/lisansustu-programlar/"
@@ -37,8 +37,7 @@ DEPT_SITE = re.compile(r"https?://[a-z]+\.iyte\.edu\.tr", re.IGNORECASE)
 
 
 def fetch_content(url):
-    resp = requests.get(url, timeout=30)
-    resp.raise_for_status()
+    resp = fetch(url)
     soup = BeautifulSoup(resp.text, "html.parser")
     article = soup.find("article")
     if article is None:

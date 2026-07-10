@@ -1,6 +1,7 @@
 import argparse
 import json
 import re
+import uuid
 from datetime import date
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from config import settings
 
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 SKS_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "sks" / "manifest.json"
+GUIDES_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "rehber" / "manifest.json"
 
 
 def _calendar_payload(text, metadata):
@@ -45,6 +47,15 @@ def _people_payload(text, metadata):
         "metadata": metadata,  # carries document_title, department, role, source_url
         "department": metadata.get("department"),
         "role": metadata.get("role"),
+    }
+
+
+def _course_payload(text, metadata):
+    return {
+        "text": text,  # code + name + level/department + description + prereq
+        "metadata": metadata,  # carries document_title, department, levels, kind, source_url
+        "department": metadata.get("department"),
+        "code": metadata.get("code"),
     }
 
 
@@ -199,23 +210,38 @@ def forms_chunks_from_json(input_file):
     return chunks
 
 
-def sks_chunks_from_dir(input_dir):
-    """Chunks from every parsed SKS page, tagged with its page.
+def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
+    """Chunks from every parsed page of a curated-page corpus (sks,
+    rehber), tagged with its page.
 
     Same shape as mevzuat: the scrape manifest supplies title/topic/
     source_url per page, the embedded text is prefixed with the page
     title, and source_url makes each citation chip link to its page."""
-    from preprocessing.parsers.sks_parser_llm import render_chunk
-
-    with open(SKS_MANIFEST, encoding="utf-8") as f:
-        by_stem = {Path(entry["file"]).stem: entry for entry in json.load(f)}
+    with open(manifest_path, encoding="utf-8") as f:
+        manifest = json.load(f)
+    by_stem = {Path(entry["file"]).stem: entry
+               for entry in manifest if entry.get("kind") != "link"}
 
     chunks = []
+    # link entries (kind: "link") are authored in the manifest itself:
+    # title + description are the retrieval text, source_url (a PDF or an
+    # external page) becomes the citation chip — nothing to parse
+    for entry in manifest:
+        if entry.get("kind") == "link":
+            chunks.append({
+                "text": f"{entry['title']}\n{entry['description']}",
+                "metadata": {
+                    "document_title": entry["title"],
+                    "topic": entry["topic"],
+                    "source_url": entry["source_url"],
+                    "section": None,
+                },
+            })
     parsed = sorted(Path(input_dir).glob("*.json"))
     for path in parsed:
         page = by_stem.get(path.stem)
         if page is None:
-            print(f"Warning: {path.name} not in sks manifest — skipping")
+            print(f"Warning: {path.name} not in {corpus} manifest — skipping")
             continue
         with open(path, encoding="utf-8") as f:
             page_chunks = json.load(f)
@@ -235,6 +261,16 @@ def sks_chunks_from_dir(input_dir):
         print(f"Warning: {len(missing)} scraped pages not parsed yet, "
               f"indexing without them: {', '.join(missing)}")
     return chunks
+
+
+def sks_chunks_from_dir(input_dir):
+    from preprocessing.parsers.sks_parser_llm import render_chunk
+    return _page_corpus_chunks(input_dir, SKS_MANIFEST, render_chunk, "sks")
+
+
+def guides_chunks_from_dir(input_dir):
+    from preprocessing.parsers.guides_parser_llm import render_chunk
+    return _page_corpus_chunks(input_dir, GUIDES_MANIFEST, render_chunk, "rehber")
 
 
 PEOPLE_ROLES = {"akademik": None,  # academic members carry their own title
@@ -346,6 +382,63 @@ def people_chunks_from_dir(input_dir):
 PROGRAM_LEVELS = {"lisans": "Lisans", "yukseklisans": "Yüksek Lisans", "doktora": "Doktora"}
 
 
+def courses_chunks_from_dir(input_dir):
+    """One chunk per course from every department's courses JSON, PLUS a
+    full-catalog list chunk per department and level.
+
+    Same lesson as programs and people: "hangi dersler var / X dersi var
+    mı" is an enumeration/absence question that top-k nearest courses can
+    never ground — it needs the complete per-level catalog in context.
+    metadata.kind (course|list) lets the retriever admit a list chunk
+    only when it outscores the best individual course."""
+    chunks = []
+    for path in sorted(Path(input_dir).glob("*.json")):
+        with open(path, encoding="utf-8") as f:
+            courses = json.load(f)
+        if not courses:
+            continue
+        department = courses[0]["department"]
+
+        for course in courses:
+            levels = ", ".join(PROGRAM_LEVELS[lv].lower() for lv in course["levels"])
+            lines = [f"{course['code']} — {course['name']} ({department}, {levels} dersi)",
+                     course.get("description") or ""]
+            if course.get("prerequisites"):
+                lines.append(f"Önkoşul: {course['prerequisites']}")
+            chunks.append({
+                "text": "\n".join(line for line in lines if line),
+                "metadata": {
+                    "document_title": f"{course['code']} {course['name']}",
+                    "department": department,
+                    "code": course["code"],
+                    "levels": course["levels"],
+                    "kind": "course",
+                    "source_url": course["source_url"],
+                },
+            })
+
+        for level, label in PROGRAM_LEVELS.items():
+            of_level = [c for c in courses if level in c["levels"]]
+            if not of_level:
+                continue
+            names = ", ".join(f"{c['code']} {c['name']}" for c in of_level)
+            chunks.append({
+                "text": (f"{department} {label.lower()} derslerinin tam listesi "
+                         f"({len(of_level)} ders): {names}. "
+                         f"Bu listede olmayan bir ders {department} {label.lower()} "
+                         f"programının ders kataloğunda yoktur."),
+                "metadata": {
+                    "document_title": f"{department} {label} Dersleri (tam liste)",
+                    "department": department,
+                    "code": None,
+                    "levels": [level],
+                    "kind": "list",
+                    "source_url": None,
+                },
+            })
+    return chunks
+
+
 def program_chunks_from_json(input_file):
     """Chunks from the describer's programs.json: one per program, PLUS a
     synthesized full-list chunk per level.
@@ -402,46 +495,108 @@ def calendar_chunks_from_dir(input_dir):
     return chunks
 
 
-def store_embedding(chunks, collection_name, build_payload=_calendar_payload):
-    """Encode text chunks into embeddings & store them in Qdrant.
+# fixed namespace so the same payload always maps to the same point id
+POINT_NAMESPACE = uuid.UUID("6c1de2a3-6f3e-4c7d-9a2b-1f4e8b0c5d17")
 
-    Recreates the collection from scratch. The payload shape is the only
-    thing that differs between document types, so it's a parameter.
+
+def point_id(payload):
+    """Deterministic point id: UUID5 of the canonical payload JSON.
+
+    The id IS the content hash — an unchanged chunk keeps its id across
+    runs, any change (text or metadata) yields a new id. Sync then reduces
+    to a set diff of ids, with no per-document bookkeeping."""
+    canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    return str(uuid.uuid5(POINT_NAMESPACE, canonical))
+
+
+def plan_sync(desired_ids, existing_ids):
+    """Split into (new ids to embed+upsert, stale ids to delete)."""
+    desired, existing = set(desired_ids), set(existing_ids)
+    return sorted(desired - existing), sorted(existing - desired)
+
+
+def store_embedding(chunks, collection_name, build_payload=_calendar_payload, recreate=False):
+    """Sync chunks into Qdrant: the given chunks are the desired state.
+
+    Only new/changed chunks are embedded; points whose chunk is gone are
+    deleted. A corpus whose source didn't change costs zero embedding
+    calls. --recreate drops the collection first — needed when the
+    embedding backend/dimension changes (ids don't cover the vector
+    space). The payload shape is the only thing that differs between
+    document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import Distance, VectorParams, PointStruct
+    from qdrant_client.http.models import Distance, VectorParams, PointStruct, PointIdsList
 
     from app.embeddings import default_embedder
 
-    embedder = default_embedder()
-    texts = [chunk['text'] for chunk in chunks]
-    metadata_list = [chunk["metadata"] for chunk in chunks]
+    if not chunks:
+        raise SystemExit("No chunks produced — refusing to empty the collection. "
+                         "If that is intended, delete it in Qdrant directly.")
 
-    print(f"Encoding chunks into embeddings ({settings.EMBEDDING_BACKEND})...")
-    chunk_vectors = embedder.embed_documents(texts)
+    desired = {}  # id -> payload; identical chunks collapse to one point
+    for chunk in chunks:
+        payload = build_payload(chunk["text"], chunk["metadata"])
+        desired[point_id(payload)] = payload
+    if len(desired) < len(chunks):
+        print(f"Note: {len(chunks) - len(desired)} duplicate chunks collapsed")
 
     print("Connecting to Qdrant...")
     qdrant = QdrantClient(settings.QDRANT_URL)
 
-    if qdrant.collection_exists(collection_name=collection_name):
+    if recreate and qdrant.collection_exists(collection_name=collection_name):
         print(f"Deleting existing collection: {collection_name}")
         qdrant.delete_collection(collection_name=collection_name)
 
-    vector_size = len(chunk_vectors[0])
-    print(f"Creating new collection: {collection_name} (dim {vector_size})")
-    qdrant.create_collection(
-        collection_name=collection_name,
-        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
-    )
+    # keyed by str(id) for the diff, but deletion needs the original id —
+    # pre-sync collections have integer ids, which are not valid as strings
+    existing = {}
+    if qdrant.collection_exists(collection_name=collection_name):
+        offset = None
+        while True:
+            records, offset = qdrant.scroll(
+                collection_name=collection_name, limit=1000, offset=offset,
+                with_payload=False, with_vectors=False)
+            existing.update({str(record.id): record.id for record in records})
+            if offset is None:
+                break
 
-    print("Storing chunks in Qdrant...")
-    points = [
-        PointStruct(id=i, vector=chunk_vectors[i], payload=build_payload(text, metadata))
-        for i, (text, metadata) in enumerate(zip(texts, metadata_list))
-    ]
-    qdrant.upsert(collection_name=collection_name, points=points)
+    new_ids, stale_keys = plan_sync(desired, existing)
+    stale_ids = [existing[key] for key in stale_keys]
+    if not new_ids and not stale_ids:
+        print(f"{collection_name}: up to date ({len(desired)} chunks, nothing embedded)")
+        return
 
-    print(f"Successfully stored {len(chunks)} chunks in Qdrant.")
+    if new_ids:
+        embedder = default_embedder()
+        print(f"Encoding {len(new_ids)} new/changed chunks "
+              f"({len(desired) - len(new_ids)} unchanged, {settings.EMBEDDING_BACKEND})...")
+        vectors = embedder.embed_documents([desired[pid]["text"] for pid in new_ids])
+
+        if qdrant.collection_exists(collection_name=collection_name):
+            configured = qdrant.get_collection(collection_name).config.params.vectors.size
+            if configured != len(vectors[0]):
+                raise SystemExit(
+                    f"{collection_name} holds {configured}-dim vectors but the embedder "
+                    f"returned {len(vectors[0])} — rerun with --recreate.")
+        else:
+            print(f"Creating new collection: {collection_name} (dim {len(vectors[0])})")
+            qdrant.create_collection(
+                collection_name=collection_name,
+                vectors_config=VectorParams(size=len(vectors[0]), distance=Distance.COSINE),
+            )
+
+        qdrant.upsert(collection_name=collection_name, points=[
+            PointStruct(id=pid, vector=vector, payload=desired[pid])
+            for pid, vector in zip(new_ids, vectors)
+        ])
+
+    if stale_ids:
+        qdrant.delete(collection_name=collection_name,
+                      points_selector=PointIdsList(points=stale_ids))
+
+    print(f"{collection_name}: {len(new_ids)} upserted, {len(stale_ids)} deleted, "
+          f"{len(desired)} chunks total.")
 
 
 def main():
@@ -451,9 +606,12 @@ def main():
     parser.add_argument('--collection', default=None,
                       help='Qdrant collection name (defaults to the configured one for the type)')
     parser.add_argument('--type',
-                      choices=['calendar', 'regulations', 'faq', 'forms', 'sks', 'programs', 'people'],
+                      choices=['calendar', 'regulations', 'faq', 'forms', 'sks', 'programs',
+                               'people', 'courses', 'guides'],
                       required=True,
                       help='Type of content being processed')
+    parser.add_argument('--recreate', action='store_true',
+                      help='Drop the collection first (needed when the embedding backend/dim changes)')
 
     args = parser.parse_args()
 
@@ -461,9 +619,9 @@ def main():
 
     print(f"Processing: {args.input_file}")
 
-    # The collection is recreated from scratch on every run, so a
+    # The run's chunks are synced as the collection's desired state, so a
     # multi-document corpus must be indexed from its directory in one go —
-    # indexing file-by-file would leave only the last file's chunks.
+    # indexing file-by-file would delete every other file's chunks as stale.
     is_dir = Path(args.input_file).is_dir()
     is_json = args.input_file.endswith('.json')
 
@@ -490,6 +648,14 @@ def main():
         chunks = people_chunks_from_dir(args.input_file)
         collection = args.collection or settings.PEOPLE_COLLECTION
         payload = _people_payload
+    elif args.type == 'courses':
+        chunks = courses_chunks_from_dir(args.input_file)
+        collection = args.collection or settings.COURSES_COLLECTION
+        payload = _course_payload
+    elif args.type == 'guides':
+        chunks = guides_chunks_from_dir(args.input_file)
+        collection = args.collection or settings.GUIDES_COLLECTION
+        payload = _sks_payload  # same shape: page title + topic + source_url
     elif args.type == 'faq':
         # faq.json from the scraper is already one Q&A per entry; embed the question
         with open(args.input_file, encoding='utf-8') as f:
@@ -506,7 +672,7 @@ def main():
         payload = _regulation_payload
 
     print(f"Split text into {len(chunks)} chunks")
-    store_embedding(chunks, collection, payload)
+    store_embedding(chunks, collection, payload, recreate=args.recreate)
 
 
 if __name__ == '__main__':

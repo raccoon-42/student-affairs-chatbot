@@ -1,0 +1,1816 @@
+[
+  {
+    "code": "CENG 111",
+    "name": "Concepts in Computer Engineering",
+    "description": "Basic computer knowledge: History of computing, terms and definitions, system components and processes, computer architecture, data storage, computer networks and internet, software engineering, problem solving and algorithm design, data structures, application fields of computers.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-111/"
+  },
+  {
+    "code": "CENG 112",
+    "name": "Data Structures",
+    "description": "Basic concepts of data, data structures and data types: arrays, strings, linear structures, sequential searching and sorting techniques, stacks, queues, pointers, linked lists. Various forms of m-way search and B-trees.",
+    "prerequisites": "CENG 113",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-112/"
+  },
+  {
+    "code": "CENG 113",
+    "name": "Programming Basics",
+    "description": "Fundamentals of computer programming: sequence, decision, repetion, syntax, compilation, debugging and maintenance, procedures, parameters, arrays, object, top-down structured design, layout and style. The emphasis is on an engineering “right-first-time” approach to solving large problems using computers. Basic concepts of algorithmics and algorithmic terminologies.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-113/"
+  },
+  {
+    "code": "CENG 115",
+    "name": "Discrete Structures",
+    "description": "Logic, propositions and proof methods. Sets. Functions, sequences and summations. Algorithms and complexity analysis. Integers and division. Matrices. Mathematical induction. Recursive definitions and algorithms. Probability theory. Counting techniques. Graphs. Trees.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-115/"
+  },
+  {
+    "code": "CENG 211",
+    "name": "Programming Fundamentals",
+    "description": "Control Structures, Classes and Methods, Inheritance, Polymorphism, Interfaces, Exception Handling, Streams and File I/O, Recursion, Dynamic Data Structures and Generics.",
+    "prerequisites": "CENG 113",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-211/"
+  },
+  {
+    "code": "CENG 212",
+    "name": "Concepts of Programming Languages",
+    "description": "In this course, the fundamental concepts of programming languages and different programming paradigms will be covered. Students will gain knowledge in the following areas: Introduction to Programming Languages: The history of programming languages, types, and fundamental features. Programming Language Syntax: The structure of programming languages, syntax rules, and structural elements of a language. Names, Scopes, and Bindings: Relationships between variables, functions, and other constructs, scope concepts, and how bindings work. Control Flow: Conditional statements, loops, and control structures for managing program flow. Functional Languages (Introduction to Scheme): Functional programming paradigm, features of functional languages, and an introduction to the Scheme language. Data Types: Definition of data types, basic data structures, and type conversions. Subroutines and Control Ab",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-212/"
+  },
+  {
+    "code": "CENG 213",
+    "name": "Theory of Computation",
+    "description": "Abstract automata, especially finite state machines; push-down automata; and Turing machines. Formal languages, especially context-free languages. The relationship between automata and languages. Computability and solvability.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-213/"
+  },
+  {
+    "code": "CENG 214",
+    "name": "Logic Design",
+    "description": "The course content provides the student with the basic knowledge, concepts and experiences required to understand and design computer architecture. The content includes theoretical and experimental studies such as boolean algebra, logic gates, multi-level logic gates, combinational arithmetic and logic systems, sequential logic, registers and counters, memory units and problem solving with programmable logic. The student’s ability to design logic and arithmetic circuits theoretically, test them and apply them in a laboratory environment is developed.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-214/"
+  },
+  {
+    "code": "CENG 215",
+    "name": "Circuits and Electronics",
+    "description": "Fundamentals of electric circuits, including the basic concepts (e.g. voltage, current, power), basic components (e.g. resistance, inductance, capacity, MOS transistor, operational amplifier), basic laws (e.g., Ohm’s law, Kirchhoff’s law, equivalent resistance exchange) and methods of circuit analysis. Transient analysis, frequency response, Laplace transforms, Fourier series, introduction to electronic materials and devices, diodes, bipolar transistors and logic families, MOS technology.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-215/"
+  },
+  {
+    "code": "CENG 216",
+    "name": "Numerical Computation",
+    "description": "Surveys and applications of numerical techniques related to matrix inversion, systems of linear equations and optimization, finite difference expressions, interpolation and approximation, numerical differentiation and integration. The problems of speed, accuracy and applicability of the topics are examined with related algorithms. The applications of these numerical methods and subjects on computers using efficient programming techniques and with necessary programming languages.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-216/"
+  },
+  {
+    "code": "CENG 218",
+    "name": "Analysis and Design of Algorithms",
+    "description": "The role of algorithms in computing, Growth of functions, recurrences, probabilistic analysis and randomized algorithms, dynamic programming, greedy algorithms, advanced data structures, graph algorithms, NP-Completeness.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-218/"
+  },
+  {
+    "code": "CENG 222",
+    "name": "Probability and Statistics",
+    "description": "This course provides an elementary introduction to probability and statistics with an emphasis on experimentation using computer programming. Topics: permutation, combination, random variables, probability distributions, Bayesian inference, hypothesis testing and confidence intervals.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-222/"
+  },
+  {
+    "code": "CENG 311",
+    "name": "Computer Architecture",
+    "description": "Basic computer organization concepts. Instruction set architecture. Assembly-level programming. Processor design. Pipelining. Data and control hazards. Memory hierarchy and cache. Parallelism and system performance.",
+    "prerequisites": "CENG 214",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-311/"
+  },
+  {
+    "code": "CENG 312",
+    "name": "Computer Networks",
+    "description": "Overview of computer networks; packet switching, Internet, layered architecture; network applications; web, email, domain name system; reliable data transfer, congestion and flow control, UDP, TCP; switching, forwarding, routing, IP; medium access control, local area networks, Ethernet. LECTURES 3 hours each week OBJECTIVE To equip students with fundamental knowledge of computer networks. 1. Understand the general structure of computer networks and the layered architecture. 2. Examine the operating principles of fundamental network protocols. 3. Analyze the algorithms used for routing, congestion control, flow control, medium access control. LEARNING OUTCOMES 1. Ability to analyze communication systems using fundamental concepts of communication. 2. Ability to analyze the layered network model and Internet protocols. 3. Ability to design networks and protocols. TEXTBOOK Computer Networki",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-312/"
+  },
+  {
+    "code": "CENG 315",
+    "name": "Information Management",
+    "description": "Introduction to Database Management Systems, Architecture of Database Management Systems, Relational Model, Relational Database Design, Relational Algebra, SQL (DML), SQL (DDL), Normalization, Consistency and Security, Query Optimization, Concurrency, Term Projects",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-315/"
+  },
+  {
+    "code": "CENG 316",
+    "name": "Software Engineering",
+    "description": "Reference Standards – Software Design: IEEE STD 1016 – Systems Design—Software Design Descriptions – Software Test: IEEE STD 29119 – Software and Systems Engineering — Software Testing",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-316/"
+  },
+  {
+    "code": "CENG 318",
+    "name": "Human Computer Interaction",
+    "description": "A review of HCI concepts and history, input devices and interaction techniques, information appliances, user interface design paradigms, 3D user interfaces, adaptive interfaces, user modeling, speech recognition and conversational interfaces, wearable computers, multimodal interfaces, and perceptual interfaces.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-318/"
+  },
+  {
+    "code": "CENG 322",
+    "name": "Operating Systems",
+    "description": "The course provides the main operating system functionalities and implementation details. It covers basic operating systems concepts, introduces process concepts and process management policies, discusses main memory and virtual memory techniques, and storage and I/O management issues.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-322/"
+  },
+  {
+    "code": "CENG 323",
+    "name": "Project Management",
+    "description": "Reference book(s): IEEE Std 830-1998, IEEE Recommended Practice for Software Requirement Specifications IEEE 16326- Systems and Software Engineering – Lifecycle Processes- Project Management IEEE Std 1058- Standard for Software Project Management Plans",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-323/"
+  },
+  {
+    "code": "CENG 370",
+    "name": "Mainframe Computing",
+    "description": "Mainframe Computers, Hercules mainframe emulator, VM/SP Operating System, GCS/RSCS, Rexx and COBOL Programming",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-370/"
+  },
+  {
+    "code": "CENG 381",
+    "name": "Stochastic Processes",
+    "description": "A brief review of the concepts of probability, random variables, and parameters; probability distributions; moments; inequalities related to probabilities; the central limit theorem; stochastic processes; the Poisson process; birth-death processes; Markov chains; an introduction to queueing theory and its fundamental concepts; Little’s Law; and M/M/1 queueing systems.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-381/"
+  },
+  {
+    "code": "CENG 382",
+    "name": "Information Theory",
+    "description": "An introduction to Shannon’s information theory and elementary binary coding schemes with and without noise. The concept of information, entropy, simple sources, Markov sources, continuous sources, information channels, average error, ambiguity, transformation, capacity, noiseless coding, Kraft-McMillan theorem, Shannon-Fano and Huffmann coding schemes, error-correcting codes, linear codes, cyclic codes. Data Compression.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-382/"
+  },
+  {
+    "code": "CENG 383",
+    "name": "Real-Time Systems",
+    "description": "Specification and verification techniques for real-time systems with many interacting components. formal design of real-time systems using (a) programming languages with unambiguous semantics of time – related behavior and (b) scheduling algorithms. Real-time operating systems, concepts of programming languages for real-time systems. Synchronous programming languages for reactive systems and their mathematical background. Software development for real-time systems.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-383/"
+  },
+  {
+    "code": "CENG 384",
+    "name": "Microprocessors",
+    "description": "8051 hardware and software. 8051 assembly language. 8051 architecture. 8051 I/O port programming, timer programming, serial port programming, interrupt control.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-384/"
+  },
+  {
+    "code": "CENG 385",
+    "name": "Mathematical Logic",
+    "description": "Using propositional, predicate and temporal logics, in order to logically analyse, specify and solve complex problems. Course Contents 1.Specify in mathematical logics sentences given in natural languages 2.Infer mathematical conclusions from specifications given in mathematical logics 3.Specify mathematically uncertainty, multi-valence interpretation and temporal change of complex problems 4.Solve sample complex problems using automated reasoning applications",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-385/"
+  },
+  {
+    "code": "CENG 386",
+    "name": "Fuzzy Logic Systems",
+    "description": "Analyse the mathematical basics of fuzzy logics; analyse properties of theoretical fuzzy logical systems; model flexible human logics using fuzzy systems; develop applications of sample fuzzy systems.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-386/"
+  },
+  {
+    "code": "CENG 388",
+    "name": "Web Programming",
+    "description": "Web and .NET framework, software development with ASP.NET, web services programming, MVC programming.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-388/"
+  },
+  {
+    "code": "CENG 389",
+    "name": "Mobile Application Development",
+    "description": "This course covers the fundamentals of programming mobile devices, how to access and use mobile device hardware, and the interaction between mobile apps and web services. Topics include the design and implementation of user interfaces on the Android platform, cross-platform mobile application development, and programming with sensor such as the camera and the GPS.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-389/"
+  },
+  {
+    "code": "CENG 390",
+    "name": "Cloud Computing",
+    "description": "This course provides a hands-on comprehensive study of Cloud concepts, the history and fundamentals of cloud computing across various cloud service models including IaaS, SaaS, PaaS, including requirements, constraints, architecture, principals, areas of implementation, advantages/disadvantages and comparison to hybrid and local architectures. PaaS topics covers a range of Cloud platforms such as Google App Engine, Amazon Web Services(AWS), Microsoft Azure and others. Topics include the design, development and implementation of cloud based mobile applications, web applications, databases and systems as well as migrating existing software applications to the cloud, working on hybrid solutions. Course offers wide range of case studies of globally recognized technology startups, products and brands which are built on cloud platforms and analyze and review them in terms of technology, operat",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-390/"
+  },
+  {
+    "code": "CENG 391",
+    "name": "Introduction to Image Understanding",
+    "description": "This course covers the basic image processing techniques and approaches for image content analysis.. The course content includes memory representation of images, basic image processing techniques, keypoint extraction and description, image matching and fundamentals of camera geometry.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-391/"
+  },
+  {
+    "code": "CENG 399",
+    "name": "Concepts of Artificial Intelligence",
+    "description": "This course is a service course offered by the Department of Computer Engineering at İzmir Institute of Technology for students from different disciplines. It is designed as an application-oriented introductory course that aims to introduce artificial intelligence through its basic concepts, methods, and application areas rather than through technical details. The course content begins with the basic concepts of artificial intelligence and machine learning, and continues with data representation, data preprocessing, visualization, classification, regression, clustering, and model validation. In the following weeks, artificial neural networks, an introduction to deep learning, generative artificial intelligence, large language models, discipline-specific applications, case studies, and responsible AI are covered. Practical exercises will make use of tools such as Python, Jupyter Notebook,",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-399/"
+  },
+  {
+    "code": "CENG 400",
+    "name": "Summer Practice",
+    "description": "Reference Department of Computer Engineering Internship Directive",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-400/"
+  },
+  {
+    "code": "CENG 411",
+    "name": "Professional Issues in Computer Engineering",
+    "description": "Study of the larger ethical and social issues of computing, including the role of a digital society in the modern world. Practical and theoretical applications of computer privacy and security, including network security measures and encryption protocols. Ethical theory and its application to problems in computing. Seminar discussion on valuesystems, social impact, and human factors, and about use and misuse of computers.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-411/"
+  },
+  {
+    "code": "CENG 415",
+    "name": "Senior Design Project & Seminar I",
+    "description": "Writing technical reports, project management and planning, system analysis, requirement analysis, engineering ethics, data design, software design, presenting a project",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-415/"
+  },
+  {
+    "code": "CENG 416",
+    "name": "Senior Design Project & Seminar II",
+    "description": "Invited speakers, change management, coding documentation, coding standards, testing, reliability, security, protyping, user manuals, group demos.",
+    "prerequisites": "CENG 415",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-416/"
+  },
+  {
+    "code": "CENG 418",
+    "name": "Information Security",
+    "description": "Information Security is a comprehensive study of the principles and practices of computer system security including operating system security, network security, software security and web security. Topics include common attacking techniques such as virus, trojan, worms and memory exploits; the formalisms of information security such as the access control and information flow theory; the common security policies such as BLP and Biba model; the basic cryptography, RSA, cryptographic hash function, and password system; network intrusion detection; software security theory; web security; legal and ethical issues in computer security.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-418/"
+  },
+  {
+    "code": "CENG 421",
+    "name": "Network Programming",
+    "description": "This course covers all aspects of TCP/IP and network programming. Starting with a review of IP and TCP, including its services and Ipv6, we will then learn about socket programming, web programming (PHP and MySQL), and time permitting, we will be exploring new trends in networking and programming.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-421/"
+  },
+  {
+    "code": "CENG 422",
+    "name": "Network Design & Management",
+    "description": "LAN/WAN analysis and design; LAN standards, internetworking, recent technologies, LAN design procedures; WAN design, network services, WAN design procedures; LAN management, SNMP (simple network management protocol); design tools, network simulators.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-422/"
+  },
+  {
+    "code": "CENG 424",
+    "name": "Embedded Computer Systems",
+    "description": "Nature of embedded systems, particular problems, special issues; role in computer engineering; embedded microcontrollers, embedded software; real time systems, problems of timing and scheduling; testing and performance issues, reliability; low power computing, energy sources, leakage; design methodologies, software tool support for development of such systems; problems of maintenance and upgrade; networked embedded systems; FPGA design issues.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-424/"
+  },
+  {
+    "code": "CENG 431",
+    "name": "Building Software Systems",
+    "description": "Object oriented analysis and design. UML usage. Advanced topics of object oriented programming. Software reuse, refactoring, unit testing. Fundamental design patterns. Software components, libraries and framework usage and ve creation.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-431/"
+  },
+  {
+    "code": "CENG 432",
+    "name": "Fundamentals of Enterprise Application Development",
+    "description": "Course Objectives: The objective of this course is to explain the Enterprise Applications, their usage areas and development methods. Students will be familiar with different types of Enterprise Applications, especially Enterprise Resource Planning (ERP) systems and its modules via SAP, which is one of the most common commercial ERP package programs. They will also learn basics of SAP ABAP, the popular enterprise programming language. WEEK COURSE OUTLINE CONTENT 1 Introduction to Enterprise Applications Introduction to Enterprise Application Development 2 Enterprise Applications Evolution, Integration & Implementation Methodologies Enterprise Applications Evolution – MRP & ERP 3 Enterprise Applications Evolution – HRM & SCM & CRM & PLM 4 Enterprise Applications Structure and Integration Methodologies 5 Enterprise Application Projects Implementation Methodologies 6 SAP S/4 Hana Introducti",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-432/"
+  },
+  {
+    "code": "CENG 433",
+    "name": "Scalable Software Development for Internet",
+    "description": "Logical / physical arhitecture design and server components, performance measurement, advanced caching strategies, horizontal scaling with MySQL and handling peak load.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-433/"
+  },
+  {
+    "code": "CENG 434",
+    "name": "Enterprise Application Integration",
+    "description": "This course topics include types of enterprise application integration, their design and implementation issues as well as their qualites such as security, reliability and fault tolerance.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-434/"
+  },
+  {
+    "code": "CENG 435",
+    "name": "Database System Design and Implementation",
+    "description": "Revisiting database systems, data definition, relational algebra, disk management, file management, memory management, transaction management, record management, metadata management, query processing, parsing, planning, database server, indexing, query optimization",
+    "prerequisites": "CENG 315",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-435/"
+  },
+  {
+    "code": "CENG 436",
+    "name": "Distributed Information Management",
+    "description": "This course investigates principles of distributed database systems including design and architecture, security, integrity, query processing and optimization, transaction management, concurrency control, and fault tolerance. The course blends theory with practice in that each student will use distributed database concepts to develop a JDBC application and to implement a JDBC driver onto Web-based distributed databases.",
+    "prerequisites": "CENG 315",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-436/"
+  },
+  {
+    "code": "CENG 437",
+    "name": "Software Quality Management",
+    "description": "This course covers the topics of software quality management, quality management paradigms (CMMI, ISO, IEEE), methods used in quality management, enhancement of quality process, management of quality cost, error, preventive error avoidance.",
+    "prerequisites": "CENG 316",
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-437/"
+  },
+  {
+    "code": "CENG 441",
+    "name": "Introduction to Parallel Programming",
+    "description": "Introduction to the programming techniques to effectively utilize modern multicore computers. Identifying the parallelism, naming shared data, synchronizing threads, the latency and bandwidth associated with communication, analyzing & improving parallel performance, parallel programming tools, miscallenous lab works & exercises.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-441/"
+  },
+  {
+    "code": "CENG 442",
+    "name": "Multicore Architectures and Operating Systems",
+    "description": "An evolutionary approach to the multicore architectures, integration of multicore architectures with operating systems, OS kernel design for multiprocessors and multithreding, OS support for threads, User level threads, Kernel level threads, An example: Solaris threads, Threads and libraries, Hardware support for multithreading in a uniprocessor and in a multiprocessor.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-442/"
+  },
+  {
+    "code": "CENG 443",
+    "name": "Heterogenous Parallel Programming",
+    "description": "The course provides GPU-based heterogeneous programming basics. It covers the basic concepts of parallel architectures and parallel programming, CUDA programming model topics, and practical examples by presenting the fundamentals of accelerated computing with CUDA.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-443/"
+  },
+  {
+    "code": "CENG 444",
+    "name": "Parallel Programming Patterns",
+    "description": "The course presents basic parallel algorithm design skills and parallel programming patterns. It covers the basic concepts of parallel architectures and parallel programming, OpenMP programming model topics, and control and data patterns by presenting the fundamentals of parallel software development.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-444/"
+  },
+  {
+    "code": "CENG 451",
+    "name": "Advanced Digital System Design",
+    "description": "Finite state machine design and analysis; high-level hardware description languages, VHDL, automated synthesis in design; digital integrated circuit design and advanced design principles; electrical properties of digital circuits, synchronous and asynchronous circuits, computer arithmetic, and interfacing to external circuitry, digital system testing and design for testability; implementation of embedded computing systems in terms of Application Specific Integrated Circuits; Design for reuse.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-451/"
+  },
+  {
+    "code": "CENG 452",
+    "name": "Building Software for Embedded Systems",
+    "description": "Design and implementation of software for programmable embedded systems; software tools such as compilers, schedulers, code generators, and system-level design tools; data-flow and control models of computation and software synthesis for uniprocessor and multiprocessor architectures; synchronous/reactive languages and their mathematical properties; implementation of signal processing, communication and control algorithms using variety of technologies such as digital signal processors, microcontrollers, FPGAs, ASICs and real-time operating systems; real-time kernel design; software implemented fault-tolerance techniques.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-452/"
+  },
+  {
+    "code": "CENG 461",
+    "name": "Artificial Intelligence",
+    "description": "Declarative programming; problem solving; knowledge representation; reasoning; acting logically; uncertainty; learning; communicating.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-461/"
+  },
+  {
+    "code": "CENG 462",
+    "name": "Soft Computing",
+    "description": "This course introduces students to the many concepts and techniques in Artificial Intelligence (AI). Topics covered include: problem spaces and search, heuristic search techniques, predicate logic, game playing techniques, planning, learning, natural language processing, and machine perception",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-462/"
+  },
+  {
+    "code": "CENG 463",
+    "name": "Introduction to Machine Learning",
+    "description": "An introduction to the machine learning with examples in different application areas. Bayesian decision theory. Supervised learning techniques. Model selection. Dimensionality reduction. Clustering. Support vector machines. Graphical models. Introduction to neural networks. Reinforcement learning.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-463/"
+  },
+  {
+    "code": "CENG 464",
+    "name": "Text Mining",
+    "description": "In this course, we will cover important topics in text mining including: basic natural language processing techniques, document representation, text categorization and clustering, document summarization, sentiment analysis, social network and social media analysis, probabilistic topic models and text visualization.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-464/"
+  },
+  {
+    "code": "CENG 465",
+    "name": "Principles of Data-Intensive Systems",
+    "description": "In this course, students will gain knowledge in the following areas: Data models and query languages; storage and retrieval; replication and partitioning in distributed data; transactions; challenges of distributed systems, consistency, and consensus in distributed systems; batch and stream processing. Objectives of the Course The main aim of this course is to familiarize students with the fundamental concepts underlying a broad range of data-intensive systems. Students will learn to compare different approaches, techniques, and tools for storing and processing data, evaluate their strengths and weaknesses, and determine the most appropriate solutions for various application needs.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-465/"
+  },
+  {
+    "code": "CENG 467",
+    "name": "NATURAL LANGUAGE UNDERSTANDING AND GENERATION",
+    "description": "This course focuses on deep learning methods for natural language understanding and generation. It covers tokenization and pre-training for language models, the transformer architecture, machine translation, parsing, summarisation, question answering, instruction fine tuning, ethics in NLP, in context learning and retrieval-augmented generation. The main objective of the course is to provide students with a basic knowledge of natural language processing, machine learning and programming with a more advanced knowledge of existing deep learning techniques for natural language understanding and generation. The target audience is senior undergraduate students. The course covers the foundations for the deep learning for natural language processing graduate course. The Natural Language Understanding and Generation course contributes to students’ ability to conduct research and develop products",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-467/"
+  },
+  {
+    "code": "CENG 471",
+    "name": "Cryptography",
+    "description": "Basic terminology, history & background, Symmetrical cryptosystems, DES-AES, DES-AES likes, Asymmetrical cryptosystems, primality, hashing, factorization based (RSA)- ECC-Lattice cryptosystems, cryptographic protocols & applications, secrecy, authentication, integrity-authenticity, digital signatures, standards.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-471/"
+  },
+  {
+    "code": "CENG 472",
+    "name": "Network Security",
+    "description": "Link Encryption, End-to-End Encryption, Network and Internet Based Attacks, Firewalls, Email Security Issues, Web Based Security Issues, Disaster Recovery, C2 Functionality Stand-alone vs Network Operation, Hackers and Crackers, Network Crackings.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-472/"
+  },
+  {
+    "code": "CENG 473",
+    "name": "Security of Information and Communication Technologies",
+    "description": "Introduction to security of information and communication technologies, fundamental security functions and related cryptographic tools, network security and related problems, protection mechanisms and tool will be evaluated. Then current hot topic security problems will be analyzed for “cloud computing”, “web applications and services”, “wireless networks”, etc. and at last security management of information systems will be discussed. Students will have a term project for the course about an up-to-date problem of these topics, which they are interested in and will prepare a written report about it then, present their work.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-473/"
+  },
+  {
+    "code": "CENG 481",
+    "name": "Theoretical Approaches in Computer Science",
+    "description": "Turning theoretical ideas into solution sets in computer science. Integration of mathematical approaches with general problem solving techniques and computer science applications. Topics will be from Algorithms, Complexity Theory, Game Theory, Probability Theory, Graph Theory, Automata Theory, Algebra, and Cryptography.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-481/"
+  },
+  {
+    "code": "CENG 482",
+    "name": "Evolutionary Computation",
+    "description": "Evolutionary computation methods, discrete and continuous optimization problems, software libraries for evolutionary computation, Genetic Algorithms, Genetic Programming, Evolution Strategies, Differential Evolution, Particle Swarm Optimization, Multi-objective optimization.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-482/"
+  },
+  {
+    "code": "CENG 483",
+    "name": "Behavioural Robotics",
+    "description": "Approach robotics mainly software- and application-oriented; inspect mechatronic parts and hardware architectures of robots; analyse software components and software architectures; analyse software architectures and their properties that might provide smart behaviours; analyse hardware and software requirements for collaborative robots; develop collaborative and smart appearing robot applications.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-483/"
+  },
+  {
+    "code": "CENG 484",
+    "name": "Data Mining",
+    "description": "Knowledge discovery overview, data mining in general, data preparation, basics of data mining, association rule mining, classification and prediction, cluster analysis, web mining, data mining applications, term projects.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-484/"
+  },
+  {
+    "code": "CENG 485",
+    "name": "Information Technology Entrepreneurship",
+    "description": "In addition to an introductory treatment of business fundamentals in information technology, course topics will include paradigms, strategies and methods in goal setting, team formation, intellectual property, customer projects and business management for information technologies.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-485/"
+  },
+  {
+    "code": "CENG 486",
+    "name": "Entrepreneurship for Smart Business",
+    "description": "Components of smart business and its ecosystem. Automation of business processes. Business models for Smart Business and their implementation.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-486/"
+  },
+  {
+    "code": "CENG 487",
+    "name": "Introduction to Computer Graphics",
+    "description": "This course covers rendering techniques and programming interfaces for Computer Graphics. The course topics include basic mathematical concepts in Computer Graphics (two and three dimensional transformations), lighting models, methods for basic scene modeling and visibility analysis. Application of these Computer Graphics techniques on modern hardware using OpenGL is also covered.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-487/"
+  },
+  {
+    "code": "CENG 488",
+    "name": "Computer Graphics",
+    "description": "This course covers advanced rendering techniques for Computer Graphics. The course topics include advanced lighting models, acceleration and volume rendering techniques. Acceleration of these Computer Graphics techniques on modern hardware is also covered. Course Objective The main aim of the course is to familiarize the students with advanced techniques in Computer Graphics topics such as modeling, rendering, texturing, and lighting. The students will also gain practice in applying their knowledge.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-488/"
+  },
+  {
+    "code": "CENG 491",
+    "name": "Field Course",
+    "description": "Requirements for a Field Course to Be Considered as a Technical Elective Course Students may complete an educational program and achieve their certificate as a supporting field course, provided the following conditions are met: Regulation defining this course is defined here. One of the technical elective courses not offered in our department can be taken as a supporting field course. You must obtain a certificate of completion for the course before enrolling in CENG491. The course must include a minimum of 30 contact hours. The course must include at least one exam and/or project. The results of the exam(s) and/or project(s) must be shared with the course instructors when the relevant assignments are announced. Please ensure that these requirements are met for your course to be accepted as a technical elective.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-491/"
+  },
+  {
+    "code": "CENG 499",
+    "name": "Cooperative Education (COOP)",
+    "description": "The CENG499 Cooperative Education (COOP) course aims to provide students with hands-on experience in real working environments through part-time positions in collaboration with the industry. As part of this course, students work part-time at partner companies for 13 weeks, one or two full days per week. To be eligible, students must be in their senior year, have a minimum cumulative GPA of 3.00, and successfully complete all courses from the first four semesters. CENG499 is a 3-credit (0+6) technical elective course. Through this course, students are expected to: · reinforce their theoretical knowledge through industrial applications, · develop project management, reporting, and communication skills in professional environments, · identify their career goals and establish strong connections with the industry. All work conducted during the course is evaluated based on the reports. Insuran",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-499/"
+  },
+  {
+    "code": "CENG 500",
+    "name": "MSc Thesis",
+    "description": "Program of research leading to MSc degree, arranged between a student and the faculty member. Students register to this course in all semesters starting from the beginning of their second semester while the research program or write-up of the thesis is in progress.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-500/"
+  },
+  {
+    "code": "CENG 501",
+    "name": "Introduction to Statistical Data Processing",
+    "description": "Organization and application of computers and statistical techniques to data processing. Data handling in terms of coding, preparation, acquisition (with and without computers), screening and reduction; summarization, tabulation and analysis; random variables, statistical estimation and hypothesis testing, enumerated data analysis, linear models (regression, correlation, analysis of variance).",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-501/"
+  },
+  {
+    "code": "CENG 502",
+    "name": "System Modeling and Computer Simulation",
+    "description": "Introduction, System concept, System modeling, Monte Carlo technique, definition and selection of system input variables, generation and examination of random numbers, generation of random variables, Discrete System simulation, Discrete System Simulation Software. Course Objective Introduction to system and model concepts. To provide information about the theoretical foundations of simulation studies. To realize an actual system simulation study.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-502/"
+  },
+  {
+    "code": "CENG 503",
+    "name": "Computer Applications in Medicine and Biology",
+    "description": "Computer applications in medicine and biology, medical imaging technics, disease diagnosis with medical image processing, hospital information systems, patient tracking systems, mathematical modelling of medical information, networking in medical information systems.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-503/"
+  },
+  {
+    "code": "CENG 504",
+    "name": "Optimization Methods",
+    "description": "Unconstrained optimization; one-dimensional search, gradient search methods. Constrained optimization; linear and integer programming. Heuristics. Non-derivative methods (metaheuristics); simulated annealing, genetic algorithms, neural networks. Class Hours 3 lecture hours Prerequisite: Knowledge of calculus and elementary programming. OBJECTIVE To provide the fundamental concepts and mathematical tools in optimization theory. LEARNING OUTCOMES Ability to formulate and solve engineering problems Ability to classify various optimization methods Ability to propose an optimization technique for a specific problem Ability to use optimization tools TEXTBOOK Chong, E. K. P., and Zak, S. H., An Introduction to Optimization, Fourth Edition, John Wiley & Sons, 2013. Week Topic 1 Introduction to optimization Math. Review 2 Vector spaces and matrices, linear transformations, orthogonal projections ",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-504/"
+  },
+  {
+    "code": "CENG 505",
+    "name": "Advanced Computer Networks",
+    "description": "Discussing the protocols, algorithms and other software that are essential to design advanced network services. Studying new research topics by focusing on the latest services and protocols.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-505/"
+  },
+  {
+    "code": "CENG 506",
+    "name": "Deep Learning",
+    "description": "This course covers methods for designing and training deep neural networks. The course content includes the historical evolution of deep neural networks, their fundamental working principles and image classification and object detection and recognition in images using convolutional neural networks.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-506/"
+  },
+  {
+    "code": "CENG 507",
+    "name": "Introduction to Biometric Recognition",
+    "description": "This course covers biometric recognition and identification methods and systems. The course content includes the historical evolution of biometric recognition, the fundamental principles of biometric recognition systems and basic face and fingerprint recognition algorithms.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-507/"
+  },
+  {
+    "code": "CENG 508",
+    "name": "Digital Image Processing",
+    "description": "This course offers an analytical exploration of how digital images are acquired, manipulated, and interpreted by computational systems. Starting with the mathematical foundations of image representation and enhancement, the curriculum guides students through the transformation of raw pixels into structured information. By covering essential techniques, from spatial filtering and feature detection to modern deep learning-based classification, this course provides the theoretical and practical framework necessary to solve complex visual problems in engineering and research.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-508/"
+  },
+  {
+    "code": "CENG 509",
+    "name": "Vision Based Tracking and Modeling",
+    "description": "This course covers the tracking of object and camera positions from images and videos by using computer vision techniques. Course contents include the mathematical theory and the algorithms used in practice necessary for modeling the objects and scene to be tracked.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-509/"
+  },
+  {
+    "code": "CENG 511",
+    "name": "Advanced Information Theory",
+    "description": "This course will begin by explaining the methods of types. It will then address the rate distortion theory. It will also cover multiple-users channels and channels with random parameters. Finally, correlated source encoding will be provided.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-511/"
+  },
+  {
+    "code": "CENG 512",
+    "name": "Advanced Theory of Computation",
+    "description": "This course will begin by explaining the different models of computation. It will then address the Church-Turing thesis. The course will also cover the topics of decidability and reducibility. Finally, detailed information is provided about complexity and related concepts.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-512/"
+  },
+  {
+    "code": "CENG 513",
+    "name": "Compiler Design and Construction",
+    "description": "This graduate-level course provides theoretical and practical concepts of compiler design. It will cover the front-end, including scanners and parsers, middle-end optimizations, and back-end with instruction selection, register allocation, and instruction scheduling techniques. We will have practical examples based on the LLVM framework.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-513/"
+  },
+  {
+    "code": "CENG 514",
+    "name": "Computational Number Theory",
+    "description": "The course Schedule includes the mathematical theories, and tools which are important for the cryptography such as the divisibility, prime numbers, congruencies, arithmetic with large integers, polynomial arithmetic, random numbers etc.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-514/"
+  },
+  {
+    "code": "CENG 515",
+    "name": "Topics in Computer Science",
+    "description": "In this course the recent popular subjects and new technologies are discussed. The inspiring innovations in different fields in computational sciences are examined. New ideas are discussed and open subjects in hot topics are clarified.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-515/"
+  },
+  {
+    "code": "CENG 516",
+    "name": "Advanced Programming Languages",
+    "description": "Functional and logic programming, concepts of programming language design, and formal reasoning about programs and programming languages.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-516/"
+  },
+  {
+    "code": "CENG 517",
+    "name": "Classics Works in Computer Science",
+    "description": "Gödel’s undecidability theorem, computability, game theory ideas, information theory basics, graphs, networks, new directions in cryptography, the Antikythera mechanism, declarative programming, relational database model, machines and intelligence, computational complexity.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-517/"
+  },
+  {
+    "code": "CENG 518",
+    "name": "Introduction to Research Methodology and Ethics",
+    "description": "Empirical computer science. Basic research methodology. Research and experimental questions. Experimental evaluation. Ethics in research. Study of the larger ethical and social issues of computing, including the role of a digital society in the modern world.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-518/"
+  },
+  {
+    "code": "CENG 521",
+    "name": "Advanced Operating Systems",
+    "description": "Students will study advanced operating system topics and be exposed to recent developments in operating systems research. This course involves readings and lectures on classic and recent papers. Topics: virtual memory management, synchronization and communication, file systems, protection and security, operating system structure and extension techniques, fault tolerance, and history and experience of systems programming.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-521/"
+  },
+  {
+    "code": "CENG 522",
+    "name": "Advanced Embedded System Design",
+    "description": "Nature of embedded systems, their role in computer engineering; special and general purpose microprocessor design, embedded microcontrollers, embedded software; real time systems, problems of timing and scheduling; testing and performance issues, reliability; design methodologies, software tool support for development of such systems; problems of maintenance and upgrade; introduction to Application Specific Integrated Circuit (ASIC) Design, VHDL",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-522/"
+  },
+  {
+    "code": "CENG 523",
+    "name": "Advanced Topics of Real Time Systems",
+    "description": "Real-Time software design issues, real-time operating systems, real-time scheduling algorithms, formal methods in software specification, modeling and verification using timed-automata, software design, programming languages, testing, performance analysis and optimization, documentation, software re-use, fault-tolerance.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-523/"
+  },
+  {
+    "code": "CENG 524",
+    "name": "Advanced Computer Architecture",
+    "description": "Basic principles of processor design, instruction set architecture, pipelining, design of advanced memory hierarchies, multithreading, task-level and instruction-level parallelism, inter-processor communication models, multiprocessors, future trends.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-524/"
+  },
+  {
+    "code": "CENG 525",
+    "name": "Fault Tolerant Computing",
+    "description": "Fault modeling, testing and redundancy techniques to achieve fault tolerance in computer systems, error detection, failure recovery, error coverage, current research in the field.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-525/"
+  },
+  {
+    "code": "CENG 531",
+    "name": "Advanced Artificial Intelligence",
+    "description": "Approaches to AI; higherorder logic; planning; expert systems; environment of AI systems; soft computing in AI systems; nonsymbolic learning; natural language processing; intelligent agent; multiagent system; semantic web; robotics.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-531/"
+  },
+  {
+    "code": "CENG 532",
+    "name": "Expert Systems and Knowledge Engineering",
+    "description": "Analyse concepts that facilitate modelling knowledge, like propositional logic, predicate logic, uncertainty and fuzzy logic, analyse concepts that enable the development of purpose-oriented architectures, like knowledge representation, corpus, language processing and production systems, and analyse advanced systems that involve expert systems, like ontologies & intelligent agents, decision support systems and behavioural robotics.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-532/"
+  },
+  {
+    "code": "CENG 533",
+    "name": "Probabilistic Reasoning",
+    "description": "Graphical Probability Models. Bayesian Reasoning. Bayesian Networks. Learning in Bayesian Networks. Knowledge Engineering. Temporal Models. Inference in Dynamic Bayesian Networks. Markov Decision Processes.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-533/"
+  },
+  {
+    "code": "CENG 534",
+    "name": "Deep Learning for Natural Language Processing",
+    "description": "Natural language processing (NLP) is one of the most important technologies of theinformation age. In traditionalNLP, task-specific feature engineering and language-specific solutions were common. Recently, deep learning approaches have obtained very high performance across many different NLP tasks, and multilingual solutions have been introduced. This course covers cutting-edge research in deep learning applied to NLP. Topics include word vector representations, window-based neural networks, recurrent neural networks, long-short-term-memory models, recursive neural networks, convolutional neural networks as well as some very novel models involving a memory component. A term project to implement, train, test, and visualize a custom neural network solution to a large scale NLP problem will be given.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-534/"
+  },
+  {
+    "code": "CENG 541",
+    "name": "Advanced Database Management Systems",
+    "description": "Relational theory and extensions, such as relational calculus, relational algebra, higher order normal forms; advanced DBMS concepts, such as integrity, recovery, concurrency, security, query optimisation; object-oriented databases; distributed databases, related techniques and protocols, such as data replication, data fragmentation, synchronisation, load balancing; parallel databases; deductive databases; federated databases and homogeneity/heterogeneity.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-541/"
+  },
+  {
+    "code": "CENG 542",
+    "name": "Knowledge Discovery",
+    "description": "Knowledge discovery and data mining, data warehousing, data preparation and data mining primitives, concept description, mining association rules in large databases, classification and prediction, cluster analysis, web mining, applications in data mining.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-542/"
+  },
+  {
+    "code": "CENG 543",
+    "name": "Information Retrieval Systems",
+    "description": "This course covers the components of information retrieval systems that are used to search within document collections that contain unstructured data. Information retrieval from text documents as well as documents containing rich media (such as images and video) is included in the course contents.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-543/"
+  },
+  {
+    "code": "CENG 544",
+    "name": "Large-Scale Data Management",
+    "description": "This course introduces the fundamental concepts and computational paradigms of large-scale data management. This includes major methods for storing, updating and querying large datasets as well as for data-intensive computing. The course covers concepts, algorithms, and system issues on the topics of parallel and distributed databases, peer-to-peer data management, MapReduce and its ecosystem, Spark and dataflows, datalakes and NoSQL databases.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-544/"
+  },
+  {
+    "code": "CENG 551",
+    "name": "Advanced Software Engineering",
+    "description": "This course will begin by explaining the concept of software engineering. Afterwards, the software development process is described. The course will then cover software requirements, software specification, software analysis, and formal analysis. Finally, quality management, product metrics, process metrics, COTS, and software psychology are addressed.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-551/"
+  },
+  {
+    "code": "CENG 552",
+    "name": "Software Testing",
+    "description": "Techniques, methods, and tools which help in the systematic and effective testing of software systems.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-552/"
+  },
+  {
+    "code": "CENG 555",
+    "name": "Analysis and Design of Microservice Based Systems",
+    "description": "This course arms students with the knowledge and expertise to “design” and “engineer” services using state of the art technology. Students will learn the Service Oriented Architecture (SOA) as a way to design an enterprise environment that features cross-platform compatibility, agility and cost-efficiency. In particular, microservice based architectures, reactive systems and event-oriented modelling will be taught and serverless computing will be introduced. Reference book(s): SOA: Principles of Service Design, Thomas Erl, 2008, Prentice Hall. Web Services: Concepts, Architectures and Applications, Alonso, Casati, Kuno, Machiraju, , Springer 2004 RESTful Web APIs, Richardson and Amundsen, O’Reilly, 2013 Web Service Implementation and Composition Techniques by H-Y Paik, A. Lemos, M. Barukh, B. Benatallah and A. Natarajan, Springer, late 2017. Building Microservices, Newman, Sam, 2015, O’R",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-555/"
+  },
+  {
+    "code": "CENG 556",
+    "name": "Software Management",
+    "description": "This course focuses on two advanced aspects of software management; organizational change and software measurement. Primary topics include software process improvement frameworks, agile maturity models, software process modeling languages, software measurement and social aspects of organizational change. Students participate in a modelling and organizational assessment project as well as gain hands on experience on measurement and prediction for software projects. Reference book(s): ISO 330XX Information technology — Process assessment, family of standards, 2015. Weinberg, G. M., Quality Software management, Volume 1, System Thinking, Dorset House, 1992. Argyris, C., Knowledge for action: A guide to overcoming barriers to organizational change. Jossey-Bass, 1993. Senge, P. M. The Fifth Discipline: The Art and Practice of the Learning Organization, 1990.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-556/"
+  },
+  {
+    "code": "CENG 557",
+    "name": "Advanced Software Design Patterns",
+    "description": "This course focuses on advanced software design patterns. Primary topics include advanced object-oriented programming principles, object-oriented design patterns, patterns of enterprise application architecture, enterprise integration patterns, and patterns related to domain-driven design. Students will learn concepts of modern software development with design patterns and participate in development of a mid-size programming project working in teams.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-557/"
+  },
+  {
+    "code": "CENG 561",
+    "name": "Advanced Information Security",
+    "description": "Concepts and applications of system and data security. Topics include risks and vulnerabilities, policy formation, controls and protection methods, database security, encryption, authentication technologies, host-based and network-based security issues, personnel and physical security issues, issues of law and privacy. Areas of particular focus include secure network design, implementation and transition issues, and techniques for responding to security breaches.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-561/"
+  },
+  {
+    "code": "CENG 562",
+    "name": "Internet Security",
+    "description": "Computer network security, encryption, access control, network package security, e-mail security, IP security, firewalls, intrusion detection systems.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-562/"
+  },
+  {
+    "code": "CENG 563",
+    "name": "Database and Software Security",
+    "description": "The methodologies in developing and maintaining secure software and secure databases as well as the techniques such as authentication, authorization, auditing, encryption, access control, safety, availability, reliability and durability.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-563/"
+  },
+  {
+    "code": "CENG 564",
+    "name": "Information Systems Policy, Management and Organization",
+    "description": "The policy based management for planning, developing, installing, operating, and maintaining information systems in organizations with focus on political, economic, technological, physical and organizational factors",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-564/"
+  },
+  {
+    "code": "CENG 565",
+    "name": "C4I and Information Warfare",
+    "description": "Concepts, Terminology, Command-Control-Communications-Computers and Intelligence (C4I ) Structure, Aims and Threats, Attacks and Defenses in Cyber Space, Economic – Psychological and Intelligence Warfare, Information Warfare Strategy, Intelligence and Counterintelligence in Cyber Space, Cyber Terrorism.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-565/"
+  },
+  {
+    "code": "CENG 566",
+    "name": "Privacy Enhancing Technologies",
+    "description": "Data privacy is an important issue for the scientific community and industry. This course will give an overview of privacy concepts and terminology as well as concrete examples of privacy-enhancing technologies (PET) and some of their applications.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-566/"
+  },
+  {
+    "code": "CENG 567",
+    "name": "Reinforcement Learning",
+    "description": "Course Information CENG 567 Reinforcement Learning Course Semester T+A Credits ECTS Credits 3+0 3 9 Course Language English Course Level Graduate Department/Program Computer Engineering Department/Computer Engineering MS Program Mode of delivery Face to face Course Type Compulsory [ ] / Technical Elective [ x ]",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-567/"
+  },
+  {
+    "code": "CENG 568",
+    "name": "Multiagent Systems",
+    "description": "Course Information CENG568 Multiagent Systems Course Semester T+A Credits ECTS Credits 3+0 3 9 Course Language English Course Level Graduate Department/Program Computer Engineering/Master of Science Mode of delivery Face to face Course Type Compulsory [ ] / Technical Elective [ X ]",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-568/"
+  },
+  {
+    "code": "CENG 590",
+    "name": "Seminar",
+    "description": "The course is composed of the research, analyze, data collecting and reporting the results of the master student relating to the specific subject the student aims to study.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-590/"
+  },
+  {
+    "code": "CENG 600",
+    "name": "PhD Thesis",
+    "description": "Program of research leading to PhD degree, arranged between a student and the faculty member. Students register to this course in all semesters starting from the beginning of their second semester while the research program or write-up of the thesis is in progress.",
+    "prerequisites": null,
+    "levels": [
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-600/"
+  },
+  {
+    "code": "CENG 608",
+    "name": "3D Photography",
+    "description": "This course covers algorithms and applications to extract 3D information (especially shape) from images. It starts with the camera model and calibration, 2D and 3D projective geometries and extracting feature points. Then it covers passive 3D reconstruction techniques such as single view reconstruction, structure from motion, shape from silhouettes. Active sensing techniques (time of flight cameras, structured light, laser scanners etc.) that directly obtain 3D data are also briefly covered.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-608/"
+  },
+  {
+    "code": "CENG 611",
+    "name": "Advanced Design and Analysis of Algorithms",
+    "description": "This course examines a variety of theoretical issues that have important practical consequences in the design and analysis of algorithms. We emphasize the importance of asymptotic analysis and the common methodology used in the analysis of sequential and parallel algorithms. We will analyze the factors that influence the performance of algorithms on different computer architectures (such that many cores and parallel computers and high performance computers) and their implications on scientific applications of interest. We will survey major design strategies used in the complexity analysis of different algorithms. New models for parallel computation will be studied and critically evaluated. The complexity and limitations of these models will be discussed.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-611/"
+  },
+  {
+    "code": "CENG 612",
+    "name": "Category Theory in Computer Science",
+    "description": "Under this course, the students will learn to use the category theory for the topics of computer science. Therefore the abstraction methodologies and concepts of Category Theory will be studied.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-612/"
+  },
+  {
+    "code": "CENG 613",
+    "name": "Research Methods in Computer Science",
+    "description": "What is experimental computer science; Computing science research methodology; Statistics of interest; Exploratory data analysis; Hypothesis testing; Sampling; Experiment design; Explaining performance; Parametric modeling, regression; Generalization.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-613/"
+  },
+  {
+    "code": "CENG 631",
+    "name": "Cognitive Computing",
+    "description": "Human brain; cognitive concepts, models and architectures; mathematical models for cognitive concepts; modelling evolution of mind; collaborative cognition; cognitive machines.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-631/"
+  },
+  {
+    "code": "CENG 632",
+    "name": "Computational Intelligence",
+    "description": "Perceptrons, multi-layer perceptrons, recurrent neural networks, genetic algorithms, differential evolution, particle swarm intelligence, ant colony optimization.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-632/"
+  },
+  {
+    "code": "CENG 641",
+    "name": "Data Integration",
+    "description": "This course will begin by explaining the different reasons that make data integration hard: systems, logical and social reasons. The course will then cover the fundamentals of data integration, such as languages for resolving heterogeneity, automatic schema mapping techniques, query processing in heterogeneous systems and novel architectures for data integration. Finally, the commercial state of the art in this area and data spaces will be discussed.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-641/"
+  },
+  {
+    "code": "CENG 642",
+    "name": "Privacy Preserving Data Mining",
+    "description": "Due to the combinatorial nature of the problem, the proposed methodologies span from simple, time and memory efficient heuristics and border-based approaches, to exact hiding algorithms that offer guarantees on the quality of the computed hiding solution at an increased, however, computational complexity cost.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-642/"
+  },
+  {
+    "code": "CENG 643",
+    "name": "Pattern Discovery in Data Mining",
+    "description": "This course introduces students to different aspects of pattern discovery (frequent pattern mining or pattern mining or association rule mining) which is the earliest and most popular task of data mining where the objective is to find hidden frequent patterns in massive data. Frequent patterns are important in many domains like market-basket analysis, software bug mining, web click analysis, phrase mining, image processing, recommender systems, etc. The course will cover the key aspects of the field in terms of algorithms, variations, scalability, data types and applications. The topics include frequent patterns, pattern usage in compression, patterns in dynamic data (streams, sequences and spatiotemporal objects), big data frequent pattern mining, frequent patterns in classification and clustering and privacy in pattern mining.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng643/"
+  },
+  {
+    "code": "CENG 651",
+    "name": "Formal Methods for Safety and Security",
+    "description": "This course presents how to incorporate formal methods within software engineering methodologies, especially for those applications which are critical for safety and security. The course introduces some specific formal notations, such as the CSP process algebra and Temporal Logics, as well as automatic tools for system modeling and verification. Finally, the course investigates the use of formal methods in the analysis of safety and security properties of systems.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-651/"
+  },
+  {
+    "code": "CENG 661",
+    "name": "Advanced Asymmetrical Cryptosystems",
+    "description": "This course follows on from the introductory cryptography course. In that course cryptographic algorithms were introduced according to the properties they possessed and how they might fit into larger security architecture. In this unit, the most popular and widely deployed algorithms are studied and highlighted design and cryptanalytic trends over the past twenty years. This course is, by necessity, somewhat mathematical and some basic mathematical techniques will be used. However, despite this reliance on mathematical techniques, the emphasis of the module is on understanding the more practical aspects of the performance and security of some of the most widely used cryptographic algorithms",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-661/"
+  },
+  {
+    "code": "CENG 662",
+    "name": "Advanced Symmetrical Cryptosystems",
+    "description": "The students should be know the analysis of the security level of these cryptosystem and which cryptanalytic attacks are how much efficient on it.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-662/"
+  },
+  {
+    "code": "CENG 663",
+    "name": "Cryptanalysis",
+    "description": "The aim of this course is to prepare the students for the design and analysis of any cryptosystem. Therefore the students should be know the analysis of the security level of the cryptosystem and which cryptanalytic attacks are how much efficient on it.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-663/"
+  },
+  {
+    "code": "CENG 690",
+    "name": "Advanced Seminar",
+    "description": "The course is composed of the research, analyze, data collecting and reporting the results of the master student relating to the specific subject the student aims to study.",
+    "prerequisites": null,
+    "levels": [
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-690/"
+  },
+  {
+    "code": "SEDS 481",
+    "name": "Software Engineering and Data Science Primer I",
+    "description": "Basic computer knowledge, history of computing, terms and definitions, system components and processes, computer architecture, data storage, computer networks and internet, software engineering, software engineering practices, unified modelling language, unit testing, problem solving and algorithm design, data structures, application fields of computers.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-481/"
+  },
+  {
+    "code": "SEDS 482",
+    "name": "Software Engineering and Data Science Primer II",
+    "description": "An introduction to the basic concepts of data science. Data science consists of machine learning algorithms and mathematical models (Supervised vs. unsupervised learning, decision tree pruning, training and testing datasets), big data tools to convert unstructured data into a structured form, and business intelligence to support decision-making.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-482/"
+  },
+  {
+    "code": "SEDS 500",
+    "name": "Graduation Project",
+    "description": "Conduct and present (written and orally) an independent research investigation theoretically and/or experimentally during a semester under the guidance of a supervisor. Reference book(s): Reference books and articles containing information related to the subject being studied.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-500/"
+  },
+  {
+    "code": "SEDS 501",
+    "name": "Introduction to Data Science",
+    "description": "This course covers the necessary background for data collection and integration, exploratory data analysis, predictive modeling, descriptive modeling, data product creation, evaluation, and effective communication. Reference book(s): • Christopher Bishop, Pattern Recognition and Machine Learning. Springer, 2006. • Jure Leskovek, Anand Rajaraman and Jeffrey Ullman. Mining of Massive Datasets. v2.1, Cambridge University Press. 2014. • Foster Provost and Tom Fawcett. Data Science for Business: What You Need to Know about Data Mining and Data-analytic Thinking. • Avrim Blum, John Hopcroft and Ravindran Kannan. Foundations of Data Science. • Mohammed J. Zaki and Wagner Miera Jr. Data Mining and Analysis: Fundamental Concepts and Algorithms. Cambridge University Press. 2014.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-501/"
+  },
+  {
+    "code": "SEDS 502",
+    "name": "Contemporary Database Management Systems",
+    "description": "Relational theory and extensions, such as relational calculus, relational algebra, higher order normal forms; advanced DBMS concepts, such as integrity, recovery, concurrency, security, query optimization; object-oriented databases; distributed databases, related techniques and protocols, such as data replication, data fragmentation, synchronization, load balancing; parallel databases; deductive databases; federated databases and homogeneity/heterogeneity.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-502/"
+  },
+  {
+    "code": "SEDS 504",
+    "name": "Software Construction",
+    "description": "This course covers the necessary background for software construction. Object-Oriented Programming, Classes and Methods, Inheritance, Polymorphism, Abstract Classes and Interfaces, Exception Handling, Collections, Generics, Object-Oriented Analysis and Design, UML Diagrams. Reference book(s): • Absolute Java, Global Edition, 6/E, Walter Savitch, Kenrick Mock, Pearson, 2016 • Starting Out with Java: From Control Structures through Objects, Global Edition, 6/E, Tony Gaddis, Pearson, 2016",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-504/"
+  },
+  {
+    "code": "SEDS 505",
+    "name": "Team Project",
+    "description": "The course is designed for students to gain an understanding of issues of a real-world software and data science project and enable them to apply their newly learned skills in a practical context. Students will be grouped into teams to undertake a software and data science project with the tools, techniques and skills acquired during their previous course work. Each team will work as a development group and assume the role of a quality assurance team for another group. The team will be assigned to a client and will interact with that client to engineer requirements, agree upon a design and achieve a successful acceptance test of a system. Teams will meet on predetermined milestones with their faculty and quality assurance groups to discuss review results and progress. Reference book(s): IEEE Std 830, IEEE Recommended Practice for Software Requirements Specifications ISO/IEC/IEEE Std 1632",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-505/"
+  },
+  {
+    "code": "SEDS 512",
+    "name": "Software Architectures",
+    "description": "Software architectures, architectural styles, patterns, and special architectural solutions. Components and frameworks. Architecture evaluation and selection. Fundamental architecture-driven software qualities. Achieving reusability, interoperability, and change resilience. Architecture description languages. Elements of middleware.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-512/"
+  },
+  {
+    "code": "SEDS 513",
+    "name": "Principles of Human Computer Interaction",
+    "description": "Fundamental theory and practice of the design, implementation, and evaluation of human-computer interfaces. Topics include: life cycles for user interface development; principles of design; design techniques; methods for evaluating interfaces; and techniques for prototyping and implementing graphical user interfaces. Students will perform the analysis, design and evaluation of a user interface of a software system as class project.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-513/"
+  },
+  {
+    "code": "SEDS 514",
+    "name": "Software Testing",
+    "description": "The relationship of software testing to quality is examined with an emphasis on testing techniques. Topics include module and unit testing, integration and acceptance testing, statistical testing methods, defining test plans and strategies that map to system requirements. Testing principles, formal models of testing and software testing standards are also examined.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-514/"
+  },
+  {
+    "code": "SEDS 515",
+    "name": "Software Management",
+    "description": "This course is designed to introduce the students to the software management concepts. Topics will include quality managements concepts and project management concepts. Quality management concepts will include process improvement, capability maturity models and statistical process control. Project management concepts will include scope and time management as well as size measurement and effort estimation models. The course also includes the use of related software.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-515/"
+  },
+  {
+    "code": "SEDS 517",
+    "name": "Information Security",
+    "description": "The security of information and communication technologies, fundamental security functions and related cryptographic tools, network security and related problems, protection mechanisms and tools will be evaluated. Then current hot topic security problems will be analyzed for “cloud computing”, “web applications and services”, “wireless networks”, etc. and at last security management of information systems will be discussed. Reference book(s): Principles of Information Security. Michael E. Whitman, Herbert J. Mattord, 5th 2014. John R. Vacca, Computer and Information Security Handbook, Second Edition,Elsevier, 2013. Gutman, ‘Cryptographic Security Architecture’, Springer, 2004 R. Stinson, ‘Cryptography, Theory and Practice’, Chapman & Hall/CRC Press, 2002 Schneider, ‘Applied Cryptography, Protocols, Algorithms, and Source Code in C’, John Wiley & Sons, 1996",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-517/"
+  },
+  {
+    "code": "SEDS 518",
+    "name": "Development of Real-Time Software",
+    "description": "Real-time operating systems, real-time task scheduling algorithms, formal methods used in software specifications, modeling and verification using timed automata, software design, programming languages, testing, performance analysis and optimization, documentation, software reuse, and fault tolerance. Reference book(s): Real-Time Systems Design and Analysis. Phillip A. Laplante. A John Wiley & Sons, Software Engineering for Real-Time Systems”, J.E. Cooling, Addison Wesley",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-518/"
+  },
+  {
+    "code": "SEDS 519",
+    "name": "Software Design Patterns",
+    "description": "This course focuses on advanced software design patterns. Primary topics include advanced object-oriented programming principles, object-oriented design patterns, patterns of enterprise application architecture, enterprise integration patterns, and patterns related to domain-driven design. Students will learn concepts of modern software development with design patterns and participate in development of a mid-size programming project working in teams. Reference book(s): Design Patterns: Elements of Reusable Object-Oriented Software, Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides, Addison-Wesley, 1995. Patterns of Enterprise Application Architecture, Martin Fowler, Addison-Wesley, 2003. Enterprise Integration Patterns, Gregor Hohpe, Bobby Wolf, Addison-Wesley, 2011. Patterns, Principles, and Practices of Domain-Driven Design, Scott Millett, Nick Tune, John Wiley & Sons, 2015.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-519/"
+  },
+  {
+    "code": "SEDS 520",
+    "name": "Analysis and Design of Microservice Based Systems",
+    "description": "‘Software Architectures’ are one of the most significant areas of the software engineering discipline. This course focus on the state of the art event based software architectures. Today’s modern era permeates with phenomenal growth and advancement across a wide range of areas: from science and technology, to medicine and art, as well the social sciences. Amongst all, the notion of “services” plays a critical role to abstract and make available snippets of innovation, that can thereby be used cross-disciplinary to create bigger, better and more interesting innovations. This course arms students with the knowledge and expertise to “design” and “engineer” services using modern technology.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-520/"
+  },
+  {
+    "code": "SEDS 531",
+    "name": "Introduction to Statistical Data Processing",
+    "description": "Organization and application of computers and statistical techniques to data processing. Data handling in terms of coding, preparation, acquisition (with and without computers), screening and reduction; summarization, tabulation and analysis; random variables, statistical estimation and hypothesis testing, enumerated data analysis, linear models (regression, correlation, analysis of variance).",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-531/"
+  },
+  {
+    "code": "SEDS 533",
+    "name": "Probabilistic Reasoning",
+    "description": "Graphical Probability Models. Bayesian Reasoning. Bayesian Networks. Learning in Bayesian Networks. Knowledge Engineering. Temporal Models. Inference in Dynamic Bayesian Networks. Markov Decision Processes.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-533/"
+  },
+  {
+    "code": "SEDS 534",
+    "name": "Optimization Methods",
+    "description": "Vector spaces and matrices, elements of calculus, Unconstrained optimization, one-dimensional search method, golden section, Fibonacci, Newton s method, gradient search methods, Steepest-descent, Newton s method, conjugate-gradient, Least squares analysis, linear programming, heuristic optimization methods, simulated annealing",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-534/"
+  },
+  {
+    "code": "SEDS 535",
+    "name": "Knowledge Discovery",
+    "description": "Computer applications in medicine and biology, medical imaging technics, disease diagnosis with medical image processing, hospital information systems, patient tracking systems, mathematical modelling of medical information, networking in medical information systems.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-535/"
+  },
+  {
+    "code": "SEDS 536",
+    "name": "Image Understanding",
+    "description": "This course covers the image processing techniques and approaches for image content analysis. The course content includes memory representation of images, image processing techniques, keypoint extraction and description, image matching and fundamentals of camera geometry.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-536/"
+  },
+  {
+    "code": "SEDS 537",
+    "name": "Machine Learning",
+    "description": "To provide graduate students the foundations of machine learning. This course will begin with an introduction to the machine learning with examples in different application areas. Bayesian decision theory. Supervised learning techniques. Model selection. Dimensionality reduction. Clustering. Support vector machines. Graphical models. Introduction to neural networks. Reinforcement learning. Reference book(s): • Ethem Alpaydın, Introduction to Machine Learning (2nd Edition). MIT Press, 2010. • Christopher Bishop, Pattern Recognition and Machine Learning. Springer, 2006. • Richard Duda, Peter Hart, David Stork, Pattern Classification, 2nd Ed. John Wiley & Sons, 2001.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-537/"
+  },
+  {
+    "code": "SEDS 538",
+    "name": "Big Data Analytics",
+    "description": "Nature of embedded systems, their role in computer engineering; special and general purpose microprocessor design, embedded microcontrollers, embedded software; real time systems, problems of timing and scheduling; testing and performance issues, reliability; design methodologies, software tool support for development of such systems; problems of maintenance and upgrade; introduction to Application Specific Integrated Circuit (ASIC) Design, VHDL",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-538/"
+  },
+  {
+    "code": "SEDS 539",
+    "name": "Deep Learning",
+    "description": "This course covers methods for designing and training deep neural networks. The course content includes the historical evolution of deep neural networks, their fundamental working principles and image classification and object detection and recognition in images using convolutional neural networks. The fundamental aim of this course is for students to gain basic knowledge on deep neural networks and deep learning. By teaching the important aspects of convolutional neural networks, specifically, for the image classification task and making them into project assignments, the given theoretical knowledge is aimed to be applied in practice. The course’s target audience is graduate students with a background in machine learning. Reference book(s): • Michael A. Nielsen, “Neural Networks and Deep Learning”, Determination Press, 2015 • Ian Goodfellow, Yoshua Bengio and Aaron Courville, “Deep Lear",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-539/"
+  },
+  {
+    "code": "SEDS 540",
+    "name": "Distributed Information Management",
+    "description": "Introduction to Distributed Database Management, Revisiting Relational Database Management Systems, Distributed Database Architectures, Distributed Database Design – Horizontal Partitioning, Distributed Database Design – Vertical Partitioning, Distributed Query Processing, Distributed Query Optimization, Distributed Concurrency Control, Data Replication, Distributed Object Database Management",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-540/"
+  },
+  {
+    "code": "SEDS 541",
+    "name": "Privacy Preserving Data Sharing and Management",
+    "description": "The specific topics include advanced concurrency control techniques, query processing and optimization strategies for relational database systems, advanced indexing methods, parallel and distributed database systems, next-generation data models, data mining on large databases, data on the web, and topics in data security and privacy.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-541/"
+  },
+  {
+    "code": "SEDS 542",
+    "name": "Large-Scale Data Management",
+    "description": "This course introduces the fundamental concepts and computational paradigms of large-scale data management. This includes major methods for storing, updating and querying large datasets as well as for data-intensive computing. The course covers concepts, algorithms, and system issues on the topics of parallel and distributed databases, peer-to-peer data management, MapReduce and its ecosystem, Spark and dataflows, datalakes and NoSQL databases.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-542/"
+  },
+  {
+    "code": "SEDS 561",
+    "name": "Fundamentals of Software Engineering",
+    "description": "The course introduces the fundamentals of software engineering from management and software system models perspectives with an emphasis on software development process models, project management techniques and contemporary modeling notations.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-561/"
+  },
+  {
+    "code": "SEDS 562",
+    "name": "Programming and Data Structures",
+    "description": "Basic concepts of data, data structures and data types: arrays, strings, linear structures, sequential searching and sorting techniques, stacks, queues, pointers, linked lists. Various forms of m-way search and B-trees.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-562/"
+  },
+  {
+    "code": "SEDS 590",
+    "name": "Graduate Seminar and Ethics",
+    "description": "Learn the latest updated subjects and problems on the management science during the conferences given by the invited speakers; prepare and present a talk about a subject investigated and studied at the end of the semester, lectures on ethical issues in research are also included. Reference book(s): • Ethics for the Information Age. Michael J. Quinn, 5th edition (2012) • Computer Ethics. Deborah G. Johnson, 4th Edition (2009) • Empirical methods for artificial intelligence. Cohen, Paul R, MIT press, 1995.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/seds-590/"
+  }
+]

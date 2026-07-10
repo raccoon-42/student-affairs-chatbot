@@ -105,9 +105,14 @@ def tag_department(path):
 def main():
     if not settings.OPENROUTER_API_KEY:
         sys.exit("OPENROUTER_API_KEY is not set.")
-    files = sorted(PEOPLE_DIR.glob("*.json"))
+    # named files re-tag just those departments (one LLM call each);
+    # no args tags every department
+    files = [Path(arg) for arg in sys.argv[1:]] or sorted(PEOPLE_DIR.glob("*.json"))
     if not files:
         sys.exit(f"No people files in {PEOPLE_DIR} — run the people scraper first.")
+    missing = [str(f) for f in files if not f.exists()]
+    if missing:
+        sys.exit(f"No such people file(s): {', '.join(missing)}")
     for path in files:
         tag_department(path)
 

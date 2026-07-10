@@ -58,6 +58,12 @@ CONTEXT_TEMPLATE = """
 
     # ÖĞRETİM ÜYELERİ VE PERSONEL:
     {people_context}
+
+    # DERS KATALOĞU (ders içerikleri ve önkoşullar; güncel dönem programı/şubeler burada yoktur):
+    {courses_context}
+
+    # ÖĞRENCİ İŞLERİ SÜREÇ REHBERLERİ (ders seçimi, yatay geçiş, çift ana dal/yan dal, başvuru, askerlik):
+    {guides_context}
     </available_reference_data>
 </conversation>
 
@@ -288,7 +294,8 @@ class Conversation:
                       f"(embed {timings['embed']:.2f}s | search {timings['search']:.2f}s, "
                       f"alongside the gate)")
         self._log(f"[timing] gate + retrieval combined {time.perf_counter() - start:.2f}s")
-        corpora = ("calendar", "regulations", "faq", "forms", "sks", "programs", "people")
+        corpora = ("calendar", "regulations", "faq", "forms", "sks", "programs", "people",
+                   "courses", "guides")
         self._log("[retrieval] " + ", ".join(
             f"{corpus}: {len(results.get(corpus, []))}" for corpus in corpora))
 
@@ -312,6 +319,8 @@ class Conversation:
             sks_context="\n\n".join(numbered["sks"]),
             programs_context="\n\n".join(numbered["programs"]),
             people_context="\n\n".join(numbered["people"]),
+            courses_context="\n\n".join(numbered["courses"]),
+            guides_context="\n\n".join(numbered["guides"]),
         )
 
         if not self._messages:
@@ -332,13 +341,13 @@ class Conversation:
         calendar/regulations fall back to the configured corpus page."""
         corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik",
                         "faq": "SSS", "forms": "Form", "sks": "SKS", "programs": "Bölüm",
-                        "people": "Kişi"}
+                        "people": "Kişi", "courses": "Ders", "guides": "Rehber"}
         corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
                        "regulations": settings.REGULATIONS_SOURCE_URL, "faq": "",
                        "forms": settings.FORMS_SOURCE_URL,
                        "sks": settings.SKS_SOURCE_URL,
                        "programs": settings.PROGRAMS_SOURCE_URL,
-                       "people": ""}
+                       "people": "", "courses": "", "guides": ""}
         metadata = result.get("metadata") or {}
         # chips labeled by hostname all look alike — the document's own
         # title (indexed with each mevzuat chunk) tells sources apart

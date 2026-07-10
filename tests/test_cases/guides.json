@@ -1,0 +1,32 @@
+[
+  {
+    "query": "ders kaydımı tamamlamak için hangi adımları izlemem gerekiyor?",
+    "expected": "Rehberdeki adımları sırasıyla verir: (varsa) katkı payı ödemesi, ÖBS/UBYS üzerinden ders seçimi, danışman onayı. Adımlardan birinin eksik kalması durumunda kaydın tamamlanmayacağını söyleyebilir; adım adım anlatan kılavuz PDF'ini kaynak olarak gösterebilir. Ders Kayıt Formu'nu standart yöntem olarak sunmaz.",
+    "description": "Ders kaydı adımları (rehber korpusundan sıralı adımlar)"
+  },
+  {
+    "query": "ders seçimini nasıl yapacağımı gösteren bir kılavuz var mı?",
+    "expected": "Evet der: Öğrenci Ders Kayıt Kılavuzu'ndan (ve/veya Ders Kayıtlanma Adımları belgesinden) bahseder ve kaynak işaretiyle gösterir; kılavuzun ÖBS/UBYS üzerinden ders seçimini ekran görüntüleriyle anlattığını söyleyebilir. Böyle bir kılavuz olmadığını İDDİA ETMEMELİ.",
+    "description": "Ders kayıt kılavuzu PDF'i (link chunk'ı bulup kaynak göstermeli)"
+  },
+  {
+    "query": "başka üniversiteden İYTE'ye geçmek istiyorum, ne yapmam lazım?",
+    "expected": "Kurumlar arası yatay geçişi anlatır: başvurunun akademik takvimde belirtilen tarihlerde yapıldığını ve/veya gerekli koşul/belgelerden bahseder; merkezi yerleştirme puanı (ek madde-1) seçeneğine de değinebilir.",
+    "description": "Kurumlar arası yatay geçiş süreci"
+  },
+  {
+    "query": "hangi bölümlerde çift anadal yapabiliyorum?",
+    "expected": "Çift ana dal programı olan bölümleri rehberdeki listeden sayar (ör. Mimarlık, Şehir ve Bölge Planlama, Endüstriyel Tasarım ve diğerleri); liste referansta yoksa bilmediğini söyler, bölüm uydurmaz.",
+    "description": "Çift anadal açılan bölümler (rehberdeki bölüm listesi)"
+  },
+  {
+    "query": "yüksek lisans başvurusu nereden yapılıyor?",
+    "expected": "Lisansüstü başvuruların Lisansüstü Eğitim Enstitüsü tarafından yürütüldüğünü söyleyip oraya yönlendirir; ÖİDB üzerinden başvuru süreci anlatmaz, süreç adımı uydurmaz.",
+    "description": "Lisansüstü başvuru (LEE'ye yönlendirme)"
+  },
+  {
+    "query": "askerlik tecili nasıl yapılıyor?",
+    "expected": "Rehberdeki askerlik işlemleri bilgisine dayanır: kayıt sonrası YÖKSİS üzerinden bildirim/tecil sürecinden bahseder; referansta olmayan adım uydurmaz.",
+    "description": "Askerlik tecil işlemleri"
+  }
+]

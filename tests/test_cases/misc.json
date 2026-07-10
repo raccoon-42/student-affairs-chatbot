@@ -8,5 +8,10 @@
     "query": "mezuniyet sonrası ilişik kesme için nereye gitmem lazım?",
     "expected": "Elindeki kaynaklarda mezuniyet sonrası ilişik kesme prosedürünün adımları yer almadığı için sürecin nasıl işlediğini bilmediğini söylemeli ve Öğrenci İşleri Daire Başkanlığı'na yönlendirmeli. Sürecin 'otomatik' olduğunu veya öğrencinin hiçbir şey yapmasına gerek olmadığını İDDİA ETMEMELİ.",
     "description": "Mezuniyet sonrası ilişik kesme (korpusta olmayan prosedür — uydurmamalı)"
+  },
+  {
+    "query": "ders secimi nasıl yapılıyo",
+    "expected": "Ders seçiminin Öğrenci Bilgi Sistemi (ÖBS/UBYS) üzerinden yapıldığını ve danışman onayı ile kesinleştiğini söylemeli. 'Lisans Programları Ders Kayıt Formu'nu ders seçiminin standart yöntemi olarak SUNMAMALI — o form kayıt dönemini kaçırma gibi istisnai durumlar içindir; form hiç anılmayabilir.",
+    "description": "Ders seçimi süreci (ÖBS/UBYS'ye yönlendirmeli, ders kayıt formunu standart yöntem diye önermemeli)"
   }
 ]

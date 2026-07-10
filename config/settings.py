@@ -23,6 +23,8 @@ FORMS_COLLECTION = os.getenv("FORMS_COLLECTION", "forms")
 SKS_COLLECTION = os.getenv("SKS_COLLECTION", "sks")
 PROGRAMS_COLLECTION = os.getenv("PROGRAMS_COLLECTION", "programs")
 PEOPLE_COLLECTION = os.getenv("PEOPLE_COLLECTION", "people")
+COURSES_COLLECTION = os.getenv("COURSES_COLLECTION", "courses")
+GUIDES_COLLECTION = os.getenv("GUIDES_COLLECTION", "guides")
 
 # Embeddings (used by BOTH indexing and querying)
 # "openrouter" (hosted) or "local" (sentence-transformers). Collections
@@ -106,6 +108,10 @@ ABUSE_EXEMPT = {key.strip() for key in os.getenv("ABUSE_EXEMPT", "").split(",") 
 # judge suite and local eval runs, which burn through the anonymous
 # quota by design. Don't put real users here.
 RATELIMIT_EXEMPT = {key.strip() for key in os.getenv("RATELIMIT_EXEMPT", "").split(",") if key.strip()}
+
+# Set to 1 in production: the auth cookie is then only sent over HTTPS.
+# Off by default because local dev runs plain http://localhost.
+COOKIE_SECURE = os.getenv("COOKIE_SECURE", "") == "1"
 
 # API (used by integration tests)
 API_URL = os.getenv("API_URL", "http://localhost:8000")

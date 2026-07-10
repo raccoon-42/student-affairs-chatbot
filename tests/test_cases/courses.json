@@ -1,0 +1,27 @@
+[
+  {
+    "query": "CENG 311 dersinin önkoşulu ne?",
+    "expected": "Önkoşulun CENG 214 olduğunu söyler.",
+    "description": "Ders önkoşulu (CENG 311 -> CENG 214)"
+  },
+  {
+    "query": "CENG 322 hangi konuları işliyor?",
+    "expected": "İşletim sistemleri dersinin katalog içeriğini özetler (processes/threads, scheduling, bellek yönetimi gibi konulardan en az birkaçı).",
+    "description": "Ders içeriği sorusu (CENG 322 Operating Systems)"
+  },
+  {
+    "query": "bilgisayar mühendisliğinde yapay zeka ile ilgili dersler var mı?",
+    "expected": "Evet der ve katalogdan en az bir ilgili dersi (örn. CENG 461 Artificial Intelligence ya da ilgili yüksek lisans dersleri) kod/adıyla sayar.",
+    "description": "Konuya göre ders arama (yapay zeka dersleri)"
+  },
+  {
+    "query": "makine mühendisliği bölümünün derslerini listeler misin?",
+    "expected": "Makine mühendisliği ders kataloğunun elindeki verilerde OLMADIĞINI söyler; bilgisayar mühendisliği derslerini makine mühendisliği dersi gibi sunmaz, ders uydurmaz.",
+    "description": "İndekslenmemiş bölüm dersleri (uydurmamalı)"
+  },
+  {
+    "query": "bu dönem bilgisayar mühendisliğinde hangi dersler açılıyor?",
+    "expected": "Katalogdaki dersleri BU DÖNEM AÇIK diye sunmamalı: kataloğun dönemlik açılan dersleri/ders programını içermediğini belirtip ÖBS/UBYS'ye ya da bölüme yönlendirmeli. Katalogdan söz ederse bunun tüm katalog olduğunu açıkça söylemeli.",
+    "description": "Dönemlik açılan dersler (katalog != dönem programı — iddia etmemeli)"
+  }
+]

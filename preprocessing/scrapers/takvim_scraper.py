@@ -11,10 +11,10 @@ re-downloaded unconditionally so revised PDFs replace stale ones.
 import json
 import re
 
-import requests
 from bs4 import BeautifulSoup
 
 from config import settings
+from preprocessing.scrapers.fetch import fetch
 
 PAGE_URL = "https://iyte.edu.tr/akademik/akademik-takvim/"
 
@@ -33,8 +33,7 @@ def extract_calendars(html):
 
 def main():
     print(f"Fetching {PAGE_URL}")
-    resp = requests.get(PAGE_URL, timeout=30)
-    resp.raise_for_status()
+    resp = fetch(PAGE_URL)
 
     docs = dict(extract_calendars(resp.text))
     if not docs:
@@ -47,8 +46,7 @@ def main():
         path = OUTPUT_DIR / filename
 
         print(f"{title}")
-        pdf = requests.get(url, timeout=60)
-        pdf.raise_for_status()
+        pdf = fetch(url, timeout=60)
         path.write_bytes(pdf.content)
 
         manifest.append({

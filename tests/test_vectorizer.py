@@ -1,7 +1,10 @@
 """Chunk builders tested offline — pure JSON-to-chunks logic, no Qdrant."""
 import json
+from datetime import date
 
-from preprocessing.indexing.vectorizer import people_chunks_from_dir, program_chunks_from_json
+from preprocessing.indexing.vectorizer import (
+    _page_corpus_chunks, courses_chunks_from_dir, people_chunks_from_dir,
+    program_chunks_from_json, plan_sync, point_id)
 
 
 def make_programs(tmp_path):
@@ -69,6 +72,79 @@ def test_people_chunks_stack_identity_bio_and_contact(tmp_path):
     assert roster["metadata"]["kind"] == "roster" and ai["metadata"]["kind"] == "area"
     # the roster doubles as the group-by-area table: areas ride inline
     assert "Selma Tekir (Associate Professor; yapay zeka, doğal dil işleme)" in roster["text"]
+
+
+def test_course_chunks_carry_prereqs_and_per_level_full_lists(tmp_path):
+    courses = [
+        {"code": "CENG 311", "name": "Computer Architecture",
+         "description": "Basic computer organization concepts. Pipelining.",
+         "prerequisites": "CENG 214", "levels": ["lisans"],
+         "department": "Bilgisayar Mühendisliği",
+         "source_url": "https://ceng.iyte.edu.tr/courses/ceng-311/"},
+        {"code": "CENG 524", "name": "Advanced Computer Architecture",
+         "description": "Advanced topics.", "prerequisites": None,
+         "levels": ["yukseklisans", "doktora"],
+         "department": "Bilgisayar Mühendisliği",
+         "source_url": "https://ceng.iyte.edu.tr/courses/ceng-524/"},
+    ]
+    (tmp_path / "ceng.json").write_text(json.dumps(courses, ensure_ascii=False), encoding="utf-8")
+
+    chunks = courses_chunks_from_dir(tmp_path)
+
+    c311 = next(c for c in chunks if c["metadata"]["code"] == "CENG 311")
+    assert "Önkoşul: CENG 214" in c311["text"]
+    assert c311["metadata"]["kind"] == "course"
+    assert c311["metadata"]["source_url"].endswith("ceng-311/")
+    c524 = next(c for c in chunks if c["metadata"]["code"] == "CENG 524")
+    assert "yüksek lisans, doktora dersi" in c524["text"]
+    assert "Önkoşul" not in c524["text"]
+
+    # absence/enumeration questions need the complete per-level catalog
+    lists = [c for c in chunks if c["metadata"]["kind"] == "list"]
+    assert len(lists) == 3  # lisans, yükseklisans, doktora
+    lisans = next(c for c in lists if c["metadata"]["levels"] == ["lisans"])
+    assert "CENG 311" in lisans["text"] and "CENG 524" not in lisans["text"]
+    assert "olmayan" in lisans["text"]  # the completeness sentence
+
+
+def test_page_corpus_link_entries_become_chunks_with_the_pdf_as_source(tmp_path):
+    manifest = [
+        {"title": "Ders Seçimi Bilgilendirme", "topic": "ders-secimi",
+         "source_url": "https://x/ders-secimi/", "file": "ders-secimi.html"},
+        {"title": "Ders Kayıtlanma Adımları (PDF)", "topic": "ders-secimi",
+         "source_url": "https://x/uploads/adimlar.pdf", "kind": "link",
+         "description": "Ders kayıt adımlarını özetleyen belge."},
+    ]
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False),
+                                            encoding="utf-8")
+    (tmp_path / "ders-secimi.json").write_text(json.dumps(
+        [{"baslik": "İşlem Adımları", "metin": "1. katkı payı 2. seçim 3. onay"}],
+        ensure_ascii=False), encoding="utf-8")
+
+    chunks = _page_corpus_chunks(tmp_path, tmp_path / "manifest.json",
+                                 lambda c: f"{c['baslik']}\n{c['metin']}", "rehber")
+
+    link = next(c for c in chunks if "PDF" in c["metadata"]["document_title"])
+    assert link["metadata"]["source_url"].endswith(".pdf")  # the chip links the PDF
+    assert "kayıt adımlarını" in link["text"]  # description is the retrieval text
+    page = next(c for c in chunks if c["metadata"]["section"] == "İşlem Adımları")
+    assert "katkı payı" in page["text"]
+
+
+def test_point_id_is_stable_for_equal_payloads_and_changes_with_content():
+    payload = {"text": "MADDE 5 ...", "metadata": {"article": "5", "source_url": "http://x"}}
+    same_other_order = {"metadata": {"source_url": "http://x", "article": "5"}, "text": "MADDE 5 ..."}
+    assert point_id(payload) == point_id(same_other_order)  # key order must not matter
+    assert point_id(payload) != point_id({**payload, "text": "MADDE 5 değişti"})
+    # calendar payloads carry date objects inside metadata; ids must not crash on them
+    assert point_id({"text": "kayıt", "metadata": {"parsed_date1": date(2026, 9, 14)}})
+
+
+def test_plan_sync_diffs_desired_against_existing():
+    new, stale = plan_sync({"a", "b", "c"}, {"b", "c", "d"})
+    assert new == ["a"]  # only the new chunk gets embedded
+    assert stale == ["d"]  # the vanished chunk gets deleted
+    assert plan_sync({"a"}, {"a"}) == ([], [])  # unchanged corpus: no work
 
 
 def test_program_full_list_chunk_per_level_enables_absence_answers(tmp_path):

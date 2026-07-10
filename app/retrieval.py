@@ -104,7 +104,7 @@ class Retriever:
         embed_seconds = time.perf_counter() - start
 
         start = time.perf_counter()
-        with ThreadPoolExecutor(max_workers=7) as pool:
+        with ThreadPoolExecutor(max_workers=9) as pool:
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
             regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
             faq = pool.submit(self.retrieve_faq, query, 5, vector, audience)
@@ -112,6 +112,8 @@ class Retriever:
             sks = pool.submit(self.retrieve_sks, query, 4, vector)
             programs = pool.submit(self.retrieve_programs, query, 3, vector)
             people = pool.submit(self.retrieve_people, query, 3, vector)
+            courses = pool.submit(self.retrieve_courses, query, 4, vector)
+            guides = pool.submit(self.retrieve_guides, query, 3, vector)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
@@ -120,6 +122,8 @@ class Retriever:
                 "sks": sks.result(),
                 "programs": programs.result(),
                 "people": people.result(),
+                "courses": courses.result(),
+                "guides": guides.result(),
             }
         # the conversation logs these per turn (CLI + dev mode in the UI);
         # last-write-wins across sessions is fine for diagnostics
@@ -218,6 +222,33 @@ class Retriever:
             if roster and roster[0][0] is not lists[0][0]:
                 chosen.append(roster[0])
             hits = chosen + persons[:max(0, top_k - len(chosen))]
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
+    def retrieve_courses(self, query: str, top_k: int = 4, vector=None) -> List[Dict]:
+        # course catalog, two tiers like people: individual course chunks
+        # plus per-level "tam liste" chunks. The list is term-dense (every
+        # course code and name), so it's admitted only when it outscores
+        # the best individual course — "X dersi var mı / hangi dersler
+        # var" wins the list, "CENG 311'in önkoşulu ne" wins the course.
+        singles = self._hybrid_search(query, settings.COURSES_COLLECTION, top_k,
+                                      filters={"kind": "course"}, vector=vector)
+        lists = self._hybrid_search(query, settings.COURSES_COLLECTION, 1,
+                                    filters={"kind": "list"}, vector=vector)
+        hits = singles
+        if lists and (not singles or lists[0][1] >= singles[0][1]):
+            hits = lists + singles[:max(0, top_k - 1)]
+        return [
+            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            for hit, score in hits
+        ]
+
+    def retrieve_guides(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+        # ÖİDB process guides (ders seçimi, yatay geçiş, ÇAP/yan dal,
+        # başvuru, askerlik) — chunk text leads with the page title
+        hits = self._hybrid_search(query, settings.GUIDES_COLLECTION, top_k, vector=vector)
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits

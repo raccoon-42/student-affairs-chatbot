@@ -1,30 +1,46 @@
+# Production stack (VPS). Standalone on purpose — no override merging:
+#   docker compose -f docker-compose.prod.yml up -d --build
+# Differences from the dev compose:
+#   - api binds to 127.0.0.1 only; nginx on the host terminates HTTPS
+#     and proxies to it (deploy/nginx.conf)
+#   - --proxy-headers so rate limiting sees the real client IP, not nginx
+#   - qdrant publishes no ports at all — only reachable on the compose network
+#   - ./data (SQLite) and ./preprocessing/data are bind-mounted so users,
+#     conversations, corpora and index state survive rebuilds
+#   - restart: unless-stopped everywhere
 services:
   api:
     build: .
+    command: uvicorn app.api.api:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips "*"
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     env_file: .env
     environment:
       QDRANT_URL: http://qdrant:6333
     volumes:
-      # cache downloaded embedding models between container restarts
+      - ./data:/app/data
       - hf_cache:/root/.cache/huggingface
     depends_on:
       - qdrant
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    restart: unless-stopped
 
   check-updates:
     build: .
     env_file: .env
     environment:
       QDRANT_URL: http://qdrant:6333
-      # subprocess output block-buffers without a TTY, scrambling the logs
       PYTHONUNBUFFERED: "1"
     volumes:
-      # corpora, manifests and index_state.json stay on the host, shared
-      # with manual runs of the scrapers/parsers/vectorizer
       - ./preprocessing/data:/app/preprocessing/data
     depends_on:
       - qdrant
+    restart: unless-stopped
     command:
       - sh
       - -c
@@ -37,13 +53,6 @@ services:
           sleep "$$next"
           python -m preprocessing.check_updates || echo "check_updates failed — retrying tomorrow"
         done
-
-  qdrant:
-    image: qdrant/qdrant
-    ports:
-      - "6333:6333"
-    volumes:
-      - qdrant_storage:/qdrant/storage
 
 volumes:
   hf_cache:

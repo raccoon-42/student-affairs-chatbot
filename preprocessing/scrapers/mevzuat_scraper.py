@@ -13,10 +13,10 @@ import json
 import re
 import unicodedata
 
-import requests
 from bs4 import BeautifulSoup
 
 from config import settings
+from preprocessing.scrapers.fetch import fetch
 
 PAGE_URL = "https://ogrenciisleri.iyte.edu.tr/yonetmelikler-yonergeler-isleyis-esaslari/"
 
@@ -54,8 +54,7 @@ def extract_documents(html):
 
 def main():
     print(f"Fetching {PAGE_URL}")
-    resp = requests.get(PAGE_URL, timeout=30)
-    resp.raise_for_status()
+    resp = fetch(PAGE_URL)
 
     manifest = []
     for category, title, url in extract_documents(resp.text):
@@ -65,8 +64,7 @@ def main():
         path = target_dir / filename
 
         print(f"[{category}] {title}")
-        pdf = requests.get(url, timeout=60)
-        pdf.raise_for_status()
+        pdf = fetch(url, timeout=60)
         path.write_bytes(pdf.content)
 
         manifest.append({

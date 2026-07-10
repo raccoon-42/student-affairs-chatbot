@@ -119,6 +119,18 @@ def extract_profile(soup):
         text = " ".join(p.get_text().split())
         if len(text) > 120:
             bio = text
+            # research interests often continue as a short <ul> right after
+            # the bio ("... Research Interests:" + list) — without it the
+            # area tagger has nothing to go on, mostly hitting assistants.
+            # The length caps keep publication lists out (long entries).
+            sibling = p.find_next_sibling()
+            if sibling is not None and sibling.name == "ul":
+                items = [" ".join(li.get_text().split()) for li in sibling.find_all("li")]
+                items = [item for item in items if item]
+                if items and len(items) <= 12 and all(len(item) < 100 for item in items):
+                    # the paragraph often already ends with the label
+                    bio = re.sub(r"research interests:?\s*$", "", bio, flags=re.IGNORECASE).rstrip()
+                    bio = f"{bio} Research interests: {', '.join(items)}."
             break
     return contact, bio
 

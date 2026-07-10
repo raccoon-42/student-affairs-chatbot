@@ -160,7 +160,7 @@ async def auth_google(body: GoogleCredential, response: Response):
         raise HTTPException(status_code=401, detail="Google kimliği doğrulanamadı")
     token = auth.sessions.create(user)
     response.set_cookie("auth_token", token, httponly=True, samesite="lax",
-                        max_age=30 * 24 * 3600)
+                        secure=settings.COOKIE_SECURE, max_age=30 * 24 * 3600)
     # read back from storage: a returning user already has education_type
     return auth.sessions.get(token)
 

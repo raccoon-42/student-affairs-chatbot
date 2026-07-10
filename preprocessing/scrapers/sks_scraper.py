@@ -14,10 +14,10 @@ re-downloaded unconditionally so revised pages replace stale ones.
 """
 import json
 
-import requests
 from bs4 import BeautifulSoup
 
 from config import settings
+from preprocessing.scrapers.fetch import fetch
 
 # (topic, url) — the slug in the manifest comes from the URL's last segment
 PAGES = [
@@ -64,8 +64,7 @@ def main():
     manifest = []
     for (topic, url), slug in zip(PAGES, slugs):
         print(f"[{topic}] {url}")
-        resp = requests.get(url, timeout=30)
-        resp.raise_for_status()
+        resp = fetch(url)
         title, content = extract_content(resp.text)
         path = OUTPUT_DIR / f"{slug}.html"
         path.write_text(content, encoding="utf-8")

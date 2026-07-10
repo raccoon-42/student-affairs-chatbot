@@ -99,8 +99,9 @@ def test_retrieve_all_embeds_the_query_exactly_once():
 
     results = retriever.retrieve_all("sınav ne zaman")
 
-    assert embedder.calls == 1  # one embed shared by all seven searches
-    assert set(results) == {"calendar", "regulations", "faq", "forms", "sks", "programs", "people"}
+    assert embedder.calls == 1  # one embed shared by all nine searches
+    assert set(results) == {"calendar", "regulations", "faq", "forms", "sks", "programs",
+                            "people", "courses", "guides"}
 
 
 def test_faq_returns_question_and_answer():
