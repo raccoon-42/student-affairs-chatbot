@@ -34,6 +34,10 @@ const STRINGS = {
     tabDeveloper: "Geliştirici",
     rowLanguage: "Dil",
     rowTheme: "Tema",
+    rowModel: "Model",
+    rowModelNote: "Haiku hızlı, Sonnet daha güçlü.",
+    modelHaiku: "Haiku 4.5",
+    modelSonnet: "Sonnet 5",
     themeLight: "Açık",
     themeDark: "Koyu",
     yesterday: "Dün",
@@ -76,6 +80,10 @@ const STRINGS = {
     tabDeveloper: "Developer",
     rowLanguage: "Language",
     rowTheme: "Theme",
+    rowModel: "Model",
+    rowModelNote: "Haiku is fast, Sonnet is more capable.",
+    modelHaiku: "Haiku 4.5",
+    modelSonnet: "Sonnet 5",
     themeLight: "Light",
     themeDark: "Dark",
     yesterday: "Yesterday",
@@ -540,7 +548,8 @@ async function send(query, image = null) {
     const response = await fetch("/chat/stream", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, session_id: conversation.id, image, lang }),
+      body: JSON.stringify({ query, session_id: conversation.id, image, lang,
+                             model_name: chatModel || null }),
       signal: activeController.signal,
     });
     if (response.status === 429) {
@@ -1017,10 +1026,14 @@ profileForm.addEventListener("submit", () => {
  * right. Every control applies immediately — there is no save button. */
 const settingsDialog = document.getElementById("settings-dialog");
 let devMode = localStorage.getItem("devmode") === "1";
+// empty = let the server pick its default model
+let chatModel = localStorage.getItem("chat_model") || "";
 
 function openSettings() {
   document.getElementById("set-lang").value = lang;
   document.getElementById("set-theme").value = document.documentElement.dataset.theme;
+  const modelSelect = document.getElementById("set-model");
+  modelSelect.value = chatModel || modelSelect.options[0].value;
   document.getElementById("devmode-toggle").checked = devMode;
   settingsDialog.querySelectorAll("input[name=settings_education]").forEach((radio) => {
     radio.checked = radio.value === currentUser?.education_type;
@@ -1056,6 +1069,11 @@ document.getElementById("set-theme").addEventListener("change", (event) => {
 document.getElementById("devmode-toggle").addEventListener("change", (event) => {
   devMode = event.target.checked;
   localStorage.setItem("devmode", devMode ? "1" : "0");
+});
+
+document.getElementById("set-model").addEventListener("change", (event) => {
+  chatModel = event.target.value;
+  localStorage.setItem("chat_model", chatModel);
 });
 
 settingsDialog.querySelectorAll("input[name=settings_education]").forEach((radio) => {

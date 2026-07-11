@@ -8,6 +8,7 @@ Değerlendirme Kuralları:
 2. Sadece sorulan soruya verilen cevabın doğruluğuna odaklan
 3. ÖNEMLİ: Eğer soru belirsiz ise (örn. hangi dönem olduğu belli değilse) ve chatbot bu belirsizliği gidermek için soru soruyorsa, bu yanıtı DOĞRU kabul et
 4. Chatbot hem belirsizliği gidermek için soru sorup hem de genel bilgi veriyorsa, bu özellikle takdir edilmeli
+5. Referans veri bölümü doluysa, cevaptaki somut bilgileri (oda numarası, tarih, telefon, isim) referans veriye karşı DOĞRULA: bilgi referansta geçiyorsa cevabı uydurma sayma; referansta geçmiyorsa uydurma say. Referans veriyi görebildiğin için "doğrulayamıyorum" deme.
 
 Örnek Değerlendirmeler:
 
@@ -29,6 +30,7 @@ Mantık yürütme: Hem dönem belirsizliğini gidermek için soru sorulmuş hem 
 Sorulan soru: {query}
 Beklenen cevap: {expected_response}
 Verilen cevap: {response}
+{reference_block}
 
 Aşağıdaki formatta cevap ver:
 Puan: (0 veya 1)
@@ -47,9 +49,15 @@ class LLMJudge:
         self._llm = llm
         self._model_name = model_name
 
-    def evaluate_response(self, query: str, response: str, expected_response: str) -> Dict[str, Any]:
+    def evaluate_response(self, query: str, response: str, expected_response: str,
+                          reference: str = "") -> Dict[str, Any]:
+        reference_block = (
+            f"\nChatbot'un yanıt verirken gördüğü referans veri:\n{reference}\n"
+            if reference else ""
+        )
         prompt = JUDGE_PROMPT_TEMPLATE.format(
-            query=query, expected_response=expected_response, response=response
+            query=query, expected_response=expected_response, response=response,
+            reference_block=reference_block,
         )
         verdict = self._llm.chat(self._model_name, [{"role": "user", "content": prompt}])
 

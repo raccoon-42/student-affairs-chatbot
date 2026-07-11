@@ -53,7 +53,8 @@ def test_people_chunks_stack_identity_bio_and_contact(tmp_path):
     assert "Associate Professor, Bilgisayar Mühendisliği" in tekir["text"]
     assert "selmatekir@iyte.edu.tr" in tekir["text"]  # contact must be retrievable
     assert tekir["metadata"]["department"] == "Bilgisayar Mühendisliği"
-    sahin = next(c for c in chunks if "Şahin" in c["text"] and "tam listesi" not in c["text"])
+    sahin = next(c for c in chunks
+                 if "Şahin" in c["text"] and c["metadata"]["kind"] == "person")
     assert "Araştırma Görevlisi" in sahin["text"]  # role fills in for a missing title
 
     # "hocalar kimler" needs the whole roster in one chunk, like programs
@@ -66,6 +67,13 @@ def test_people_chunks_stack_identity_bio_and_contact(tmp_path):
     ai = next(c for c in chunks if c["metadata"].get("area") == "yapay zeka")
     assert "Selma Tekir (Bilgisayar Mühendisliği)" in ai["text"]
     assert "biyografilerindeki bilgiye dayanır" in ai["text"]  # lossy tags: hedge, no absence claim
+
+    # "asistanların çalışma alanları" = role-scoped enumeration; untagged
+    # people are named so the model can't fold them into a category
+    role = next(c for c in chunks if c["metadata"]["kind"] == "role")
+    assert "araştırma görevlilerinin (asistanların) çalışma alanları" in role["text"]
+    assert "Bengisu Şahin: alanı belirtilmemiş" in role["text"]
+    assert role["metadata"]["role"] == "arastirma-gorevlisi"
 
     # kind partitions person / roster / area chunks for tiered retrieval
     assert tekir["metadata"]["kind"] == "person"

@@ -26,14 +26,29 @@ USE_LOCAL_JUDGE = False  # True: judge with Ollama instead of OpenRouter
 pytestmark = pytest.mark.integration
 
 
-def ask_chatbot(query: str, model_name: str, local: bool) -> str:
+def ask_chatbot(query: str, model_name: str, local: bool) -> tuple[str, str]:
+    """Returns (answer, reference) — reference is the numbered chunk block
+    the model saw, so the judge can verify facts instead of guessing."""
     endpoint = "/chat_local" if local else "/chat"
+    # generous but finite: a stalled upstream call should fail this one
+    # case, not freeze the whole run (the server retries internally too)
     response = requests.get(
         f"{settings.API_URL}{endpoint}",
         params={"query": query, "model_name": model_name},
+        timeout=300,
     )
     response.raise_for_status()
-    return response.json()["response"]
+    body = response.json()
+    reference = ""
+    if not local:
+        debug = requests.get(
+            f"{settings.API_URL}/chat/debug",
+            params={"session_id": body["session_id"]},
+            timeout=30,
+        )
+        if debug.ok:
+            reference = "\n\n".join(debug.json().get("reference", []))
+    return body["response"], reference
 
 
 def load_test_cases():
@@ -71,8 +86,9 @@ def test_llm_response(llm_judge, test_case):
     query = test_case["query"]
     expected_response = test_case["expected"]
 
-    response = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
-    evaluation = llm_judge.evaluate_response(query, response, expected_response)
+    response, reference = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
+    evaluation = llm_judge.evaluate_response(query, response, expected_response,
+                                             reference=reference)
 
     print(f"\nSorulan soru: {query}")
     print(f"Beklenen cevap: {expected_response}")

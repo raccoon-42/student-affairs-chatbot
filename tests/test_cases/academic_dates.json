@@ -1,7 +1,7 @@
 [
   {
     "query": "yaz okulu kayıtları ne zaman",
-    "expected": "13-14 Temmuz 2026'da yapılır (2025-2026 yaz öğretimi). 2026-2027 yaz öğretimi için 12-13 Temmuz 2027 de kabul edilir.",
+    "expected": "13-14 Temmuz 2026'da yapılır (2025-2026 yaz öğretimi). 2026-2027 yaz öğretimi için 12-13 Temmuz 2027 de kabul edilir. ÖNEMLİ: Bugünün tarihinden SONRAKİ bir tarihe 'geçti/geçmiş' dememeli; yaklaşan tarihi geçmiş sayıp bir sonraki yıla atlamamalı.",
     "description": "Yaz okulu kayıt tarihleri"
   },
   {

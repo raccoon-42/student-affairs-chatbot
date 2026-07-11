@@ -72,9 +72,12 @@ GÖREV:
 2. <available_reference_data> içindeki bilgileri SADECE öğrencinin sorusuna yanıt vermek için kullan.
 3. Eğer öğrencinin sorusu belirsizse veya eksik bilgi varsa, açıklama iste.
 4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan.
-5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Referans verilerdeki bu tarihten
-   önce kalan tarihleri gelecekmiş gibi sunma; geçmişse bunu açıkça belirt ve varsa bir
-   sonraki/güncel tarihi öne çıkar. Referans verilerde güncel bilgi yoksa bunu söyle.
+5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Takvim maddelerinin sonundaki
+   (DURUM: ...) etiketi bugüne göre HESAPLANMIŞTIR — geçti/gelecek kararını yalnızca bu
+   etikete dayandır, kendi tarih karşılaştırmanı yapma. "geçti" etiketli tarihi gelecekmiş
+   gibi sunma; "gelecekte" veya "devam ediyor" etiketli tarihe "geçti" deme. Konuşma
+   geçmişinde bunlarla çelişen bir ifaden varsa etikete güven, eski ifadeni tekrarlama.
+   DURUM etiketini yanıtına kopyalama; en yakın güncel tarihi öne çıkar.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -83,10 +86,12 @@ WEEKDAYS_TR = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumarte
 
 
 def _now_tr():
+    # the ISO form is for date comparisons (rule 5): models misjudge
+    # "13 Temmuz 2026 geçti mi?" in prose but compare ISO dates reliably
     from datetime import datetime
     now = datetime.now()
     return (f"{now.day} {MONTHS_TR[now.month - 1]} {now.year} "
-            f"{WEEKDAYS_TR[now.weekday()]}, saat {now:%H:%M}")
+            f"{WEEKDAYS_TR[now.weekday()]}, saat {now:%H:%M} (ISO: {now:%Y-%m-%d})")
 
 REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
 - Soruyu CEVAPLAMA, sadece yeniden yaz.
@@ -179,6 +184,7 @@ class Conversation:
         self._rewriter = rewriter
         self._messages = []
         self.last_sources = []  # what the latest answer was grounded on
+        self.last_reference = []  # numbered chunk texts sent to the model last turn
         self.last_debug = []  # CLI-style log lines for the latest turn
 
     def _log(self, line):
@@ -307,6 +313,7 @@ class Conversation:
             for result in results.get(corpus, []):
                 self.last_sources.append(self._source_entry(corpus, result))
                 numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
+        self.last_reference = [entry for corpus in corpora for entry in numbered[corpus]]
 
         context = CONTEXT_TEMPLATE.format(
             query=query,

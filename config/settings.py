@@ -64,9 +64,19 @@ BM25_WEIGHT = 0.3
 # LLM backends
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-sonnet-5")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-haiku-4.5")
+
+# Models a client may request via model_name; anything else is rejected so
+# the public API can't be pointed at an arbitrary (expensive) model
+ALLOWED_CHAT_MODELS = {m.strip() for m in os.getenv(
+    "ALLOWED_CHAT_MODELS",
+    "anthropic/claude-haiku-4.5,anthropic/claude-sonnet-5").split(",") if m.strip()}
 # answer length cap; unset upstream defaults have truncated mid-sentence
 LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2048"))
+
+# Per-attempt HTTP timeout for LLM calls (the OpenAI SDK retries twice on
+# top of this). Without it a stalled connection hangs a request ~10 min.
+LLM_TIMEOUT_SECONDS = float(os.getenv("LLM_TIMEOUT_SECONDS", "90"))
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 

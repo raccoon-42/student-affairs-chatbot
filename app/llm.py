@@ -24,7 +24,10 @@ class OpenRouterLLM:
     def _ensure_client(self):
         if self._client is None:
             from openai import OpenAI
-            self._client = OpenAI(base_url=self._base_url, api_key=self._api_key)
+            # the SDK default is 600s x 3 attempts — a stalled connection
+            # froze a judge run for many minutes before this cap
+            self._client = OpenAI(base_url=self._base_url, api_key=self._api_key,
+                                  timeout=settings.LLM_TIMEOUT_SECONDS)
 
     def chat(self, model, messages):
         self._ensure_client()
@@ -61,6 +64,7 @@ class OllamaLLM:
         response = requests.post(
             f"{self._url}/api/chat",
             data=json.dumps({"model": model, "messages": messages, "stream": False}),
+            timeout=settings.LLM_TIMEOUT_SECONDS,
         )
         if response.status_code != 200:
             raise RuntimeError(f"Ollama error {response.status_code}: {response.text}")
@@ -71,6 +75,7 @@ class OllamaLLM:
             f"{self._url}/api/chat",
             data=json.dumps({"model": model, "messages": messages, "stream": True}),
             stream=True,
+            timeout=settings.LLM_TIMEOUT_SECONDS,
         ) as response:
             if response.status_code != 200:
                 raise RuntimeError(f"Ollama error {response.status_code}: {response.text}")

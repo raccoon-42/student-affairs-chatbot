@@ -5,6 +5,11 @@
     "description": "Ders önkoşulu (CENG 311 -> CENG 214)"
   },
   {
+    "query": "ceng322 dersinin onkosulu var mı",
+    "expected": "CENG 322 (Operating Systems) dersini bulur ve katalogda önkoşul belirtilmediğini söyler. 'CENG 322 hakkında veri yok' dememeli; başka derslerin önkoşullarını CENG 322'ninmiş gibi sunmamalı.",
+    "description": "Bitişik yazılmış ders kodu (ceng322 -> CENG 322 bulunmalı)"
+  },
+  {
     "query": "CENG 322 hangi konuları işliyor?",
     "expected": "İşletim sistemleri dersinin katalog içeriğini özetler (processes/threads, scheduling, bellek yönetimi gibi konulardan en az birkaçı).",
     "description": "Ders içeriği sorusu (CENG 322 Operating Systems)"

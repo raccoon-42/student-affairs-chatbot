@@ -331,6 +331,33 @@ def people_chunks_from_dir(input_dir):
             },
         })
 
+        # role-scoped enumeration: "asistanların çalışma alanları neler"
+        # phrasings don't mention the department or a single area, so
+        # neither the roster nor the area chunks match them (learned in
+        # production: person chunks won and the model saw 2 assistants).
+        # Text leads with the student phrasing; untagged people are named
+        # so the model can't fold them into a category.
+        assistants = [p for p in people if p["role"] == "arastirma-gorevlisi"]
+        if assistants:
+            lines = []
+            for p in assistants:
+                areas = ", ".join(p.get("areas") or [])
+                lines.append(f"{p['name']}: {areas}" if areas
+                             else f"{p['name']}: alanı belirtilmemiş")
+            chunks.append({
+                "text": (f"{department} bölümü araştırma görevlilerinin (asistanların) "
+                         f"çalışma alanları ({len(assistants)} kişi):\n"
+                         + "\n".join(lines) +
+                         "\nBu bilgiler kişilerin biyografilerindeki bilgiye dayanır."),
+                "metadata": {
+                    "document_title": f"{department} Araştırma Görevlileri — çalışma alanları",
+                    "department": department,
+                    "role": "arastirma-gorevlisi",
+                    "kind": "role",
+                    "source_url": people[0]["source_url"].rsplit("/", 2)[0] + "/",
+                },
+            })
+
         for person in people:
             title = person.get("title") or PEOPLE_ROLES.get(person["role"]) or ""
             header = f"{person['name']}" + (f" — {title}" if title else "")

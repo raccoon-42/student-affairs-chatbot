@@ -277,7 +277,15 @@ async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
     _authorize_conversation(session_id, user)
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
-    return {"debug": cached[0].last_debug if cached else []}
+    return {"debug": cached[0].last_debug if cached else [],
+            "reference": cached[0].last_reference if cached else []}
+
+
+def _validate_model(model_name: str) -> None:
+    """model_name is client-supplied — only allowlisted models may run,
+    so the public API can't burn the OpenRouter key on arbitrary models."""
+    if model_name and model_name not in settings.ALLOWED_CHAT_MODELS:
+        raise HTTPException(status_code=400, detail="Bu model desteklenmiyor")
 
 
 @app.get("/chat", response_model=ChatResponse)
@@ -287,10 +295,15 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
     _authorize_conversation(session_id, user)
+    _validate_model(model_name)
     model = model_name or settings.OPENROUTER_MODEL
     conversation = get_conversation(session_id)
-    response = conversation.respond(
-        query, model, education_type=user["education_type"] if user else None)
+    try:
+        response = conversation.respond(
+            query, model, education_type=user["education_type"] if user else None)
+    except Exception as error:  # upstream LLM stall/failure — not a server bug
+        raise HTTPException(status_code=503,
+                            detail=f"Üstteki model servisi yanıt vermedi: {error}")
     _register_refusal(request, user, response)
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
         storage.record_exchange(session_id, user["email"], query, response,
@@ -324,6 +337,7 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
     _authorize_conversation(session_id, user)
+    _validate_model(model_name)
     conversation = get_conversation(session_id)
     stream = conversation.respond_stream(
         query, model_name or settings.OPENROUTER_MODEL,

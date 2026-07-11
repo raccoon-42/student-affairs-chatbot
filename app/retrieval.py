@@ -8,6 +8,7 @@ The vector store sits behind a seam with two adapters: QdrantVectorStore
 (production) and InMemoryVectorStore (tests). Both answer
 search(collection, vector, limit, filters) -> [Hit].
 """
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -18,6 +19,33 @@ import numpy as np
 from config import settings
 from preprocessing.extraction import extract_academic_period
 from preprocessing.indexing.bm25 import BM25, preprocess_text
+
+
+# students glue course codes together ("ceng322"); the catalog says
+# "CENG 322", so neither the embedding nor BM25 can match the glued form
+_COURSE_CODE = re.compile(r'\b([a-zA-Z]{2,4})(\d{3})\b')
+
+
+def normalize_query(query: str) -> str:
+    return _COURSE_CODE.sub(r'\1 \2', query)
+
+
+def _calendar_status(metadata: Dict) -> str:
+    """Deterministic past/upcoming tag for a calendar event, computed
+    against today's date — date comparison never reaches the model."""
+    from datetime import date
+    start = metadata.get("date1") or metadata.get("parsed_date1")
+    end = metadata.get("date2") or metadata.get("parsed_date2") or start
+    try:
+        start_day, end_day = date.fromisoformat(start), date.fromisoformat(end)
+    except (TypeError, ValueError):
+        return ""
+    today = date.today()
+    if end_day < today:
+        return "(DURUM: geçti)"
+    if start_day > today:
+        return "(DURUM: gelecekte, henüz geçmedi)"
+    return "(DURUM: şu an devam ediyor)"
 
 
 @dataclass
@@ -99,6 +127,7 @@ class Retriever:
         """Everything the conversation needs, in one call:
         the query is embedded once, the four collections are searched
         in parallel."""
+        query = normalize_query(query)
         start = time.perf_counter()
         vector = self._embed_query(query)
         embed_seconds = time.perf_counter() - start
@@ -215,8 +244,12 @@ class Retriever:
                                      filters={"kind": "roster"}, vector=vector)
         areas = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
                                     filters={"kind": "area"}, vector=vector)
+        # role-scoped enumerations ("asistanların alanları") — see the
+        # vectorizer's role chunk for why these need their own tier
+        roles = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
+                                    filters={"kind": "role"}, vector=vector)
         hits = persons
-        lists = sorted(roster + areas, key=lambda pair: pair[1], reverse=True)
+        lists = sorted(roster + areas + roles, key=lambda pair: pair[1], reverse=True)
         if lists and (not persons or lists[0][1] >= persons[0][1]):
             chosen = [lists[0]]
             if roster and roster[0][0] is not lists[0][0]:
@@ -261,6 +294,7 @@ class Retriever:
     def _hybrid_search(self, query, collection, top_k, filters=None, vector=None):
         """Vector search for candidates, then re-rank with a blend of
         cosine similarity and BM25 over the candidate texts."""
+        query = normalize_query(query)  # idempotent; covers direct calls too
         if vector is None:
             vector = self._embed_query(query)
         candidates = self._store.search(collection, vector, limit=top_k * 2, filters=filters)
@@ -282,8 +316,11 @@ class Retriever:
     @staticmethod
     def _format_calendar(hit: Hit) -> str:
         # render_line already produced a readable line (term + dates +
-        # description) at index time — reformatting from metadata loses it
-        return hit.text
+        # description) at index time — reformatting from metadata loses it.
+        # The DURUM tag is computed here so the model never does date math
+        # (Haiku called an upcoming date "geçmiş" when left to compare).
+        status = _calendar_status(hit.metadata)
+        return f"{hit.text} {status}" if status else hit.text
 
     @staticmethod
     def _format_faq(hit: Hit) -> str:
