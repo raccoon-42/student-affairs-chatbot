@@ -37,15 +37,6 @@ EMBED_INSTRUCTION = (
     "yanıt verebilecek ilgili pasajları getir"
 )
 
-# Where "view sources" links point for chunks that have no URL of their
-# own (calendar/regulations come from PDFs; FAQ entries carry their page)
-CALENDAR_SOURCE_URL = os.getenv("CALENDAR_SOURCE_URL", "")
-REGULATIONS_SOURCE_URL = os.getenv("REGULATIONS_SOURCE_URL", "")
-# forms chunks always carry their own PDF URL; this is just the fallback
-FORMS_SOURCE_URL = os.getenv("FORMS_SOURCE_URL", "https://ogrenciisleri.iyte.edu.tr/formlar/")
-SKS_SOURCE_URL = os.getenv("SKS_SOURCE_URL", "https://sks.iyte.edu.tr/")
-PROGRAMS_SOURCE_URL = os.getenv("PROGRAMS_SOURCE_URL", "https://iyte.edu.tr/akademik/lisans-programlari/")
-
 # Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
 SEMANTIC_WEIGHT = 0.7
 BM25_WEIGHT = 0.3

@@ -344,26 +344,19 @@ class Conversation:
     @staticmethod
     def _source_entry(corpus, result):
         """One 'view sources' entry. Labels are the stored chunk texts, so
-        they're readable as-is; FAQ entries carry their own page URL,
-        calendar/regulations fall back to the configured corpus page."""
+        they're readable as-is; every chunk carries its own source_url from
+        the scrape manifest (synthetic list/area chunks have none)."""
         corpus_names = {"calendar": "Akademik takvim", "regulations": "Yönetmelik",
                         "faq": "SSS", "forms": "Form", "sks": "SKS", "programs": "Bölüm",
                         "people": "Kişi", "courses": "Ders", "guides": "Rehber"}
-        corpus_urls = {"calendar": settings.CALENDAR_SOURCE_URL,
-                       "regulations": settings.REGULATIONS_SOURCE_URL, "faq": "",
-                       "forms": settings.FORMS_SOURCE_URL,
-                       "sks": settings.SKS_SOURCE_URL,
-                       "programs": settings.PROGRAMS_SOURCE_URL,
-                       "people": "", "courses": "", "guides": ""}
         metadata = result.get("metadata") or {}
         # chips labeled by hostname all look alike — the document's own
         # title (indexed with each mevzuat chunk) tells sources apart
         source = {"type": corpus_names[corpus],
                   "title": metadata.get("document_title") or corpus_names[corpus],
                   "label": result["text"][:120]}
-        url = metadata.get("source_url") or corpus_urls[corpus]
-        if url:
-            source["url"] = url
+        if metadata.get("source_url"):
+            source["url"] = metadata["source_url"]
         return source
 
     def _add_assistant_message(self, answer):

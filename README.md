@@ -29,7 +29,7 @@ preprocessing/
 ├── parsers/          # PDF/HTML -> structured JSON (LLM parsers)
 └── scrapers/         # mevzuat, takvim, faq, forms, sks, programs, people, courses, guides
 tests/                # offline unit tests + `integration`-marked judge eval
-scripts/              # experiments (embedding model comparison)
+scripts/              # dev.sh (qdrant + uvicorn) + experiments
 ```
 
 ## Quick start (Docker)
@@ -120,6 +120,7 @@ uv sync                                        # create .venv from uv.lock
 uv run pytest                                  # offline unit tests (no services needed)
 uv run uvicorn app.api.api:app --reload        # API + web UI at http://localhost:8000
 uv run python -m app.conversation              # CLI chat
+./scripts/dev.sh                               # or: start qdrant (docker) + uvicorn together
 ```
 
 Note: `--reload` watches only `.py` files — after editing `.env`, touch a `.py` file or restart.
