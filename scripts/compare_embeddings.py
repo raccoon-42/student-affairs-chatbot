@@ -112,7 +112,7 @@ def store_embedding(chunks):
 def main():
     parser = argparse.ArgumentParser(description='Store text chunks in Qdrant vector database')
     parser.add_argument('input_file', help='Input text file to process')
-    parser.add_argument('--collection-name', default='academic_calendar_2025', help='Name of the Qdrant collection')
+    parser.add_argument('--collection-name', default='calendar', help='Name of the Qdrant collection')
     
     args = parser.parse_args()
     

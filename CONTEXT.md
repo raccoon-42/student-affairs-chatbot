@@ -7,6 +7,6 @@
 - **Retriever** (`app/retrieval.py`) — the one interface for finding chunks: `retrieve_calendar(query)` / `retrieve_regulations(query)`. Hides embedding, vector search, filters, and hybrid scoring.
 - **Hybrid score** — `0.7 * semantic similarity + 0.3 * BM25`, computed in one place inside the Retriever.
 - **Conversation** (`app/conversation.py`) — assembles the prompt (system prompt + retrieved context + history) and asks an LLM adapter for the answer.
-- **LLM adapter** (`app/llm.py`) — anything with `chat(model, messages) -> str`. Two real ones: OpenRouter and Ollama.
+- **LLM adapter** (`app/llm.py`) — anything with `chat(model, messages) -> str`. One real one: OpenRouter.
 - **Judge** (`tests/evaluators/llm_judge.py`) — an LLM that scores chatbot answers 0/1 against expected answers during evaluation.
 - **Scope gate** (`app/guardrails.py`) — a cheap LLM call that decides whether a question is university-related before it reaches retrieval or the main model; off-topic questions get a canned refusal.

@@ -1,14 +1,11 @@
-"""The LLM seam: one interface, two adapters.
+"""The LLM seam: one interface, one real adapter.
 
 Anything that needs a language model (conversation, judge) depends on the
 interface `chat(model, messages) -> str` — plus `chat_stream(model, messages)`
 yielding text deltas — and never on a concrete provider. Tests pass in a
 fake with the same methods.
 """
-import json
 import sys
-
-import requests
 
 from config import settings
 
@@ -52,40 +49,3 @@ class OpenRouterLLM:
                     yield chunk.choices[0].delta.content
         if finish_reason and finish_reason != "stop":
             print(f"[llm] stream ended early, finish_reason={finish_reason}", file=sys.stderr)
-
-
-class OllamaLLM:
-    """Adapter for a local Ollama server."""
-
-    def __init__(self, url=None):
-        self._url = url or settings.OLLAMA_URL
-
-    def chat(self, model, messages):
-        response = requests.post(
-            f"{self._url}/api/chat",
-            data=json.dumps({"model": model, "messages": messages, "stream": False}),
-            timeout=settings.LLM_TIMEOUT_SECONDS,
-        )
-        if response.status_code != 200:
-            raise RuntimeError(f"Ollama error {response.status_code}: {response.text}")
-        return response.json()["message"]["content"]
-
-    def chat_stream(self, model, messages):
-        with requests.post(
-            f"{self._url}/api/chat",
-            data=json.dumps({"model": model, "messages": messages, "stream": True}),
-            stream=True,
-            timeout=settings.LLM_TIMEOUT_SECONDS,
-        ) as response:
-            if response.status_code != 200:
-                raise RuntimeError(f"Ollama error {response.status_code}: {response.text}")
-            # Ollama streams one JSON object per line
-            for line in response.iter_lines():
-                if not line:
-                    continue
-                data = json.loads(line)
-                token = data.get("message", {}).get("content", "")
-                if token:
-                    yield token
-                if data.get("done"):
-                    break

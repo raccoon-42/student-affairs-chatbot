@@ -33,8 +33,7 @@ Create `/opt/iytebot/.env` — start from your local one, then change:
 - `ABUSE_EXEMPT=` and `RATELIMIT_EXEMPT=` — **empty**, no dev IPs in prod
 - `COOKIE_SECURE=1` — auth cookie only over HTTPS
 - keep: `OPENROUTER_API_KEY`, `GROQ_API_KEY`, `GOOGLE_CLIENT_ID`,
-  `EMBEDDING_BACKEND=openrouter`, `CALENDAR_25_26_URL`, `CALENDAR_26_27_URL`,
-  `FORMS_SOURCE_URL` etc.
+  `EMBEDDING_BACKEND=openrouter`, `FORMS_SOURCE_URL` etc.
 - In Google Cloud Console → the OAuth client → add
   `https://<your-domain>` to Authorized JavaScript origins, or sign-in
   will fail in prod.
@@ -43,19 +42,19 @@ Create `/opt/iytebot/.env` — start from your local one, then change:
 docker compose -f docker-compose.prod.yml up -d --build   # ~10 min first time
 ```
 
-## 3. Index the corpora (once)
+## 3. Indexing happens by itself
 
-Qdrant starts empty. The processed corpora are in git; the baseline run
-indexes everything (one-time full embed via OpenRouter, cost is small)
-and re-downloads the gitignored raw PDFs by itself:
+Qdrant starts empty. The processed corpora are in git; on first start the
+check-updates service finds no recorded index state and runs a baseline
+check, indexing everything (one-time full embed via OpenRouter, cost is
+small) and re-downloading the gitignored raw PDFs by itself:
 
 ```bash
-docker compose -f docker-compose.prod.yml run --rm check-updates \
-    python -m preprocessing.check_updates
+docker compose -f docker-compose.prod.yml logs -f check-updates
 ```
 
 Every corpus should end with a recorded baseline. From then on the
-check-updates service re-checks daily at 09:30 TR.
+service re-checks daily at 09:30 TR.
 
 ## 4. Domain + nginx + TLS
 

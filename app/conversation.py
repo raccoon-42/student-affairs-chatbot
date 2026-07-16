@@ -1,8 +1,8 @@
 """One Conversation module for every backend.
 
 Prompt assembly, retrieval context, and history trimming live here once.
-Which LLM answers is decided by the adapter passed in (OpenRouter, Ollama,
-or a fake in tests) — history is owned by the instance, not the module.
+Which LLM answers is decided by the adapter passed in (OpenRouter, or a
+fake in tests) — history is owned by the instance, not the module.
 """
 import sys
 import time
@@ -396,18 +396,14 @@ if __name__ == "__main__":
     import argparse
 
     from app.guardrails import ScopeGate
-    from app.llm import OpenRouterLLM, OllamaLLM
+    from app.llm import OpenRouterLLM
     from app.retrieval import default_retriever
 
     parser = argparse.ArgumentParser(description="Chat with the bot from the terminal")
-    parser.add_argument("--backend", choices=["openrouter", "ollama"], default="openrouter")
     parser.add_argument("--model", default=None)
     args = parser.parse_args()
 
-    if args.backend == "openrouter":
-        llm, model, gate_model = OpenRouterLLM(), args.model or settings.OPENROUTER_MODEL, settings.GUARD_MODEL
-    else:
-        llm, model, gate_model = OllamaLLM(), args.model or settings.OLLAMA_MODEL, args.model or settings.OLLAMA_MODEL
+    llm, model, gate_model = OpenRouterLLM(), args.model or settings.OPENROUTER_MODEL, settings.GUARD_MODEL
     conversation = Conversation(llm, default_retriever(), model,
                                 gate=ScopeGate(llm, gate_model),
                                 rewriter=QueryRewriter(llm, gate_model))

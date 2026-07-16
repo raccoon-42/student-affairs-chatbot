@@ -10,6 +10,20 @@ from config import settings
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 SKS_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "sks" / "manifest.json"
 GUIDES_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "rehber" / "manifest.json"
+TAKVIM_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "takvim" / "manifest.json"
+
+
+def _calendar_source_urls():
+    """Year -> PDF URL from the takvim scrape manifest ("2025-2026 Akademik
+    Takvimi" -> its source_url). The daily check re-scrapes the calendar
+    page, so a moved or revised PDF is restamped on the next reindex."""
+    if not TAKVIM_MANIFEST.exists():
+        return {}
+    with open(TAKVIM_MANIFEST, encoding="utf-8") as f:
+        manifest = json.load(f)
+    return {m.group(): entry["source_url"]
+            for entry in manifest
+            if (m := re.match(r"\d{4}-\d{4}", entry.get("title", "")))}
 
 
 def _calendar_payload(text, metadata):
@@ -104,6 +118,7 @@ def calendar_chunks_from_json(input_file):
     with open(input_file, encoding="utf-8") as f:
         events = json.load(f)
 
+    source_urls = _calendar_source_urls()
     chunks = []
     for event in events:
         text = render_line(event)
@@ -121,7 +136,7 @@ def calendar_chunks_from_json(input_file):
                 "academic_period": extract_academic_period(event.get("term") or ""),
                 "parsed_date1": date.fromisoformat(start) if start else None,
                 "parsed_date2": date.fromisoformat(end) if end else None,
-                "source_url": settings.CALENDAR_SOURCE_URLS.get(year.group()) if year else None,
+                "source_url": source_urls.get(year.group()) if year else None,
             },
         })
     return chunks

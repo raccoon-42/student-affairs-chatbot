@@ -15,7 +15,7 @@ from app import auth, storage
 from app.conversation import Conversation, QueryRewriter, STAGE_MARKERS
 from app.ratelimit import RateLimiter
 from app.guardrails import ScopeGate, ABUSE_MESSAGE, REFUSALS
-from app.llm import OpenRouterLLM, OllamaLLM
+from app.llm import OpenRouterLLM
 from app.retrieval import default_retriever
 from config import settings
 
@@ -40,10 +40,6 @@ def _backend(name: str):
     """LLM, retriever and model names are shared by every session;
     only the conversation history is per-session."""
     retriever = default_retriever()
-    if name == "ollama":
-        # local backend gates and rewrites locally too, so it stays fully offline
-        llm = OllamaLLM()
-        return llm, retriever, settings.OLLAMA_MODEL, settings.OLLAMA_MODEL
     llm = OpenRouterLLM()
     return llm, retriever, settings.OPENROUTER_MODEL, settings.GUARD_MODEL
 
@@ -451,14 +447,6 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
     if groq.status_code != 200:
         raise HTTPException(status_code=502, detail="Ses tanıma başarısız oldu.")
     return {"text": groq.json().get("text", "").strip()}
-
-
-@app.get("/chat_local", response_model=ChatResponse)
-async def chat_local(query: str, session_id: str = None, model_name: str = None):
-    session_id = session_id or uuid.uuid4().hex
-    model = model_name or settings.OLLAMA_MODEL
-    response = get_conversation(session_id, backend="ollama").respond(query, model)
-    return ChatResponse(query=query, response=response, model=model, session_id=session_id)
 
 
 # the web UI — mounted last so the API routes above win the match first

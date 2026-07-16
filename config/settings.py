@@ -5,7 +5,6 @@ hardcoding constants itself, so the indexer and the retriever can never
 disagree on which model or collection is in force.
 """
 import os
-import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -16,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Vector store
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
-CALENDAR_COLLECTION = os.getenv("CALENDAR_COLLECTION", "academic_calendar_2025")
+CALENDAR_COLLECTION = os.getenv("CALENDAR_COLLECTION", "calendar")
 REGULATIONS_COLLECTION = os.getenv("REGULATIONS_COLLECTION", "regulations")
 FAQ_COLLECTION = os.getenv("FAQ_COLLECTION", "faq")
 FORMS_COLLECTION = os.getenv("FORMS_COLLECTION", "forms")
@@ -47,16 +46,6 @@ FORMS_SOURCE_URL = os.getenv("FORMS_SOURCE_URL", "https://ogrenciisleri.iyte.edu
 SKS_SOURCE_URL = os.getenv("SKS_SOURCE_URL", "https://sks.iyte.edu.tr/")
 PROGRAMS_SOURCE_URL = os.getenv("PROGRAMS_SOURCE_URL", "https://iyte.edu.tr/akademik/lisans-programlari/")
 
-# Per-year calendar PDFs: CALENDAR_25_26_URL="https://..." becomes
-# {"2025-2026": "https://..."}. The vectorizer stamps each calendar chunk
-# with its year's URL at index time, so citation chips link to the right
-# PDF; add a new env var when a new academic year is published.
-CALENDAR_SOURCE_URLS = {
-    f"20{m.group(1)}-20{m.group(2)}": value
-    for key, value in os.environ.items()
-    if (m := re.fullmatch(r"CALENDAR_(\d{2})_(\d{2})_URL", key))
-}
-
 # Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
 SEMANTIC_WEIGHT = 0.7
 BM25_WEIGHT = 0.3
@@ -77,8 +66,6 @@ LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2048"))
 # Per-attempt HTTP timeout for LLM calls (the OpenAI SDK retries twice on
 # top of this). Without it a stalled connection hangs a request ~10 min.
 LLM_TIMEOUT_SECONDS = float(os.getenv("LLM_TIMEOUT_SECONDS", "90"))
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
 # LLM-as-judge (evaluation) — OpenRouter by default
 JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5")

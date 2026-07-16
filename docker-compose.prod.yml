@@ -44,9 +44,18 @@ services:
     command:
       - sh
       - -c
-      # daily at 06:30 UTC (09:30 TR); sleep-until keeps restarts from
-      # re-running the check immediately
+      # on first start (no recorded index state) the baseline check runs
+      # right away, so `docker compose up` alone indexes a fresh deploy;
+      # then daily at 06:30 UTC (09:30 TR) — sleep-until keeps restarts
+      # from re-running the check immediately
       - |
+        until python -c 'import os, requests; requests.get(os.environ["QDRANT_URL"] + "/readyz", timeout=2).raise_for_status()' 2>/dev/null; do
+          echo "waiting for qdrant..."; sleep 2
+        done
+        if [ ! -f preprocessing/data/index_state.json ]; then
+          echo "no recorded index state — running baseline corpus check"
+          python -m preprocessing.check_updates || echo "baseline check failed — will retry at the daily check"
+        fi
         while true; do
           next=$$(python -c 'import datetime as d; n=d.datetime.now(); t=n.replace(hour=6,minute=30,second=0,microsecond=0); print(int(((t if t>n else t+d.timedelta(days=1))-n).total_seconds()))')
           echo "next corpus check in $${next}s"

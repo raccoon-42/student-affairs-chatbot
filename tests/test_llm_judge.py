@@ -14,40 +14,34 @@ import pytest
 import requests
 
 from config import settings
-from app.llm import OpenRouterLLM, OllamaLLM
+from app.llm import OpenRouterLLM
 from tests.evaluators.llm_judge import LLMJudge
 
 OPENROUTER_MODEL_TO_TEST = settings.OPENROUTER_MODEL
-LOCAL_MODEL_TO_TEST = settings.OLLAMA_MODEL
-
-USE_LOCAL_MODEL = False  # True: chat via Ollama endpoint instead of OpenRouter
-USE_LOCAL_JUDGE = False  # True: judge with Ollama instead of OpenRouter
 
 pytestmark = pytest.mark.integration
 
 
-def ask_chatbot(query: str, model_name: str, local: bool) -> tuple[str, str]:
+def ask_chatbot(query: str, model_name: str) -> tuple[str, str]:
     """Returns (answer, reference) — reference is the numbered chunk block
     the model saw, so the judge can verify facts instead of guessing."""
-    endpoint = "/chat_local" if local else "/chat"
     # generous but finite: a stalled upstream call should fail this one
     # case, not freeze the whole run (the server retries internally too)
     response = requests.get(
-        f"{settings.API_URL}{endpoint}",
+        f"{settings.API_URL}/chat",
         params={"query": query, "model_name": model_name},
         timeout=300,
     )
     response.raise_for_status()
     body = response.json()
     reference = ""
-    if not local:
-        debug = requests.get(
-            f"{settings.API_URL}/chat/debug",
-            params={"session_id": body["session_id"]},
-            timeout=30,
-        )
-        if debug.ok:
-            reference = "\n\n".join(debug.json().get("reference", []))
+    debug = requests.get(
+        f"{settings.API_URL}/chat/debug",
+        params={"session_id": body["session_id"]},
+        timeout=30,
+    )
+    if debug.ok:
+        reference = "\n\n".join(debug.json().get("reference", []))
     return body["response"], reference
 
 
@@ -73,8 +67,6 @@ TEST_CASES = load_test_cases()
 
 @pytest.fixture(scope="module")
 def llm_judge():
-    if USE_LOCAL_JUDGE:
-        return LLMJudge(OllamaLLM(), settings.OLLAMA_MODEL)
     return LLMJudge(OpenRouterLLM(), settings.JUDGE_MODEL)
 
 
@@ -82,11 +74,11 @@ def llm_judge():
     "test_case", TEST_CASES,
     ids=[f"{c['category']}: {c['description']}" for c in TEST_CASES])
 def test_llm_response(llm_judge, test_case):
-    model_name = LOCAL_MODEL_TO_TEST if USE_LOCAL_MODEL else OPENROUTER_MODEL_TO_TEST
+    model_name = OPENROUTER_MODEL_TO_TEST
     query = test_case["query"]
     expected_response = test_case["expected"]
 
-    response, reference = ask_chatbot(query, model_name, local=USE_LOCAL_MODEL)
+    response, reference = ask_chatbot(query, model_name)
     evaluation = llm_judge.evaluate_response(query, response, expected_response,
                                              reference=reference)
 
