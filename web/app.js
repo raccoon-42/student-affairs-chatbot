@@ -47,6 +47,18 @@ const STRINGS = {
     stageSearching: "kaynaklarda aranıyor…",
     stageWriting: "yanıt yazılıyor…",
     tokenUsageHint: "bağlam + yanıt (token) · maliyet",
+    tabUsage: "Kullanım",
+    usageCalls: "Çağrı",
+    usageTokens: "Token",
+    usageCost: "Maliyet",
+    usageTotal: "Toplam",
+    usageEmpty: "Henüz kullanım yok.",
+    usageNote: "Son 30 gün — tüm model çağrıları dahil.",
+    usageKindChat: "Yanıtlar",
+    usageKindGate: "Kapsam denetimi",
+    usageKindRewrite: "Soru yeniden yazma",
+    usageKindImage: "Görsel sorgular",
+    usageKindTitle: "Sohbet başlıkları",
   },
   en: {
     chats: "Chats",
@@ -94,6 +106,18 @@ const STRINGS = {
     stageSearching: "searching sources…",
     stageWriting: "writing…",
     tokenUsageHint: "context + answer (tokens) · cost",
+    tabUsage: "Usage",
+    usageCalls: "Calls",
+    usageTokens: "Tokens",
+    usageCost: "Cost",
+    usageTotal: "Total",
+    usageEmpty: "No usage yet.",
+    usageNote: "Last 30 days — every model call included.",
+    usageKindChat: "Answers",
+    usageKindGate: "Scope gate",
+    usageKindRewrite: "Query rewriting",
+    usageKindImage: "Image queries",
+    usageKindTitle: "Chat titles",
   },
 };
 
@@ -134,7 +158,11 @@ const emptyState = document.getElementById("empty-state");
 let serverMode = false;
 
 function loadConversations() {
-  return JSON.parse(localStorage.getItem("conversations") || "[]");
+  // pending titles don't survive reloads: whatever was stored becomes
+  // visible again (placeholder title), and never-used chats are dropped
+  return JSON.parse(localStorage.getItem("conversations") || "[]")
+    .filter((c) => c.messages?.length)
+    .map(({ pendingTitle, ...c }) => c);
 }
 
 function saveConversations() {
@@ -162,6 +190,7 @@ function newConversation() {
   const conversation = {
     id: crypto.randomUUID().replaceAll("-", ""),
     title: t("newConversation"),
+    pendingTitle: true, // hidden from the sidebar until the model titles it
     updated: Date.now(),
     messages: [],
   };
@@ -221,10 +250,11 @@ function dateGroup(timestamp) {
 
 function renderSidebar() {
   listEl.replaceChildren();
-  // newest first, grouped under ChatGPT-style date headers
+  // newest first, grouped under date headers
   const ordered = [...conversations].sort((a, b) => (b.updated || 0) - (a.updated || 0));
   let lastGroup = null;
   for (const conversation of ordered) {
+    if (conversation.pendingTitle) continue; // listed once the model titles it
     const group = dateGroup(conversation.updated || 0);
     if (group !== lastGroup) {
       const header = document.createElement("div");
@@ -235,10 +265,12 @@ function renderSidebar() {
     }
     const item = document.createElement("div");
     item.className = "conversation-item" + (conversation.id === currentId ? " active" : "");
+    item.dataset.id = conversation.id;
 
     const title = document.createElement("span");
     title.className = "title";
     title.textContent = conversation.title;
+    title.title = conversation.title; // hover reveals what the ellipsis cut
     item.appendChild(title);
 
     const del = document.createElement("button");
@@ -254,6 +286,28 @@ function renderSidebar() {
     item.addEventListener("click", () => select(conversation.id));
     listEl.appendChild(item);
   }
+}
+
+/* an LLM-written title makes the chat appear in the sidebar, revealed
+ * with a typewriter animation */
+async function retitle(conversation) {
+  const params = new URLSearchParams({ session_id: conversation.id });
+  const { title } = await fetch(`/chat/title?${params}`)
+    .then((r) => (r.ok ? r.json() : {}))
+    .catch(() => ({}));
+  if (!title) return; // still hidden; retried after the next answer
+  conversation.title = title;
+  delete conversation.pendingTitle;
+  saveConversations();
+  renderSidebar(); // the item exists only now — animate its first render
+  const el = listEl.querySelector(`[data-id="${conversation.id}"] .title`);
+  if (!el) return;
+  let shown = 0;
+  const tick = setInterval(() => {
+    shown += 1;
+    el.textContent = title.slice(0, shown);
+    if (shown >= title.length) clearInterval(tick);
+  }, 35);
 }
 
 /* context size at a glance under an answer: prompt (system + history +
@@ -583,10 +637,6 @@ async function send(query, image = null) {
   if (!current()) newConversation();
   const conversation = current();
 
-  if (conversation.messages.length === 0) {
-    const titleBase = query || t("imageMessage");
-    conversation.title = titleBase.length > 40 ? titleBase.slice(0, 40) + "…" : titleBase;
-  }
   conversation.messages.push({ role: "user", text: query, at: Date.now() });
   conversation.updated = Date.now();
   saveConversations();
@@ -629,7 +679,7 @@ async function send(query, image = null) {
     const decoder = new TextDecoder();
 
     // tokens arrive in whatever bursts the provider emits; buffer them in
-    // `received` and reveal at a steady rate (ChatGPT-style) so the text
+    // `received` and reveal at a steady rate so the text
     // flows instead of jumping. The reveal speeds up with the backlog, so
     // it never falls far behind the wire.
     let received = "";
@@ -705,6 +755,10 @@ async function send(query, image = null) {
     conversation.updated = Date.now();
     saveConversations();
     if (usage) renderTokenTotal();
+    // a cheap model writes the title after the first exchange — until it
+    // lands the chat stays out of the sidebar, and failed calls retry
+    // after the next answer
+    if (conversation.pendingTitle && conversation.messages.length >= 2) retitle(conversation);
     setBubbleText(botEl, "bot", answer, sources); // final pass turns [n] into chips
     addBotActions(botEl, answer, botMessage);
     if (devMode) {
@@ -776,9 +830,19 @@ input.addEventListener("keydown", (event) => {
   }
 });
 
+const baseInputHeight = input.scrollHeight; // single-line height at load
+
 function resizeInput() {
+  // wrap check always runs in the compact layout (the multiline textarea
+  // is wider, so measuring there would flip-flop on boundary content)
+  composerEl.classList.remove("multiline");
+  input.style.height = "auto";
+  composerEl.classList.toggle("multiline", input.scrollHeight > baseInputHeight + 2);
   input.style.height = "auto";
   input.style.height = `${input.scrollHeight}px`;
+  // past max-height the textarea scrolls: keep the caret in view when
+  // typing at the end (the height juggling above resets scrollTop)
+  if (input.selectionEnd === input.value.length) input.scrollTop = input.scrollHeight;
 }
 
 input.addEventListener("input", resizeInput);
@@ -839,7 +903,7 @@ input.addEventListener("paste", (event) => {
 
 /* ---------- voice input ----------
  * The mic swaps the composer for a live waveform strip with cancel (×)
- * and confirm (✓), ChatGPT-style. Confirm posts the blob to /transcribe
+ * and confirm (✓). Confirm posts the blob to /transcribe
  * (Groq Whisper); the text lands in the input for review — it is never
  * sent automatically. Button shows only when the server has a key. */
 const micButton = document.getElementById("mic");
@@ -1113,7 +1177,7 @@ profileForm.addEventListener("submit", () => {
 });
 
 /* ---------- settings dialog ----------
- * ChatGPT-style: section tabs on the left, label/control rows on the
+ * Section tabs on the left, label/control rows on the
  * right. Every control applies immediately — there is no save button. */
 const settingsDialog = document.getElementById("settings-dialog");
 let devMode = localStorage.getItem("devmode") === "1";
@@ -1129,7 +1193,60 @@ function openSettings() {
   settingsDialog.querySelectorAll("input[name=settings_education]").forEach((radio) => {
     radio.checked = radio.value === currentUser?.education_type;
   });
+  loadUsage(); // fills the Usage tab in the background
   settingsDialog.showModal();
+}
+
+/* the Usage tab: this person's model spend of the last 30 days, one row
+ * per pipeline step (answers, gate, rewriting, …) plus a total */
+const USAGE_KIND_LABELS = { chat: "usageKindChat", gate: "usageKindGate",
+                            rewrite: "usageKindRewrite", image: "usageKindImage",
+                            title: "usageKindTitle" };
+
+async function loadUsage() {
+  const { usage } = await fetch("/usage/me")
+    .then((r) => (r.ok ? r.json() : {}))
+    .catch(() => ({}));
+  const body = document.getElementById("usage-table-body");
+  const rows = usage ?? [];
+  body.replaceChildren();
+  document.getElementById("usage-table").hidden = rows.length === 0;
+  document.getElementById("usage-empty").hidden = rows.length > 0;
+  const cell = (row, text, numeric = true) => {
+    const td = document.createElement("td");
+    td.textContent = text;
+    if (numeric) td.className = "num";
+    row.appendChild(td);
+  };
+  // name the model only where it distinguishes: answers may run on
+  // Haiku or Sonnet, the pipeline steps always use the same model
+  const kindModels = {};
+  for (const entry of rows) (kindModels[entry.kind] ??= new Set()).add(entry.model);
+  const shortModel = (id) => ({
+    "anthropic/claude-haiku-4.5": t("modelHaiku"),
+    "anthropic/claude-sonnet-5": t("modelSonnet"),
+  })[id] || (id || "").split("/").pop();
+  let calls = 0, tokens = 0, cost = 0;
+  for (const entry of rows) {
+    const entryTokens = (entry.prompt_tokens || 0) + (entry.completion_tokens || 0);
+    calls += entry.calls; tokens += entryTokens; cost += entry.cost || 0;
+    const tr = document.createElement("tr");
+    const label = USAGE_KIND_LABELS[entry.kind] ? t(USAGE_KIND_LABELS[entry.kind]) : entry.kind;
+    cell(tr, kindModels[entry.kind].size > 1 ? `${label} · ${shortModel(entry.model)}` : label, false);
+    cell(tr, entry.calls);
+    cell(tr, formatTokens(entryTokens));
+    cell(tr, entry.cost ? formatCost(entry.cost) : "—");
+    body.appendChild(tr);
+  }
+  if (rows.length) {
+    const total = document.createElement("tr");
+    total.className = "usage-total";
+    cell(total, t("usageTotal"), false);
+    cell(total, calls);
+    cell(total, formatTokens(tokens));
+    cell(total, cost ? formatCost(cost) : "—");
+    body.appendChild(total);
+  }
 }
 
 settingsDialog.querySelectorAll(".settings-tab").forEach((tab) => {
@@ -1185,6 +1302,7 @@ async function adoptCurrentConversation() {
     body: JSON.stringify({
       id: conversation.id,
       messages: conversation.messages.map((m) => ({ role: m.role, text: m.text })),
+      title: conversation.pendingTitle ? null : conversation.title,
     }),
   });
   if (!result.ok) return null;
@@ -1277,8 +1395,8 @@ document.getElementById("logout").addEventListener("click", async () => {
 initAuth();
 
 /* ---------- sidebar toggle ----------
- * Mobile: off-canvas drawer with overlay. Desktop: collapses like
- * ChatGPT's sidebar, remembered across visits. */
+ * Mobile: off-canvas drawer with overlay. Desktop: collapses,
+ * remembered across visits. */
 
 function isMobile() {
   return window.matchMedia("(max-width: 768px)").matches;

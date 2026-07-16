@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>İyteBot · Usage</title>
+  <style>
+    /* the app's monochrome palette, standalone so this page has no
+     * dependency on the chat UI's stylesheet */
+    :root {
+      --bg: #f7f7f5; --surface: #ffffff; --surface-2: #efeeec;
+      --text: #1c1917; --muted: #8a8580; --border: #e5e3e0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #131313; --surface: #1e1e1e; --surface-2: #262626;
+        --text: #e7e5e4; --muted: #8a8580; --border: #2e2e2e;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    main { max-width: 880px; margin: 0 auto; }
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    h1 { font-size: 1.3rem; }
+    h1 small { color: var(--muted); font-weight: 400; font-size: 0.85rem; margin-left: 0.5rem; }
+    #windows, #kinds { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+    #kinds { margin-bottom: 1rem; }
+    #windows button, #kinds button {
+      font: inherit;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      cursor: pointer;
+    }
+    #windows button:hover, #kinds button:hover { color: var(--text); }
+    #windows button.active, #kinds button.active {
+      color: var(--bg);
+      background: var(--text);
+      border-color: var(--text);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      /* border-radius on tables needs this */
+      border-style: hidden;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); }
+    th {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+    th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tbody tr.person { cursor: pointer; }
+    tbody tr.person:hover { background: var(--surface-2); }
+    tbody tr:last-child td { border-bottom: none; }
+    td.key { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    td .muted, #status { color: var(--muted); }
+    #status { margin-top: 1rem; font-size: 0.9rem; }
+    /* expanded per-kind breakdown */
+    tr.detail td { background: var(--surface-2); padding: 0.4rem 0.9rem 0.8rem; }
+    tr.detail table {
+      box-shadow: none;
+      border: none;
+      background: none;
+      font-size: 0.85rem;
+    }
+    tr.detail th { font-size: 0.68rem; }
+    tr.detail td, tr.detail th { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--border); }
+    tr.detail tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Usage<small>model spend per person</small></h1>
+    <div id="windows">
+      <button data-days="1">24h</button>
+      <button data-days="7">7d</button>
+      <button data-days="30" class="active">30d</button>
+      <button data-days="90">90d</button>
+      <button data-days="36500">All</button>
+    </div>
+  </header>
+  <div id="kinds">
+    <button data-kind="" class="active">All kinds</button>
+    <button data-kind="chat">Answers</button>
+    <button data-kind="gate">Scope gate</button>
+    <button data-kind="rewrite">Rewriting</button>
+    <button data-kind="image">Image queries</button>
+    <button data-kind="title">Titles</button>
+  </div>
+  <table id="usage" hidden>
+    <thead>
+      <tr>
+        <th>Person</th>
+        <th class="num">Messages</th>
+        <th class="num">Calls</th>
+        <th class="num">Input</th>
+        <th class="num">Output</th>
+        <th class="num">Cost</th>
+        <th class="num">Last seen</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p id="status">Loading…</p>
+</main>
+<script>
+const KINDS = { chat: "Answers", gate: "Scope gate", rewrite: "Rewriting",
+                image: "Image queries", title: "Titles" };
+const MODELS = { "anthropic/claude-haiku-4.5": "Haiku 4.5",
+                 "anthropic/claude-sonnet-5": "Sonnet 5" };
+
+const fmtTokens = (n) => !n ? "0"
+  : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M`
+  : n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`;
+const fmtCost = (c) => c == null ? "—" : `$${c.toFixed(c >= 0.1 ? 2 : 4)}`;
+const fmtAgo = (ts) => {
+  const s = Date.now() / 1000 - ts;
+  if (s < 3600) return `${Math.max(1, Math.round(s / 60))} min ago`;
+  if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+  return new Date(ts * 1000).toLocaleDateString("en-GB");
+};
+
+let days = 30;
+let kind = "";
+const tbody = document.querySelector("#usage tbody");
+const table = document.getElementById("usage");
+const status = document.getElementById("status");
+
+function cell(tr, text, cls = "") {
+  const td = document.createElement("td");
+  td.textContent = text;
+  if (cls) td.className = cls;
+  tr.appendChild(td);
+  return td;
+}
+
+async function load() {
+  tbody.replaceChildren();
+  table.hidden = true;
+  status.textContent = "Loading…";
+  const params = new URLSearchParams({ days });
+  if (kind) params.set("kind", kind);
+  const response = await fetch(`/admin/usage?${params}`).catch(() => null);
+  if (!response || response.status === 403) {
+    status.textContent = "Not authorized — sign in on the main page with an admin account.";
+    return;
+  }
+  const { usage } = await response.json();
+  if (!usage.length) { status.textContent = "No usage in this window."; return; }
+  status.textContent = "";
+  table.hidden = false;
+  for (const row of usage) {
+    const tr = document.createElement("tr");
+    tr.className = "person";
+    cell(tr, row.key, "key").title = row.key;
+    cell(tr, row.messages ?? 0, "num");
+    cell(tr, row.calls ?? 0, "num");
+    cell(tr, fmtTokens(row.prompt_tokens), "num");
+    cell(tr, fmtTokens(row.completion_tokens), "num");
+    cell(tr, fmtCost(row.cost), "num");
+    cell(tr, fmtAgo(row.last_seen), "num");
+    tr.addEventListener("click", () => toggleDetail(tr, row.key));
+    tbody.appendChild(tr);
+  }
+}
+
+async function toggleDetail(tr, key) {
+  if (tr.nextElementSibling?.classList.contains("detail")) {
+    tr.nextElementSibling.remove();
+    return;
+  }
+  document.querySelectorAll("tr.detail").forEach((el) => el.remove());
+  const params = new URLSearchParams({ key, days });
+  if (kind) params.set("kind", kind);
+  const { usage } = await fetch(`/admin/usage/detail?${params}`)
+    .then((r) => (r.ok ? r.json() : { usage: [] }))
+    .catch(() => ({ usage: [] }));
+  const detail = document.createElement("tr");
+  detail.className = "detail";
+  const td = document.createElement("td");
+  td.colSpan = 7;
+  const inner = document.createElement("table");
+  inner.innerHTML = `<thead><tr><th>Step</th><th>Model</th>
+    <th class="num">Calls</th><th class="num">Input</th>
+    <th class="num">Output</th><th class="num">Cost</th></tr></thead>`;
+  const innerBody = document.createElement("tbody");
+  for (const row of usage) {
+    const line = document.createElement("tr");
+    cell(line, KINDS[row.kind] || row.kind);
+    cell(line, MODELS[row.model] || row.model);
+    cell(line, row.calls, "num");
+    cell(line, fmtTokens(row.prompt_tokens), "num");
+    cell(line, fmtTokens(row.completion_tokens), "num");
+    cell(line, fmtCost(row.cost), "num");
+    innerBody.appendChild(line);
+  }
+  inner.appendChild(innerBody);
+  td.appendChild(inner);
+  detail.appendChild(td);
+  tr.after(detail);
+}
+
+document.querySelectorAll("#windows button").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("#windows button").forEach((other) =>
+      other.classList.toggle("active", other === button));
+    days = Number(button.dataset.days);
+    load();
+  });
+});
+
+document.querySelectorAll("#kinds button").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("#kinds button").forEach((other) =>
+      other.classList.toggle("active", other === button));
+    kind = button.dataset.kind;
+    load();
+  });
+});
+
+load();
+</script>
+</body>
+</html>

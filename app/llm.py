@@ -11,6 +11,14 @@ import sys
 from config import settings
 
 
+def chat_with_usage(llm, model, messages):
+    """(text, usage) from any adapter: uses the adapter's usage-aware call
+    when it has one, plain chat otherwise (fakes in tests)."""
+    if hasattr(llm, "chat_with_usage"):
+        return llm.chat_with_usage(model, messages)
+    return llm.chat(model, messages), None
+
+
 class OpenRouterLLM:
     """Adapter for OpenRouter (OpenAI-compatible API)."""
 
@@ -28,12 +36,24 @@ class OpenRouterLLM:
                                   timeout=settings.LLM_TIMEOUT_SECONDS)
 
     def chat(self, model, messages):
+        return self.chat_with_usage(model, messages)[0]
+
+    def chat_with_usage(self, model, messages):
+        """(text, usage) — usage carries prompt/completion tokens and the
+        charged USD, so every call kind (gate, rewrite, title, …) can be
+        accounted, not just the streamed main answer."""
         self._ensure_client()
         completion = self._client.chat.completions.create(
-            model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS)
+            model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS,
+            extra_body={"usage": {"include": True}})
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")
-        return completion.choices[0].message.content
+        usage = None
+        if completion.usage:
+            usage = {"prompt_tokens": completion.usage.prompt_tokens,
+                     "completion_tokens": completion.usage.completion_tokens,
+                     "cost": getattr(completion.usage, "cost", None)}
+        return completion.choices[0].message.content, usage
 
     def chat_stream(self, model, messages):
         # without an explicit max_tokens OpenRouter picks its own cap, which

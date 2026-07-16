@@ -108,7 +108,8 @@ def test_import_adopts_anonymous_conversation(monkeypatch):
     assert client.post("/conversations/import", json=payload).status_code == 200  # idempotent
 
     [conversation] = client.get("/conversations").json()
-    assert conversation["title"] == "soru"
+    # never the first message — a placeholder until the model titles it
+    assert conversation["title"] == "Yeni konuşma"
     messages = client.get("/conversations/anon-conv").json()["messages"]
     assert [(m["role"], m["content"]) for m in messages] == [
         ("user", "soru"), ("assistant", "cevap")]

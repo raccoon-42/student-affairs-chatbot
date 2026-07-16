@@ -113,6 +113,21 @@ def _enforce_rate_limit(request: Request, user) -> None:
                                        "daha yüksek bir limitle devam edebilirsin.")
 
 
+def _record_turn_usage(key: str, entries: list) -> None:
+    """One usage_log row per LLM call of a finished turn (gate, rewrite,
+    image, chat), written off-thread. Anonymous traffic counts too, and
+    gate rows exist even for refused turns."""
+    if not entries:
+        return
+
+    def write():
+        for entry in entries:
+            storage.record_usage(key, entry["model"], entry["kind"],
+                                 entry["prompt_tokens"], entry["completion_tokens"],
+                                 entry.get("cost"))
+    Thread(target=write, daemon=True).start()
+
+
 def _register_refusal(request: Request, user, response_text: str) -> None:
     """Called after the answer is known — canned refusals count toward
     the spam brake; abuse additionally triggers the immediate block."""
@@ -205,6 +220,7 @@ class ImportedMessage(BaseModel):
 class ConversationImport(BaseModel):
     id: str
     messages: list[ImportedMessage]
+    title: str | None = None  # the model-written title the browser already has
 
 
 @app.post("/conversations/import")
@@ -224,7 +240,7 @@ async def conversation_import(body: ConversationImport, auth_token: str = Cookie
     storage.import_conversation(body.id, user["email"], [
         {"role": "assistant" if m.role == "bot" else "user", "content": m.text}
         for m in body.messages
-    ])
+    ], title=body.title[:80] if body.title else None)
     return {"ok": True}
 
 
@@ -268,6 +284,34 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
     return {"sources": [], "usage": None}
 
 
+@app.get("/chat/title")
+async def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)):
+    """A short LLM-written title for the conversation's first exchange —
+    the UI swaps its first-question placeholder for it. Reads the cached
+    conversation only; the chat that filled it was already rate-limited,
+    and the UI asks once per conversation."""
+    user = auth.sessions.get(auth_token)
+    _authorize_conversation(session_id, user)
+    with _sessions_lock:
+        cached = _sessions.get(("openrouter", session_id))
+    if not cached:
+        return {"title": None}
+    _, _, _, small_model = _backend("openrouter")
+    try:
+        title, usage = cached[0].suggest_title(small_model)
+    except Exception as error:  # a failed title is not worth an error state
+        print(f"[title] generation failed: {error}", file=sys.stderr)
+        return {"title": None}
+    if usage:
+        storage.record_usage(_limit_key(request, user), small_model, "title",
+                             usage["prompt_tokens"], usage["completion_tokens"],
+                             usage.get("cost"))
+    if not title or len(title) > 80:  # a rambling model is not a title
+        return {"title": None}
+    storage.set_conversation_title(session_id, title)  # no-op for anonymous
+    return {"title": title}
+
+
 @app.get("/chat/debug")
 async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
     """CLI-style log lines for the current conversation's latest turn —
@@ -281,14 +325,37 @@ async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
             "usage": cached[0].last_usage if cached else None}
 
 
-@app.get("/admin/usage")
-async def admin_usage(days: float = 7, auth_token: str = Cookie(None)):
-    """Per-person token totals (email or IP) over the last `days`, biggest
-    spender first — for spotting outliers. ADMIN_EMAILS only."""
+@app.get("/usage/me")
+async def usage_me(request: Request, days: float = 30, auth_token: str = Cookie(None)):
+    """The caller's own LLM spend, broken down by pipeline step — feeds
+    the settings Usage tab. Anonymous callers see their IP's usage."""
+    user = auth.sessions.get(auth_token)
+    return {"days": days, "usage": storage.usage_by_kind(_limit_key(request, user), days)}
+
+
+def _require_admin(auth_token) -> None:
     user = auth.sessions.get(auth_token)
     if user is None or user["email"] not in settings.ADMIN_EMAILS:
         raise HTTPException(status_code=403, detail="Bu sayfaya erişim yetkin yok")
-    return {"days": days, "usage": storage.usage_by_key(days)}
+
+
+@app.get("/admin/usage")
+async def admin_usage(days: float = 7, kind: str = None, auth_token: str = Cookie(None)):
+    """Per-person token totals (email or IP) over the last `days`, biggest
+    spender first — for spotting outliers. `kind` narrows to one call
+    type (chat/gate/rewrite/image/title). ADMIN_EMAILS only; the pretty
+    face is /admin.html."""
+    _require_admin(auth_token)
+    return {"days": days, "kind": kind, "usage": storage.usage_by_key(days, kind)}
+
+
+@app.get("/admin/usage/detail")
+async def admin_usage_detail(key: str, days: float = 7, kind: str = None,
+                             auth_token: str = Cookie(None)):
+    """One person's spend broken down by pipeline step and model — the
+    expandable row in /admin.html."""
+    _require_admin(auth_token)
+    return {"key": key, "days": days, "usage": storage.usage_by_kind(key, days, kind)}
 
 
 def _validate_model(model_name: str) -> None:
@@ -301,6 +368,8 @@ def _validate_model(model_name: str) -> None:
 @app.get("/chat", response_model=ChatResponse)
 async def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
                auth_token: str = Cookie(None)):
+    if len(query) > MAX_QUERY_CHARS:
+        raise HTTPException(status_code=413, detail="Mesaj çok uzun.")
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -315,6 +384,7 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
         raise HTTPException(status_code=503,
                             detail=f"Üstteki model servisi yanıt vermedi: {error}")
     _register_refusal(request, user, response)
+    _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
         storage.record_exchange(session_id, user["email"], query, response,
                                 sources=conversation.last_sources)
@@ -322,6 +392,8 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
 
 
 MAX_IMAGE_CHARS = 8_000_000  # ~6 MB of image as a base64 data URL
+MAX_QUERY_CHARS = 4_000  # matches the composer's maxlength; a query
+# beyond this is either abuse or a paste that belongs in an image
 
 
 class ChatStreamBody(BaseModel):
@@ -341,8 +413,13 @@ STREAM_ERRORS = {
            "\n\n*(Connection error — the rest of the answer could not be retrieved.)*"),
 }
 
+QUERY_TOO_LONG = {"tr": "Mesaj çok uzun.", "en": "The message is too long."}
+
 
 def _stream_chat(request, query, session_id, model_name, auth_token, image=None, lang="tr"):
+    if len(query) > MAX_QUERY_CHARS:
+        raise HTTPException(status_code=413,
+                            detail=QUERY_TOO_LONG.get(lang, QUERY_TOO_LONG["tr"]))
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -374,16 +451,7 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             return
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
-        # per-person token accounting (anonymous traffic included);
-        # refusals never reach the main model, so last_usage stays None
-        if conversation.last_usage:
-            Thread(target=storage.record_usage,
-                   args=(_limit_key(request, user),
-                         model_name or settings.OPENROUTER_MODEL,
-                         conversation.last_usage["prompt_tokens"],
-                         conversation.last_usage["completion_tokens"],
-                         conversation.last_usage.get("cost")),
-                   daemon=True).start()
+        _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
         # persist only after the full answer arrived; refusals aren't
         # part of the transcript. The write happens off-thread: the HTTP
         # stream stays open until this generator returns, so a slow SQLite

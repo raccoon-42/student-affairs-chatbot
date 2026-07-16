@@ -25,13 +25,18 @@ def test_auth_session_roundtrip():
     assert storage.get_auth_user("token1") is None
 
 
-def test_exchanges_accumulate_with_title_from_first_question():
+def test_exchanges_accumulate_with_placeholder_title():
     storage.upsert_user(USER)
     storage.record_exchange("conv1", USER["email"], "ilk soru", "ilk cevap")
     storage.record_exchange("conv1", USER["email"], "ikinci soru", "ikinci cevap")
 
     [conversation] = storage.list_conversations(USER["email"])
-    assert conversation["title"] == "ilk soru"
+    # never the question text — the model-written title replaces this
+    assert conversation["title"] == "Yeni konuşma"
+
+    storage.set_conversation_title("conv1", "Ders Kaydı")
+    [conversation] = storage.list_conversations(USER["email"])
+    assert conversation["title"] == "Ders Kaydı"
     messages = storage.conversation_messages("conv1")
     assert [(m["role"], m["content"]) for m in messages] == [
         ("user", "ilk soru"), ("assistant", "ilk cevap"),

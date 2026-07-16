@@ -9,6 +9,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 from app.guardrails import REFUSALS
+from app.llm import chat_with_usage
 from config import settings
 
 # In-band stage markers for streaming consumers. Control characters so
@@ -103,6 +104,13 @@ Sohbet geçmişi:
 
 Son mesaj: {query}"""
 
+TITLE_PROMPT = """Aşağıdaki sohbet için en fazla dört kelimelik kısa bir başlık yaz.
+- Öğrencinin yazdığı dilde yaz.
+- Sadece başlığı döndür; tırnak, nokta veya açıklama ekleme.
+
+Öğrenci: {query}
+Bot: {answer}"""
+
 IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönderdi.
 {typed}Görseldeki metni ve niyeti kullanarak öğrencinin sormak istediği soruyu tek bir bağımsız Türkçe cümle olarak yaz.
 - Soruyu CEVAPLAMA, sadece yaz.
@@ -118,6 +126,7 @@ class QueryRewriter:
     def __init__(self, llm, model):
         self._llm = llm
         self._model = model
+        self.last_usage = None  # tokens/cost of the latest rewrite/image call
 
     def rewrite(self, query: str, history: list) -> str:
         if not history:
@@ -125,12 +134,13 @@ class QueryRewriter:
         lines = "\n".join(
             f"{'Öğrenci' if m['role'] == 'user' else 'Bot'}: {m['content']}" for m in history
         )
+        self.last_usage = None
         try:
-            rewritten = self._llm.chat(self._model, [{
+            rewritten, self.last_usage = chat_with_usage(self._llm, self._model, [{
                 "role": "user",
                 "content": REWRITE_PROMPT.format(history=lines, query=query),
-            }]).strip()
-            return rewritten or query
+            }])
+            return rewritten.strip() or query
         except Exception as error:
             # retrieval on the raw query beats no answer at all
             print(f"[rewrite] failed, using raw query: {error}", file=sys.stderr)
@@ -141,15 +151,16 @@ class QueryRewriter:
         standalone search query, so the gate and retrieval work on what the
         image actually asks — the vector search can't see pixels."""
         typed = f"Öğrencinin yazdığı mesaj: {query}\n" if query else ""
+        self.last_usage = None
         try:
-            extracted = self._llm.chat(self._model, [{
+            extracted, self.last_usage = chat_with_usage(self._llm, self._model, [{
                 "role": "user",
                 "content": [
                     {"type": "text", "text": IMAGE_QUERY_PROMPT.format(typed=typed)},
                     {"type": "image_url", "image_url": {"url": image}},
                 ],
-            }]).strip()
-            return extracted or query
+            }])
+            return extracted.strip() or query
         except Exception as error:
             print(f"[image] query extraction failed, using text only: {error}", file=sys.stderr)
             return query
@@ -187,6 +198,7 @@ class Conversation:
         self.last_reference = []  # numbered chunk texts sent to the model last turn
         self.last_debug = []  # CLI-style log lines for the latest turn
         self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
+        self.turn_usage = []  # every LLM call of the latest turn: {kind, model, tokens, cost}
 
     def _log(self, line):
         print(line, file=sys.stderr)
@@ -197,13 +209,20 @@ class Conversation:
         reads as a table in the dev card (monospace) and in stderr."""
         self._log(f"{label:<10}{value:>8}  {detail}".rstrip())
 
+    def _track(self, kind, model, usage):
+        """One LLM call of the current turn, for per-kind cost accounting."""
+        if usage:
+            self.turn_usage.append({"kind": kind, "model": model, **usage})
+
     def respond(self, query: str, model: str = None, education_type: str = None) -> str:
         verdict = self._prepare(query, education_type)
         if verdict != "ok":
             return REFUSALS[verdict]
 
         start = time.perf_counter()
-        answer = self._llm.chat(model or self._model, self._messages)
+        answer, self.last_usage = chat_with_usage(
+            self._llm, model or self._model, self._messages)
+        self._track("chat", model or self._model, self.last_usage)
         self._log_row("llm", f"{time.perf_counter() - start:.2f}s")
         self._add_assistant_message(answer)
         return answer
@@ -234,6 +253,7 @@ class Conversation:
                 token = next(stream)
             except StopIteration as done:
                 self.last_usage = done.value
+                self._track("chat", model or self._model, self.last_usage)
                 break
             if first_token_at is None:
                 first_token_at = time.perf_counter() - start
@@ -269,10 +289,12 @@ class Conversation:
         text for the prompt and the history."""
         self.last_debug = []
         self.last_usage = None  # refusals never reach the main call
+        self.turn_usage = []
         search_query = query
         if self._rewriter is not None and image is not None:
             extract_start = time.perf_counter()
             search_query = self._rewriter.image_query(query, image)
+            self._track("image", self._rewriter._model, self._rewriter.last_usage)
             self._log_row("image", f"{time.perf_counter() - extract_start:.2f}s",
                           f"search query: {search_query!r}" if search_query != query else "")
             if not query:
@@ -280,6 +302,7 @@ class Conversation:
         elif self._rewriter is not None and len(self._messages) > 1:
             rewrite_start = time.perf_counter()
             search_query = self._rewriter.rewrite(query, self._messages[1:])
+            self._track("rewrite", self._rewriter._model, self._rewriter.last_usage)
             self._log_row("rewrite", f"{time.perf_counter() - rewrite_start:.2f}s",
                           f"{query!r}\n{'':<20}-> {search_query!r}"
                           if search_query != query else "unchanged")
@@ -306,6 +329,7 @@ class Conversation:
                 speculative = pool.submit(self._retriever.retrieve_all, search_query,
                                           audience)
                 answer = verdict.result()
+                self._track("gate", self._gate._model, self._gate.last_usage)
                 self._log_row("gate", f"{time.perf_counter() - start:.2f}s",
                               f"verdict {answer}")
                 if answer != "ok":
@@ -389,6 +413,19 @@ class Conversation:
         limit = 1 + 2 * self._max_exchanges
         if len(self._messages) > limit:
             self._messages = [self._messages[0]] + self._messages[-(limit - 1):]
+
+    def suggest_title(self, model):
+        """(title, usage): a short sidebar title for the first exchange,
+        written in the student's language; (None, None) when there is no
+        exchange to summarize. The answer is clipped — four title words
+        don't need all of it."""
+        exchange = [m for m in self._messages if m["role"] != "system"]
+        if len(exchange) < 2:
+            return None, None
+        title, usage = chat_with_usage(self._llm, model, [
+            {"role": "user", "content": TITLE_PROMPT.format(
+                query=exchange[0]["content"], answer=exchange[1]["content"][:500])}])
+        return title.strip().strip('"\'') or None, usage
 
     def reset(self):
         self._messages = []

@@ -94,7 +94,7 @@ button {
   gap: 0.5rem;
 }
 
-/* a sidebar row like ChatGPT's New chat — borderless, icon + label */
+/* the New chat sidebar row — borderless, icon + label */
 #new-conversation {
   display: flex;
   align-items: center;
@@ -119,6 +119,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  /* keep the overlay scrollbar off the items' delete button */
+  padding-right: 8px;
 }
 
 #chats-header {
@@ -497,6 +499,36 @@ dialog .dialog-close:focus-visible {
   margin: 0.2rem 0 0;
 }
 
+/* the Usage tab: per-kind cost table with a bold total row */
+#usage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+#usage-table th,
+#usage-table td {
+  text-align: left;
+  padding: 0.45rem 0.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#usage-table th {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+#usage-table .num,
+#usage-table th:not(:first-child) {
+  text-align: right;
+}
+
+#usage-table .usage-total td {
+  font-weight: 600;
+  border-bottom: none;
+}
+
 .settings-panel > p {
   color: var(--muted);
   font-size: 0.9rem;
@@ -593,6 +625,10 @@ header {
   padding: 0.75rem 1.25rem;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
+  /* the collapsed state adds left padding for the fixed hamburger —
+   * ease it at the sidebar's pace so the title slides instead of
+   * jumping the moment the class lands */
+  transition: padding-left 0.2s ease;
 }
 
 /* keep the title clear of the fixed hamburger when it floats over the chat */
@@ -833,12 +869,12 @@ header h1 {
   pointer-events: none;
 }
 
-/* one large pill with the send arrow inside, ChatGPT-style */
+/* one large pill with the send arrow inside */
 #composer {
   position: relative;
   display: flex;
   /* buttons hug the bottom edge so the pill grows upward with the
-   * multiline textarea, ChatGPT-style */
+   * multiline textarea */
   align-items: flex-end;
   gap: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1.4rem;
@@ -856,13 +892,37 @@ header h1 {
   font-size: 1rem;
   color: var(--text);
   padding: 0.55rem 0;
-  /* multiline: grows with content (script sets the height), caps at
-   * ~6 lines then scrolls; never user-resizable */
+  /* multiline: grows with content (script sets the height)
+   * up to ~30% of the screen, then scrolls; never user-resizable */
   resize: none;
   line-height: 1.4;
-  max-height: 9rem;
+  max-height: 30vh;
   overflow-y: auto;
 }
+
+/* multiline state: the textarea takes a full-width top row — the cursor
+ * starts at the pill's left corner instead of between the buttons — and
+ * +/mic/send drop to their own row underneath */
+#composer.multiline {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  padding: 0.75rem 0.5rem 0.5rem;
+}
+
+#composer.multiline #input {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  /* left edge of the text sits on the + icon's glyph */
+  padding: 0 0.4rem 0.3rem;
+}
+
+/* cancel the base -0.9rem (sized against the compact row's 1.4rem
+ * padding); the grid's padding is 0.5rem, so without this the + hugs
+ * the corner — it must sit at the exact same x as in the compact row */
+#composer.multiline #attach { grid-row: 2; grid-column: 1; margin-left: 0; }
+#composer.multiline #mic { grid-row: 2; grid-column: 3; }
+#composer.multiline #send { grid-row: 2; grid-column: 4; }
+#composer.multiline #recorder { grid-row: 2; grid-column: 1 / -1; }
 
 #input:focus {
   outline: none;

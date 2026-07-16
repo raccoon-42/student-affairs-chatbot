@@ -150,6 +150,20 @@ def test_stream_without_usage_leaves_none():
     assert conversation.last_usage is None
 
 
+def test_suggest_title_summarizes_first_exchange():
+    llm = FakeLLM(reply="Dersten Çekilme Tarihleri")
+    conversation = make_conversation(llm)
+
+    assert conversation.suggest_title("model") == (None, None)  # nothing to summarize yet
+    conversation.respond("dersten çekilme ne zaman")
+    title, _usage = conversation.suggest_title("model")
+
+    assert title == "Dersten Çekilme Tarihleri"
+    # the title prompt carries the exchange, not the retrieval context
+    prompt = llm.calls[-1][1][-1]["content"]
+    assert "dersten çekilme ne zaman" in prompt
+
+
 def test_stream_history_matches_respond_history():
     streamed = make_conversation(FakeLLM(reply="cevap"))
     list(streamed.respond_stream("soru"))

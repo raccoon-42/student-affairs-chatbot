@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS usage_log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     key TEXT NOT NULL,
     model TEXT NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'chat',
     prompt_tokens INTEGER NOT NULL,
     completion_tokens INTEGER NOT NULL,
     cost REAL,
@@ -66,10 +67,12 @@ def _connect():
     columns = [row[1] for row in conn.execute("PRAGMA table_info(messages)")]
     if "sources" not in columns:
         conn.execute("ALTER TABLE messages ADD COLUMN sources TEXT")
-    # migration: cost column arrived a day after usage_log
+    # migrations: cost and kind columns arrived after usage_log
     columns = [row[1] for row in conn.execute("PRAGMA table_info(usage_log)")]
     if "cost" not in columns:
         conn.execute("ALTER TABLE usage_log ADD COLUMN cost REAL")
+    if "kind" not in columns:
+        conn.execute("ALTER TABLE usage_log ADD COLUMN kind TEXT NOT NULL DEFAULT 'chat'")
     # migration: per-message usage, so conversation totals survive reloads
     columns = [row[1] for row in conn.execute("PRAGMA table_info(messages)")]
     if "usage" not in columns:
@@ -136,11 +139,13 @@ def drop_auth_session(token):
 
 def record_exchange(conversation_id: str, email: str, query: str, answer: str, sources=None,
                     usage=None):
-    """One completed turn: creates the conversation row on first use
-    (titled by the first question) and appends both messages. `sources`
-    documents what the answer was grounded on, `usage` what it cost."""
+    """One completed turn: creates the conversation row on first use and
+    appends both messages. `sources` documents what the answer was
+    grounded on, `usage` what it cost. The title is a placeholder — the
+    question must never serve as one; set_conversation_title swaps it
+    for the model-written title shortly after."""
     now = time.time()
-    title = query if len(query) <= 60 else query[:60] + "…"
+    title = "Yeni konuşma"
     with _connect() as conn:
         conn.execute(
             """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
@@ -158,13 +163,13 @@ def record_exchange(conversation_id: str, email: str, query: str, answer: str, s
         )
 
 
-def import_conversation(conversation_id: str, email: str, messages: list):
+def import_conversation(conversation_id: str, email: str, messages: list, title: str = None):
     """Adopt an anonymous conversation into an account: the browser sends
-    the transcript it kept locally, we persist it as if it had always
-    been the user's. Caller must have checked ownership."""
+    the transcript it kept locally (plus the model-written title it
+    already has), we persist it as if it had always been the user's.
+    Caller must have checked ownership."""
     now = time.time()
-    first_user = next((m["content"] for m in messages if m["role"] == "user"), "")
-    title = first_user if len(first_user) <= 60 else first_user[:60] + "…"
+    title = title or "Yeni konuşma"
     with _connect() as conn:
         conn.execute(
             """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
@@ -179,36 +184,71 @@ def import_conversation(conversation_id: str, email: str, messages: list):
 
 # ---------- token usage ----------
 
-def record_usage(key: str, model: str, prompt_tokens: int, completion_tokens: int,
+def record_usage(key: str, model: str, kind: str, prompt_tokens: int, completion_tokens: int,
                  cost: float = None):
-    """One main-model call. `key` is the rate-limit identity: the email of
-    a signed-in user, otherwise the client IP — anonymous traffic counts
-    too, unlike conversation persistence. `cost` is the charged USD amount
-    OpenRouter reported, when it did."""
+    """One LLM call. `key` is the rate-limit identity: the email of a
+    signed-in user, otherwise the client IP — anonymous traffic counts
+    too, unlike conversation persistence. `kind` says which pipeline step
+    paid (chat/gate/rewrite/image/title); `cost` is the charged USD
+    amount OpenRouter reported, when it did."""
     with _connect() as conn:
         conn.execute(
-            """INSERT INTO usage_log (key, model, prompt_tokens, completion_tokens, cost, created_at)
-               VALUES (?, ?, ?, ?, ?, ?)""",
-            (key, model, prompt_tokens, completion_tokens, cost, time.time()),
+            """INSERT INTO usage_log (key, model, kind, prompt_tokens, completion_tokens,
+                                      cost, created_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (key, model, kind, prompt_tokens, completion_tokens, cost, time.time()),
         )
 
 
-def usage_by_key(days: float = 7) -> list:
-    """Per-person totals over the window, biggest spender first — the
-    outlier view."""
+def usage_by_kind(key: str, days: float = 30, kind: str = None) -> list:
+    """One person's spend broken down by pipeline step and model — feeds
+    the settings Usage tab and the admin page's expanded rows (the UIs
+    show the model only when a step ran on more than one)."""
     since = time.time() - days * 86400
+    where = "key = ? AND created_at >= ?" + (" AND kind = ?" if kind else "")
+    params = (key, since, kind) if kind else (key, since)
     with _connect() as conn:
         rows = conn.execute(
-            """SELECT key, COUNT(*) AS messages,
-                      SUM(prompt_tokens) AS prompt_tokens,
-                      SUM(completion_tokens) AS completion_tokens,
-                      SUM(cost) AS cost,
-                      MAX(created_at) AS last_seen
-               FROM usage_log WHERE created_at >= ?
-               GROUP BY key
-               ORDER BY SUM(prompt_tokens) + SUM(completion_tokens) DESC""",
-            (since,)).fetchall()
+            f"""SELECT kind, model, COUNT(*) AS calls,
+                       SUM(prompt_tokens) AS prompt_tokens,
+                       SUM(completion_tokens) AS completion_tokens,
+                       SUM(cost) AS cost
+                FROM usage_log WHERE {where}
+                GROUP BY kind, model
+                ORDER BY SUM(cost) DESC""",
+            params).fetchall()
     return [dict(row) for row in rows]
+
+
+def usage_by_key(days: float = 7, kind: str = None) -> list:
+    """Per-person totals over the window, biggest spender first — the
+    outlier view. `messages` counts main answers, `calls` every LLM call
+    (gate, rewrite, title, … included); `kind` narrows to one call type."""
+    since = time.time() - days * 86400
+    where = "created_at >= ?" + (" AND kind = ?" if kind else "")
+    params = (since, kind) if kind else (since,)
+    with _connect() as conn:
+        rows = conn.execute(
+            f"""SELECT key,
+                       SUM(kind = 'chat') AS messages,
+                       COUNT(*) AS calls,
+                       SUM(prompt_tokens) AS prompt_tokens,
+                       SUM(completion_tokens) AS completion_tokens,
+                       SUM(cost) AS cost,
+                       MAX(created_at) AS last_seen
+                FROM usage_log WHERE {where}
+                GROUP BY key
+                ORDER BY SUM(cost) DESC""",
+            params).fetchall()
+    return [dict(row) for row in rows]
+
+
+def set_conversation_title(conversation_id: str, title: str):
+    """Swap the first-question placeholder for the LLM-written title.
+    A no-op for anonymous conversations (no row to update)."""
+    with _connect() as conn:
+        conn.execute("UPDATE conversations SET title = ? WHERE id = ?",
+                     (title, conversation_id))
 
 
 def conversation_owner(conversation_id: str) -> str | None:

@@ -4,6 +4,7 @@ retrieval or the main model.
 Uses the same LLM seam as everything else — any adapter with
 chat(model, messages) -> str works, so tests use a fake.
 """
+from app.llm import chat_with_usage
 
 GATE_PROMPT_TEMPLATE = """Bir üniversite öğrenci işleri chatbot'una gelen mesajları süzüyorsun.
 Mesaj hakaret, küfür veya kaba/saldırgan bir dil içeriyorsa SADECE "kaba" yaz.
@@ -27,13 +28,15 @@ class ScopeGate:
     def __init__(self, llm, model):
         self._llm = llm
         self._model = model
+        self.last_usage = None  # tokens/cost of the latest verdict call
 
     def verdict(self, query: str) -> str:
         """'ok', 'off_topic' or 'abusive'. Only explicit "hayır"/"kaba"
         block — anything unclear falls open, matching the prompt's
         "emin değilsen evet"."""
-        reply = self._llm.chat(
-            self._model,
+        self.last_usage = None
+        reply, self.last_usage = chat_with_usage(
+            self._llm, self._model,
             [{"role": "user", "content": GATE_PROMPT_TEMPLATE.format(query=query)}],
         )
         words = reply.strip().lower().split()
