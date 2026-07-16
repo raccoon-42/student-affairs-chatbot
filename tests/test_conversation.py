@@ -130,6 +130,26 @@ def test_stream_yields_tokens_and_stores_full_answer():
     assert conversation._messages[-1] == {"role": "assistant", "content": "parçaparçacevap"}
 
 
+def test_stream_captures_usage_from_generator_return():
+    class UsageLLM(FakeLLM):
+        def chat_stream(self, model, messages):
+            yield from super().chat_stream(model, messages)
+            return {"prompt_tokens": 100, "completion_tokens": 7}
+
+    conversation = make_conversation(UsageLLM(reply="cevap"))
+    list(conversation.respond_stream("soru"))
+
+    assert conversation.last_usage == {"prompt_tokens": 100, "completion_tokens": 7}
+    assert any(line.startswith("usage") for line in conversation.last_debug)
+
+
+def test_stream_without_usage_leaves_none():
+    conversation = make_conversation(FakeLLM(reply="cevap"))
+    list(conversation.respond_stream("soru"))
+
+    assert conversation.last_usage is None
+
+
 def test_stream_history_matches_respond_history():
     streamed = make_conversation(FakeLLM(reply="cevap"))
     list(streamed.respond_stream("soru"))

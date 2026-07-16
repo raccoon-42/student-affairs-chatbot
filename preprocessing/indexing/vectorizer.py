@@ -137,6 +137,9 @@ def calendar_chunks_from_json(input_file):
                 "parsed_date1": date.fromisoformat(start) if start else None,
                 "parsed_date2": date.fromisoformat(end) if end else None,
                 "source_url": source_urls.get(year.group()) if year else None,
+                # citation chips say WHICH year's calendar backs the answer
+                # ("Akademik Takvim 2026-2027", not a bare corpus label)
+                "document_title": f"Akademik Takvim {year.group()}" if year else None,
             },
         })
     return chunks

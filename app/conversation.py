@@ -186,10 +186,16 @@ class Conversation:
         self.last_sources = []  # what the latest answer was grounded on
         self.last_reference = []  # numbered chunk texts sent to the model last turn
         self.last_debug = []  # CLI-style log lines for the latest turn
+        self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
 
     def _log(self, line):
         print(line, file=sys.stderr)
         self.last_debug.append(line)
+
+    def _log_row(self, label, value, detail=""):
+        """Aligned three-column log line: stage, timing/count, detail —
+        reads as a table in the dev card (monospace) and in stderr."""
+        self._log(f"{label:<10}{value:>8}  {detail}".rstrip())
 
     def respond(self, query: str, model: str = None, education_type: str = None) -> str:
         verdict = self._prepare(query, education_type)
@@ -198,7 +204,7 @@ class Conversation:
 
         start = time.perf_counter()
         answer = self._llm.chat(model or self._model, self._messages)
-        self._log(f"[timing] llm {time.perf_counter() - start:.2f}s")
+        self._log_row("llm", f"{time.perf_counter() - start:.2f}s")
         self._add_assistant_message(answer)
         return answer
 
@@ -222,13 +228,25 @@ class Conversation:
         start = time.perf_counter()
         first_token_at = None
         tokens = []
-        for token in self._llm.chat_stream(model or self._model, self._messages):
+        stream = self._llm.chat_stream(model or self._model, self._messages)
+        while True:  # manual next(): the generator's return value is the usage
+            try:
+                token = next(stream)
+            except StopIteration as done:
+                self.last_usage = done.value
+                break
             if first_token_at is None:
                 first_token_at = time.perf_counter() - start
             tokens.append(token)
             yield token
-        self._log(f"[timing] llm first token {first_token_at:.2f}s, "
-                  f"total {time.perf_counter() - start:.2f}s")
+        self._log_row("llm", f"{time.perf_counter() - start:.2f}s",
+                      f"first token {first_token_at:.2f}s")
+        if self.last_usage:
+            cost = self.last_usage.get("cost")
+            self._log_row("usage", "",
+                          f"prompt {self.last_usage['prompt_tokens']} + "
+                          f"completion {self.last_usage['completion_tokens']} token"
+                          + (f" · ${cost:.4f}" if cost is not None else ""))
         self._add_assistant_message("".join(tokens))
 
     def _prepare(self, query, education_type=None, image=None) -> str:
@@ -250,21 +268,21 @@ class Conversation:
         messages, where the extracted question stands in as the student's
         text for the prompt and the history."""
         self.last_debug = []
+        self.last_usage = None  # refusals never reach the main call
         search_query = query
         if self._rewriter is not None and image is not None:
             extract_start = time.perf_counter()
             search_query = self._rewriter.image_query(query, image)
-            self._log(f"[timing] image query {time.perf_counter() - extract_start:.2f}s")
-            if search_query != query:
-                self._log(f"[image] search query: {search_query!r}")
+            self._log_row("image", f"{time.perf_counter() - extract_start:.2f}s",
+                          f"search query: {search_query!r}" if search_query != query else "")
             if not query:
                 query = search_query
         elif self._rewriter is not None and len(self._messages) > 1:
             rewrite_start = time.perf_counter()
             search_query = self._rewriter.rewrite(query, self._messages[1:])
-            self._log(f"[timing] rewrite {time.perf_counter() - rewrite_start:.2f}s")
-            if search_query != query:
-                self._log(f"[rewrite] {query!r} -> {search_query!r}")
+            self._log_row("rewrite", f"{time.perf_counter() - rewrite_start:.2f}s",
+                          f"{query!r}\n{'':<20}-> {search_query!r}"
+                          if search_query != query else "unchanged")
         return query, search_query
 
     def _gate_and_build(self, query, search_query, education_type=None, image=None):
@@ -288,22 +306,24 @@ class Conversation:
                 speculative = pool.submit(self._retriever.retrieve_all, search_query,
                                           audience)
                 answer = verdict.result()
-                self._log(f"[timing] gate {time.perf_counter() - start:.2f}s "
-                          f"(verdict: {answer})")
+                self._log_row("gate", f"{time.perf_counter() - start:.2f}s",
+                              f"verdict {answer}")
                 if answer != "ok":
                     return answer
                 yield STAGE_SEARCHING
                 results = speculative.result()
         timings = getattr(self._retriever, "last_timings", None)
         if timings:
-            self._log(f"[timing] retrieval {timings['embed'] + timings['search']:.2f}s "
-                      f"(embed {timings['embed']:.2f}s | search {timings['search']:.2f}s, "
-                      f"alongside the gate)")
-        self._log(f"[timing] gate + retrieval combined {time.perf_counter() - start:.2f}s")
+            self._log_row("retrieval", f"{timings['embed'] + timings['search']:.2f}s",
+                          f"embed {timings['embed']:.2f}s + search {timings['search']:.2f}s, "
+                          f"alongside the gate")
+        self._log_row("pipeline", f"{time.perf_counter() - start:.2f}s",
+                      "gate + retrieval combined")
         corpora = ("calendar", "regulations", "faq", "forms", "sks", "programs", "people",
                    "courses", "guides")
-        self._log("[retrieval] " + ", ".join(
-            f"{corpus}: {len(results.get(corpus, []))}" for corpus in corpora))
+        counts = [f"{corpus} {len(results.get(corpus, []))}" for corpus in corpora]
+        self._log_row("chunks", str(sum(len(results.get(c, [])) for c in corpora)),
+                      " · ".join(counts[:5]) + f"\n{'':<20}" + " · ".join(counts[5:]))
 
         # every chunk gets a [n] marker; the model cites them inline and
         # last_sources[n-1] is what marker [n] points to

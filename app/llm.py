@@ -2,8 +2,9 @@
 
 Anything that needs a language model (conversation, judge) depends on the
 interface `chat(model, messages) -> str` — plus `chat_stream(model, messages)`
-yielding text deltas — and never on a concrete provider. Tests pass in a
-fake with the same methods.
+yielding text deltas, whose generator return value is a token-usage dict
+(or None) — and never on a concrete provider. Tests pass in a fake with
+the same methods.
 """
 import sys
 
@@ -40,12 +41,22 @@ class OpenRouterLLM:
         self._ensure_client()
         stream = self._client.chat.completions.create(
             model=model, messages=messages, stream=True,
-            max_tokens=settings.LLM_MAX_TOKENS)
+            max_tokens=settings.LLM_MAX_TOKENS,
+            stream_options={"include_usage": True},
+            # OpenRouter extension: adds the charged cost (USD) to usage
+            extra_body={"usage": {"include": True}})
         finish_reason = None
+        usage = None
         for chunk in stream:
+            # with include_usage the last chunk has no choices, only usage
+            if getattr(chunk, "usage", None):
+                usage = {"prompt_tokens": chunk.usage.prompt_tokens,
+                         "completion_tokens": chunk.usage.completion_tokens,
+                         "cost": getattr(chunk.usage, "cost", None)}
             if chunk.choices:
                 finish_reason = chunk.choices[0].finish_reason or finish_reason
                 if chunk.choices[0].delta.content:
                     yield chunk.choices[0].delta.content
         if finish_reason and finish_reason != "stop":
             print(f"[llm] stream ended early, finish_reason={finish_reason}", file=sys.stderr)
+        return usage  # the generator's StopIteration value; None if absent

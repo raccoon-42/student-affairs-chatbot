@@ -145,7 +145,8 @@ async def auth_config(request: Request, auth_token: str = Cookie(None)):
             "off_topic_message": REFUSALS["off_topic"],
             "abuse_block_seconds": settings.ABUSE_BLOCK_MINUTES * 60,
             "abuse_exempt": _limit_key(request, user) in settings.ABUSE_EXEMPT,
-            "stt": bool(settings.GROQ_API_KEY)}
+            "stt": bool(settings.GROQ_API_KEY),
+            "context_window": settings.LLM_CONTEXT_WINDOW}
 
 
 @app.post("/auth/google")
@@ -255,14 +256,16 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
     if cached and cached[0].last_sources:
-        return {"sources": cached[0].last_sources}
+        # usage rides along: the UI fetches this after every answer, so the
+        # token counter needs no extra request
+        return {"sources": cached[0].last_sources, "usage": cached[0].last_usage}
     # the cache is per-process: a restart (e.g. --reload in dev) between
     # streaming and this call would lose the sources — fall back to the
     # persisted transcript's latest assistant message
     for message in reversed(storage.conversation_messages(session_id)):
         if message["role"] == "assistant" and message["sources"]:
-            return {"sources": message["sources"]}
-    return {"sources": []}
+            return {"sources": message["sources"], "usage": None}
+    return {"sources": [], "usage": None}
 
 
 @app.get("/chat/debug")
@@ -274,7 +277,18 @@ async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
     return {"debug": cached[0].last_debug if cached else [],
-            "reference": cached[0].last_reference if cached else []}
+            "reference": cached[0].last_reference if cached else [],
+            "usage": cached[0].last_usage if cached else None}
+
+
+@app.get("/admin/usage")
+async def admin_usage(days: float = 7, auth_token: str = Cookie(None)):
+    """Per-person token totals (email or IP) over the last `days`, biggest
+    spender first — for spotting outliers. ADMIN_EMAILS only."""
+    user = auth.sessions.get(auth_token)
+    if user is None or user["email"] not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Bu sayfaya erişim yetkin yok")
+    return {"days": days, "usage": storage.usage_by_key(days)}
 
 
 def _validate_model(model_name: str) -> None:
@@ -360,6 +374,16 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             return
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
+        # per-person token accounting (anonymous traffic included);
+        # refusals never reach the main model, so last_usage stays None
+        if conversation.last_usage:
+            Thread(target=storage.record_usage,
+                   args=(_limit_key(request, user),
+                         model_name or settings.OPENROUTER_MODEL,
+                         conversation.last_usage["prompt_tokens"],
+                         conversation.last_usage["completion_tokens"],
+                         conversation.last_usage.get("cost")),
+                   daemon=True).start()
         # persist only after the full answer arrived; refusals aren't
         # part of the transcript. The write happens off-thread: the HTTP
         # stream stays open until this generator returns, so a slow SQLite
@@ -368,7 +392,8 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             # image-only messages have no text; the image itself isn't stored
             Thread(target=storage.record_exchange,
                    args=(session_id, user["email"], query or "(görsel)", answer),
-                   kwargs={"sources": conversation.last_sources},
+                   kwargs={"sources": conversation.last_sources,
+                           "usage": conversation.last_usage},
                    daemon=True).start()
 
     return StreamingResponse(

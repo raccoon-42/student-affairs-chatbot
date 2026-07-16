@@ -46,6 +46,7 @@ const STRINGS = {
     stageRewriting: "ton ayarlanıyor…",
     stageSearching: "kaynaklarda aranıyor…",
     stageWriting: "yanıt yazılıyor…",
+    tokenUsageHint: "bağlam + yanıt (token) · maliyet",
   },
   en: {
     chats: "Chats",
@@ -92,6 +93,7 @@ const STRINGS = {
     stageRewriting: "toning your voice…",
     stageSearching: "searching sources…",
     stageWriting: "writing…",
+    tokenUsageHint: "context + answer (tokens) · cost",
   },
 };
 
@@ -179,7 +181,13 @@ async function select(id) {
       text: m.content,
       at: m.created_at ? m.created_at * 1000 : null,
       sources: m.sources,
+      usage: m.usage,
     }));
+    // totals come back from the per-message usage the server kept
+    conversation.tokens = conversation.messages.reduce(
+      (sum, m) => sum + (m.usage ? m.usage.prompt_tokens + m.usage.completion_tokens : 0), 0);
+    conversation.cost = conversation.messages.reduce(
+      (sum, m) => sum + (m.usage?.cost || 0), 0);
   }
 
   renderSidebar();
@@ -248,8 +256,44 @@ function renderSidebar() {
   }
 }
 
+/* context size at a glance under an answer: prompt (system + history +
+ * retrieved chunks) + completion tokens, with the charged cost when known */
+function addUsageChip(botEl, usage) {
+  const row = botEl.nextElementSibling; // .msg-actions
+  const chip = document.createElement("span");
+  chip.className = "token-usage";
+  chip.title = t("tokenUsageHint");
+  chip.textContent = `${formatTokens(usage.prompt_tokens)} + ${formatTokens(usage.completion_tokens)} token`
+    + (usage.cost ? ` · ${formatCost(usage.cost)}` : "");
+  row.appendChild(chip);
+}
+
+/* running token total of the current conversation, floating over the
+ * send button; hidden until the first answer brings a count */
+function renderTokenTotal() {
+  const conversation = current();
+  const total = conversation?.tokens;
+  const el = document.getElementById("token-total");
+  el.hidden = !total;
+  if (!total) return;
+  // tokens and cost are running totals. The % is the latest request's
+  // prompt vs the window — the only true "how full is the context", since
+  // past turns no longer occupy it (history is trimmed + rebuilt) — but
+  // "% of what?" confuses non-developers, so it rides the dev switch
+  let latest = null;
+  if (devMode) {
+    for (const message of conversation.messages || []) {
+      if (message.usage) latest = message.usage;
+    }
+  }
+  el.textContent = `${formatTokens(total)} token`
+    + (conversation.cost ? ` · ${formatCost(conversation.cost)}` : "")
+    + (latest ? formatFill(latest.prompt_tokens) : "");
+}
+
 function renderMessages() {
   messagesEl.replaceChildren();
+  renderTokenTotal();
   const conversation = current();
   if (!conversation || !conversation.messages || conversation.messages.length === 0) {
     messagesEl.appendChild(emptyState);
@@ -260,6 +304,7 @@ function renderMessages() {
     if (message.role === "bot") {
       setBubbleText(el, "bot", message.text, message.sources);
       addBotActions(el, message.text, message);
+      if (devMode && message.usage) addUsageChip(el, message.usage);
     }
   }
   // jump straight to the end — smooth scrolling is for streaming only
@@ -354,6 +399,23 @@ debugCard.id = "debug-card";
 debugCard.hidden = true;
 document.body.appendChild(debugCard);
 
+/* "8.4k" reads better than "8412" in a chip this small */
+function formatTokens(count) {
+  return count >= 1000 ? `${(count / 1000).toFixed(1)}k` : `${count}`;
+}
+
+/* single answers cost fractions of a cent — keep the sub-cent digits */
+function formatCost(usd) {
+  return `$${usd.toFixed(usd >= 0.1 ? 2 : 4)}`;
+}
+
+/* context fill: what share of the model's window the prompt used */
+function formatFill(promptTokens) {
+  if (!appConfig.context_window) return "";
+  const pct = (promptTokens / appConfig.context_window) * 100;
+  return ` · ${pct < 10 ? pct.toFixed(1) : Math.round(pct)}%`;
+}
+
 function showDebugCard(anchor, text) {
   debugCard.textContent = text;
   debugCard.hidden = false;
@@ -376,9 +438,11 @@ function withCitations(html, sources) {
   return html.replace(/( ?)\[(\d+)\]/g, (marker, space, n) => {
     const source = sources[Number(n) - 1];
     if (!source) return marker;
-    const label = source.title || source.type;
-    if (seen.has(label)) return "";
-    seen.add(label);
+    // identity is label + link: calendar chips all say "Akademik takvim"
+    // but different years link different PDFs — those are NOT duplicates
+    const key = `${source.title || source.type}|${source.url || ""}`;
+    if (seen.has(key)) return "";
+    seen.add(key);
     return space + chipHTML(source);
   });
 }
@@ -622,20 +686,29 @@ async function send(query, image = null) {
       return;
     }
     let sources = [];
+    let usage = null;
     if (answer !== appConfig.off_topic_message) {
       const params = new URLSearchParams({ session_id: conversation.id });
-      sources = await fetch(`/chat/sources?${params}`)
-        .then((r) => (r.ok ? r.json() : { sources: [] }))
-        .then((data) => data.sources)
-        .catch(() => []);
+      const data = await fetch(`/chat/sources?${params}`)
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({}));
+      sources = data.sources ?? [];
+      usage = data.usage ?? null;
+      if (usage) {
+        conversation.tokens = (conversation.tokens || 0)
+          + usage.prompt_tokens + usage.completion_tokens;
+        if (usage.cost) conversation.cost = (conversation.cost || 0) + usage.cost;
+      }
     }
-    const botMessage = { role: "bot", text: answer, at: Date.now(), sources };
+    const botMessage = { role: "bot", text: answer, at: Date.now(), sources, usage };
     conversation.messages.push(botMessage);
     conversation.updated = Date.now();
     saveConversations();
+    if (usage) renderTokenTotal();
     setBubbleText(botEl, "bot", answer, sources); // final pass turns [n] into chips
     addBotActions(botEl, answer, botMessage);
     if (devMode) {
+      if (usage) addUsageChip(botEl, usage);
       const params = new URLSearchParams({ session_id: conversation.id });
       const { debug } = await fetch(`/chat/debug?${params}`)
         .then((r) => (r.ok ? r.json() : { debug: [] }))
@@ -688,10 +761,27 @@ form.addEventListener("submit", (event) => {
   const query = input.value.trim();
   if ((!query && !pendingImage) || input.disabled) return; // image alone is enough
   input.value = "";
+  resizeInput();
   const image = pendingImage;
   clearAttachment();
   send(query, image);
 });
+
+/* the chatbar is a textarea: Enter sends, Shift+Enter breaks the line,
+ * and the pill grows with the text (up to #input's max-height) */
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    form.requestSubmit();
+  }
+});
+
+function resizeInput() {
+  input.style.height = "auto";
+  input.style.height = `${input.scrollHeight}px`;
+}
+
+input.addEventListener("input", resizeInput);
 
 /* ---------- image attachment ----------
  * The + button picks an image; it is downscaled client-side (long edge
@@ -854,6 +944,7 @@ async function transcribe(blob, mimeType) {
     const { text } = await response.json();
     if (text) {
       input.value = input.value ? `${input.value} ${text}` : text;
+      resizeInput();
       input.focus();
     }
   } catch {
@@ -1069,6 +1160,7 @@ document.getElementById("set-theme").addEventListener("change", (event) => {
 document.getElementById("devmode-toggle").addEventListener("change", (event) => {
   devMode = event.target.checked;
   localStorage.setItem("devmode", devMode ? "1" : "0");
+  renderMessages(); // usage chips + token counter follow the switch
 });
 
 document.getElementById("set-model").addEventListener("change", (event) => {

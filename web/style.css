@@ -693,6 +693,19 @@ header h1 {
   margin-left: auto;
 }
 
+/* dev-mode token chip shares the right edge with the log toggle */
+.msg-actions .token-usage {
+  margin-left: auto;
+  align-self: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.msg-actions .token-usage + .debug-toggle {
+  margin-left: 0;
+}
+
 .msg-actions button {
   display: flex;
   align-items: center;
@@ -798,7 +811,9 @@ header h1 {
   right: 0;
   margin: 0 auto;
   width: 100%;
-  max-width: 760px;
+  /* the side padding is OUTSIDE the 760px so the pill's edges line up
+   * with the message column exactly (#messages pads to a 760px band) */
+  max-width: calc(760px + 3rem);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -806,10 +821,25 @@ header h1 {
   background: linear-gradient(to top, var(--bg) 65%, transparent);
 }
 
+/* conversation token total, floating just above the send button —
+ * anchored to the pill so it tracks its real height */
+#token-total {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0.75rem; /* right-aligned with the send button, growing leftward */
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 /* one large pill with the send arrow inside, ChatGPT-style */
 #composer {
+  position: relative;
   display: flex;
-  align-items: center;
+  /* buttons hug the bottom edge so the pill grows upward with the
+   * multiline textarea, ChatGPT-style */
+  align-items: flex-end;
   gap: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1.4rem;
   border: 1px solid var(--border);
@@ -818,17 +848,20 @@ header h1 {
   box-shadow: var(--shadow);
 }
 
-#composer:focus-within {
-  border-color: var(--muted);
-}
-
 #input {
   flex: 1;
   border: none;
   background: none;
+  font: inherit;
   font-size: 1rem;
   color: var(--text);
   padding: 0.55rem 0;
+  /* multiline: grows with content (script sets the height), caps at
+   * ~6 lines then scrolls; never user-resizable */
+  resize: none;
+  line-height: 1.4;
+  max-height: 9rem;
+  overflow-y: auto;
 }
 
 #input:focus {
@@ -930,7 +963,11 @@ header h1 {
 #debug-card {
   position: fixed;
   z-index: 60;
-  max-width: 520px;
+  /* the log is a column-aligned table: never wrap (wrapping bleeds
+   * detail text into the label column) — size to content, scroll if
+   * a line still won't fit the viewport */
+  max-width: min(90vw, 760px);
+  overflow-x: auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.7rem;
   line-height: 1.5;
@@ -939,7 +976,7 @@ header h1 {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.6rem 0.8rem;
-  white-space: pre-wrap;
+  white-space: pre;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   pointer-events: none;
 }

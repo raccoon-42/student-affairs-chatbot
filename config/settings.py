@@ -54,6 +54,10 @@ ALLOWED_CHAT_MODELS = {m.strip() for m in os.getenv(
 # answer length cap; unset upstream defaults have truncated mid-sentence
 LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2048"))
 
+# context window of the chat models (Haiku 4.5 and Sonnet 5 are both 200k);
+# only used for the context-fill percentage shown in the UI
+LLM_CONTEXT_WINDOW = int(os.getenv("LLM_CONTEXT_WINDOW", "200000"))
+
 # Per-attempt HTTP timeout for LLM calls (the OpenAI SDK retries twice on
 # top of this). Without it a stalled connection hangs a request ~10 min.
 LLM_TIMEOUT_SECONDS = float(os.getenv("LLM_TIMEOUT_SECONDS", "90"))
@@ -96,6 +100,10 @@ ABUSE_EXEMPT = {key.strip() for key in os.getenv("ABUSE_EXEMPT", "").split(",") 
 # judge suite and local eval runs, which burn through the anonymous
 # quota by design. Don't put real users here.
 RATELIMIT_EXEMPT = {key.strip() for key in os.getenv("RATELIMIT_EXEMPT", "").split(",") if key.strip()}
+
+# Signed-in emails allowed to read /admin/usage (per-person token totals).
+# Empty (the default) disables the endpoint entirely.
+ADMIN_EMAILS = {key.strip() for key in os.getenv("ADMIN_EMAILS", "").split(",") if key.strip()}
 
 # Set to 1 in production: the auth cookie is then only sent over HTTPS.
 # Off by default because local dev runs plain http://localhost.
