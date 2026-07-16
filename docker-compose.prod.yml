@@ -11,7 +11,10 @@
 services:
   api:
     build: .
-    command: uvicorn app.api.api:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips "*"
+    # trust X-Forwarded-For only from private-range proxies (the docker
+    # gateway that fronts nginx) — never "*", which would take the
+    # client-supplied, spoofable leftmost address as the real IP
+    command: uvicorn app.api.api:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips "127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
     ports:
       - "127.0.0.1:8000:8000"
     env_file: .env

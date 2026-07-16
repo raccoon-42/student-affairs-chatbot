@@ -199,6 +199,30 @@ def test_normal_answers_do_not_count_as_refusals():
     assert not api._refusal_limiter.is_blocked("1.2.3.4")
 
 
+def test_expired_session_is_rejected_and_pruned():
+    import time
+
+    from app import storage
+    from config import settings
+
+    storage.upsert_user({"email": "old@gmail.com", "name": "", "picture": "", "member": False})
+    storage.create_auth_session("tok-old", "old@gmail.com")
+    assert storage.get_auth_user("tok-old") is not None
+
+    # age the token past the TTL: it must no longer authenticate...
+    stale = time.time() - (settings.AUTH_SESSION_TTL_DAYS + 1) * 86400
+    with storage._connect() as conn:
+        conn.execute("UPDATE auth_sessions SET created_at = ? WHERE token = ?",
+                     (stale, "tok-old"))
+    assert storage.get_auth_user("tok-old") is None
+
+    # ...and the next login prunes the expired row rather than letting it linger
+    storage.create_auth_session("tok-new", "old@gmail.com")
+    with storage._connect() as conn:
+        tokens = {r["token"] for r in conn.execute("SELECT token FROM auth_sessions")}
+    assert tokens == {"tok-new"}
+
+
 def test_delete_conversation(monkeypatch):
     from app import storage
 

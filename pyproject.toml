@@ -26,3 +26,7 @@ dev = [
 
 [tool.uv]
 package = false
+# setuptools <83 is affected by PYSEC-2026-3447; it's pulled in transitively
+# via torch, so pinning the floor here also lifts torch to 2.13 (its 2.12
+# line caps setuptools below the fix)
+constraint-dependencies = ["setuptools>=83.0.0"]

@@ -124,6 +124,19 @@ const STRINGS = {
 let lang = localStorage.getItem("lang") || "tr";
 let gisReady = false; // declared early: applyTheme() runs before the auth section
 
+// tag every same-origin API call with the UI language so the server can
+// localize its error messages (rate-limit notices, validation errors).
+// reads `lang` at call time, so toggling the language takes effect at once.
+const _fetch = window.fetch.bind(window);
+window.fetch = (resource, options = {}) => {
+  if (typeof resource !== "string" || !resource.startsWith("/")) {
+    return _fetch(resource, options);  // leave cross-origin (e.g. Google) alone
+  }
+  const headers = new Headers(options.headers || {});
+  headers.set("X-Lang", lang);
+  return _fetch(resource, { ...options, headers });
+};
+
 function t(key, ...args) {
   const entry = STRINGS[lang][key];
   return typeof entry === "function" ? entry(...args) : entry;
@@ -394,10 +407,17 @@ function chipHTML(source) {
   // the hover card reads these; the excerpt is the cited chunk's text
   const data = ` data-host="${escapeAttr(host)}" data-title="${escapeAttr(source.title || source.type)}"` +
                ` data-text="${escapeAttr(source.label || "")}"`;
-  if (!source.url) return `<span class="source-chip"${data}>${label}</span>`;
+  // only render a link for http(s) URLs — a javascript:/data: scheme in the
+  // href would execute on click; fall back to a plain chip otherwise
+  let safeUrl = "";
+  try {
+    const parsed = new URL(source.url);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") safeUrl = source.url;
+  } catch { /* not a valid URL — leave it as a non-link chip */ }
+  if (!safeUrl) return `<span class="source-chip"${data}>${label}</span>`;
   // URLs from the scraper are already percent-encoded — re-encoding 404s
   // them; only neutralize characters that could break the attribute
-  const href = source.url.replaceAll('"', "%22").replaceAll("<", "%3C");
+  const href = safeUrl.replaceAll('"', "%22").replaceAll("<", "%3C");
   return `<a class="source-chip" href="${href}" target="_blank" rel="noopener"${data}>${label}</a>`;
 }
 

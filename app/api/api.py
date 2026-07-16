@@ -7,7 +7,7 @@ from threading import Lock, Thread
 import requests
 
 from fastapi import Cookie, FastAPI, HTTPException, Request, Response
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -26,6 +26,93 @@ app = FastAPI(
 )
 
 SESSION_TTL_SECONDS = 30 * 60
+
+
+# --- localized error messages -------------------------------------------
+# Every user-facing HTTP error is a key here; LocalizedError carries the key
+# and _localized_error renders it in the caller's language. Language is taken
+# from ?lang=, then the X-Lang header (the web UI sets it on every call),
+# then Accept-Language — defaulting to Turkish.
+MESSAGES = {
+    "model_unsupported": {"tr": "Bu model desteklenmiyor",
+                          "en": "This model is not supported"},
+    "query_too_long": {"tr": "Mesaj çok uzun.",
+                       "en": "The message is too long."},
+    "service_unavailable": {
+        "tr": "Şu anda yanıt veremiyorum — hizmette geçici bir sorun var. "
+              "Lütfen daha sonra tekrar dene.",
+        "en": "I can't answer right now — the service is having a temporary "
+              "issue. Please try again later."},
+    "google_auth_failed": {"tr": "Google kimliği doğrulanamadı",
+                           "en": "Google sign-in could not be verified"},
+    "no_session": {"tr": "Oturum bulunamadı", "en": "No active session"},
+    "invalid_education": {"tr": "Geçersiz eğitim türü",
+                          "en": "Invalid education type"},
+    "not_your_conversation": {"tr": "Bu konuşma size ait değil",
+                              "en": "This conversation isn't yours"},
+    "invalid_conversation": {"tr": "Geçersiz konuşma içeriği",
+                             "en": "Invalid conversation content"},
+    "admin_forbidden": {"tr": "Bu sayfaya erişim yetkin yok",
+                        "en": "You don't have access to this page"},
+    "abuse_blocked": {
+        "tr": "Uygunsuz dil nedeniyle mesaj gönderimin geçici olarak engellendi.",
+        "en": "Messaging is temporarily blocked due to inappropriate language."},
+    "spam_brake": {
+        "tr": "Art arda çok fazla konu dışı ya da uygunsuz mesaj gönderdin. "
+              "Lütfen bir süre sonra tekrar dene.",
+        "en": "You've sent too many off-topic or inappropriate messages in a "
+              "row. Please try again later."},
+    "limit_user": {
+        "tr": "Mesaj limitine ulaştın. Lütfen bir süre sonra tekrar dene.",
+        "en": "You've reached the message limit. Please try again later."},
+    "limit_anon": {
+        "tr": "Mesaj limitine ulaştın. Google ile giriş yaparak daha yüksek "
+              "bir limitle devam edebilirsin.",
+        "en": "You've reached the message limit. Sign in with Google to "
+              "continue with a higher limit."},
+    "stt_not_configured": {"tr": "Ses tanıma yapılandırılmamış.",
+                           "en": "Speech recognition isn't configured."},
+    "stt_limit": {
+        "tr": "Ses tanıma limitine ulaştın. Lütfen bir süre sonra tekrar dene.",
+        "en": "You've reached the speech-recognition limit. Please try "
+              "again later."},
+    "no_audio": {"tr": "Ses verisi yok.", "en": "No audio data."},
+    "audio_too_long": {"tr": "Kayıt çok uzun.", "en": "The recording is too long."},
+    "stt_failed": {"tr": "Ses tanıma başarısız oldu.",
+                   "en": "Speech recognition failed."},
+    "invalid_image": {"tr": "Geçersiz görsel.", "en": "Invalid image."},
+    "image_too_large": {"tr": "Görsel çok büyük.", "en": "The image is too large."},
+    "empty_message": {"tr": "Boş mesaj.", "en": "Empty message."},
+}
+
+# suffix appended to a partial streamed answer when the upstream drops
+BROKE_OFF = {
+    "tr": "\n\n*(Bağlantı hatası — yanıtın devamı alınamadı.)*",
+    "en": "\n\n*(Connection error — the rest of the answer could not be retrieved.)*",
+}
+
+
+def _lang(request: Request) -> str:
+    lang = request.query_params.get("lang") or request.headers.get("x-lang")
+    if lang in ("tr", "en"):
+        return lang
+    accept = (request.headers.get("accept-language") or "").lower()
+    return "en" if accept.startswith("en") else "tr"
+
+
+class LocalizedError(HTTPException):
+    """An HTTP error whose detail is a MESSAGES key; _localized_error renders
+    it in the caller's language, so routes never hardcode a language."""
+    def __init__(self, status_code: int, key: str, headers: dict | None = None):
+        super().__init__(status_code=status_code, detail=key, headers=headers)
+        self.key = key
+
+
+@app.exception_handler(LocalizedError)
+async def _localized_error(request: Request, exc: LocalizedError):
+    return JSONResponse(status_code=exc.status_code,
+                        content={"detail": MESSAGES[exc.key][_lang(request)]},
+                        headers=exc.headers)
 
 
 class ChatResponse(BaseModel):
@@ -94,23 +181,15 @@ def _enforce_rate_limit(request: Request, user) -> None:
         return  # judge suite / local eval runs
     if (_limit_key(request, user) not in settings.ABUSE_EXEMPT
             and _abuse_limiter.is_blocked(_limit_key(request, user))):
-        raise HTTPException(status_code=429,
-                            detail="Uygunsuz dil nedeniyle mesaj gönderimin geçici "
-                                   "olarak engellendi.",
-                            headers={"X-Block-Reason": "abuse"})
+        raise LocalizedError(429, "abuse_blocked", headers={"X-Block-Reason": "abuse"})
     if _refusal_limiter.is_blocked(_limit_key(request, user)):
-        raise HTTPException(status_code=429,
-                            detail="Art arda çok fazla konu dışı ya da uygunsuz mesaj "
-                                   "gönderdin. Lütfen bir süre sonra tekrar dene.")
+        raise LocalizedError(429, "spam_brake")
     if user:
         if not _user_limiter.allow(user["email"]):
-            raise HTTPException(status_code=429,
-                                detail="Mesaj limitine ulaştın. Lütfen bir süre sonra tekrar dene.")
+            raise LocalizedError(429, "limit_user")
     else:
         if not _anon_limiter.allow(request.client.host if request.client else "unknown"):
-            raise HTTPException(status_code=429,
-                                detail="Mesaj limitine ulaştın. Google ile giriş yaparak "
-                                       "daha yüksek bir limitle devam edebilirsin.")
+            raise LocalizedError(429, "limit_anon")
 
 
 def _record_turn_usage(key: str, entries: list) -> None:
@@ -143,7 +222,7 @@ def _authorize_conversation(session_id: str, user) -> None:
     can't collide with anyone's history."""
     owner = storage.conversation_owner(session_id)
     if owner and (user is None or user["email"] != owner):
-        raise HTTPException(status_code=403, detail="Bu konuşma size ait değil")
+        raise LocalizedError(403, "not_your_conversation")
 
 
 class GoogleCredential(BaseModel):
@@ -169,10 +248,11 @@ async def auth_google(body: GoogleCredential, response: Response):
     try:
         user = auth.verify_google_token(body.credential)
     except ValueError:
-        raise HTTPException(status_code=401, detail="Google kimliği doğrulanamadı")
+        raise LocalizedError(401, "google_auth_failed")
     token = auth.sessions.create(user)
     response.set_cookie("auth_token", token, httponly=True, samesite="lax",
-                        secure=settings.COOKIE_SECURE, max_age=30 * 24 * 3600)
+                        secure=settings.COOKIE_SECURE,
+                        max_age=settings.AUTH_SESSION_TTL_DAYS * 24 * 3600)
     # read back from storage: a returning user already has education_type
     return auth.sessions.get(token)
 
@@ -190,9 +270,9 @@ class Profile(BaseModel):
 async def auth_profile(body: Profile, auth_token: str = Cookie(None)):
     user = auth.sessions.get(auth_token)
     if user is None:
-        raise HTTPException(status_code=401, detail="Oturum bulunamadı")
+        raise LocalizedError(401, "no_session")
     if body.education_type not in auth.EDUCATION_TYPES:
-        raise HTTPException(status_code=422, detail="Geçersiz eğitim türü")
+        raise LocalizedError(422, "invalid_education")
     storage.set_education_type(user["email"], body.education_type)
     return auth.sessions.get(auth_token)
 
@@ -208,7 +288,7 @@ async def auth_logout(response: Response, auth_token: str = Cookie(None)):
 async def conversations(auth_token: str = Cookie(None)):
     user = auth.sessions.get(auth_token)
     if user is None:
-        raise HTTPException(status_code=401, detail="Oturum bulunamadı")
+        raise LocalizedError(401, "no_session")
     return storage.list_conversations(user["email"])
 
 
@@ -229,14 +309,14 @@ async def conversation_import(body: ConversationImport, auth_token: str = Cookie
     continues seamlessly after sign-in."""
     user = auth.sessions.get(auth_token)
     if user is None:
-        raise HTTPException(status_code=401, detail="Oturum bulunamadı")
+        raise LocalizedError(401, "no_session")
     owner = storage.conversation_owner(body.id)
     if owner == user["email"]:
         return {"ok": True}  # already adopted (e.g. repeated sign-in)
     if owner:
-        raise HTTPException(status_code=403, detail="Bu konuşma size ait değil")
+        raise LocalizedError(403, "not_your_conversation")
     if not (0 < len(body.messages) <= 200) or any(len(m.text) > 20000 for m in body.messages):
-        raise HTTPException(status_code=422, detail="Geçersiz konuşma içeriği")
+        raise LocalizedError(422, "invalid_conversation")
     storage.import_conversation(body.id, user["email"], [
         {"role": "assistant" if m.role == "bot" else "user", "content": m.text}
         for m in body.messages
@@ -255,7 +335,7 @@ async def conversation_detail(conversation_id: str, auth_token: str = Cookie(Non
 async def conversation_delete(conversation_id: str, auth_token: str = Cookie(None)):
     user = auth.sessions.get(auth_token)
     if user is None:
-        raise HTTPException(status_code=401, detail="Oturum bulunamadı")
+        raise LocalizedError(401, "no_session")
     _authorize_conversation(conversation_id, user)
     storage.delete_conversation(conversation_id, user["email"])
     with _sessions_lock:
@@ -336,7 +416,7 @@ async def usage_me(request: Request, days: float = 30, auth_token: str = Cookie(
 def _require_admin(auth_token) -> None:
     user = auth.sessions.get(auth_token)
     if user is None or user["email"] not in settings.ADMIN_EMAILS:
-        raise HTTPException(status_code=403, detail="Bu sayfaya erişim yetkin yok")
+        raise LocalizedError(403, "admin_forbidden")
 
 
 @app.get("/admin/usage")
@@ -362,14 +442,14 @@ def _validate_model(model_name: str) -> None:
     """model_name is client-supplied — only allowlisted models may run,
     so the public API can't burn the OpenRouter key on arbitrary models."""
     if model_name and model_name not in settings.ALLOWED_CHAT_MODELS:
-        raise HTTPException(status_code=400, detail="Bu model desteklenmiyor")
+        raise LocalizedError(400, "model_unsupported")
 
 
 @app.get("/chat", response_model=ChatResponse)
 async def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
                auth_token: str = Cookie(None)):
     if len(query) > MAX_QUERY_CHARS:
-        raise HTTPException(status_code=413, detail="Mesaj çok uzun.")
+        raise LocalizedError(413, "query_too_long")
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -381,8 +461,8 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
         response = conversation.respond(
             query, model, education_type=user["education_type"] if user else None)
     except Exception as error:  # upstream LLM stall/failure — not a server bug
-        raise HTTPException(status_code=503,
-                            detail=f"Üstteki model servisi yanıt vermedi: {error}")
+        print(f"[error] chat failed: {error}", file=sys.stderr)  # detail stays server-side
+        raise LocalizedError(503, "service_unavailable")
     _register_refusal(request, user, response)
     _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
@@ -404,22 +484,10 @@ class ChatStreamBody(BaseModel):
     lang: str | None = None  # UI language, for error messages
 
 
-STREAM_ERRORS = {
-    "tr": ("Şu anda yanıt veremiyorum — hizmette geçici bir sorun var. "
-           "Lütfen daha sonra tekrar dene.",
-           "\n\n*(Bağlantı hatası — yanıtın devamı alınamadı.)*"),
-    "en": ("I can't answer right now — the service is having a temporary issue. "
-           "Please try again later.",
-           "\n\n*(Connection error — the rest of the answer could not be retrieved.)*"),
-}
-
-QUERY_TOO_LONG = {"tr": "Mesaj çok uzun.", "en": "The message is too long."}
-
-
 def _stream_chat(request, query, session_id, model_name, auth_token, image=None, lang="tr"):
+    lang = lang if lang in ("tr", "en") else "tr"
     if len(query) > MAX_QUERY_CHARS:
-        raise HTTPException(status_code=413,
-                            detail=QUERY_TOO_LONG.get(lang, QUERY_TOO_LONG["tr"]))
+        raise LocalizedError(413, "query_too_long")
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -444,10 +512,9 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             # abort the HTTP stream — the browser would show a raw
             # NetworkError instead of a readable message
             print(f"[error] llm stream failed: {error}", file=sys.stderr)
-            failed, broke_off = STREAM_ERRORS.get(lang, STREAM_ERRORS["tr"])
             # partial answer already on screen: say it broke instead of
             # stopping silently mid-sentence
-            yield broke_off if tokens else failed
+            yield BROKE_OFF[lang] if tokens else MESSAGES["service_unavailable"][lang]
             return
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
@@ -484,12 +551,12 @@ async def chat_stream_post(request: Request, body: ChatStreamBody,
     (data URL) that the model sees for this turn."""
     if body.image is not None:
         if not body.image.startswith("data:image/"):
-            raise HTTPException(status_code=400, detail="Geçersiz görsel.")
+            raise LocalizedError(400, "invalid_image")
         if len(body.image) > MAX_IMAGE_CHARS:
-            raise HTTPException(status_code=413, detail="Görsel çok büyük.")
+            raise LocalizedError(413, "image_too_large")
     query = body.query.strip()
     if not query and body.image is None:
-        raise HTTPException(status_code=400, detail="Boş mesaj.")
+        raise LocalizedError(400, "empty_message")
     # an image-only message is fine: the conversation extracts the search
     # query from the image itself (see QueryRewriter.image_query)
     return _stream_chat(request, query, body.session_id, body.model_name,
@@ -507,25 +574,20 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
     forcing one makes Whisper translate into it — the UI language says
     nothing about which language the student speaks, so auto-detect."""
     if not settings.GROQ_API_KEY:
-        raise HTTPException(status_code=503, detail="Ses tanıma yapılandırılmamış.")
+        raise LocalizedError(503, "stt_not_configured")
 
     user = auth.sessions.get(auth_token)
     key = _limit_key(request, user)
     if key not in settings.ABUSE_EXEMPT and _abuse_limiter.is_blocked(key):
-        raise HTTPException(status_code=429,
-                            detail="Uygunsuz dil nedeniyle mesaj gönderimin geçici "
-                                   "olarak engellendi.",
-                            headers={"X-Block-Reason": "abuse"})
+        raise LocalizedError(429, "abuse_blocked", headers={"X-Block-Reason": "abuse"})
     if not _stt_limiter.allow(key):
-        raise HTTPException(status_code=429,
-                            detail="Ses tanıma limitine ulaştın. Lütfen bir süre "
-                                   "sonra tekrar dene.")
+        raise LocalizedError(429, "stt_limit")
 
     audio = await request.body()
     if not audio:
-        raise HTTPException(status_code=400, detail="Ses verisi yok.")
+        raise LocalizedError(400, "no_audio")
     if len(audio) > MAX_AUDIO_BYTES:
-        raise HTTPException(status_code=413, detail="Kayıt çok uzun.")
+        raise LocalizedError(413, "audio_too_long")
 
     content_type = request.headers.get("content-type") or "audio/webm"
     extension = "mp4" if "mp4" in content_type else "ogg" if "ogg" in content_type else "webm"
@@ -538,7 +600,7 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
         timeout=60,
     )
     if groq.status_code != 200:
-        raise HTTPException(status_code=502, detail="Ses tanıma başarısız oldu.")
+        raise LocalizedError(502, "stt_failed")
     return {"text": groq.json().get("text", "").strip()}
 
 

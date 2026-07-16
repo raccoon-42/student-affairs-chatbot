@@ -109,6 +109,11 @@ ADMIN_EMAILS = {key.strip() for key in os.getenv("ADMIN_EMAILS", "").split(",") 
 # Off by default because local dev runs plain http://localhost.
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "") == "1"
 
+# Auth sessions expire this many days after creation. get_auth_user rejects
+# older tokens and create_auth_session prunes them, so a leaked token can't
+# grant access forever. Matches the auth cookie's max-age.
+AUTH_SESSION_TTL_DAYS = int(os.getenv("AUTH_SESSION_TTL_DAYS", "30"))
+
 # API (used by integration tests)
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 

@@ -113,18 +113,24 @@ def set_education_type(email: str, education_type: str):
 
 
 def create_auth_session(token: str, email: str):
+    now = time.time()
     with _connect() as conn:
+        # opportunistic cleanup: every login clears out expired tokens so
+        # the table can't grow without bound
+        conn.execute("DELETE FROM auth_sessions WHERE created_at < ?",
+                     (now - settings.AUTH_SESSION_TTL_DAYS * 86400,))
         conn.execute("INSERT INTO auth_sessions (token, email, created_at) VALUES (?, ?, ?)",
-                     (token, email, time.time()))
+                     (token, email, now))
 
 
 def get_auth_user(token) -> dict | None:
     if not token:
         return None
+    cutoff = time.time() - settings.AUTH_SESSION_TTL_DAYS * 86400
     with _connect() as conn:
         row = conn.execute(
             """SELECT u.* FROM auth_sessions s JOIN users u ON u.email = s.email
-               WHERE s.token = ?""", (token,)).fetchone()
+               WHERE s.token = ? AND s.created_at >= ?""", (token, cutoff)).fetchone()
     return _user_dict(row) if row else None
 
 
