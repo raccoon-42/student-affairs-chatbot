@@ -143,15 +143,25 @@ def drop_auth_session(token):
 
 # ---------- conversations & messages ----------
 
+# untitled conversations store an empty title; clients render their own
+# localized placeholder. The old fixed Turkish placeholder still marks
+# rows persisted before this scheme — both count as "pending a title".
+LEGACY_PLACEHOLDER_TITLE = "Yeni konuşma"
+
+
+def _title_pending(title: str) -> bool:
+    return title in ("", LEGACY_PLACEHOLDER_TITLE)
+
+
 def record_exchange(conversation_id: str, email: str, query: str, answer: str, sources=None,
                     usage=None):
     """One completed turn: creates the conversation row on first use and
     appends both messages. `sources` documents what the answer was
-    grounded on, `usage` what it cost. The title is a placeholder — the
-    question must never serve as one; set_conversation_title swaps it
-    for the model-written title shortly after."""
+    grounded on, `usage` what it cost. The title stays empty — the
+    question must never serve as one; set_conversation_title fills it
+    with the model-written title shortly after."""
     now = time.time()
-    title = "Yeni konuşma"
+    title = ""
     with _connect() as conn:
         conn.execute(
             """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
@@ -175,7 +185,7 @@ def import_conversation(conversation_id: str, email: str, messages: list, title:
     already has), we persist it as if it had always been the user's.
     Caller must have checked ownership."""
     now = time.time()
-    title = title or "Yeni konuşma"
+    title = title or ""
     with _connect() as conn:
         conn.execute(
             """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
@@ -265,11 +275,14 @@ def conversation_owner(conversation_id: str) -> str | None:
 
 
 def list_conversations(email: str) -> list:
+    """`pending` marks rows still waiting for their model-written title —
+    the client shows its own localized placeholder and keeps retrying."""
     with _connect() as conn:
         rows = conn.execute(
             """SELECT id, title, updated_at FROM conversations
                WHERE user_email = ? ORDER BY updated_at DESC""", (email,)).fetchall()
-    return [{"id": r["id"], "title": r["title"], "updated": r["updated_at"]} for r in rows]
+    return [{"id": r["id"], "title": r["title"], "updated": r["updated_at"],
+             "pending": _title_pending(r["title"])} for r in rows]
 
 
 def conversation_messages(conversation_id: str) -> list:

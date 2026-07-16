@@ -171,11 +171,16 @@ const emptyState = document.getElementById("empty-state");
 let serverMode = false;
 
 function loadConversations() {
-  // pending titles don't survive reloads: whatever was stored becomes
-  // visible again (placeholder title), and never-used chats are dropped
+  // fresh-chat hiding doesn't survive reloads: a still-untitled chat becomes
+  // visible (localized placeholder) but keeps needing a title, so retitling
+  // resumes. Legacy rows stored a baked-in placeholder string — treat those
+  // as untitled too. Never-used chats are dropped.
+  const placeholders = [STRINGS.tr.newConversation, STRINGS.en.newConversation];
   return JSON.parse(localStorage.getItem("conversations") || "[]")
     .filter((c) => c.messages?.length)
-    .map(({ pendingTitle, ...c }) => c);
+    .map(({ pendingTitle, ...c }) => (
+      pendingTitle || !c.title || placeholders.includes(c.title)
+        ? { ...c, title: "", titleMissing: true } : c));
 }
 
 function saveConversations() {
@@ -189,7 +194,14 @@ let currentId = localStorage.getItem("current_id");
 async function enterServerMode() {
   serverMode = true;
   const rows = await fetch("/conversations").then((r) => (r.ok ? r.json() : []));
-  conversations = rows.map((row) => ({ ...row, messages: null })); // transcripts load on demand
+  conversations = rows.map((row) => ({
+    ...row,
+    // pending rows show the localized placeholder and keep retrying the
+    // title (legacy rows carry a baked Turkish placeholder — blank it)
+    title: row.pending ? "" : row.title,
+    titleMissing: row.pending || undefined,
+    messages: null, // transcripts load on demand
+  }));
   currentId = null;
   renderSidebar();
   renderMessages();
@@ -202,7 +214,7 @@ function current() {
 function newConversation() {
   const conversation = {
     id: crypto.randomUUID().replaceAll("-", ""),
-    title: t("newConversation"),
+    title: "", // the sidebar renders the localized placeholder for empty titles
     pendingTitle: true, // hidden from the sidebar until the model titles it
     updated: Date.now(),
     messages: [],
@@ -236,6 +248,12 @@ async function select(id) {
   renderMessages();
   closeSidebar();
   input.focus();
+
+  // heal old untitled conversations just by opening them: the server
+  // rehydrates persisted transcripts, so the title can land years later
+  if (conversation?.titleMissing && conversation.messages?.length >= 2) {
+    retitle(conversation);
+  }
 }
 
 function removeConversation(id) {
@@ -282,8 +300,11 @@ function renderSidebar() {
 
     const title = document.createElement("span");
     title.className = "title";
-    title.textContent = conversation.title;
-    title.title = conversation.title; // hover reveals what the ellipsis cut
+    // untitled chats get the placeholder in the CURRENT UI language —
+    // rendered here (not stored) so a language toggle re-renders it
+    const label = conversation.title || t("newConversation");
+    title.textContent = label;
+    title.title = label; // hover reveals what the ellipsis cut
     item.appendChild(title);
 
     const del = document.createElement("button");
@@ -308,9 +329,10 @@ async function retitle(conversation) {
   const { title } = await fetch(`/chat/title?${params}`)
     .then((r) => (r.ok ? r.json() : {}))
     .catch(() => ({}));
-  if (!title) return; // still hidden; retried after the next answer
+  if (!title) return; // placeholder stays; retried on next answer or open
   conversation.title = title;
   delete conversation.pendingTitle;
+  delete conversation.titleMissing;
   saveConversations();
   renderSidebar(); // the item exists only now — animate its first render
   const el = listEl.querySelector(`[data-id="${conversation.id}"] .title`);
@@ -776,9 +798,11 @@ async function send(query, image = null) {
     saveConversations();
     if (usage) renderTokenTotal();
     // a cheap model writes the title after the first exchange — until it
-    // lands the chat stays out of the sidebar, and failed calls retry
-    // after the next answer
-    if (conversation.pendingTitle && conversation.messages.length >= 2) retitle(conversation);
+    // lands a fresh chat stays out of the sidebar (pendingTitle) and a
+    // reloaded untitled one shows the placeholder (titleMissing); failed
+    // calls retry after the next answer either way
+    if ((conversation.pendingTitle || conversation.titleMissing)
+        && conversation.messages.length >= 2) retitle(conversation);
     setBubbleText(botEl, "bot", answer, sources); // final pass turns [n] into chips
     addBotActions(botEl, answer, botMessage);
     if (devMode) {
@@ -1322,7 +1346,10 @@ async function adoptCurrentConversation() {
     body: JSON.stringify({
       id: conversation.id,
       messages: conversation.messages.map((m) => ({ role: m.role, text: m.text })),
-      title: conversation.pendingTitle ? null : conversation.title,
+      // untitled (empty) imports as null: the server keeps it pending and
+      // the title lands on a later retitle instead of freezing a placeholder
+      title: conversation.pendingTitle || conversation.titleMissing
+        ? null : conversation.title || null,
     }),
   });
   if (!result.ok) return null;

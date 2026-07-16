@@ -367,18 +367,27 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
 @app.get("/chat/title")
 async def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)):
     """A short LLM-written title for the conversation's first exchange —
-    the UI swaps its first-question placeholder for it. Reads the cached
-    conversation only; the chat that filled it was already rate-limited,
-    and the UI asks once per conversation."""
+    the UI swaps its localized placeholder for it. Uses the cached
+    conversation, rehydrating persisted ones on a cache miss; the chat
+    that filled it was already rate-limited, and the UI retries only
+    while a conversation is still untitled."""
     user = auth.sessions.get(auth_token)
     _authorize_conversation(session_id, user)
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
-    if not cached:
+    if cached:
+        conversation = cached[0]
+    elif storage.conversation_owner(session_id):
+        # a restart or the 30-min eviction lost the cache between the answer
+        # and this call — the transcript is persisted, so rehydrate instead
+        # of stranding the conversation on the placeholder title. Unpersisted
+        # ids never get here (no owner), so the cache can't be grown blindly.
+        conversation = get_conversation(session_id)
+    else:
         return {"title": None}
     _, _, _, small_model = _backend("openrouter")
     try:
-        title, usage = cached[0].suggest_title(small_model)
+        title, usage = conversation.suggest_title(small_model)
     except Exception as error:  # a failed title is not worth an error state
         print(f"[title] generation failed: {error}", file=sys.stderr)
         return {"title": None}

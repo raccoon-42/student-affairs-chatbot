@@ -31,12 +31,15 @@ def test_exchanges_accumulate_with_placeholder_title():
     storage.record_exchange("conv1", USER["email"], "ikinci soru", "ikinci cevap")
 
     [conversation] = storage.list_conversations(USER["email"])
-    # never the question text — the model-written title replaces this
-    assert conversation["title"] == "Yeni konuşma"
+    # never the question text — empty until the model writes the title,
+    # and flagged pending so clients show their localized placeholder
+    assert conversation["title"] == ""
+    assert conversation["pending"] is True
 
     storage.set_conversation_title("conv1", "Ders Kaydı")
     [conversation] = storage.list_conversations(USER["email"])
     assert conversation["title"] == "Ders Kaydı"
+    assert conversation["pending"] is False
     messages = storage.conversation_messages("conv1")
     assert [(m["role"], m["content"]) for m in messages] == [
         ("user", "ilk soru"), ("assistant", "ilk cevap"),
