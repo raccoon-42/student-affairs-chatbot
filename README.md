@@ -11,7 +11,7 @@ app/
 ├── api/api.py        # FastAPI endpoints (thin shell)
 ├── conversation.py   # Conversation: prompt assembly + history + pipeline stages
 ├── llm.py            # LLM seam: OpenRouterLLM adapter
-├── embeddings.py     # embedding seam: OpenRouter (default) | local sentence-transformers
+├── embeddings.py     # embedding seam: OpenRouter hosted embeddings
 ├── retrieval.py      # Retriever: vector search + hybrid scoring + audience filters
 │                     #   vector store seam: QdrantVectorStore | InMemoryVectorStore
 ├── guardrails.py     # scope gate (runs concurrently with retrieval)

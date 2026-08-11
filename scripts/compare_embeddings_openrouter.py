@@ -1,4 +1,4 @@
-"""Compare the local embedding model against OpenRouter-hosted candidates.
+"""Compare OpenRouter-hosted embedding candidates.
 
 Task: each FAQ question gets one LLM-generated paraphrase; a good embedding
 model should retrieve the original question from the paraphrase. Ground
@@ -7,7 +7,7 @@ judging. Documents are pulled from the live Qdrant collections; ranking is
 done in-memory — nothing is written to Qdrant.
 
 Also prints top-3 calendar results for the golden test-case queries, and
-per-query embedding latency (network round trip vs local inference).
+per-query embedding latency.
 
 Run: uv run python scripts/compare_embeddings_openrouter.py
 """
@@ -31,7 +31,6 @@ TEST_CASES_DIR = Path(__file__).resolve().parent.parent / "tests" / "test_cases"
 
 # (model id, needs the e5/qwen3-style query instruction prefix)
 CANDIDATES = [
-    ("local", True),  # settings.EMBEDDING_MODEL via sentence-transformers
     ("qwen/qwen3-embedding-8b", True),
     ("google/gemini-embedding-2", False),
     ("openai/text-embedding-3-large", False),
@@ -45,15 +44,6 @@ def scroll_collection(collection):
     client = QdrantClient(settings.QDRANT_URL)
     points, _ = client.scroll(collection_name=collection, limit=1000, with_payload=True)
     return [(p.payload["text"], p.payload) for p in points]
-
-
-class LocalEmbedder:
-    def __init__(self):
-        from sentence_transformers import SentenceTransformer
-        self._model = SentenceTransformer(settings.EMBEDDING_MODEL, trust_remote_code=True)
-
-    def embed(self, texts):
-        return np.asarray(self._model.encode(texts))
 
 
 class OpenRouterEmbedder:
@@ -92,12 +82,18 @@ class OpenRouterEmbedder:
 
 
 def make_embedder(model_id):
-    return LocalEmbedder() if model_id == "local" else OpenRouterEmbedder(model_id)
+    return OpenRouterEmbedder(model_id)
+
+
+EMBED_INSTRUCTION = (
+    "Üniversite yönetmeliği veya akademik takvim ile ilgili Türkçe bir soruya "
+    "yanıt verebilecek ilgili pasajları getir"
+)
 
 
 def with_query_instruction(query):
-    """The production query prefix (retrieval.py) — also Qwen3's format."""
-    return f"Instruct: {settings.EMBED_INSTRUCTION}\nQuery: {query}"
+    """The e5/qwen3-style query prefix."""
+    return f"Instruct: {EMBED_INSTRUCTION}\nQuery: {query}"
 
 
 def generate_paraphrases(questions):
@@ -193,8 +189,7 @@ def main():
     results = {}
 
     for model_id, needs_instruction in candidates:
-        label = settings.EMBEDDING_MODEL + " (local)" if model_id == "local" else model_id
-        print(f"\n=== {label} ===")
+        print(f"\n=== {model_id} ===")
         embedder = make_embedder(model_id)
 
         queries = [with_query_instruction(q) if needs_instruction else q for q in paraphrases]
@@ -202,7 +197,7 @@ def main():
         query_vectors = embedder.embed(queries)
         hit1, hit3, mrr = faq_metrics(rank(doc_vectors, query_vectors))
         latency = measure_latency(embedder, needs_instruction, latency_sample)
-        results[label] = (hit1, hit3, mrr, latency)
+        results[model_id] = (hit1, hit3, mrr, latency)
         print(f"  FAQ paraphrase retrieval: hit@1 {hit1:.3f} | hit@3 {hit3:.3f} | MRR {mrr:.3f}"
               f" | query embed {latency * 1000:.0f}ms")
 

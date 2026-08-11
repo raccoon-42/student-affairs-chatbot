@@ -32,8 +32,7 @@ Create `/opt/iytebot/.env` — start from your local one, then change:
 
 - `ABUSE_EXEMPT=` and `RATELIMIT_EXEMPT=` — **empty**, no dev IPs in prod
 - `COOKIE_SECURE=1` — auth cookie only over HTTPS
-- keep: `OPENROUTER_API_KEY`, `GROQ_API_KEY`, `GOOGLE_CLIENT_ID`,
-  `EMBEDDING_BACKEND=openrouter` etc.
+- keep: `OPENROUTER_API_KEY`, `GROQ_API_KEY`, `GOOGLE_CLIENT_ID` etc.
 - In Google Cloud Console → the OAuth client → add
   `https://<your-domain>` to Authorized JavaScript origins, or sign-in
   will fail in prod.

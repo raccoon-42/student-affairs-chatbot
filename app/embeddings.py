@@ -1,10 +1,8 @@
-"""The embedding seam: one interface, two adapters.
+"""The embedding seam.
 
 Indexing and querying both go through `embed_documents(texts)` /
 `embed_query(text)`, so the two sides can never disagree on model or
-prefix. `default_embedder()` picks the adapter from settings:
-EMBEDDING_BACKEND=openrouter (hosted, the default) or local
-(sentence-transformers).
+prefix. `default_embedder()` returns the OpenRouter adapter.
 """
 import time
 from typing import List
@@ -12,28 +10,6 @@ from typing import List
 import requests
 
 from config import settings
-
-
-class SentenceTransformerEmbedder:
-    """Local inference. The e5-instruct model wants an instruction prefix
-    on queries (not on documents)."""
-
-    def __init__(self, model_name=None):
-        self._model_name = model_name or settings.EMBEDDING_MODEL
-        self._model = None  # loaded on first use — importing this module stays cheap
-
-    def _encode(self, texts):
-        if self._model is None:
-            from sentence_transformers import SentenceTransformer
-            self._model = SentenceTransformer(self._model_name, trust_remote_code=True)
-        return self._model.encode(texts)
-
-    def embed_documents(self, texts: List[str]) -> List[List[float]]:
-        return [vector.tolist() for vector in self._encode(texts)]
-
-    def embed_query(self, text: str) -> List[float]:
-        prefixed = f"Instruct: {settings.EMBED_INSTRUCTION}\nQuery: {text}"
-        return self._encode(prefixed).tolist()
 
 
 class OpenRouterEmbedder:
@@ -81,6 +57,4 @@ class OpenRouterEmbedder:
 
 
 def default_embedder():
-    if settings.EMBEDDING_BACKEND == "local":
-        return SentenceTransformerEmbedder()
     return OpenRouterEmbedder()

@@ -615,7 +615,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     if new_ids:
         embedder = default_embedder()
         print(f"Encoding {len(new_ids)} new/changed chunks "
-              f"({len(desired) - len(new_ids)} unchanged, {settings.EMBEDDING_BACKEND})...")
+              f"({len(desired) - len(new_ids)} unchanged, {settings.OPENROUTER_EMBEDDING_MODEL})...")
         vectors = embedder.embed_documents([desired[pid]["text"] for pid in new_ids])
 
         if qdrant.collection_exists(collection_name=collection_name):

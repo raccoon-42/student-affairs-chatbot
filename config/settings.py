@@ -25,17 +25,10 @@ PEOPLE_COLLECTION = os.getenv("PEOPLE_COLLECTION", "people")
 COURSES_COLLECTION = os.getenv("COURSES_COLLECTION", "courses")
 GUIDES_COLLECTION = os.getenv("GUIDES_COLLECTION", "guides")
 
-# Embeddings (used by BOTH indexing and querying)
-# "openrouter" (hosted) or "local" (sentence-transformers). Collections
-# embedded with one backend are not searchable with the other — re-index
-# from the source files (vectorizer) after switching.
-EMBEDDING_BACKEND = os.getenv("EMBEDDING_BACKEND", "openrouter")
+# Embeddings (used by BOTH indexing and querying). Collections embedded
+# with one model are not searchable with another — re-index from the
+# source files (vectorizer) after switching.
 OPENROUTER_EMBEDDING_MODEL = os.getenv("OPENROUTER_EMBEDDING_MODEL", "google/gemini-embedding-2")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-large-instruct")
-EMBED_INSTRUCTION = (
-    "Üniversite yönetmeliği veya akademik takvim ile ilgili Türkçe bir soruya "
-    "yanıt verebilecek ilgili pasajları getir"
-)
 
 # Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
 SEMANTIC_WEIGHT = 0.7
