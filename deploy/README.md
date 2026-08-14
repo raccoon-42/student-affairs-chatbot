@@ -24,7 +24,7 @@ curl -fsSL https://get.docker.com | sh
 ## 2. App
 
 ```bash
-git clone https://github.com/raccoon-42/rag-chatbot.git /opt/iytebot
+git clone https://github.com/raccoon-42/student-affairs-chatbot.git /opt/iytebot
 cd /opt/iytebot
 ```
 

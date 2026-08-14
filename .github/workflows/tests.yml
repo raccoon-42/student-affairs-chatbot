@@ -1,0 +1,20 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+      # --locked fails the build if uv.lock drifted from pyproject.toml
+      - run: uv sync --locked
+      # pytest.ini deselects the integration marker, so this needs no
+      # services, no network and no API keys
+      - run: uv run pytest -q

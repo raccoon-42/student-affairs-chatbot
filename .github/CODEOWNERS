@@ -1,0 +1,5 @@
+# Every change needs the codeowner's review. Enforced by main's branch
+# protection ("Require review from Code Owners"); on its own this file
+# only auto-requests review, it doesn't block a merge.
+
+* @raccoon-42
