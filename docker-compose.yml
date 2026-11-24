@@ -9,8 +9,6 @@ services:
     volumes:
       # users/conversations SQLite shared with the host, like prod
       - ./data:/app/data
-      # cache downloaded embedding models between container restarts
-      - hf_cache:/root/.cache/huggingface
     depends_on:
       - qdrant
 
@@ -50,12 +48,13 @@ services:
         done
 
   qdrant:
-    image: qdrant/qdrant
+    # pinned: storage is only promised to load on the next minor version,
+    # so upgrade one minor at a time, never via an unpinned "latest"
+    image: qdrant/qdrant:v1.20.2
     ports:
       - "6333:6333"
     volumes:
       - qdrant_storage:/qdrant/storage
 
 volumes:
-  hf_cache:
   qdrant_storage:

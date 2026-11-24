@@ -60,8 +60,8 @@ To force a check without waiting for the daily run:
 docker compose run --rm check-updates python -m preprocessing.check_updates
 ```
 
-What persists across rebuilds: the Qdrant index and embedding-model cache
-(named volumes `qdrant_storage`, `hf_cache`), SQLite users/conversations
+What persists across rebuilds: the Qdrant index (named volume
+`qdrant_storage`), SQLite users/conversations
 (`./data`, bind-mounted), and corpora + index state (`./preprocessing/data`,
 bind-mounted, shared with manual pipeline runs on the host).
 
