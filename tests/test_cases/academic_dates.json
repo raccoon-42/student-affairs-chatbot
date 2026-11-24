@@ -13,5 +13,10 @@
     "query": "bahar dönemi sınavları ne zaman bitiyor?",
     "expected": "Hangi akademik yılı sorduğunu netleştirir ya da tarih verir: 2025-2026 bahar yarıyıl sonu sınavları 17-30 Haziran 2026 arasındaydı (30 Haziran'da bitti); 2026-2027 için 14-25 Haziran 2027. Bu tarihlerden birini vermesi yeterli.",
     "description": "Bahar dönemi sınav bitişi"
+  },
+  {
+    "query": "dönem ne zaman bitiyor?",
+    "expected": "Devam eden ya da en yakın yarıyılın bitişini tarihiyle verir: derslerin son günü ve/veya yarıyıl sonu sınavlarının bitişi. Referanstaki DURUM etiketine göre geçmiş bir yarıyılı yaklaşan gibi sunmaz, 'elimde bilgi yok' demez.",
+    "description": "Dönem bitişi (gündelik ifade, takvim 'yarıyıl' der)"
   }
 ]
