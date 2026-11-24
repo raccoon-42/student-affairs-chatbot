@@ -19,6 +19,15 @@ def chat_with_usage(llm, model, messages):
     return llm.chat(model, messages), None
 
 
+def _extra_body(model):
+    # OpenRouter extensions: the charged cost (USD) in usage, and thinking
+    # off for the models listed in REASONING_OFF_MODELS
+    body = {"usage": {"include": True}}
+    if model in settings.REASONING_OFF_MODELS:
+        body["reasoning"] = {"effort": "none"}
+    return body
+
+
 class OpenRouterLLM:
     """Adapter for OpenRouter (OpenAI-compatible API)."""
 
@@ -45,7 +54,7 @@ class OpenRouterLLM:
         self._ensure_client()
         completion = self._client.chat.completions.create(
             model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS,
-            extra_body={"usage": {"include": True}})
+            extra_body=_extra_body(model))
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")
         usage = None
@@ -63,8 +72,7 @@ class OpenRouterLLM:
             model=model, messages=messages, stream=True,
             max_tokens=settings.LLM_MAX_TOKENS,
             stream_options={"include_usage": True},
-            # OpenRouter extension: adds the charged cost (USD) to usage
-            extra_body={"usage": {"include": True}})
+            extra_body=_extra_body(model))
         finish_reason = None
         usage = None
         for chunk in stream:
