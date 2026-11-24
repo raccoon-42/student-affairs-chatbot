@@ -235,6 +235,18 @@ def test_rewriter_feeds_retrieval_and_model_sees_both():
     assert "lisans için kaç kredi gerekiyor?" in messages[-1]["content"]
 
 
+def test_prompt_states_which_departments_have_a_course_catalog():
+    class CatalogRetriever(FakeRetriever):
+        def retrieve_all(self, query, audience=None):
+            return {**super().retrieve_all(query, audience),
+                    "course_departments": ["Bilgisayar Mühendisliği"]}
+
+    main_llm = FakeLLM()
+    Conversation(main_llm, CatalogRetriever(), model="test-model").respond("doktora dersleri ne")
+    _, messages = main_llm.calls[-1]
+    assert "Ders kataloğu olan bölümler: Bilgisayar Mühendisliği" in messages[-1]["content"]
+
+
 def test_rewriter_failure_falls_back_to_raw_query():
     class ExplodingLLM:
         def chat(self, model, messages):
