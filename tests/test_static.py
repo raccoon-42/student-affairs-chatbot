@@ -26,3 +26,9 @@ def test_page_links_assets_by_content_hash():
     assert script and style
     asset = client.get(f"/app.js?v={script.group(1)}")
     assert asset.status_code == 200 and "modelHaiku" in asset.text
+
+
+def test_health_answers_for_the_container_healthcheck():
+    response = TestClient(api.app).get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"ok": True}

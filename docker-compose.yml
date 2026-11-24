@@ -11,6 +11,14 @@ services:
       - ./data:/app/data
     depends_on:
       - qdrant
+    # the image has no curl; check-updates (same image) serves nothing, so
+    # the check sits here, not in the Dockerfile
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
   check-updates:
     build: .

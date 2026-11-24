@@ -619,6 +619,14 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
     return {"text": groq.json().get("text", "").strip()}
 
 
+@app.get("/health", include_in_schema=False)
+async def health():
+    """For the container healthcheck: the server answers. Qdrant and the
+    LLM are not checked here; an outage there is reported per request and
+    shouldn't mark the container unhealthy."""
+    return {"ok": True}
+
+
 _LOCAL_ASSET = re.compile(r'(src|href)="([\w.-]+\.(?:js|css))"')
 
 
