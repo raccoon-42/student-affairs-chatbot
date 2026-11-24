@@ -836,6 +836,148 @@
     }
    ],
    "rewritten": "Yan dala başvurmak için hangi şartlar gerekiyor?"
+  },
+  {
+   "id": "gd-erasmus-tarih",
+   "query": "erasmus başvuruları ne zaman ve nasıl yapılıyor?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "note": "2026-11-24: dense ranks the dates chunk 30th; 21 sibling chunks share its page title",
+   "rewritten": "Erasmus başvuruları ne zaman ve nasıl yapılıyor?"
+  },
+  {
+   "id": "gd-erasmus-tarih-kisa",
+   "query": "erasmus başvuru tarihleri ne zaman",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus başvuru tarihleri ne zaman?"
+  },
+  {
+   "id": "gd-erasmus-belge",
+   "query": "erasmusa gideceğim, hangi belgeler lazım?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Erasmus+ KA131 Hareketlilik Belgeleri"
+     }
+    }
+   ],
+   "rewritten": "Erasmus programına gideceğim, hangi belgeler gerekli?"
+  },
+  {
+   "id": "gd-erasmus-koordinator",
+   "query": "bilgisayar mühendisliği erasmus koordinatörü kim?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "burakaslan@iyte.edu.tr"
+     ]
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği Erasmus koordinatörü kim?"
+  },
+  {
+   "id": "gd-erasmus-anlasma",
+   "query": "ceng'in erasmus anlaşmaları hangi üniversitelerle?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Bilgisayar Mühendisliği",
+      "Heidelberg"
+     ]
+    }
+   ],
+   "rewritten": "Ceng'in Erasmus anlaşmaları hangi üniversitelerle?"
+  },
+  {
+   "id": "gd-erasmus-sart",
+   "query": "erasmusa başvurmak için not ortalamam kaç olmalı",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru için Asgari Şartlar"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus'a başvurmak için not ortalamam kaç olmalı?"
+  },
+  {
+   "id": "gd-erasmus-staj",
+   "query": "erasmus staj başvurusu nasıl yapılıyor",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Staj Başvuru Formu"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus staj başvurusu nasıl yapılıyor?"
+  },
+  {
+   "id": "gd-erasmus-feragat",
+   "query": "erasmusa seçildim ama gitmekten vazgeçersem ne olur",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Vazgeçme (Feragat)"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus programına seçildikten sonra gitmekten vazgeçersem ne olur?"
+  },
+  {
+   "id": "gd-erasmus-ingilizce",
+   "query": "erasmus ingilizce sınavı ne zaman",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Erasmus İngilizce Sınavı"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus İngilizce sınavı ne zaman yapılıyor?"
+  },
+  {
+   "id": "gd-uio-adres",
+   "query": "uluslararası ilişkiler ofisi nerede",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Yabancı Diller Yüksekokulu İdari Bina"
+     ]
+    }
+   ],
+   "rewritten": "Uluslararası ilişkiler ofisi nerede?"
   }
  ]
 }
