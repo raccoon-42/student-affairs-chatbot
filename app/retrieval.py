@@ -116,7 +116,7 @@ class QdrantVectorStore:
                 for key, value in filters.items()
             ])
 
-        if not self._client.collection_exists(collection):
+        if not self._read(self._client.collection_exists, collection):
             # a source that hasn't been indexed yet contributes nothing
             # instead of taking the whole conversation down
             print(f"Warning: collection '{collection}' does not exist in Qdrant — skipping")
@@ -130,7 +130,8 @@ class QdrantVectorStore:
             prefetch.append(Prefetch(
                 query=SparseVector(indices=list(sparse), values=list(sparse.values())),
                 using=VECTOR_NAME, filter=query_filter, limit=depth))
-        results = self._client.query_points(
+        results = self._read(
+            self._client.query_points,
             collection_name=collection,
             prefetch=prefetch,
             query=RrfQuery(rrf=Rrf(k=rrf_k or settings.RRF_K)),
@@ -145,13 +146,30 @@ class QdrantVectorStore:
         # only a yes is cached: a collection indexed before hybrid search is
         # searched dense-only, and re-checked, until it gets its BM25 vectors
         if collection not in self._bm25_ready:
-            sparse = self._client.get_collection(collection).config.params.sparse_vectors or {}
+            sparse = self._read(self._client.get_collection, collection).config.params.sparse_vectors or {}
             if VECTOR_NAME not in sparse:
                 print(f"Warning: collection '{collection}' has no BM25 vectors — dense only. "
                       f"Run: python -m preprocessing.indexing.reindex_bm25")
                 return False
             self._bm25_ready.add(collection)
         return True
+
+    @staticmethod
+    def _read(request, *args, **kwargs):
+        """One Qdrant read, sent again on a transport error. Under parallel
+        load qdrant-client loses about 1 in 600 requests ("Bad file
+        descriptor", timeouts) while the server itself is fine: 16 of 10,000
+        searches in a stress test, on client 1.18 and 1.20 alike. A message
+        runs nine searches at once and one failure fails the message, so
+        each read gets two more tries; reads are safe to repeat."""
+        from qdrant_client.http.exceptions import ResponseHandlingException
+
+        for attempt in range(3):
+            try:
+                return request(*args, **kwargs)
+            except ResponseHandlingException:
+                if attempt == 2:
+                    raise
 
 
 class InMemoryVectorStore:

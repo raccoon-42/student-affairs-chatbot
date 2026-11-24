@@ -59,3 +59,23 @@ def test_rebuild_bm25_migrates_a_dense_only_collection():
     hits = QdrantVectorStore(client=client).search(
         "c", QUERY, limit=1, filters={"kind": "regulation"}, sparse=sparse_query("madde 322"))
     assert hits[0].text == "Madde 322: mazeret sınavı"
+
+
+def test_a_dropped_request_is_sent_again():
+    # qdrant-client loses ~1 in 600 requests under parallel load; one lost
+    # search used to fail the student's whole message
+    from qdrant_client.http.exceptions import ResponseHandlingException
+
+    client = make_client(with_bm25=True)
+    real_query = client.query_points
+    dropped = []
+
+    def flaky_query(*args, **kwargs):
+        if not dropped:
+            dropped.append(True)
+            raise ResponseHandlingException(OSError(9, "Bad file descriptor"))
+        return real_query(*args, **kwargs)
+
+    client.query_points = flaky_query
+    hits = QdrantVectorStore(client=client).search("c", QUERY, limit=1)
+    assert dropped and hits[0].text == "Genel hükümler"
