@@ -361,8 +361,10 @@ class Retriever:
                  if pair[0].metadata.get("kind") in ("roster", "area", "role")]
         hits = persons
         if lists and (not persons or lists[0][1] >= persons[0][1]):
-            chosen = [lists[0]]
-            if lists[0][0].metadata.get("kind") != "roster":
+            # every list tied for first: RRF ties when two chunks swap ranks
+            # between dense and BM25, and the server's tie order is arbitrary
+            chosen = [pair for pair in lists if math.isclose(pair[1], lists[0][1])]
+            if all(hit.metadata.get("kind") != "roster" for hit, _ in chosen):
                 chosen += ([pair for pair in lists if pair[0].metadata.get("kind") == "roster"][:1]
                            or self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
                                                   filters={"kind": "roster"}, vector=vector))

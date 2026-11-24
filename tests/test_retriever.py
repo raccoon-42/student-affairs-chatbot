@@ -211,6 +211,30 @@ def test_people_roster_rides_along_when_an_area_chunk_wins():
     assert kinds[0] == "area" and kinds[1] == "roster"
 
 
+def test_people_lists_tied_for_first_all_get_in():
+    # regression: "yapay zeka alanında çalışan hocalar" — the AI area list
+    # and the assistants' list were dense #1/#2 and BM25 #2/#1, so RRF gave
+    # them the same score and the server's tie order picked the one list
+    from app.retrieval import Hit
+
+    area = Hit("yapay zeka alanında çalışan öğretim elemanları", {"kind": "area"}, 0.7)
+    role = Hit("araştırma görevlilerinin çalışma alanları", {"kind": "role"}, 0.7)
+    roster = Hit("bölüm kadrosunun tam listesi", {"kind": "roster"}, 0.583)
+    person = Hit("Yunus Emre Şahbaz — Araştırma Görevlisi", {"kind": "person"}, 0.373)
+
+    class TieStore:
+        def __init__(self, order):
+            self.order = order
+
+        def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
+            return self.order[:limit]
+
+    for order in ([area, role, roster, person], [role, area, roster, person]):
+        results = Retriever(TieStore(order), FakeEmbedder()).retrieve_people("yapay zeka hocaları")
+        kinds = [r["metadata"]["kind"] for r in results]
+        assert "area" in kinds and "role" in kinds and "roster" in kinds
+
+
 TODAY = date(2026, 11, 24)  # 2026-2027 güz yarıyılı
 PAST_FALL = ("[2025-2026 Güz Yarıyılı] 12 Ocak 2026 ile 23 Ocak 2026 arasında yarıyıl sonu sınavları",
              "fall", "2026-01-12", "2026-01-23", [1.0, 0.0, 0.0, 0.1])
