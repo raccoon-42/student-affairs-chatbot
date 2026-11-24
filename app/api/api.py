@@ -152,7 +152,7 @@ def get_conversation(session_id: str, backend: str = "openrouter") -> Conversati
             llm, retriever, model, small_model = _backend(backend)
             conversation = Conversation(llm, retriever, model,
                                         gate=ScopeGate(llm, small_model),
-                                        rewriter=QueryRewriter(llm, small_model))
+                                        rewriter=QueryRewriter(llm, small_model, settings.IMAGE_MODEL))
             stored = storage.conversation_messages(session_id)
             if stored:
                 conversation.load_history(stored)

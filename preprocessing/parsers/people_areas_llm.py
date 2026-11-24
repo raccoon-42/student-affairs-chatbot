@@ -14,16 +14,13 @@ One LLM call per department file; rewrites tags unconditionally.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
-import re
 import sys
-import time
 from pathlib import Path
-
-import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
+from preprocessing.parsers.llm_call import json_array
 
 PEOPLE_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "people"
 
@@ -48,32 +45,7 @@ Kişiler:
 
 
 def call_llm(people_lines):
-    # transient timeouts happen on long OpenRouter calls — retry before giving up
-    for attempt in range(3):
-        try:
-            response = requests.post(
-                f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-                headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-                json={
-                    "model": settings.OPENROUTER_MODEL,
-                    "messages": [{"role": "user", "content": PROMPT + "\n\n".join(people_lines)}],
-                    "temperature": 0,
-                },
-                timeout=600,
-            )
-            break
-        except (requests.ConnectionError, requests.Timeout) as e:
-            if attempt == 2:
-                raise
-            wait = 5 * (attempt + 1)
-            print(f"{e.__class__.__name__}, retrying in {wait}s...")
-            time.sleep(wait)
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    return json_array(PROMPT + "\n\n".join(people_lines), timeout=600)
 
 
 def tag_department(path):
@@ -87,7 +59,7 @@ def tag_department(path):
         return
 
     lines = [f"- {p['name']}: {p['bio']}" for p in taggable]
-    print(f"{path.stem}: tagging {len(taggable)} academics with {settings.OPENROUTER_MODEL}...")
+    print(f"{path.stem}: tagging {len(taggable)} academics with {settings.PARSER_MODEL}...")
     tagged = {item["name"]: item.get("areas", []) for item in call_llm(lines)}
 
     missing = [p["name"] for p in taggable if p["name"] not in tagged]

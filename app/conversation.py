@@ -139,9 +139,10 @@ class QueryRewriter:
     scope gate see the full intent ("lisans için kaç kredi lazım?") instead
     of a bare reply ("lisans icin soruyorum") or shorthand with typos."""
 
-    def __init__(self, llm, model):
+    def __init__(self, llm, model, image_model=None):
         self._llm = llm
         self._model = model
+        self.image_model = image_model or model  # reading images is the harder job
         self.last_usage = None  # tokens/cost of the latest rewrite/image call
 
     def rewrite(self, query: str, history: list) -> str:
@@ -169,7 +170,7 @@ class QueryRewriter:
         typed = f"Öğrencinin yazdığı mesaj: {query}\n" if query else ""
         self.last_usage = None
         try:
-            extracted, self.last_usage = chat_with_usage(self._llm, self._model, [{
+            extracted, self.last_usage = chat_with_usage(self._llm, self.image_model, [{
                 "role": "user",
                 "content": [
                     {"type": "text", "text": IMAGE_QUERY_PROMPT.format(typed=typed)},
@@ -311,7 +312,7 @@ class Conversation:
         if self._rewriter is not None and image is not None:
             extract_start = time.perf_counter()
             search_query = self._rewriter.image_query(query, image)
-            self._track("image", self._rewriter._model, self._rewriter.last_usage)
+            self._track("image", self._rewriter.image_model, self._rewriter.last_usage)
             self._log_row("image", f"{time.perf_counter() - extract_start:.2f}s",
                           f"search query: {search_query!r}" if search_query != query else "")
             if not query:
@@ -482,7 +483,7 @@ if __name__ == "__main__":
     llm, model, gate_model = OpenRouterLLM(), args.model or settings.OPENROUTER_MODEL, settings.GUARD_MODEL
     conversation = Conversation(llm, default_retriever(), model,
                                 gate=ScopeGate(llm, gate_model),
-                                rewriter=QueryRewriter(llm, gate_model))
+                                rewriter=QueryRewriter(llm, gate_model, settings.IMAGE_MODEL))
 
     print("İyteBot'a hoş geldiniz. Çıkmak için 'q', sıfırlamak için 'sıfırla'.")
     while True:

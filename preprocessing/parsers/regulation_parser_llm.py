@@ -19,9 +19,7 @@ Outputs land in preprocessing/data/processed/mevzuat/<name>.{txt,json}.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
-import re
 import sys
-import time
 from pathlib import Path
 
 import pdfplumber
@@ -30,6 +28,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
+from preprocessing.parsers.llm_call import json_array
 
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw" / "mevzuat"
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "mevzuat"
@@ -78,32 +77,7 @@ def extract_html_text(url):
 
 
 def call_llm(raw_text):
-    # transient TLS resets happen on long uploads — retry before giving up
-    for attempt in range(3):
-        try:
-            response = requests.post(
-                f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-                headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-                json={
-                    "model": settings.OPENROUTER_MODEL,
-                    "messages": [{"role": "user", "content": PROMPT + raw_text}],
-                    "temperature": 0,
-                },
-                timeout=600,
-            )
-            break
-        except (requests.ConnectionError, requests.Timeout) as e:
-            if attempt == 2:
-                raise
-            wait = 5 * (attempt + 1)
-            print(f"{e.__class__.__name__}, retrying in {wait}s...")
-            time.sleep(wait)
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    return json_array(PROMPT + raw_text, timeout=600)
 
 
 def render_article(article):
@@ -131,7 +105,7 @@ def restructure(raw_text, stem):
               f"scanned PDF with no text layer? Try --html with a mevzuat.gov.tr URL.")
         return
 
-    print(f"Extracted {len(raw_text)} chars, sending to {settings.OPENROUTER_MODEL}...")
+    print(f"Extracted {len(raw_text)} chars, sending to {settings.PARSER_MODEL}...")
     articles = call_llm(raw_text)
     print(f"LLM returned {len(articles)} articles.")
     if not articles:

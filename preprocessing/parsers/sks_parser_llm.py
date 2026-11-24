@@ -15,16 +15,13 @@ Outputs land in preprocessing/data/processed/sks/<slug>.json.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
-import re
 import sys
-import time
 from pathlib import Path
-
-import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
+from preprocessing.parsers.llm_call import json_array
 
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw" / "sks"
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "sks"
@@ -54,32 +51,7 @@ HTML:
 
 
 def call_llm(html):
-    # transient TLS resets happen on long uploads — retry before giving up
-    for attempt in range(3):
-        try:
-            response = requests.post(
-                f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-                headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-                json={
-                    "model": settings.OPENROUTER_MODEL,
-                    "messages": [{"role": "user", "content": PROMPT + html}],
-                    "temperature": 0,
-                },
-                timeout=600,
-            )
-            break
-        except (requests.ConnectionError, requests.Timeout) as e:
-            if attempt == 2:
-                raise
-            wait = 5 * (attempt + 1)
-            print(f"{e.__class__.__name__}, retrying in {wait}s...")
-            time.sleep(wait)
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    return json_array(PROMPT + html, timeout=600)
 
 
 def render_chunk(chunk):
@@ -93,7 +65,7 @@ def parse_page(html_path):
     instead of skipping past an empty output file.
     """
     html = Path(html_path).read_text(encoding="utf-8")
-    print(f"{Path(html_path).stem}: {len(html)} chars, sending to {settings.OPENROUTER_MODEL}...")
+    print(f"{Path(html_path).stem}: {len(html)} chars, sending to {settings.PARSER_MODEL}...")
     chunks = call_llm(html)
     print(f"LLM returned {len(chunks)} chunks.")
     if not chunks:

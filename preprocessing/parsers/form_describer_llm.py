@@ -13,15 +13,13 @@ preprocessing/data/processed/formlar/forms.json.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
-import re
 import sys
 from pathlib import Path
-
-import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
+from preprocessing.parsers.llm_call import json_array
 
 MANIFEST_PATH = Path(__file__).resolve().parent.parent / "data" / "raw" / "formlar" / "manifest.json"
 OUTPUT_PATH = Path(__file__).resolve().parent.parent / "data" / "processed" / "formlar" / "forms.json"
@@ -45,22 +43,7 @@ Başlıklar:
 
 
 def call_llm(titles):
-    response = requests.post(
-        f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-        headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-        json={
-            "model": settings.OPENROUTER_MODEL,
-            "messages": [{"role": "user", "content": PROMPT + "\n".join(f"- {t}" for t in titles)}],
-            "temperature": 0,
-        },
-        timeout=300,
-    )
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    return json_array(PROMPT + "\n".join(f"- {t}" for t in titles), timeout=300)
 
 
 def main():
@@ -70,7 +53,7 @@ def main():
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     titles = [entry["title"] for entry in manifest]
 
-    print(f"Describing {len(titles)} forms with {settings.OPENROUTER_MODEL}...")
+    print(f"Describing {len(titles)} forms with {settings.PARSER_MODEL}...")
     described = {item["title"]: item for item in call_llm(titles)}
 
     missing = [t for t in titles if t not in described]
