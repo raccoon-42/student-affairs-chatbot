@@ -44,9 +44,9 @@ class InMemoryVectorStoreWrapper:
         self.store = store
         self.last_filters = "unset"
 
-    def search(self, collection, vector, limit, filters=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None):
         self.last_filters = filters
-        return self.store.search(collection, vector, limit, filters)
+        return self.store.search(collection, vector, limit, filters, sparse)
 
 
 def test_query_filter_extraction_reaches_the_store():
@@ -187,14 +187,38 @@ def test_people_roster_rides_along_when_an_area_chunk_wins():
     assert kinds[0] == "area" and kinds[1] == "roster"
 
 
-def test_hybrid_score_blends_semantic_and_bm25():
+def test_bm25_breaks_a_dense_tie():
     store = InMemoryVectorStore()
     # Same vector: semantic scores tie, so BM25 on the text must break the tie
-    store.add(settings.REGULATIONS_COLLECTION, "kayıt dondurma", {}, [1.0, 0.0, 0.0, 0.1])
     store.add(settings.REGULATIONS_COLLECTION, "başka bir madde", {}, [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.REGULATIONS_COLLECTION, "kayıt dondurma", {}, [1.0, 0.0, 0.0, 0.1])
     retriever = Retriever(store, FakeEmbedder())
     results = retriever.retrieve_regulations("kayıt dondurma")
     assert "kayıt dondurma" in results[0]["text"]
+
+
+def test_bm25_finds_a_chunk_the_dense_search_ranks_low():
+    store = InMemoryVectorStore()
+    # dense prefers the two generic articles; only BM25 sees "322"
+    store.add(settings.REGULATIONS_COLLECTION, "Genel hükümler", {}, [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.REGULATIONS_COLLECTION, "Amaç ve kapsam", {}, [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.REGULATIONS_COLLECTION, "Madde 322: mazeret", {}, [0.0, 0.0, 1.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+    # the old pipeline let BM25 re-rank only dense's top 2: this never surfaced
+    results = retriever.retrieve_regulations("sınav maddesi 322", top_k=1)
+    assert results[0]["text"] == "Madde 322: mazeret"
+
+
+def test_courses_list_chunk_admitted_only_when_it_wins():
+    store = InMemoryVectorStore()
+    store.add(settings.COURSES_COLLECTION, "CENG 311 sınav ağırlıklı ders",
+              {"kind": "course"}, [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.COURSES_COLLECTION, "Lisans dersleri tam liste: kayıt",
+              {"kind": "list"}, [0.0, 1.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+    assert retriever.retrieve_courses("kayıt dersleri liste")[0]["metadata"]["kind"] == "list"
+    results = retriever.retrieve_courses("CENG 311 sınav")
+    assert [r["metadata"]["kind"] for r in results] == ["course"]
 
 
 def make_faq_retriever():

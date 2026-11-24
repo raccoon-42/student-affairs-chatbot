@@ -6,10 +6,13 @@ scoring, result formatting — is implementation, hidden behind it.
 
 The vector store sits behind a seam with two adapters: QdrantVectorStore
 (production) and InMemoryVectorStore (tests). Both answer
-search(collection, vector, limit, filters) -> [Hit].
+search(collection, vector, limit, filters, sparse) -> [Hit]: dense and BM25
+each rank the collection, and RRF fuses the two rankings.
 """
+import math
 import re
 import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Dict, List, Optional
@@ -18,7 +21,7 @@ import numpy as np
 
 from config import settings
 from preprocessing.extraction import extract_academic_period
-from preprocessing.indexing.bm25 import BM25, preprocess_text
+from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors, sparse_query
 
 
 # students glue course codes together ("ceng322"); the catalog says
@@ -56,17 +59,20 @@ class Hit:
 
 
 class QdrantVectorStore:
-    def __init__(self, url=None):
+    def __init__(self, url=None, client=None):
         self._url = url or settings.QDRANT_URL
-        self._client = None  # created on first use, not at import
+        self._client = client  # created on first use, not at import
+        self._bm25_ready = set()  # collections known to carry BM25 vectors
 
     def search(self, collection: str, vector: List[float], limit: int,
-               filters: Optional[Dict[str, str]] = None) -> List[Hit]:
+               filters: Optional[Dict[str, str]] = None,
+               sparse: Optional[Dict[int, float]] = None) -> List[Hit]:
         if self._client is None:
             from qdrant_client import QdrantClient
             self._client = QdrantClient(self._url)
 
-        from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+        from qdrant_client.http.models import (Filter, FieldCondition, MatchValue, Prefetch,
+                                               Rrf, RrfQuery, SparseVector)
         query_filter = None
         if filters:
             query_filter = Filter(must=[
@@ -80,20 +86,42 @@ class QdrantVectorStore:
             print(f"Warning: collection '{collection}' does not exist in Qdrant — skipping")
             return []
 
+        # the filter goes on each ranking: the server would push a top-level
+        # one down, but qdrant-client's local mode (tests) doesn't
+        depth = max(settings.HYBRID_PREFETCH, limit)
+        prefetch = [Prefetch(query=vector, filter=query_filter, limit=depth)]
+        if sparse and self._has_bm25(collection):
+            prefetch.append(Prefetch(
+                query=SparseVector(indices=list(sparse), values=list(sparse.values())),
+                using=VECTOR_NAME, filter=query_filter, limit=depth))
         results = self._client.query_points(
             collection_name=collection,
-            query=vector,
+            prefetch=prefetch,
+            query=RrfQuery(rrf=Rrf(k=settings.RRF_K)),
             limit=limit,
-            query_filter=query_filter,
         ).points
         return [
             Hit(text=hit.payload["text"], metadata=hit.payload.get("metadata", {}), score=hit.score)
             for hit in results
         ]
 
+    def _has_bm25(self, collection: str) -> bool:
+        # only a yes is cached: a collection indexed before hybrid search is
+        # searched dense-only, and re-checked, until it gets its BM25 vectors
+        if collection not in self._bm25_ready:
+            sparse = self._client.get_collection(collection).config.params.sparse_vectors or {}
+            if VECTOR_NAME not in sparse:
+                print(f"Warning: collection '{collection}' has no BM25 vectors — dense only. "
+                      f"Run: python -m preprocessing.indexing.reindex_bm25")
+                return False
+            self._bm25_ready.add(collection)
+        return True
+
 
 class InMemoryVectorStore:
-    """Second adapter for the same seam — used by tests, no server needed."""
+    """Second adapter for the same seam — used by tests, no server needed.
+    Mirrors Qdrant: IDF over the whole collection, filters before ranking,
+    RRF over the two rankings."""
 
     def __init__(self):
         self._collections: Dict[str, list] = {}
@@ -101,27 +129,45 @@ class InMemoryVectorStore:
     def add(self, collection: str, text: str, metadata: dict, vector: List[float]):
         self._collections.setdefault(collection, []).append((text, metadata, np.array(vector, dtype=float)))
 
-    def search(self, collection, vector, limit, filters=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None):
+        entries = self._collections.get(collection, [])
+        weights = document_vectors({i: text for i, (text, _, _) in enumerate(entries)})
+        document_freq = Counter(index for doc in weights.values() for index in doc)
+        idf = {index: math.log((len(entries) - n + 0.5) / (n + 0.5) + 1)
+               for index, n in document_freq.items()}
+
         query = np.array(vector, dtype=float)
-        hits = []
-        for text, metadata, doc_vector in self._collections.get(collection, []):
+        dense, lexical = [], []
+        for i, (text, metadata, doc_vector) in enumerate(entries):
             if filters and any(metadata.get(k) != v for k, v in filters.items()):
                 continue
             denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
-            score = float(np.dot(query, doc_vector) / denom) if denom else 0.0
-            hits.append(Hit(text=text, metadata=metadata, score=score))
-        hits.sort(key=lambda h: h.score, reverse=True)
-        return hits[:limit]
+            dense.append((float(np.dot(query, doc_vector) / denom) if denom else 0.0, i))
+            bm25 = sum(value * weights[i].get(index, 0.0) * idf.get(index, 0.0)
+                       for index, value in (sparse or {}).items())
+            if bm25 > 0:  # sparse search only returns chunks sharing a word
+                lexical.append((bm25, i))
+
+        fused = {}
+        for ranking in (dense, lexical):
+            ranking.sort(key=lambda pair: pair[0], reverse=True)
+            for rank, (_, i) in enumerate(ranking[:max(settings.HYBRID_PREFETCH, limit)]):
+                fused[i] = fused.get(i, 0.0) + 1 / (rank + settings.RRF_K)
+        ranked = sorted(fused, key=fused.get, reverse=True)[:limit]
+        return [Hit(text=entries[i][0], metadata=entries[i][1], score=fused[i]) for i in ranked]
+
+
+# people and courses mix single chunks with long "list" chunks. Both tiers
+# come from ONE search so their fused scores can be compared — RRF scores
+# from separate searches can't (each search's #1 scores about the same).
+# Deep enough for top_k singles plus every list chunk ranked above them.
+TIERED_POOL = 30
 
 
 class Retriever:
-    def __init__(self, store, embedder,
-                 semantic_weight=settings.SEMANTIC_WEIGHT,
-                 bm25_weight=settings.BM25_WEIGHT):
+    def __init__(self, store, embedder):
         self._store = store
         self._embedder = embedder
-        self._semantic_weight = semantic_weight
-        self._bm25_weight = bm25_weight
 
     def retrieve_all(self, query: str, audience: str = None) -> Dict[str, List[Dict]]:
         """Everything the conversation needs, in one call:
@@ -232,28 +278,26 @@ class Retriever:
         """Instructors and staff, in three tiers: person chunks, the
         department roster, and per-area enumerations. List-type chunks
         are long and term-dense, so they'd gravitate into every people
-        top-k; one is admitted only when it outscores the best individual
-        — the scores themselves say whether the query is about the
+        top-k; one is admitted only when it outranks the best individual
+        — the ranking itself says whether the query is about the
         collective ("hocalar kimler") or one person ("maili ne"). And
         whenever ANY list chunk wins, the roster rides along: it is the
         data-complete table, so grouping/counting/"tüm hocalar" queries
         work even when an area chunk happens to win the scoring."""
-        persons = self._hybrid_search(query, settings.PEOPLE_COLLECTION, top_k,
-                                      filters={"kind": "person"}, vector=vector)
-        roster = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
-                                     filters={"kind": "roster"}, vector=vector)
-        areas = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
-                                    filters={"kind": "area"}, vector=vector)
+        ranked = self._hybrid_search(query, settings.PEOPLE_COLLECTION, TIERED_POOL,
+                                     vector=vector)
+        persons = [pair for pair in ranked if pair[0].metadata.get("kind") == "person"][:top_k]
         # role-scoped enumerations ("asistanların alanları") — see the
         # vectorizer's role chunk for why these need their own tier
-        roles = self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
-                                    filters={"kind": "role"}, vector=vector)
+        lists = [pair for pair in ranked
+                 if pair[0].metadata.get("kind") in ("roster", "area", "role")]
         hits = persons
-        lists = sorted(roster + areas + roles, key=lambda pair: pair[1], reverse=True)
         if lists and (not persons or lists[0][1] >= persons[0][1]):
             chosen = [lists[0]]
-            if roster and roster[0][0] is not lists[0][0]:
-                chosen.append(roster[0])
+            if lists[0][0].metadata.get("kind") != "roster":
+                chosen += ([pair for pair in lists if pair[0].metadata.get("kind") == "roster"][:1]
+                           or self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
+                                                  filters={"kind": "roster"}, vector=vector))
             hits = chosen + persons[:max(0, top_k - len(chosen))]
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
@@ -266,13 +310,13 @@ class Retriever:
         # course code and name), so it's admitted only when it outscores
         # the best individual course — "X dersi var mı / hangi dersler
         # var" wins the list, "CENG 311'in önkoşulu ne" wins the course.
-        singles = self._hybrid_search(query, settings.COURSES_COLLECTION, top_k,
-                                      filters={"kind": "course"}, vector=vector)
-        lists = self._hybrid_search(query, settings.COURSES_COLLECTION, 1,
-                                    filters={"kind": "list"}, vector=vector)
+        ranked = self._hybrid_search(query, settings.COURSES_COLLECTION, TIERED_POOL,
+                                     vector=vector)
+        singles = [pair for pair in ranked if pair[0].metadata.get("kind") == "course"][:top_k]
+        lists = [pair for pair in ranked if pair[0].metadata.get("kind") == "list"]
         hits = singles
         if lists and (not singles or lists[0][1] >= singles[0][1]):
-            hits = lists + singles[:max(0, top_k - 1)]
+            hits = lists[:1] + singles[:max(0, top_k - 1)]
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
@@ -292,26 +336,14 @@ class Retriever:
         return self._embedder.embed_query(query)
 
     def _hybrid_search(self, query, collection, top_k, filters=None, vector=None):
-        """Vector search for candidates, then re-rank with a blend of
-        cosine similarity and BM25 over the candidate texts."""
+        """Dense and BM25 each rank the whole collection; the store fuses
+        the two rankings (RRF). Scores only compare within one call."""
         query = normalize_query(query)  # idempotent; covers direct calls too
         if vector is None:
             vector = self._embed_query(query)
-        candidates = self._store.search(collection, vector, limit=top_k * 2, filters=filters)
-        if not candidates:
-            return []
-
-        documents = [preprocess_text(hit.text) for hit in candidates]
-        bm25 = BM25()  # fresh per query: no state carried between requests
-        bm25.fit(documents)
-        bm25_scores = bm25.score(preprocess_text(query), documents)
-
-        scored = [
-            (hit, self._semantic_weight * hit.score + self._bm25_weight * bm25_score)
-            for hit, bm25_score in zip(candidates, bm25_scores)
-        ]
-        scored.sort(key=lambda pair: pair[1], reverse=True)
-        return scored[:top_k]
+        hits = self._store.search(collection, vector, limit=top_k, filters=filters,
+                                  sparse=sparse_query(query))
+        return [(hit, hit.score) for hit in hits]
 
     @staticmethod
     def _format_calendar(hit: Hit) -> str:
