@@ -1,0 +1,841 @@
+{
+ "as_of": "2026-11-24",
+ "cases": [
+  {
+   "id": "cal-yaz-kayit",
+   "query": "yaz okulu kayıtları ne zaman",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "12 Temmuz 2027",
+      "Kayıt işlemleri"
+     ]
+    }
+   ],
+   "rewritten": "Yaz okulu kayıtları ne zaman başlıyor?"
+  },
+  {
+   "id": "cal-mezuniyet",
+   "query": "mezuniyet ne zaman?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "23 Temmuz 2027",
+      "Mezuniyet Töreni"
+     ]
+    }
+   ],
+   "rewritten": "Mezuniyet ne zaman?"
+  },
+  {
+   "id": "cal-bahar-sinav",
+   "query": "bahar dönemi sınavları ne zaman bitiyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "14 Haziran 2027",
+      "yarıyıl sonu sınavları"
+     ]
+    }
+   ],
+   "rewritten": "Bahar yarıyılı sınavları ne zaman bitiyor?"
+  },
+  {
+   "id": "cal-donem-bitis",
+   "query": "dönem ne zaman bitiyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "11 Ocak 2027",
+      "yarıyıl sonu sınavları"
+     ]
+    },
+    {
+     "collection": "calendar",
+     "contains": [
+      "28 Eylül 2026",
+      "I. yarıyıl dersler"
+     ]
+    }
+   ],
+   "rewritten": "Yarıyıl ne zaman bitiyor?"
+  },
+  {
+   "id": "cal-okul-kapaniyor",
+   "query": "okul ne zaman kapanıyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "11 Ocak 2027",
+      "yarıyıl sonu sınavları"
+     ]
+    },
+    {
+     "collection": "calendar",
+     "contains": [
+      "28 Eylül 2026",
+      "I. yarıyıl dersler"
+     ]
+    }
+   ],
+   "note": "2026-11-24 miss: calendar never says okul/kapan; fixed by the rewrite",
+   "rewritten": "Üniversitenin yarıyıl derslerinin ve yarıyıl sonu sınavlarının ne zaman bittiğini öğrenmek istiyorum."
+  },
+  {
+   "id": "cal-sinavlar",
+   "query": "sinavlar ne zaman",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "11 Ocak 2027",
+      "yarıyıl sonu sınavları"
+     ]
+    }
+   ],
+   "note": "2026-11-24 miss: got last spring's exams before ended events were dropped",
+   "rewritten": "Yarıyıl sonu sınavları ne zaman?"
+  },
+  {
+   "id": "cal-cekilme",
+   "query": "dersten çekilmek için son tarih nedir?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "4 Aralık 2026",
+      "dersten çekilme"
+     ]
+    }
+   ],
+   "rewritten": "Dersten çekilmek için son tarih nedir?"
+  },
+  {
+   "id": "cal-cekilme-bahar",
+   "query": "bahar dönemi için dersten çekilmek için son tarih nedir?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "26 Nisan 2027",
+      "dersten çekilme"
+     ]
+    }
+   ],
+   "rewritten": "Bahar yarıyılı için dersten çekilmenin son tarihi nedir?"
+  },
+  {
+   "id": "crs-311-onkosul",
+   "query": "CENG 311 dersinin önkoşulu ne?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 311"
+     }
+    }
+   ],
+   "rewritten": "CENG 311 dersinin önkoşulu nedir?"
+  },
+  {
+   "id": "crs-322-onkosul",
+   "query": "ceng322 dersinin onkosulu var mı",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 322"
+     }
+    }
+   ],
+   "rewritten": "CENG 322 dersinin önkoşulu var mı?"
+  },
+  {
+   "id": "crs-322-konular",
+   "query": "CENG 322 hangi konuları işliyor?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 322"
+     }
+    }
+   ],
+   "rewritten": "CENG 322 dersinde hangi konular işleniyor?"
+  },
+  {
+   "id": "crs-322-kredi",
+   "query": "ceng322 kaç kredi",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 322"
+     }
+    }
+   ],
+   "rewritten": "CENG 322 dersi kaç kredi?"
+  },
+  {
+   "id": "crs-akts-takip",
+   "query": "akts kac",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 322"
+     }
+    }
+   ],
+   "history": [
+    {
+     "role": "user",
+     "content": "ceng322 nedir"
+    },
+    {
+     "role": "assistant",
+     "content": "CENG 322 Operating Systems, Bilgisayar Mühendisliği lisans dersidir."
+    }
+   ],
+   "note": "follow-up: the raw query alone cannot find it, the rewrite should",
+   "rewritten": "CENG 322 dersinin AKTS kredisi kaçtır?"
+  },
+  {
+   "id": "crs-ai",
+   "query": "bilgisayar mühendisliğinde yapay zeka ile ilgili dersler var mı?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 461"
+     }
+    },
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 399"
+     }
+    },
+    {
+     "collection": "courses",
+     "metadata": {
+      "code": "CENG 531"
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliğinde yapay zeka ile ilgili dersler var mı?"
+  },
+  {
+   "id": "crs-lisans-liste",
+   "query": "bilgisayar mühendisliği lisans dersleri neler",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "kind": "list",
+      "levels": [
+       "lisans"
+      ]
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği lisans dersleri nelerdir?"
+  },
+  {
+   "id": "crs-phd-ceng",
+   "query": "bilgisayar mühendisliği doktora dersleri ne",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "kind": "list",
+      "levels": [
+       "doktora"
+      ]
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği doktora dersleri nelerdir?"
+  },
+  {
+   "id": "crs-phd",
+   "query": "doktora dersleri ne",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "kind": "list",
+      "levels": [
+       "doktora"
+      ]
+     }
+    }
+   ],
+   "rewritten": "Doktora dersleri nelerdir?"
+  },
+  {
+   "id": "crs-yl-typo",
+   "query": "yl dersleri ne bilgiayarda",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "metadata": {
+      "kind": "list",
+      "levels": [
+       "yukseklisans"
+      ]
+     }
+    }
+   ],
+   "note": "2026-11-24 miss: typo read as 'nerede'",
+   "rewritten": "Yüksek lisans derslerini bilgisayar mühendisliğinde nasıl alabilirim?"
+  },
+  {
+   "id": "frm-kimlik",
+   "query": "öğrenci kimliğimi kaybettim, ne yapmam gerekiyor?",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "metadata": {
+      "document_title": "Öğrenci Kimlik Kartı Formu"
+     }
+    }
+   ],
+   "rewritten": "Öğrenci kimliğimi kaybettim, ne yapmam gerekiyor?"
+  },
+  {
+   "id": "frm-cekilme",
+   "query": "bir dersten çekilmek istiyorum, dilekçeyi nereden bulabilirim?",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "metadata": {
+      "document_title": "Dersten Çekilme Talep Formu"
+     }
+    }
+   ],
+   "rewritten": "Bir dersten çekilmek istiyorum; dilekçeyi nereden bulabilirim?"
+  },
+  {
+   "id": "frm-kayit-sil",
+   "query": "kendi isteğimle okuldan kaydımı sildirmek istiyorum, hangi formu doldurmalıyım?",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "metadata": {
+      "document_title": "Kendi İsteği İle İlişik Kesme Formu"
+     }
+    }
+   ],
+   "rewritten": "Kendi isteğimle okuldan kaydımı sildirmek istiyorum, hangi formu doldurmam gerekir?"
+  },
+  {
+   "id": "gd-kayit-adim",
+   "query": "ders kaydımı tamamlamak için hangi adımları izlemem gerekiyor?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme",
+      "section": "Lisans Ders Kaydı Genel Bilgilendirme ve Kayıt İşlem Adımları"
+     }
+    },
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Ders Kayıtlanma Adımları (PDF)"
+     }
+    }
+   ],
+   "rewritten": "Ders kaydımı tamamlamak için hangi adımları izlemem gerekiyor?"
+  },
+  {
+   "id": "gd-kilavuz",
+   "query": "ders seçimini nasıl yapacağımı gösteren bir kılavuz var mı?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Öğrenci Ders Kayıt Kılavuzu (PDF)"
+     }
+    },
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Ders Kayıtlanma Adımları (PDF)"
+     }
+    }
+   ],
+   "rewritten": "Ders seçimini nasıl yapacağımı gösteren bir kılavuz var mı?"
+  },
+  {
+   "id": "gd-ders-secimi",
+   "query": "ders secimi nasıl yapılıyo",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme"
+     }
+    },
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Öğrenci Ders Kayıt Kılavuzu (PDF)"
+     }
+    }
+   ],
+   "rewritten": "Ders seçimi nasıl yapılıyor?"
+  },
+  {
+   "id": "gd-kurumlar-arasi",
+   "query": "başka üniversiteden İYTE'ye geçmek istiyorum, ne yapmam lazım?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Kurumlar Arası Yatay Geçiş"
+     }
+    }
+   ],
+   "rewritten": "Başka bir üniversiteden İYTE'ye (İzmir Yüksek Teknoloji Enstitüsü) geçmek için ne yapmam gerekir?"
+  },
+  {
+   "id": "gd-cap",
+   "query": "hangi bölümlerde çift anadal yapabiliyorum?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Çift Anadal"
+     }
+    }
+   ],
+   "rewritten": "Hangi bölümlerde çift anadal yapabilirim?"
+  },
+  {
+   "id": "gd-yl-basvuru",
+   "query": "yüksek lisans başvurusu nereden yapılıyor?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Lisansüstü Programlara Başvuru Bilgileri"
+     }
+    }
+   ],
+   "rewritten": "Yüksek lisans başvurusu nereden yapılıyor?"
+  },
+  {
+   "id": "gd-askerlik",
+   "query": "askerlik tecili nasıl yapılıyor?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Askerlik İşlemleri"
+     }
+    }
+   ],
+   "rewritten": "Askerlik tecili nasıl yapılıyor?"
+  },
+  {
+   "id": "ppl-roster",
+   "query": "bilgisayar mühendisliği hocaları kimler?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "metadata": {
+      "kind": "roster"
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği bölümünün hocaları kimlerdir?"
+  },
+  {
+   "id": "ppl-grupla",
+   "query": "bilgisayar mühendisliği hocalarını çalışma alanlarına göre grupla",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "metadata": {
+      "kind": "roster"
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği bölümündeki öğretim üyelerini çalışma alanlarına göre gruplandır."
+  },
+  {
+   "id": "ppl-asistan",
+   "query": "bilgisayar mühendisliği asistanları hangi alanlarda çalışıyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "metadata": {
+      "kind": "role"
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği asistanları hangi alanlarda çalışıyor?"
+  },
+  {
+   "id": "ppl-asistan-gunluk",
+   "query": "asistanlarin calisma alani ne",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "metadata": {
+      "kind": "role"
+     }
+    }
+   ],
+   "note": "no department named, no Turkish characters",
+   "rewritten": "Asistanların çalışma alanı nedir?"
+  },
+  {
+   "id": "ppl-selma",
+   "query": "Selma Tekir hangi bölümde ve maili ne?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Selma Tekir —"
+     ],
+     "metadata": {
+      "kind": "person"
+     }
+    }
+   ],
+   "rewritten": "Selma Tekir hangi bölümde okuyor ve e-posta adresi nedir?"
+  },
+  {
+   "id": "ppl-nlp",
+   "query": "bilgisayar mühendisliğinde doğal dil işleme çalışan hoca var mı?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "doğal dil işleme alanında"
+     ],
+     "metadata": {
+      "kind": "area"
+     }
+    },
+    {
+     "collection": "people",
+     "contains": [
+      "Selma Tekir —"
+     ],
+     "metadata": {
+      "kind": "person"
+     }
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği bölümünde doğal dil işleme alanında çalışan öğretim üyesi var mı?"
+  },
+  {
+   "id": "ppl-ai",
+   "query": "yapay zeka alanında çalışan hangi hocalar var?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "yapay zeka alanında"
+     ],
+     "metadata": {
+      "kind": "area"
+     }
+    },
+    {
+     "collection": "people",
+     "metadata": {
+      "kind": "roster"
+     }
+    }
+   ],
+   "note": "the roster lists every academic's areas, so it answers this too",
+   "rewritten": "Yapay zeka alanında çalışan hangi hocalar var?"
+  },
+  {
+   "id": "ppl-onur-ofis",
+   "query": "Onur Demirörs'ün ofisi nerede?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Onur Demirörs —"
+     ],
+     "metadata": {
+      "kind": "person"
+     }
+    }
+   ],
+   "rewritten": "Onur Demirörs'ün ofisi nerede?"
+  },
+  {
+   "id": "prg-ceng",
+   "query": "İYTE'de bilgisayar mühendisliği var mı?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Bilgisayar Mühendisliği (Lisans"
+     ]
+    },
+    {
+     "collection": "programs",
+     "contains": [
+      "lisans programlarının tam listesi"
+     ]
+    }
+   ],
+   "note": "the full list answers an existence question too",
+   "rewritten": "İYTE'de (İzmir Yüksek Teknoloji Enstitüsü) bilgisayar mühendisliği bölümü var mı?"
+  },
+  {
+   "id": "prg-lisans-liste",
+   "query": "İYTE'de hangi lisans bölümleri var?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "lisans programlarının tam listesi"
+     ]
+    }
+   ],
+   "rewritten": "İYTE'de hangi lisans bölümleri var?"
+  },
+  {
+   "id": "prg-endustri",
+   "query": "İYTE'de endüstri mühendisliği okumak istiyorum, var mı?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "lisans programlarının tam listesi"
+     ]
+    }
+   ],
+   "note": "absence: only the full list can show it is missing",
+   "rewritten": "İYTE'de endüstri mühendisliği lisans programı var mı?"
+  },
+  {
+   "id": "prg-yazilim",
+   "query": "yüksek lisansta yazılım mühendisliği programı var mı?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Yazılım Mühendisliği ve Veri Bilimleri"
+     ]
+    }
+   ],
+   "rewritten": "Yazılım mühendisliği alanında yüksek lisans programı var mı?"
+  },
+  {
+   "id": "sks-para",
+   "query": "yemekhane kartıma nasıl para yüklerim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "Yemekhane Kart Sistemi"
+     ]
+    },
+    {
+     "collection": "sks",
+     "contains": [
+      "Yemekhane Kontrol Sistemi"
+     ]
+    }
+   ],
+   "rewritten": "Yemekhane kartıma nasıl para yüklerim?"
+  },
+  {
+   "id": "sks-qr",
+   "query": "kimliğim yanımda yok, yemekhaneye girebilir miyim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "QR Kod ile Giriş"
+     ]
+    }
+   ],
+   "rewritten": "Kimliğim yanımda değil, yemekhaneye girebilir miyim?"
+  },
+  {
+   "id": "sks-uyelik",
+   "query": "bir öğrenci topluluğuna nasıl üye olabilirim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "Nasıl Üye Olunur"
+     ]
+    }
+   ],
+   "rewritten": "Bir öğrenci topluluğuna nasıl üye olabilirim?"
+  },
+  {
+   "id": "sks-voleybol",
+   "query": "kapalı spor salonunda hangi gün voleybol var?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "Kapalı Spor Salonu - Büyük Salon Haftalık Çalışma Programı"
+     ]
+    }
+   ],
+   "rewritten": "Kapalı spor salonunda hangi gün voleybol var?"
+  },
+  {
+   "id": "sks-kulup",
+   "query": "yeni bir kulüp kurmak istiyorum, ne yapmam gerekiyor?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "Öğrenci Topluluklarının Kurulması"
+     ]
+    }
+   ],
+   "note": "kulüp -> topluluk vocabulary bridge",
+   "rewritten": "Yeni bir öğrenci kulübü kurmak için ne yapmam gerekiyor?"
+  },
+  {
+   "id": "reg-azami",
+   "query": "okulu en fazla kaç yılda bitirmem lazım",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "metadata": {
+      "document_title": "İYTE Lisans Eğitim Öğretim Yönetmeliği",
+      "article_number": "22"
+     }
+    }
+   ],
+   "rewritten": "Bir lisans öğrencisi olarak okulu en fazla kaç yılda tamamlamam gerekiyor?"
+  },
+  {
+   "id": "reg-devam",
+   "query": "derslere devam zorunlu mu, kaç saat devamsızlık hakkım var",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "metadata": {
+      "document_title": "İYTE Lisans Eğitim Öğretim Yönetmeliği",
+      "article_number": "9"
+     }
+    }
+   ],
+   "rewritten": "Derslere devam zorunlu mu, kaç saat devamsızlık hakkım var?"
+  },
+  {
+   "id": "reg-mazeret",
+   "query": "hastaydım sınava giremedim, mazeret sınavına girebilir miyim",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "Mazeret Sınavı"
+     ],
+     "metadata": {
+      "article_number": "10"
+     }
+    }
+   ],
+   "rewritten": "Hastalık nedeniyle yarıyıl sonu sınavına giremediğim için mazeret sınavına girebilir miyim?"
+  },
+  {
+   "id": "reg-cap",
+   "query": "çift anadal yapmak için ortalamam kaç olmalı",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "metadata": {
+      "document_title": "İYTE Lisans Eğitim Öğretim Yönetmeliği",
+      "article_number": "10"
+     }
+    },
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Çift Anadal"
+     }
+    }
+   ],
+   "rewritten": "Çift anadal yapmak için ortalamanın kaç olması gerekir?"
+  },
+  {
+   "id": "reg-yandal",
+   "query": "yan dala başvurmak için şartlar neler",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "metadata": {
+      "document_title": "İYTE Yan Dal Yönergesi",
+      "article_number": "4"
+     }
+    }
+   ],
+   "rewritten": "Yan dala başvurmak için hangi şartlar gerekiyor?"
+  }
+ ]
+}

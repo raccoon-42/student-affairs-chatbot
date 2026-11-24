@@ -1,0 +1,1965 @@
+{
+ "as_of": "2026-11-24",
+ "cases": [
+  {
+   "id": "faq-000",
+   "query": "Hazırlık sınıfından geçmek için gereken minimum not kaçtır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hazırlık geçme notu nedir?"
+     }
+    }
+   ],
+   "rewritten": "Hazırlık sınıfını geçmek için gereken minimum not kaçtır?"
+  },
+  {
+   "id": "faq-001",
+   "query": "Eylül ayında yapılan İngilizce Yeterlilik Değerlendirmesi hangi şekilde gerçekleştirilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Akademik yıl başında yapılan İngilizce Yeterlik Sınavı nasıl yapılır? (Eylül SBS)"
+     }
+    }
+   ],
+   "rewritten": "Eylül ayında yapılan İngilizce Yeterlilik Değerlendirmesi hangi şekilde gerçekleştirilir?"
+  },
+  {
+   "id": "faq-002",
+   "query": "Eylül ayındaki İngilizce Yeterlilik Sınavına katılmaya hak kazanan öğrenciler kimlerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Akademik yıl başında yapılan İngilizce Yeterlik Sınavına (Eylül SBS) kimler girer?"
+     }
+    }
+   ],
+   "rewritten": "Eylül ayındaki İngilizce Yeterlilik Sınavına katılmaya hak kazanan öğrenciler kimlerdir?"
+  },
+  {
+   "id": "faq-003",
+   "query": "Yüksek lisans ve doktora öğrencileri bahar döneminde hazırlık sınıfına devam edebilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Lisansüstü öğrenciler Bahar yarıyılında hazırlık sınıfı okuyabilirler mi?"
+     }
+    }
+   ],
+   "rewritten": "Yüksek lisans ve doktora öğrencileri bahar yarıyılında hazırlık sınıfına devam edebilir mi?"
+  },
+  {
+   "id": "faq-004",
+   "query": "İngilizce Yeterlilik sınavı hariç başka hangi koşullarla muafiyet alınabilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "İngilizce Yeterlik sınavı dışında muafiyet koşulları nedir?"
+     }
+    }
+   ],
+   "rewritten": "İngilizce yeterlilik sınavı dışında hangi koşullarda muafiyet alınabilir?"
+  },
+  {
+   "id": "faq-005",
+   "query": "Derslere katılım zorunlu tutulmuş mudur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Devam zorunlu mudur?"
+     }
+    }
+   ],
+   "rewritten": "Derslere katılım zorunlu tutulmuş mudur?"
+  },
+  {
+   "id": "faq-006",
+   "query": "Temmuz ayında düzenlenen yazlık yeterlilik sınavına hangi öğrenciler başvurabilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Akademik yıl sonunda yazın yapılan Temmuz Yeterlik Sınavına kimler girebilir? (Akademik takvime göre ay değişikliği olabilir)"
+     }
+    }
+   ],
+   "rewritten": "Temmuz ayında düzenlenen yazlık yeterlilik sınavına hangi öğrenciler başvurabilir?"
+  },
+  {
+   "id": "faq-007",
+   "query": "Geçerli bir sebepten ötürü akademik durumumu dondurabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Mazeretimden dolayı izinli sayılma (kayıt dondurma ) hakkım var mıdır?"
+     }
+    }
+   ],
+   "rewritten": "Geçerli bir sebepten ötürü akademik durumumu dondurabilir miyim?"
+  },
+  {
+   "id": "faq-008",
+   "query": "Yaz eğitim dönemine bütün öğrenciler katılabilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Herkes Yaz öğretimine katılabilir mi?"
+     }
+    }
+   ],
+   "rewritten": "Yaz eğitim dönemine bütün öğrenciler katılabilir mi?"
+  },
+  {
+   "id": "faq-009",
+   "query": "Merkezi sınav puanıyla yatay geçiş yapan öğrencilere de aynı muafiyet kuralları uygulanır mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kurumlararası Yatay Geçiş — Merkezi yerleştirme puanı ile yatay geçiş ile başvuran öğrenciler içinde aynı muafiyet koşulları geçerli midir?"
+     }
+    }
+   ],
+   "rewritten": "Merkezi sınav puanıyla yatay geçiş yapan öğrencilere de aynı muafiyet kuralları uygulanır mı?"
+  },
+  {
+   "id": "faq-010",
+   "query": "Hazırlık programında iki yıl geçirdikten sonra üniversiteyle bağlantım sona mı erer?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hazırlık sınıfında 2 yıl sonunda ilişiğimiz kesilir mi?"
+     }
+    }
+   ],
+   "rewritten": "Hazırlık programında iki yıl geçirdikten sonra üniversiteyle bağlantım sona mı erer?"
+  },
+  {
+   "id": "faq-011",
+   "query": "Dönem sonu sınavı ne şekilde yürütülür?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Final Sınav nasıl yapılır?"
+     }
+    }
+   ],
+   "rewritten": "Yarıyıl sonu sınavı ne şekilde yürütülür?"
+  },
+  {
+   "id": "faq-012",
+   "query": "Üniversite öğrenci kimliğimi kaybedersem ne adımları izlemeliyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrenci Kimlik kartım kaybolursa ne yapmalıyım?"
+     }
+    }
+   ],
+   "rewritten": "Üniversite öğrenci kimliğimi kaybedersem ne adımları izlemeliyim?"
+  },
+  {
+   "id": "faq-013",
+   "query": "Öğrenci Onay Belgesi ve Ders Not Transkriptini nasıl elde edebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrenci Belgesi ve Transkript nasıl alınır?"
+     }
+    }
+   ],
+   "rewritten": "Öğrenci Onay Belgesi ve Ders Not Transkriptini nasıl elde edebilirim?"
+  },
+  {
+   "id": "faq-014",
+   "query": "Yarıyıl bitiminde Onur veya Yüksek Onur Listesi almak için hangi koşulları sağlamalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yarıyıl sonunda Onur/Yüksek Onur Belgesi almak için şartlar nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Yarıyıl bitiminde Onur veya Yüksek Onur Listesi almak için hangi koşulları sağlamalıyım?"
+  },
+  {
+   "id": "faq-015",
+   "query": "Programımda okutulan derslerin resmi müfredatını nereden temin edebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Okuduğum Bölüm/Programa ait onaylı ders içeriklerini nasıl temin e debilirim?"
+     }
+    }
+   ],
+   "rewritten": "Programımda okutulan derslerin resmi müfredatını nereden temin edebilirim?"
+  },
+  {
+   "id": "faq-016",
+   "query": "Öğrenci ilgili açıklamalar ve önemli güncellemeler nereden takip edilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrencilerle ilgili duyuruları ve bilmem gerekenleri nasıl takip edebilirim?"
+     }
+    }
+   ],
+   "rewritten": "Öğrenci ilgili açıklamalar ve önemli güncellemeler nereden takip edilir?"
+  },
+  {
+   "id": "faq-017",
+   "query": "Askerlik erteleme başvurusu için üniversitede herhangi bir işlem gerekir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Askerlik tecil işlemleri için herhangi bir işlem yapmalı mıyım?"
+     }
+    }
+   ],
+   "rewritten": "Askerlik erteleme başvurusu için üniversitede herhangi bir işlem gerekir mi?"
+  },
+  {
+   "id": "faq-018",
+   "query": "Hastalık nedeniyle almış olduğum sağlık raporunu kime sunmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Rahatsızlığım nedeniyle rapor aldım, nereye bildirmeliyim?"
+     }
+    }
+   ],
+   "rewritten": "Hastalık nedeniyle almış olduğum sağlık raporunu kime sunmalıyım?"
+  },
+  {
+   "id": "faq-019",
+   "query": "Ödeme yükümlülüğümü belirlenen tarihte yapamadığım durumda ne olacaktır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Katkı payını zamanında ödeyemezsem ne yapmalıyım, ödemediğim d urumda ne olur?"
+     }
+    }
+   ],
+   "rewritten": "Ödeme yükümlülüğümü belirlenen tarihte yapamadığım durumda ne olacaktır?"
+  },
+  {
+   "id": "faq-020",
+   "query": "İptal edilen seçmeli dersler için alternatif dersler seçebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kapatılan seçmeli derslerin yerine ders alabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "İptal edilen seçmeli dersler için alternatif dersler seçebilir miyim?"
+  },
+  {
+   "id": "faq-021",
+   "query": "Ders saydırma prosedürü nasıl uygulanır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ders saydırma işlemi nasıl yapılır?"
+     }
+    }
+   ],
+   "rewritten": "Ders saydırma prosedürü nasıl uygulanır?"
+  },
+  {
+   "id": "faq-022",
+   "query": "Ortalama notu 1.80'den düşük olan bir öğrenci ileri seviyelerdeki dersler alabilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Genel not ortalaması 1.80'in altında olan öğrenci üst yarıyıldan ders alabilir mi?"
+     }
+    }
+   ],
+   "rewritten": "Ortalama notu 1.80'in altında olan bir öğrenci ileri seviye dersler alabilir mi?"
+  },
+  {
+   "id": "faq-023",
+   "query": "Hangi öğrenciler dersi tekrar alırlar?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kimler ders tekrarı yapar?"
+     }
+    }
+   ],
+   "rewritten": "Hangi öğrenciler dersi tekrar alır?"
+  },
+  {
+   "id": "faq-024",
+   "query": "Ders programında çakışma varsa nasıl davranmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ders çakışması durumunda ne yapmalıyım?"
+     }
+    }
+   ],
+   "rewritten": "Ders programımda çakışma varsa nasıl davranmalıyım?"
+  },
+  {
+   "id": "faq-025",
+   "query": "Ders yükü kavramı nedir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ders yükü nedir?"
+     }
+    }
+   ],
+   "rewritten": "Ders yükü kavramı nedir?"
+  },
+  {
+   "id": "faq-026",
+   "query": "Bir öğrenci maksimum olarak kaç dersi alabilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "En fazla kaç ders alabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Bir öğrenci maksimum olarak kaç dersi alabilir?"
+  },
+  {
+   "id": "faq-027",
+   "query": "Ders yükümü en çok kaç ders oranında azaltabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ders yükümü en fazla kaç ders azaltabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Ders yükümü en çok kaç ders oranında azaltabilir miyim?"
+  },
+  {
+   "id": "faq-028",
+   "query": "Dersten ayrılma işlemiyle ilgili koşullar nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Dersten çekilmeye ilişkin kurallar nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Dersten ayrılma işlemiyle ilgili koşullar nelerdir?"
+  },
+  {
+   "id": "faq-029",
+   "query": "Dersten ayrılma (W) işlemi hangi dönemde gerçekleştirilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Dersten çekilme (W) işlemi ne zaman yapılır?"
+     }
+    }
+   ],
+   "rewritten": "Dersten ayrılma (W) işlemi hangi yarıyıl içinde gerçekleştirilir?"
+  },
+  {
+   "id": "faq-030",
+   "query": "Dersten çıkış (W) işlemini nasıl tamamlayabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Dersten çekilme (W) işlemini nasıl yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Dersten çıkış (W) işlemini nasıl tamamlayabilirim?"
+  },
+  {
+   "id": "faq-031",
+   "query": "Derslere katılım zorunlu mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Derslere devam zorunlu mudur?"
+     }
+    }
+   ],
+   "rewritten": "Derslere katılım zorunlu mu?"
+  },
+  {
+   "id": "faq-032",
+   "query": "Sınav puanına itiraz etmek mümkün mü?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Sınav sonucuna itiraz edebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Sınav puanına itiraz etmek mümkün mü?"
+  },
+  {
+   "id": "faq-033",
+   "query": "Telafi sınavından yararlanmanın ön koşulları nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "madde) sınavından yararlanma şartları nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Telafi sınavından yararlanmanın ön koşulları nelerdir?"
+  },
+  {
+   "id": "faq-034",
+   "query": "Mezuniyet koşullarını tamamladıysam not artırmak için ek derslere kaydolabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Mezuniyet şartını yerine getirmem durumunda not yükseltmek amacıyla ders alabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Mezuniyet koşullarını tamamladıysam not artırmak için ek derslere kaydolabilir miyim?"
+  },
+  {
+   "id": "faq-035",
+   "query": "Kayıt dondurma işlemi en fazla kaç dönemi kapsayabilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "En fazla kaç yarıyıl kayıt dondurulabilir?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurma işlemi en fazla kaç yarıyılı kapsayabilir?"
+  },
+  {
+   "id": "faq-036",
+   "query": "Kayıt dondurtmak istiyorsam hangi tarihe kadar başvuru yapmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurmak için ne zaman başvurmam gerekir?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurmak istiyorsam hangi tarihe kadar başvuru yapmalıyım?"
+  },
+  {
+   "id": "faq-037",
+   "query": "Kayıt dondurulan dönem için ücret ödenmesi zorunlu mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurulan yarıyıl için katkı payı ödemesi yapılması gerekir mi?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurulan dönem için ücret ödenmesi zorunlu mu?"
+  },
+  {
+   "id": "faq-038",
+   "query": "Kayıt dondurma döneminde öğrenci avantajlarından faydalanabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurduğum sürede öğrencilik haklarından yararlanabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurma döneminde öğrenci avantajlarından faydalanabilir miyim?"
+  },
+  {
+   "id": "faq-039",
+   "query": "Kayıt dondurma süreleri toplam öğrenim süresi içinde hesaplanır mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurduğum süreler öğrenim süremden sayılır mı?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurma süreleri toplam öğrenim süresi içinde hesaplanır mı?"
+  },
+  {
+   "id": "faq-040",
+   "query": "Yan Dal programına başvurmak için uygun zaman ve başvuru yapılacak akademik birim hangisidir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yan Dal için ne zaman ve hangi birime başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Yan Dal programına başvurmak için uygun zaman ve başvuru yapılacak akademik birim hangisidir?"
+  },
+  {
+   "id": "faq-041",
+   "query": "Yan Dal programına katılabilmek için gerekli şartlar nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yan Dal yapmanın koşulları nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Yan Dal programına katılabilmek için gerekli şartlar nelerdir?"
+  },
+  {
+   "id": "faq-042",
+   "query": "Çift Ana Dal Programına ne zaman ve hangi birime müracaat edebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Çift Ana Dal Programı için ne zaman ve hangi birime başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Çift Ana Dal Programına ne zaman ve hangi birime başvurabilirim?"
+  },
+  {
+   "id": "faq-043",
+   "query": "Çift Ana Dal Programını seçebilmek için sağlanması gereken gereklilikler nedir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Çift Ana Dal yapmanın koşulları nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Çift Ana Dal Programına başvurabilmek için sağlanması gereken koşullar nelerdir?"
+  },
+  {
+   "id": "faq-044",
+   "query": "Yaz döneminde maksimum olarak kaç dersi ders listesine ekleyebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretiminde kaç ders alabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Yaz döneminde maksimum olarak kaç dersi ders listesine ekleyebilirim?"
+  },
+  {
+   "id": "faq-045",
+   "query": "Yaz döneminde dersler için kayıt değişiklikleri ve dersten ayrılma işlemleri mümkün müdür?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretiminde ders ekleme-çıkarma ve dersten çekilme işlemi yapılabilir mi?"
+     }
+    }
+   ],
+   "rewritten": "Yaz döneminde dersler için kayıt değişiklikleri ve dersten ayrılma işlemleri mümkün müdür?"
+  },
+  {
+   "id": "faq-046",
+   "query": "Yaz dönemi ders kayıtlarımı geri alabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretimi kaydımı iptal edebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yaz dönemi ders kayıtlarımı geri alabilir miyim?"
+  },
+  {
+   "id": "faq-047",
+   "query": "Başka bir yükseköğretim kurumunun yaz döneminde sunduğu dersleri alabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Başka bir Üniversitenin Yaz Öğretiminden ders alabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Başka bir yükseköğretim kurumunun yaz döneminde sunduğu dersleri alabilir miyim?"
+  },
+  {
+   "id": "faq-048",
+   "query": "seçim hakkım var mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "seçebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Seçmeli ders seçme hakkım var mı?"
+  },
+  {
+   "id": "faq-049",
+   "query": "bu durumda bana ne olur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "durumunda ne olur?"
+     }
+    }
+   ],
+   "rewritten": "Bu durumda bana ne olur?"
+  },
+  {
+   "id": "faq-050",
+   "query": "Üniversitemiz içindeki farklı bölümlere geçebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "İYTE içinde herhangi bir programa geçiş yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Üniversitemiz içindeki farklı bölümlere geçebilir miyim?"
+  },
+  {
+   "id": "faq-051",
+   "query": "Yabancı bir ülkenin vatandaşı olarak yatay geçişe başvurabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yabancı uyruklu öğrenciyim. Yatay geçiş yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yabancı uyruklu bir öğrenci olarak yatay geçiş başvurusu yapabilir miyim?"
+  },
+  {
+   "id": "faq-052",
+   "query": "Sonbahar ve ilkbahar dönemlerine yatay geçiş için başvuru hakkım var mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Güz veya Bahar yarıyılına geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Sonbahar ve ilkbahar yarıyıllarına yatay geçiş için başvuru hakkım var mı?"
+  },
+  {
+   "id": "faq-053",
+   "query": "Başvuru yapabileceğim dönemler hangileridir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi yarıyıllara başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Başvuru yapabileceğim dönemler hangileridir?"
+  },
+  {
+   "id": "faq-054",
+   "query": "Akademik sıralama sonucu başarıya etkisi vardır mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Başarı sıralaması önemli mi?"
+     }
+    }
+   ],
+   "rewritten": "Akademik sıralama sonucunun başarıya etkisi var mıdır?"
+  },
+  {
+   "id": "faq-055",
+   "query": "var mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "mi?"
+     }
+    }
+   ],
+   "rewritten": "Var mı?"
+  },
+  {
+   "id": "faq-056",
+   "query": "En düşük GNO ortalaması kaç olmalıdır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "En az kaç Genel Not Ortalamasına sahip olmalıyım?"
+     }
+    }
+   ],
+   "rewritten": "En düşük GNO ortalaması kaç olmalıdır?"
+  },
+  {
+   "id": "faq-057",
+   "query": "Merkezi Sınav Sonuç Puanının bir etkisi söz konusu mudur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Merkezi Yerleştirme Puanımın bir önemi var mı?"
+     }
+    }
+   ],
+   "rewritten": "Merkezi Sınav Sonuç Puanının bir etkisi söz konusu mudur?"
+  },
+  {
+   "id": "faq-058",
+   "query": "Bölümün özel seçme kriterlerini yerine getirmesi zorunlu mudur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Bölümlerin ek değerlendirme ölçütlerini sağlamalı mıyım?"
+     }
+    }
+   ],
+   "rewritten": "Bölümün özel seçme kriterlerini yerine getirmek zorunlu mudur?"
+  },
+  {
+   "id": "faq-059",
+   "query": "Aynı anda birçok programa yatay geçiş başvurusu yapabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Birden fazla programa yatay geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Aynı anda birden fazla programa yatay geçiş başvurusu yapabilir miyim?"
+  },
+  {
+   "id": "faq-060",
+   "query": "Yatay geçişim onaylanırsa, maksimum eğitim süresi ne şekilde belirlenir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Geçiş başvurum kabul edilirse azami öğrenim süresi nasıl hesaplanır?"
+     }
+    }
+   ],
+   "rewritten": "Yatay geçişim onaylanırsa, maksimum eğitim süresi ne şekilde belirlenir?"
+  },
+  {
+   "id": "faq-061",
+   "query": "Daha önceki bölümdeki başarılı derslerim bu programa transfer edilecek mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Önceki programımda aldığım derslerden hangileri sayılacak?"
+     }
+    }
+   ],
+   "rewritten": "Daha önceki bölümdeki başarılı derslerim bu programa transfer edilecek mi?"
+  },
+  {
+   "id": "faq-062",
+   "query": "Müracaat ettiğim dönemden itibaren mi eğitime devam edeceğim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Eğitimime başvuru yaptığım yarıyıldan mı başlayacağım?"
+     }
+    }
+   ],
+   "rewritten": "Başvurduğum dönemden itibaren mi eğitime devam edeceğim?"
+  },
+  {
+   "id": "faq-063",
+   "query": "Yatay geçiş kaydı yaptıktan sonra bu seçimden geri çekilebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yatay geçiş ile kayıt olduktan sonra yatay geçiş hakkımdan vazgeçebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yatay geçiş kaydı yaptıktan sonra bu seçimden geri çekilebilir miyim?"
+  },
+  {
+   "id": "faq-064",
+   "query": "Başvuru yapmak için hangi zaman aralıkları belirlenmişdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi tarihlerde başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Başvuru yapmak için hangi zaman aralıkları belirlenmiştir?"
+  },
+  {
+   "id": "faq-065",
+   "query": "Farklı adlı bölümler arasında yatay geçiş mümkün olur mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "İsimleri farklı programlar arasında yatay geçiş mümkün mü?"
+     }
+    }
+   ],
+   "rewritten": "Farklı adlı bölümler arasında yatay geçiş mümkün olur mu?"
+  },
+  {
+   "id": "faq-066",
+   "query": "Güz dönemi yerine bahar dönemi için geçiş başvurusu kabul edilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Bahar yarıyılına geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Güz yarıyılı yerine bahar yarıyılı için geçiş başvurusu kabul edilir mi?"
+  },
+  {
+   "id": "faq-067",
+   "query": "Hangi akademik dönemlere başvuru hakkım vardır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi yarıyıllara başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi akademik dönemlere başvuru hakkım vardır?"
+  },
+  {
+   "id": "faq-068",
+   "query": "Akademik başarı puanı başvurunun değerlendirilmesinde rol oynar mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Başarı sıralaması önemli mi?"
+     }
+    }
+   ],
+   "rewritten": "Akademik başarı puanı başvurunun değerlendirilmesinde rol oynar mı?"
+  },
+  {
+   "id": "faq-069",
+   "query": "Okuduğum dönemde ders almamasam ya da başarısız olsam başvurum etkilenir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıtsız yarıyılımın olması ya da başarısız dersimin olması engel teşkil eder mi?"
+     }
+    }
+   ],
+   "rewritten": "Okuduğum yarıyılda ders almamam ya da derslerden başarısız olmam başvurumu etkiler mi?"
+  },
+  {
+   "id": "faq-070",
+   "query": "Geçiş başvurusu için minimum ağırlıklı not ortalaması kriteri nedir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "En az kaç Genel Not Ortalamasına sahip olmalıyım?"
+     }
+    }
+   ],
+   "rewritten": "Geçiş başvurusu için minimum ağırlıklı not ortalaması kriteri nedir?"
+  },
+  {
+   "id": "faq-071",
+   "query": "ÖSYM'nin hesapladığı yerleştirme puanı başvuruda dikkate alınır mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Merkezi Yerleştirme Puanımın bir önemi var mı?"
+     }
+    }
+   ],
+   "rewritten": "ÖSYM'nin hesapladığı yerleştirme puanı başvuruda dikkate alınır mı?"
+  },
+  {
+   "id": "faq-072",
+   "query": "Yeni bölümün özel değerlendirme şartlarını yerine getirmem gerekir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Bölümlerin ek değerlendirme ölçütlerini sağlamalı mıyım?"
+     }
+    }
+   ],
+   "rewritten": "Yeni bölümün özel değerlendirme şartlarını yerine getirmem gerekir mi?"
+  },
+  {
+   "id": "faq-073",
+   "query": "Aynı anda birden çok bölüme yatay geçiş için müracaat edebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Birden fazla programa yatay geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Aynı anda birden fazla bölüme yatay geçiş için başvuru yapabilir miyim?"
+  },
+  {
+   "id": "faq-074",
+   "query": "Geçiş başvurum kabul edilirse, total eğitim süresi nasıl kalkulasyonu yapılır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Geçiş başvurum kabul edilirse azami öğrenim süresi nasıl hesaplanır?"
+     }
+    }
+   ],
+   "rewritten": "Geçiş başvurum kabul edilirse, toplam eğitim süresi nasıl hesaplanır?"
+  },
+  {
+   "id": "faq-075",
+   "query": "Eski öğrenimim sırasında başarıyla tamamladığım dersler sayılacak mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Önceki programımda aldığım derslerden hangileri sayılacak?"
+     }
+    }
+   ],
+   "rewritten": "Eski öğrenimim sırasında başarıyla tamamladığım dersler sayılacak mı?"
+  },
+  {
+   "id": "faq-076",
+   "query": "Kayıt olmak istediğim dönemden mi yeni programımda eğitime başlayacağım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Eğitimime başvuru yaptığım yarıyıldan mı başlayacağım?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt olmak istediğim yarıyıldan mı yeni programımda eğitime başlayacağım?"
+  },
+  {
+   "id": "faq-077",
+   "query": "Yatay geçiş ile kaydı tamamladıktan sonra bu karardan geri dönebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yatay geçiş ile kayıt olduktan sonra vazgeçebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yatay geçiş ile kaydı tamamladıktan sonra bu karardan geri dönebilir miyim?"
+  },
+  {
+   "id": "faq-078",
+   "query": "İngilizcede yeterlilik seviyesini göstermek mecburi mi? Dil hazırlık sınıfına yazılabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "İngilizce Yeterliliği sağlamak zorunda mıyım? İngilizce Hazırlık Sınıfında okuma hakkım var mı?"
+     }
+    }
+   ],
+   "rewritten": "İngilizce yeterlilik seviyesini göstermek zorunlu mu? Dil hazırlık sınıfına kaydolabilir miyim?"
+  },
+  {
+   "id": "faq-079",
+   "query": "Uluslararası öğrenciyim, yatay geçiş hakkım bulunur mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yabancı uyruklu öğrenciyim. Yatay geçiş yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Uluslararası öğrenciyim, yatay geçiş hakkım bulunur mu?"
+  },
+  {
+   "id": "faq-080",
+   "query": "Başvuru için uygun tarih aralığı nedir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi tarihlerde başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Başvuru için uygun tarih aralığı nedir?"
+  },
+  {
+   "id": "faq-081",
+   "query": "Bu işlemi gerçekleştirebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Bu işlemi gerçekleştirebilir miyim?"
+  },
+  {
+   "id": "faq-082",
+   "query": "Başvuru döneminin tarihleri nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi tarihlerde başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Başvuru döneminin tarihleri nelerdir?"
+  },
+  {
+   "id": "faq-083",
+   "query": "Hangi bölümlere başvuru hakkım vardır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi programlara başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi bölümlere başvuru hakkım vardır?"
+  },
+  {
+   "id": "faq-084",
+   "query": "Güz döneminden sonraki yarıyıla geçiş için başvuru yapabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Bahar yarıyılına geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Güz yarıyılından sonraki yarıyıla geçiş için başvuru yapabilir miyim?"
+  },
+  {
+   "id": "faq-085",
+   "query": "Hangi dönemlere başvurabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Hangi yarıyıllara başvuru yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi yarıyıllara başvurabilirim?"
+  },
+  {
+   "id": "faq-086",
+   "query": "Bu durum geçerli midir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "mıdır?"
+     }
+    }
+   ],
+   "rewritten": "Bu durum geçerli midir?"
+  },
+  {
+   "id": "faq-087",
+   "query": "Kalan derslerin ya da eğitim duraklatmış olmamın başvuruyu engelleme riski var mıdır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Başarısız derslerimin oluşu ya da kayıt dondurmuş olmam başvuru yapmama engel midir?"
+     }
+    }
+   ],
+   "rewritten": "Kalan derslerim ya da eğitimime ara vermiş olmam, yüksek lisans başvurumu engelleme riski taşır mı?"
+  },
+  {
+   "id": "faq-088",
+   "query": "Kabul edildiğim üniversiteye ilk seneyi aynı senede başka programa geçiş başvurusu yapabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Üniversiteye yerleştiğim yılda başvuru yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Kabul edildiğim üniversitede ilk yılımı tamamladıktan sonra, aynı yıl içinde başka bir programa geçiş başvurusu yapabilir miyim?"
+  },
+  {
+   "id": "faq-089",
+   "query": "Talip olduğum bölümde boş kontenjan yoksa yine de başvuru hakkım olur mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "istediğim programa öğrenci alımı yapılmamış ise başvuru yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Talip olduğum bölümde boş kontenjan yoksa yine de başvuru hakkım olur mu?"
+  },
+  {
+   "id": "faq-090",
+   "query": "Bugünkü okulum Türkçe eğitim veriyor. Bu başvuru sürecinde sorun yaratır mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Mevcut üniversitemde eğitim dili Türkçe. Bu başvuru yapmama engel teşkil eder mi?"
+     }
+    }
+   ],
+   "rewritten": "Bugünkü okulum Türkçe eğitim veriyor. Bu başvuru sürecinde sorun yaratır mı?"
+  },
+  {
+   "id": "faq-091",
+   "query": "İngilizce hazırlık sınıfına gitme imkanım bulunmakta mıdır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "İngilizce hazırlık eğitimi alma hakkım var mı?"
+     }
+    }
+   ],
+   "rewritten": "İngilizce hazırlık sınıfına devam etme imkânı bulunmakta mıdır?"
+  },
+  {
+   "id": "faq-092",
+   "query": "İngilizce hazırlık eğitimine devam etme hakkım kaç yıl için geçerlidir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kaç yıl İngilizce hazırlık eğitimi alma hakkım var?"
+     }
+    }
+   ],
+   "rewritten": "İngilizce hazırlık eğitimine devam etme hakkım kaç yıl için geçerlidir?"
+  },
+  {
+   "id": "faq-093",
+   "query": "Eğer yatay geçiş talebim onaylanırsa, okuması gereken toplam yıl ne olarak belirlenir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Geçiş başvurum kabul edilirse azami öğrenim süresi nasıl hesaplanır?"
+     }
+    }
+   ],
+   "rewritten": "Eğer yatay geçiş talebim onaylanırsa, okuması gereken toplam yıl ne olarak belirlenir?"
+  },
+  {
+   "id": "faq-094",
+   "query": "Yatay geçiş kaydını yaptıktan sonra iptal ettirebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yatay geçiş ile kayıt olduktan sonra vazgeçebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yatay geçiş kaydını yaptıktan sonra iptal ettirebilir miyim?"
+  },
+  {
+   "id": "faq-095",
+   "query": "Eski bölümdeki hangi derslerim yeni programda muhasebeleştirilecek?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Önceki programımda aldığım derslerden hangileri sayılacak?"
+     }
+    }
+   ],
+   "rewritten": "Eski bölümdeki hangi derslerim yeni programda muhasebeleştirilecek?"
+  },
+  {
+   "id": "faq-096",
+   "query": "Başvuruyu yaptığım akademik dönemden itibaren mi eğitime başlayacağım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Eğitimime başvuru yaptığım yarıyıldan mı başlayacağım?"
+     }
+    }
+   ],
+   "rewritten": "Başvuruyu yaptığım akademik dönemden itibaren mi eğitime başlayacağım?"
+  },
+  {
+   "id": "faq-097",
+   "query": "Bir önceki seferde Ek madde 1 kapsamında yatay geçiş yaptım. Aynı madde ile tekrar geçiş talebinde bulunabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Daha önce Ek madde 1 ile yatay geçiş yaptım. Ek madde 1 ile tekrar yatay geçiş yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Bir önceki seferde Ek madde 1 kapsamında yatay geçiş yaptım. Aynı madde ile tekrar yatay geçiş talebinde bulunabilir miyim?"
+  },
+  {
+   "id": "faq-098",
+   "query": "Ek madde 1 ile yatay geçiş sonrasında eski bölüme dönüş talep edebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ek madde 1 ile yatay geçiş yaptım. Önceki programıma geri dönüş yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Ek madde 1 kapsamında yatay geçiş yaptıktan sonra eski bölüme geri dönüş talebinde bulunabilir miyim?"
+  },
+  {
+   "id": "faq-099",
+   "query": "Aynı anda birkaç farklı programa yatay geçiş başvurusu iletebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Birden fazla programa yatay geçiş başvurusu yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Aynı anda birden fazla programa yatay geçiş başvurusunda bulunabilir miyim?"
+  },
+  {
+   "id": "faq-100",
+   "query": "Yurtdışında veya KKTC'de bulunan yüksek öğretim kurumlarından kabul alabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "KKTC veya yurtdışındaki yükseköğrenim kurumlarından başvuru yapabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yurtdışında veya KKTC'de bulunan yüksek öğretim kurumlarından kabul alabilir miyim?"
+  },
+  {
+   "id": "faq-101",
+   "query": "Öğrenimimi tamamladıktan sonra diploma belgem ne vakit eline ulaşır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Mezun oldum diplomamı ne zaman alabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Öğrenimimi tamamladıktan sonra diploma belgem ne zaman elime ulaşır?"
+  },
+  {
+   "id": "faq-102",
+   "query": "Diplomamı misplase ettim, bu durumda ne adımlar atmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Diplomamı kaybettim, ne yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Diplomamı kaybettim, bu durumda hangi adımları atmalıyım?"
+  },
+  {
+   "id": "faq-103",
+   "query": "Ön lisans derecesini alabilmek için hangi koşulları sağlamam gerekir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Ön lisans diplomasını almak için şartlar nelerdir?"
+     }
+    }
+   ],
+   "rewritten": "Ön lisans derecesini alabilmek için hangi koşulları sağlamam gerekir?"
+  },
+  {
+   "id": "faq-104",
+   "query": "Programımı tamamlamam için normal ya da en uzun ne kadar süre (yarıyıl cinsinden) gereklidir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Normal veya azami öğrenim sürem kaç yarıyıldır?"
+     }
+    }
+   ],
+   "rewritten": "Programımı tamamlamam için normal ya da en uzun ne kadar süre (yarıyıl cinsinden) gereklidir?"
+  },
+  {
+   "id": "faq-105",
+   "query": "Herhangi bir yarıyılda kayıt olmamamış olsam bile bu, toplam öğrenim sürelerime dahil edilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt yaptırılmayan yarıyıllar öğrenim süremden sayılır mı?"
+     }
+    }
+   ],
+   "rewritten": "Herhangi bir yarıyılda kayıt yaptırmamış olsam bile bu süre, toplam öğrenim süreme dahil edilir mi?"
+  },
+  {
+   "id": "faq-106",
+   "query": "Bana verilen maksimum öğrenim süresi hesaplamasını nasıl yapabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Azami öğrenim süremi nasıl hesaplarım?"
+     }
+    }
+   ],
+   "rewritten": "Bana verilen maksimum öğrenim süresi hesaplamasını nasıl yapabilirim?"
+  },
+  {
+   "id": "faq-107",
+   "query": "Azami sürem dolduğunda sınav yapabilme hakkı hangi öğrencilerin önüne açılır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Azami öğrenim süresi sonunda sınav hakkından hangi öğrenciler yararlanabilir?"
+     }
+    }
+   ],
+   "rewritten": "Azami süresi dolan öğrencilerin sınav yapabilme hakkı hangi koşullarda tanınır?"
+  },
+  {
+   "id": "faq-108",
+   "query": "Azami süresi tamamlandıktan sonra sınava girme imkânından hangi öğrenciler mahrum olur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Azami öğrenim süresi sonunda sınav hakkından hangi öğrenciler yararlanamaz?"
+     }
+    }
+   ],
+   "rewritten": "Azami süresi tamamlandıktan sonra sınava girme imkânından hangi öğrenciler mahrum olur?"
+  },
+  {
+   "id": "faq-109",
+   "query": "Maksimum eğitim dönemini geçtikten sonra hangi talebelerin okulla bağı sonlandırılır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Azami öğrenim süresi sonunda hangi öğrencilerin ilişikleri kesilir?"
+     }
+    }
+   ],
+   "rewritten": "Maksimum öğrenim süresini aşan öğrencilerin üniversiteyle ilişiği hangi durumlarda sonlandırılır?"
+  },
+  {
+   "id": "faq-110",
+   "query": "Şahsi tercihimle öğrenim gördüğüm bölümle ilişkimi sona erdirmek için ne yapmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kendi isteğim ile kayıtlı bulunduğum bölümden ilişiğimi nasıl kesebilirim?"
+     }
+    }
+   ],
+   "rewritten": "Kişisel tercihimle öğrenim gördüğüm bölümle ilişiğimi kesmek için ne yapmam gerekir?"
+  },
+  {
+   "id": "faq-111",
+   "query": "Kimlik kartımı kaybettiğimde alması gereken adımlar nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrenci Kimlik kartım kaybolursa ne yapmalıyım?"
+     }
+    }
+   ],
+   "rewritten": "Kimlik kartımı kaybettiğimde alması gereken adımlar nelerdir?"
+  },
+  {
+   "id": "faq-112",
+   "query": "Öğrenci Belgesi ve Transkripti almak için hangi işlemleri gerçekleştirmem gerekir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrenci Belgesi ve Transkript nasıl alınır?"
+     }
+    }
+   ],
+   "rewritten": "Öğrenci Belgesi ve Transkript almak için hangi işlemleri gerçekleştirmem gerekir?"
+  },
+  {
+   "id": "faq-113",
+   "query": "Üniversiteden gelen haberler ve gerekli bilgilere nasıl ulaşabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Öğrencilerle ilgili duyuruları ve bilmem gerekenleri nasıl takip edebilirim?"
+     }
+    }
+   ],
+   "rewritten": "Üniversiteden gelen haberler ve gerekli bilgilere nasıl ulaşabilirim?"
+  },
+  {
+   "id": "faq-114",
+   "query": "Askere gitmek için erteleme işlemlerinde benim tarafımdan bir şey yapılması gerekir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Askerlik tecil işlemleri için herhangi bir işlem yapmalı mıyım?"
+     }
+    }
+   ],
+   "rewritten": "Askere gitmek için erteleme işlemlerinde benim tarafımdan bir şey yapılması gerekir mi?"
+  },
+  {
+   "id": "faq-115",
+   "query": "Sağlık sorunları sebebiyle alınan raporun bildirilmesi gereken yer neresidir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Rahatsızlığım nedeniyle rapor aldım, nereye bildirmeliyim?"
+     }
+    }
+   ],
+   "rewritten": "Sağlık sorunları sebebiyle alınan raporun bildirilmesi gereken yer neresidir?"
+  },
+  {
+   "id": "faq-116",
+   "query": "Eğitim katkısını ödeyebilmek için hangi yöntemleri kullanabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Katkı payını nasıl yatırabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Eğitim katkısını ödeyebilmek için hangi yöntemleri kullanabilirim?"
+  },
+  {
+   "id": "faq-117",
+   "query": "Gerekenden daha fazla eğitim katkısı ödediysem bunu geri almak mümkün müdür?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Katkı payının fazladan yatırılması durumunda ne yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Gerekenden daha fazla eğitim katkısı ödediysem bunu geri almak mümkün müdür?"
+  },
+  {
+   "id": "faq-118",
+   "query": "Eğitim katkı payını vadesi içinde ödeyemezsem veya hiç ödemezssem sonuçları neler olur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Katkı payını zamanında ödeyemezsem ne yapmalıyım, ödemediğim durumda ne olur?"
+     }
+    }
+   ],
+   "rewritten": "Eğitim katkı payını vadesi içinde ödeyemezsem veya hiç ödemezsem sonuçları neler olur?"
+  },
+  {
+   "id": "faq-119",
+   "query": "Derslere katılım şart mıdır?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Derslere devam zorunlu mudur?"
+     }
+    }
+   ],
+   "rewritten": "Derslere katılım zorunlu mudur?"
+  },
+  {
+   "id": "faq-120",
+   "query": "Sınav puanına karşı itiraz haklarım nelerdir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Sınav sonucuna itiraz edebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Sınav puanına karşı itiraz haklarım nelerdir?"
+  },
+  {
+   "id": "faq-121",
+   "query": "Kayıt dondurmak için maksimum kaç dönem bekleyebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "En fazla kaç yarıyıl kayıt dondurulabilir?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurmak için en fazla kaç yarıyıl izin alabilirim?"
+  },
+  {
+   "id": "faq-122",
+   "query": "Kayıt dondurma talebimi hangi tarihte sunmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurmak için ne zaman başvurmam gerekir?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurma talebimi hangi tarihte sunmalıyım?"
+  },
+  {
+   "id": "faq-123",
+   "query": "Dondurulan dönemde harç veya ücret ödenmesi zorunlu mudur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurulan yarıyıl için katkı payı ödemesi yapılması gerekir mi?"
+     }
+    }
+   ],
+   "rewritten": "Dondurulan yarıyılda harç veya ücret ödenmesi zorunlu mudur?"
+  },
+  {
+   "id": "faq-124",
+   "query": "Kayıt dondurma dönemlerinde öğrenci statüsüne bağlı avantajlardan faydalanabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurduğum sürede öğrencilik haklarından yararlanabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt dondurma döneminde öğrenci statüsüne bağlı avantajlardan faydalanabilir miyim?"
+  },
+  {
+   "id": "faq-125",
+   "query": "Dondurduğum dönemler toplam eğitim müddetine dahil olur mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt dondurduğum süreler öğrenim süremden sayılır mı?"
+     }
+    }
+   ],
+   "rewritten": "Dondurduğum yarıyıllar, toplam öğrenim süresine dahil edilir mi?"
+  },
+  {
+   "id": "faq-126",
+   "query": "Yaz dönemi öğretiminde en fazla kaç dersi alalım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretiminde kaç ders alabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Yaz öğretiminde en fazla kaç ders alabilirim?"
+  },
+  {
+   "id": "faq-127",
+   "query": "Yaz döneminde ders kaydı değiştirme ve ders bırakma işlemleri mümkün mü?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretiminde ders ekleme-çıkarma ve dersten çekilme işlemi yapılabilir mi?"
+     }
+    }
+   ],
+   "rewritten": "Yaz döneminde ders kaydı değiştirme ve ders bırakma işlemleri mümkün mü?"
+  },
+  {
+   "id": "faq-128",
+   "query": "Yaz dönemi kaydımı geri çekmek veya sonlandırmak isteyebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Yaz Öğretimi kaydımı iptal edebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Yaz dönemi kaydımı geri çekmek veya sonlandırmak isteyebilir miyim?"
+  },
+  {
+   "id": "faq-129",
+   "query": "Farklı bir yüksek öğretim kurumunun yaz dönemindeki dersleri alıp saydirabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Başka bir Üniversitenin Yaz Öğretiminden ders alabilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Farklı bir yüksek öğretim kurumunun yaz dönemindeki derslerini alıp saydırabilir miyim?"
+  },
+  {
+   "id": "faq-130",
+   "query": "Hangi seçenekleri tercih edebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "seçebilir miyim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi seçenekleri tercih edebilirim?"
+  },
+  {
+   "id": "faq-131",
+   "query": "Bu durum benim durumumda ne gibi sonuçlar doğurur?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "durumunda ne olur?"
+     }
+    }
+   ],
+   "rewritten": "Bu durum benim durumumda ne gibi sonuçlar doğurur?"
+  },
+  {
+   "id": "faq-132",
+   "query": "Mezuniyet işleminden sonra diplomayı ne kadar sürede teslim alırım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Mezun oldum diplomamı ne zaman alabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Mezuniyet işleminden sonra diplomayı ne kadar sürede teslim alırım?"
+  },
+  {
+   "id": "faq-133",
+   "query": "Diplomamı kaybetmişim, yenisini almak için ne yapmalıyım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Diplomamı kaybettim, ne yapabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Diplomamı kaybettim, yenisini almak için ne yapmalıyım?"
+  },
+  {
+   "id": "faq-134",
+   "query": "Hangi kredi miktarında mezun olurum?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kaç AKTS ile mezun olabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi kredi miktarında mezun olurum?"
+  },
+  {
+   "id": "faq-135",
+   "query": "Hangi ağırlıklı not ortalamasında mezun olabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kaç ortamalayla mezun olabilirim?"
+     }
+    }
+   ],
+   "rewritten": "Hangi ağırlıklı not ortalamasında mezun olabilirim?"
+  },
+  {
+   "id": "faq-136",
+   "query": "Zorunlu Olmayan Ders Kredileri Tanınması İşlemi nasıl gerçekleştirilir?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Zorunlu Olmayan Ders Saydırma İşlemi Nasıl yapılır?"
+     }
+    }
+   ],
+   "rewritten": "Zorunlu olmayan ders kredilerinin tanınması işlemi nasıl gerçekleştirilir?"
+  },
+  {
+   "id": "faq-137",
+   "query": "Lisans üstü eğitim programlarında derslerden ayrılma imkanı bulunuyor mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Lisansüstü Programlarda Dersten Çekilme Var mı?"
+     }
+    }
+   ],
+   "rewritten": "Lisansüstü eğitim programlarında derslerden ayrılma imkânı bulunuyor mu?"
+  },
+  {
+   "id": "faq-138",
+   "query": "Kaydı yapılmayan dönemler öğrenim süresi hesaplamasına dahil edilir mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kayıt yaptırılmayan yarıyıllar öğrenim süremden sayılır mı?"
+     }
+    }
+   ],
+   "rewritten": "Kayıt yaptırılmayan yarıyıllar öğrenim süresi hesaplamasına dahil edilir mi?"
+  },
+  {
+   "id": "faq-139",
+   "query": "Bulunduğum programdan ayrılmak için hangi adımları izlemeliyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "metadata": {
+      "question": "Kendi isteğim ile kayıtlı bulunduğum programdan ilişiğimi nasıl kesebilirim?"
+     }
+    }
+   ],
+   "rewritten": "Bulunduğum programdan ayrılmak için hangi adımları izlemeliyim?"
+  }
+ ]
+}
