@@ -30,8 +30,26 @@ from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors, sparse_qu
 _COURSE_CODE = re.compile(r'\b([a-zA-Z]{2,4})(\d{3})\b')
 
 
+# student shorthand the corpus never uses; "dr" stays — it's also a title
+_ABBREVIATIONS = {"yl": "yüksek lisans", "phd": "doktora"}
+_ABBREVIATION = re.compile(r'\b(' + '|'.join(_ABBREVIATIONS) + r')\b', re.IGNORECASE)
+
+
 def normalize_query(query: str) -> str:
+    query = _ABBREVIATION.sub(lambda m: _ABBREVIATIONS[m.group(1).lower()], query)
     return _COURSE_CODE.sub(r'\1 \2', query)
+
+
+def _course_level(query: str) -> Optional[str]:
+    """Program level a (normalized) query names, as course metadata spells it."""
+    text = query.lower()
+    if re.search(r'y[üu]ksek\s*lisans|master', text):
+        return "yukseklisans"
+    if re.search(r'doktora|phd', text):
+        return "doktora"
+    if re.search(r'\blisans\b', text):  # not "lisansüstü": that is both of the above
+        return "lisans"
+    return None
 
 
 _YEAR = re.compile(r'\b20\d{2}\b')
@@ -348,7 +366,12 @@ class Retriever:
         lists = [pair for pair in ranked if pair[0].metadata.get("kind") == "list"]
         hits = singles
         if lists and (not singles or lists[0][1] >= singles[0][1]):
-            hits = lists[:1] + singles[:max(0, top_k - 1)]
+            # the ranking decides THAT a list is wanted; a level named in the
+            # query decides WHICH — "yl dersleri" must not get the PhD list
+            level = _course_level(query)
+            chosen = next((pair for pair in lists
+                           if level in pair[0].metadata.get("levels", [])), lists[0])
+            hits = [chosen] + singles[:max(0, top_k - 1)]
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits

@@ -218,21 +218,59 @@ def test_history_keeps_bare_question_not_reference_data():
     assert user_messages == [{"role": "user", "content": "sınavlar ne zaman"}]
 
 
+class ScriptedLLM(FakeLLM):
+    """Replies from a script, one per call."""
+
+    def __init__(self, replies):
+        super().__init__()
+        self.replies = list(replies)
+
+    def chat(self, model, messages):
+        self.calls.append((model, [dict(m) for m in messages]))
+        return self.replies.pop(0)
+
+
 def test_rewriter_feeds_retrieval_and_model_sees_both():
-    rewriter_llm = FakeLLM(reply="lisans için kaç kredi gerekiyor?")
+    rewriter_llm = ScriptedLLM(["kaç kredi lazım?", "lisans için kaç kredi gerekiyor?"])
     retriever = FakeRetriever()
     main_llm = FakeLLM(reply="cevap")
     conversation = Conversation(main_llm, retriever, model="test-model",
                                 rewriter=QueryRewriter(rewriter_llm, "small-model"))
-    conversation.respond("kaç kredi lazım")          # first turn: no history, no rewrite
-    conversation.respond("lisans icin soruyorum")    # follow-up: rewritten
+    conversation.respond("kaç kredi lazım")          # first turn: cleaned up
+    conversation.respond("lisans icin soruyorum")    # follow-up: made standalone
 
-    assert retriever.queries == ["kaç kredi lazım", "lisans için kaç kredi gerekiyor?"]
+    assert retriever.queries == ["kaç kredi lazım?", "lisans için kaç kredi gerekiyor?"]
     _, messages = main_llm.calls[-1]
     assert "lisans icin soruyorum" in messages[-1]["content"]  # the student's own words
     # regression: "akts kac" after a CENG 322 question got "what do you mean?" —
     # the model saw only the bare follow-up, never what the rewrite resolved
     assert "lisans için kaç kredi gerekiyor?" in messages[-1]["content"]
+
+
+def test_first_message_is_rewritten_too():
+    # regression: "yl dersleri ne bilgiayarda" — the typo was read as "nerede";
+    # only follow-ups went through the rewriter, which fixes exactly this
+    rewriter_llm = FakeLLM(reply="Bilgisayar Mühendisliği yüksek lisans dersleri nelerdir?")
+    retriever = FakeRetriever()
+    main_llm = FakeLLM()
+    conversation = Conversation(main_llm, retriever, model="test-model",
+                                rewriter=QueryRewriter(rewriter_llm, "small-model"))
+    conversation.respond("yl dersleri ne bilgiayarda")
+
+    assert retriever.queries == ["Bilgisayar Mühendisliği yüksek lisans dersleri nelerdir?"]
+    _, prompt = rewriter_llm.calls[0]
+    assert "(yok)" in prompt[0]["content"]  # no history yet
+    _, messages = main_llm.calls[-1]
+    assert "yl dersleri ne bilgiayarda" in messages[-1]["content"]
+
+
+def test_abbreviations_reach_retrieval_and_the_model_expanded():
+    retriever = FakeRetriever()
+    main_llm = FakeLLM()
+    Conversation(main_llm, retriever, model="test-model").respond("yl dersleri ne")
+    assert retriever.queries == ["yüksek lisans dersleri ne"]
+    _, messages = main_llm.calls[-1]
+    assert "(anlaşılan soru: yüksek lisans dersleri ne)" in messages[-1]["content"]
 
 
 def test_prompt_states_which_departments_have_a_course_catalog():
