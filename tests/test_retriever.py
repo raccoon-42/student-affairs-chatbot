@@ -2,7 +2,7 @@
 adapter stands in for Qdrant, a fake embedder stands in for the model."""
 from datetime import date
 
-from app.retrieval import Retriever, InMemoryVectorStore
+from app.retrieval import Retriever, InMemoryVectorStore, normalize_query
 from config import settings
 
 
@@ -49,6 +49,14 @@ class InMemoryVectorStoreWrapper:
     def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
         self.last_filters = filters
         return self.store.search(collection, vector, limit, filters, sparse, rrf_k)
+
+
+def test_normalize_query_expands_student_abbreviations():
+    # regression: "yl dersleri ne bilgiayarda" got "YL ile neyi kastediyorsunuz?"
+    assert normalize_query("yl dersleri ne") == "yüksek lisans dersleri ne"
+    assert normalize_query("YL'de kaç ders") == "yüksek lisans'de kaç ders"
+    assert normalize_query("phd courses ceng322") == "doktora courses ceng 322"
+    assert normalize_query("yıldız hoca, dr ali") == "yıldız hoca, dr ali"  # "dr" is a title too
 
 
 def test_query_filter_extraction_reaches_the_store():
@@ -247,6 +255,24 @@ def test_calendar_keeps_past_events_when_the_query_names_a_year():
 def test_calendar_falls_back_to_past_events_when_nothing_is_upcoming():
     retriever = make_calendar_retriever(PAST_FALL, PAST_SPRING)
     assert retriever.retrieve_calendar("sınavlar ne zaman")
+
+
+def test_courses_list_matches_the_level_in_the_query():
+    # regression: the first-ranked list won whatever its level, so a
+    # yüksek lisans question could get the PhD list
+    store = InMemoryVectorStore()
+    store.add(settings.COURSES_COLLECTION, "Doktora derslerinin tam listesi: kayıt",
+              {"kind": "list", "levels": ["doktora"]}, [0.0, 1.0, 0.0, 0.1])
+    store.add(settings.COURSES_COLLECTION, "Graduate course list",
+              {"kind": "list", "levels": ["yukseklisans"]}, [0.0, 0.5, 0.5, 0.1])
+    store.add(settings.COURSES_COLLECTION, "CENG 311 sınav",
+              {"kind": "course", "levels": ["lisans"]}, [1.0, 0.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+    top = retriever.retrieve_courses("yüksek lisans dersleri kayıt listesi")[0]
+    assert top["metadata"] == {"kind": "list", "levels": ["yukseklisans"]}
+    # no level named: the ranking alone picks
+    top = retriever.retrieve_courses("dersleri kayıt listesi")[0]
+    assert top["metadata"]["levels"] == ["doktora"]
 
 
 def test_bm25_breaks_a_dense_tie():

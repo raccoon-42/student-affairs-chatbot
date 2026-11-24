@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
+from app.retrieval import normalize_query
 from config import settings
 
 # In-band stage markers for streaming consumers. Control characters so
@@ -72,7 +73,10 @@ CONTEXT_TEMPLATE = """
 GÖREV:
 1. SADECE <student_question> etiketleri arasındaki soruyu yanıtla.
 2. <available_reference_data> içindeki bilgileri SADECE öğrencinin sorusuna yanıt vermek için kullan.
-3. Eğer öğrencinin sorusu belirsizse veya eksik bilgi varsa, açıklama iste.
+3. Soru birden çok şekilde okunabiliyorsa en olası okumayı seç ve YANITLA; varsayımını tek
+   cümleyle belirt (örn. "Bilgisayar Mühendisliği yüksek lisans dersleri için yanıtlıyorum;
+   başka bölümse söyle."). Kısaltma ve yazım hatalarını en yakın anlamıyla oku ("bilgiayar" =
+   bilgisayar). Netleştirme sorusunu yalnızca makul hiçbir okuma yoksa sor.
 4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan (istisna: 6).
 5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Takvim maddelerinin sonundaki
    (DURUM: ...) etiketi bugüne göre HESAPLANMIŞTIR — geçti/gelecek kararını yalnızca bu
@@ -106,7 +110,8 @@ def _now_tr():
 
 REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
 - Soruyu CEVAPLAMA, sadece yeniden yaz.
-- Mesaj zaten bağımsız anlaşılıyorsa olduğu gibi döndür.
+- Yazım hatalarını ve öğrenci kısaltmalarını düzelt (örn. "bilgiayarda" → bilgisayar mühendisliğinde, "yl" → yüksek lisans); soruya yeni bilgi ekleme, anlamını değiştirme.
+- Mesaj zaten bağımsız ve düzgünse olduğu gibi döndür.
 - Sadece yeniden yazılmış soruyu döndür, açıklama ekleme.
 
 Sohbet geçmişi:
@@ -129,9 +134,9 @@ IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönde
 
 
 class QueryRewriter:
-    """Turns follow-up messages into standalone queries, so retrieval and
-    the scope gate see the full intent ("lisans için kaç kredi lazım?")
-    instead of the bare reply ("lisans icin soruyorum")."""
+    """Turns messages into clean standalone queries, so retrieval and the
+    scope gate see the full intent ("lisans için kaç kredi lazım?") instead
+    of a bare reply ("lisans icin soruyorum") or shorthand with typos."""
 
     def __init__(self, llm, model):
         self._llm = llm
@@ -139,11 +144,11 @@ class QueryRewriter:
         self.last_usage = None  # tokens/cost of the latest rewrite/image call
 
     def rewrite(self, query: str, history: list) -> str:
-        if not history:
-            return query
+        # first messages too: typos and shorthand ("yl dersleri ne bilgiayarda")
+        # misled the main model as much as bare follow-ups did
         lines = "\n".join(
             f"{'Öğrenci' if m['role'] == 'user' else 'Bot'}: {m['content']}" for m in history
-        )
+        ) or "(yok)"
         self.last_usage = None
         try:
             rewritten, self.last_usage = chat_with_usage(self._llm, self._model, [{
@@ -292,9 +297,9 @@ class Conversation:
     def _resolve_search_query(self, query, image=None):
         """First pipeline stage: turn the raw message into a search query.
 
-        Follow-ups get rewritten into standalone questions for the gate
-        and retrieval; the model sees the original message with the
-        rewrite next to it.
+        Every message gets rewritten into a clean standalone question for
+        the gate and retrieval; the model sees the original message with
+        the rewrite next to it.
         Returns (query, search_query) — query changes only for image-only
         messages, where the extracted question stands in as the student's
         text for the prompt and the history."""
@@ -310,14 +315,16 @@ class Conversation:
                           f"search query: {search_query!r}" if search_query != query else "")
             if not query:
                 query = search_query
-        elif self._rewriter is not None and len(self._messages) > 1:
+        elif self._rewriter is not None:
             rewrite_start = time.perf_counter()
             search_query = self._rewriter.rewrite(query, self._messages[1:])
             self._track("rewrite", self._rewriter._model, self._rewriter.last_usage)
             self._log_row("rewrite", f"{time.perf_counter() - rewrite_start:.2f}s",
                           f"{query!r}\n{'':<20}-> {search_query!r}"
                           if search_query != query else "unchanged")
-        return query, search_query
+        # expanded here, not only inside retrieval, so the gate and the
+        # model's "(anlaşılan soru: ...)" see "yüksek lisans" too
+        return query, normalize_query(search_query)
 
     def _gate_and_build(self, query, search_query, education_type=None, image=None):
         """Second pipeline stage: gate and retrieval run concurrently —
