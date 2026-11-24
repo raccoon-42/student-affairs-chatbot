@@ -147,10 +147,10 @@ def stale_labels(cases, client):
 
 
 def run(cases, make_client, embedder):
-    from qdrant_client.http.models import SparseVector
+    from qdrant_client.http.models import TextQuery
 
     from app.retrieval import QdrantVectorStore, Retriever, normalize_query
-    from preprocessing.indexing.bm25 import VECTOR_NAME, sparse_query
+    from preprocessing.indexing.bm25 import FIELD, bm25_text
 
     # the lab's own queries get the store's retry too: a request
     # qdrant-client drops must not count as a retrieval miss
@@ -161,16 +161,14 @@ def run(cases, make_client, embedder):
         """(dense, bm25) ranking of each named collection for one text."""
         query = normalize_query(text)
         vector = embedder.embed_query(query)
-        sparse = sparse_query(query)
+        words = bm25_text(query)
         rankings = {}
         for name in names:
             depth = settings.HYBRID_PREFETCH
             dense = retried(client.query_points, COLLECTIONS[name], query=vector, limit=depth,
                             with_payload=True).points
-            lexical = retried(
-                client.query_points, COLLECTIONS[name],
-                query=SparseVector(indices=list(sparse), values=list(sparse.values())),
-                using=VECTOR_NAME, limit=depth, with_payload=True).points if sparse else []
+            lexical = retried(client.query_points, COLLECTIONS[name], query=TextQuery(text=words),
+                              using=FIELD, limit=depth, with_payload=True).points if words else []
             rankings[name] = tuple([(p.id, p.payload["text"], p.payload.get("metadata", {}))
                                     for p in points] for points in (dense, lexical))
         return rankings

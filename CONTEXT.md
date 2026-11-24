@@ -5,7 +5,7 @@
 - **FAQ** — one question/answer pair scraped from the university's FAQ sources (2 PDFs + 1 HTML page), tagged with `audience` (hazirlik/lisans/lisansustu) and `category`. Only the question is embedded; the answer travels in metadata.
 - **Chunk** — one indexed unit: `{text, metadata}`. Calendar chunks carry `event_type`, `academic_period`, dates; regulation chunks carry section/article info; FAQ chunks carry the answer and audience.
 - **Retriever** (`app/retrieval.py`) — the one interface for finding chunks: `retrieve_calendar(query)` / `retrieve_regulations(query)`. Hides embedding, vector search, filters, and hybrid scoring.
-- **Hybrid score** — dense and BM25 each rank the whole collection, and Qdrant fuses the two rankings with RRF. BM25 is stored as a sparse vector per chunk (`preprocessing/indexing/bm25.py`).
+- **Hybrid score** — dense and BM25 each rank the whole collection, and Qdrant fuses the two rankings with RRF. BM25 is Qdrant's own text-index scoring, on a field holding our tokenizer's output (words folded and cut to 5 letters; `preprocessing/indexing/bm25.py`).
 - **Conversation** (`app/conversation.py`) — assembles the prompt (system prompt + retrieved context + history) and asks an LLM adapter for the answer.
 - **LLM adapter** (`app/llm.py`) — anything with `chat(model, messages) -> str`. One real one: OpenRouter.
 - **Judge** (`tests/evaluators/llm_judge.py`) — an LLM that scores chatbot answers 0/1 against expected answers during evaluation.

@@ -46,9 +46,9 @@ class InMemoryVectorStoreWrapper:
         self.store = store
         self.last_filters = "unset"
 
-    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
+    def search(self, collection, vector, limit, filters=None, lexical=None, rrf_k=None, also=()):
         self.last_filters = filters
-        return self.store.search(collection, vector, limit, filters, sparse, rrf_k, also)
+        return self.store.search(collection, vector, limit, filters, lexical, rrf_k, also)
 
 
 def test_normalize_query_expands_student_abbreviations():
@@ -245,7 +245,7 @@ def test_people_lists_tied_for_first_all_get_in():
         def __init__(self, order):
             self.order = order
 
-        def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
+        def search(self, collection, vector, limit, filters=None, lexical=None, rrf_k=None, also=()):
             return self.order[:limit]
 
     for order in ([area, role, roster, person], [role, area, roster, person]):

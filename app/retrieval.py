@@ -6,8 +6,9 @@ scoring, result formatting — is implementation, hidden behind it.
 
 The vector store sits behind a seam with two adapters: QdrantVectorStore
 (production) and InMemoryVectorStore (tests). Both answer
-search(collection, vector, limit, filters, sparse) -> [Hit]: dense and BM25
-each rank the collection, and RRF fuses the two rankings.
+search(collection, vector, limit, filters, lexical) -> [Hit]: dense and BM25
+each rank the collection, and RRF fuses the two rankings. BM25 is Qdrant's
+own, on a pre-tokenized text field (see preprocessing/indexing/bm25.py).
 """
 import math
 import re
@@ -22,7 +23,7 @@ import numpy as np
 
 from config import settings
 from preprocessing.extraction import extract_academic_period
-from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors, sparse_query
+from preprocessing.indexing.bm25 import B, FIELD, K1, bm25_ready, bm25_text, tokenize
 
 
 # students glue course codes together ("ceng322"); the catalog says
@@ -101,14 +102,14 @@ class QdrantVectorStore:
 
     def search(self, collection: str, vector: List[float], limit: int,
                filters: Optional[Dict[str, str]] = None,
-               sparse: Optional[Dict[int, float]] = None,
+               lexical: Optional[str] = None,
                rrf_k: Optional[int] = None, also=()) -> List[Hit]:
         if self._client is None:
             from qdrant_client import QdrantClient
             self._client = QdrantClient(self._url)
 
         from qdrant_client.http.models import (Filter, FieldCondition, MatchValue, Prefetch,
-                                               Rrf, RrfQuery, SparseVector)
+                                               Rrf, RrfQuery, TextQuery)
         query_filter = None
         if filters:
             query_filter = Filter(must=[
@@ -126,13 +127,12 @@ class QdrantVectorStore:
         # one down, but qdrant-client's local mode (tests) doesn't
         depth = max(settings.HYBRID_PREFETCH, limit)
         prefetch = []
-        # `also`: (vector, sparse) of other phrasings, each two more rankings
-        for dense, lexical in [(vector, sparse), *also]:
+        # `also`: (vector, lexical) of other phrasings, each two more rankings
+        for dense, words in [(vector, lexical), *also]:
             prefetch.append(Prefetch(query=dense, filter=query_filter, limit=depth))
-            if lexical and self._has_bm25(collection):
-                prefetch.append(Prefetch(
-                    query=SparseVector(indices=list(lexical), values=list(lexical.values())),
-                    using=VECTOR_NAME, filter=query_filter, limit=depth))
+            if words and self._has_bm25(collection):
+                prefetch.append(Prefetch(query=TextQuery(text=words), using=FIELD,
+                                         filter=query_filter, limit=depth))
         results = self._read(
             self._client.query_points,
             collection_name=collection,
@@ -146,12 +146,11 @@ class QdrantVectorStore:
         ]
 
     def _has_bm25(self, collection: str) -> bool:
-        # only a yes is cached: a collection indexed before hybrid search is
-        # searched dense-only, and re-checked, until it gets its BM25 vectors
+        # only a yes is cached: a collection indexed before the BM25 field is
+        # searched dense-only, and re-checked, until it gets the field
         if collection not in self._bm25_ready:
-            sparse = self._read(self._client.get_collection, collection).config.params.sparse_vectors or {}
-            if VECTOR_NAME not in sparse:
-                print(f"Warning: collection '{collection}' has no BM25 vectors — dense only. "
+            if not self._read(bm25_ready, self._client, collection):
+                print(f"Warning: collection '{collection}' has no BM25 field — dense only. "
                       f"Run: python -m preprocessing.indexing.reindex_bm25")
                 return False
             self._bm25_ready.add(collection)
@@ -177,8 +176,8 @@ class QdrantVectorStore:
 
 class InMemoryVectorStore:
     """Second adapter for the same seam — used by tests, no server needed.
-    Mirrors Qdrant: IDF over the whole collection, filters before ranking,
-    RRF over the two rankings."""
+    Mirrors Qdrant: BM25 with IDF over the whole collection, filters before
+    ranking, RRF over the rankings."""
 
     def __init__(self):
         self._collections: Dict[str, list] = {}
@@ -186,27 +185,33 @@ class InMemoryVectorStore:
     def add(self, collection: str, text: str, metadata: dict, vector: List[float]):
         self._collections.setdefault(collection, []).append((text, metadata, np.array(vector, dtype=float)))
 
-    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
+    def search(self, collection, vector, limit, filters=None, lexical=None, rrf_k=None, also=()):
         entries = self._collections.get(collection, [])
-        weights = document_vectors({i: text for i, (text, _, _) in enumerate(entries)})
-        document_freq = Counter(index for doc in weights.values() for index in doc)
-        idf = {index: math.log((len(entries) - n + 0.5) / (n + 0.5) + 1)
-               for index, n in document_freq.items()}
+        docs = [Counter(tokenize(text)) for text, _, _ in entries]
+        avg_length = sum(sum(doc.values()) for doc in docs) / len(docs) if docs else 0.0
+        document_freq = Counter(token for doc in docs for token in doc)
+        idf = {token: math.log((len(entries) - n + 0.5) / (n + 0.5) + 1)
+               for token, n in document_freq.items()}
+
+        def bm25(words, i):
+            doc, length = docs[i], sum(docs[i].values())
+            norm = 1 - B + B * length / avg_length if avg_length else 1.0
+            return sum(idf[t] * doc[t] * (K1 + 1) / (doc[t] + K1 * norm)
+                       for t in set((words or "").split()) if t in doc)
 
         rankings = []
-        for query_vector, query_sparse in [(vector, sparse), *also]:
+        for query_vector, query_words in [(vector, lexical), *also]:
             query = np.array(query_vector, dtype=float)
-            dense, lexical = [], []
+            dense, lexical_hits = [], []
             for i, (text, metadata, doc_vector) in enumerate(entries):
                 if filters and any(metadata.get(k) != v for k, v in filters.items()):
                     continue
                 denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
                 dense.append((float(np.dot(query, doc_vector) / denom) if denom else 0.0, i))
-                bm25 = sum(value * weights[i].get(index, 0.0) * idf.get(index, 0.0)
-                           for index, value in (query_sparse or {}).items())
-                if bm25 > 0:  # sparse search only returns chunks sharing a word
-                    lexical.append((bm25, i))
-            rankings += [dense, lexical]
+                score = bm25(query_words, i)
+                if score > 0:  # BM25 only returns chunks sharing a word
+                    lexical_hits.append((score, i))
+            rankings += [dense, lexical_hits]
 
         fused = {}
         for ranking in rankings:
@@ -449,8 +454,8 @@ class Retriever:
         if vector is None:
             vector = self._embed_query(query)
         hits = self._store.search(collection, vector, limit=top_k, filters=filters,
-                                  sparse=sparse_query(query), rrf_k=rrf_k,
-                                  also=[(v, sparse_query(text)) for text, v in also])
+                                  lexical=bm25_text(query), rrf_k=rrf_k,
+                                  also=[(v, bm25_text(text)) for text, v in also])
         return [(hit, hit.score) for hit in hits]
 
     @staticmethod

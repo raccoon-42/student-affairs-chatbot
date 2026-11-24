@@ -1,13 +1,13 @@
 """QdrantVectorStore and the BM25 migration against qdrant-client's local
-mode: the real hybrid query (prefetch + RRF, filters, sparse vector)
-without a server."""
+mode: the real hybrid query (prefetch + RRF, filters, Qdrant's BM25 text
+index) without a server."""
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import (Distance, Modifier, PointStruct, SparseVectorParams,
-                                       VectorParams)
+from qdrant_client.http.models import (Distance, Modifier, PointStruct, SparseVector,
+                                       SparseVectorParams, VectorParams)
 
 from app.retrieval import QdrantVectorStore
-from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors, sparse_query
-from preprocessing.indexing.vectorizer import _sparse_vector, rebuild_bm25
+from preprocessing.indexing.bm25 import FIELD, bm25_text, index_params
+from preprocessing.indexing.vectorizer import OLD_SPARSE_VECTOR, rebuild_bm25
 
 CHUNKS = [  # text, kind, dense vector
     ("Genel hükümler", "regulation", [1.0, 0.0, 0.0]),
@@ -18,17 +18,22 @@ CHUNKS = [  # text, kind, dense vector
 QUERY = [1.0, 0.0, 0.0]  # dense favors the generic articles
 
 
-def make_client(with_bm25):
+def make_client(with_bm25, old_sparse=False):
+    """with_bm25: indexed the current way. old_sparse: the pre-ADR-0004 shape,
+    dense plus a sparse BM25 vector and no BM25 field."""
     client = QdrantClient(":memory:")
     client.create_collection(
         "c", vectors_config=VectorParams(size=3, distance=Distance.COSINE),
-        sparse_vectors_config=({VECTOR_NAME: SparseVectorParams(modifier=Modifier.IDF)}
-                               if with_bm25 else None))
-    sparse = document_vectors({i: text for i, (text, _, _) in enumerate(CHUNKS)})
+        sparse_vectors_config=({OLD_SPARSE_VECTOR: SparseVectorParams(modifier=Modifier.IDF)}
+                               if old_sparse else None))
+    if with_bm25:
+        client.create_payload_index("c", FIELD, index_params())
     client.upsert("c", points=[
         PointStruct(id=i,
-                    vector={"": dense, VECTOR_NAME: _sparse_vector(sparse[i])} if with_bm25 else dense,
-                    payload={"text": text, "metadata": {"kind": kind}})
+                    vector={"": dense, OLD_SPARSE_VECTOR: SparseVector(indices=[1], values=[1.0])}
+                    if old_sparse else {"": dense},
+                    payload={"text": text, "metadata": {"kind": kind},
+                             **({FIELD: bm25_text(text)} if with_bm25 else {})})
         for i, (text, kind, dense) in enumerate(CHUNKS)])
     return client
 
@@ -36,28 +41,29 @@ def make_client(with_bm25):
 def test_bm25_lifts_an_exact_match_the_dense_search_ranks_low():
     store = QdrantVectorStore(client=make_client(with_bm25=True))
     hits = store.search("c", QUERY, limit=1, filters={"kind": "regulation"},
-                        sparse=sparse_query("madde 322"))
+                        lexical=bm25_text("madde 322"))
     assert hits[0].text == "Madde 322: mazeret sınavı"
 
 
 def test_filter_applies_to_both_rankings():
     store = QdrantVectorStore(client=make_client(with_bm25=True))
     hits = store.search("c", QUERY, limit=10, filters={"kind": "regulation"},
-                        sparse=sparse_query("madde 322"))
+                        lexical=bm25_text("madde 322"))
     assert {hit.metadata["kind"] for hit in hits} == {"regulation"}
 
 
 def test_collection_without_bm25_falls_back_to_dense():
     store = QdrantVectorStore(client=make_client(with_bm25=False))
-    hits = store.search("c", QUERY, limit=1, sparse=sparse_query("madde 322"))
+    hits = store.search("c", QUERY, limit=1, lexical=bm25_text("madde 322"))
     assert hits[0].text == "Genel hükümler"
 
 
-def test_rebuild_bm25_migrates_a_dense_only_collection():
-    client = make_client(with_bm25=False)
+def test_rebuild_bm25_migrates_a_collection_from_sparse_vectors():
+    client = make_client(with_bm25=False, old_sparse=True)
     rebuild_bm25(client, "c")
+    assert OLD_SPARSE_VECTOR not in (client.get_collection("c").config.params.sparse_vectors or {})
     hits = QdrantVectorStore(client=client).search(
-        "c", QUERY, limit=1, filters={"kind": "regulation"}, sparse=sparse_query("madde 322"))
+        "c", QUERY, limit=1, filters={"kind": "regulation"}, lexical=bm25_text("madde 322"))
     assert hits[0].text == "Madde 322: mazeret sınavı"
 
 

@@ -1,6 +1,7 @@
-"""Write BM25 vectors for every collection from the stored chunk text — no
-embedding calls. Run once to move existing collections to hybrid search,
-and again after any change to bm25.tokenize().
+"""Write every collection's BM25 field from the stored chunk text and index
+it: no embedding calls. Run once to move existing collections from the
+old sparse vectors to Qdrant's text index (ADR-0004), and again after any
+change to bm25.tokenize().
 
     python -m preprocessing.indexing.reindex_bm25
 """

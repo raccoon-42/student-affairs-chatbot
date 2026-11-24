@@ -6,7 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from config import settings
-from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors
+from preprocessing.indexing.bm25 import FIELD, bm25_ready, bm25_text, index_params
 
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 SKS_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "sks" / "manifest.json"
@@ -566,28 +566,24 @@ def plan_sync(desired_ids, existing_ids):
     return sorted(desired - existing), sorted(existing - desired)
 
 
-def _sparse_vector(weights):
-    from qdrant_client.http.models import SparseVector
-    return SparseVector(indices=list(weights), values=list(weights.values()))
+# the sparse vectors BM25 lived in before Qdrant's text index (ADR-0004)
+OLD_SPARSE_VECTOR = "bm25"
 
 
 def has_bm25(qdrant, collection_name):
-    sparse = qdrant.get_collection(collection_name).config.params.sparse_vectors or {}
-    return VECTOR_NAME in sparse
+    return bm25_ready(qdrant, collection_name)
 
 
 def rebuild_bm25(qdrant, collection_name):
-    """(Re)compute every point's BM25 vector from its stored text — no
-    embedding calls. Adds the sparse vector to a collection indexed before
-    hybrid search (needs Qdrant 1.18+), and re-levels the length
-    normalization; rerun after any change to bm25.tokenize()."""
-    from qdrant_client.http.models import (Modifier, PointVectors, SparseVectorConfig,
-                                           SparseVectorNameConfig)
+    """(Re)write every point's BM25 field from its stored text and make sure
+    the field is indexed: no embedding calls. Also drops the sparse vectors
+    BM25 used before Qdrant's text index took over. Rerun after any change
+    to bm25.tokenize()."""
+    from qdrant_client.http.models import SetPayload, SetPayloadOperation
 
     if not has_bm25(qdrant, collection_name):
-        print(f"{collection_name}: adding the '{VECTOR_NAME}' sparse vector")
-        qdrant.create_vector_name(collection_name, VECTOR_NAME, SparseVectorNameConfig(
-            sparse=SparseVectorConfig(modifier=Modifier.IDF)))
+        print(f"{collection_name}: indexing the '{FIELD}' field for BM25")
+        qdrant.create_payload_index(collection_name, FIELD, index_params(), wait=True)
 
     texts, offset = {}, None
     while True:
@@ -597,12 +593,16 @@ def rebuild_bm25(qdrant, collection_name):
         texts.update({record.id: record.payload["text"] for record in records})
         if offset is None:
             break
+    operations = [SetPayloadOperation(set_payload=SetPayload(payload={FIELD: bm25_text(text)}, points=[pid]))
+                  for pid, text in texts.items()]
+    for start in range(0, len(operations), 200):
+        qdrant.batch_update_points(collection_name, operations[start:start + 200])
+    print(f"{collection_name}: BM25 field written for {len(operations)} chunks")
 
-    points = [PointVectors(id=pid, vector={VECTOR_NAME: _sparse_vector(weights)})
-              for pid, weights in document_vectors(texts).items()]
-    for start in range(0, len(points), 500):
-        qdrant.update_vectors(collection_name=collection_name, points=points[start:start + 500])
-    print(f"{collection_name}: BM25 vectors written for {len(points)} chunks")
+    sparse = qdrant.get_collection(collection_name).config.params.sparse_vectors or {}
+    if OLD_SPARSE_VECTOR in sparse:
+        qdrant.delete_vector_name(collection_name, OLD_SPARSE_VECTOR)
+        print(f"{collection_name}: old '{OLD_SPARSE_VECTOR}' sparse vectors removed")
 
 
 def store_embedding(chunks, collection_name, build_payload=_calendar_payload, recreate=False):
@@ -616,8 +616,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import (Distance, Modifier, PointIdsList, PointStruct,
-                                           SparseVectorParams, VectorParams)
+    from qdrant_client.http.models import Distance, PointIdsList, PointStruct, VectorParams
 
     from app.embeddings import default_embedder
 
@@ -643,7 +642,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     # pre-sync collections have integer ids, which are not valid as strings
     existing = {}
     if qdrant.collection_exists(collection_name=collection_name):
-        if not has_bm25(qdrant, collection_name):  # indexed before hybrid search
+        if not has_bm25(qdrant, collection_name):  # indexed before the BM25 field
             rebuild_bm25(qdrant, collection_name)
         offset = None
         while True:
@@ -677,15 +676,14 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
             qdrant.create_collection(
                 collection_name=collection_name,
                 vectors_config=VectorParams(size=len(vectors[0]), distance=Distance.COSINE),
-                sparse_vectors_config={VECTOR_NAME: SparseVectorParams(modifier=Modifier.IDF)},
             )
+            qdrant.create_payload_index(collection_name, FIELD, index_params(), wait=True)
 
-        # length-normalized against every chunk in the collection; unchanged
-        # points keep the average they were indexed with until rebuild_bm25
-        sparse = document_vectors({pid: payload["text"] for pid, payload in desired.items()})
+        # the BM25 field is derived from the text, so it stays out of the
+        # payload the point id hashes: adding it changed no ids
         qdrant.upsert(collection_name=collection_name, points=[
-            PointStruct(id=pid, vector={"": vector, VECTOR_NAME: _sparse_vector(sparse[pid])},
-                        payload=desired[pid])
+            PointStruct(id=pid, vector={"": vector},
+                        payload={**desired[pid], FIELD: bm25_text(desired[pid]["text"])})
             for pid, vector in zip(new_ids, vectors)
         ])
 
