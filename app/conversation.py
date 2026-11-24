@@ -285,7 +285,8 @@ class Conversation:
         """First pipeline stage: turn the raw message into a search query.
 
         Follow-ups get rewritten into standalone questions for the gate
-        and retrieval; the model itself still sees the original message.
+        and retrieval; the model sees the original message with the
+        rewrite next to it.
         Returns (query, search_query) — query changes only for image-only
         messages, where the extracted question stands in as the student's
         text for the prompt and the history."""
@@ -361,8 +362,11 @@ class Conversation:
                 numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
         self.last_reference = [entry for corpus in corpora for entry in numbered[corpus]]
 
+        # a follow-up ("akts kac") only makes sense with the history; without
+        # the resolved question next to it, the model asked what was meant
+        question = query if search_query == query else f"{query}\n    (anlaşılan soru: {search_query})"
         context = CONTEXT_TEMPLATE.format(
-            query=query,
+            query=question,
             now=_now_tr(),
             profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
             calendar_context="\n".join(numbered["calendar"]),
