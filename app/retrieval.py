@@ -15,6 +15,7 @@ import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
+from datetime import date, timedelta
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -33,17 +34,33 @@ def normalize_query(query: str) -> str:
     return _COURSE_CODE.sub(r'\1 \2', query)
 
 
-def _calendar_status(metadata: Dict) -> str:
-    """Deterministic past/upcoming tag for a calendar event, computed
-    against today's date — date comparison never reaches the model."""
-    from datetime import date
+_YEAR = re.compile(r'\b20\d{2}\b')
+CALENDAR_POOL = 50  # fetched before ended events are dropped, then cut to top_k
+CALENDAR_GRACE_DAYS = 14  # "notlar açıklandı mı" right after an event still finds it
+
+
+def _event_dates(metadata: Dict):
+    """(start, end) of a calendar event, or None when its dates don't parse."""
     start = metadata.get("date1") or metadata.get("parsed_date1")
     end = metadata.get("date2") or metadata.get("parsed_date2") or start
     try:
-        start_day, end_day = date.fromisoformat(start), date.fromisoformat(end)
+        return date.fromisoformat(start), date.fromisoformat(end)
     except (TypeError, ValueError):
+        return None
+
+
+def _ended_before(metadata: Dict, cutoff: date) -> bool:
+    dates = _event_dates(metadata)
+    return dates is not None and dates[1] < cutoff  # undated events stay
+
+
+def _calendar_status(metadata: Dict, today: date) -> str:
+    """Deterministic past/upcoming tag for a calendar event, computed
+    against today's date — date comparison never reaches the model."""
+    dates = _event_dates(metadata)
+    if dates is None:
         return ""
-    today = date.today()
+    start_day, end_day = dates
     if end_day < today:
         return "(DURUM: geçti)"
     if start_day > today:
@@ -66,7 +83,8 @@ class QdrantVectorStore:
 
     def search(self, collection: str, vector: List[float], limit: int,
                filters: Optional[Dict[str, str]] = None,
-               sparse: Optional[Dict[int, float]] = None) -> List[Hit]:
+               sparse: Optional[Dict[int, float]] = None,
+               rrf_k: Optional[int] = None) -> List[Hit]:
         if self._client is None:
             from qdrant_client import QdrantClient
             self._client = QdrantClient(self._url)
@@ -97,7 +115,7 @@ class QdrantVectorStore:
         results = self._client.query_points(
             collection_name=collection,
             prefetch=prefetch,
-            query=RrfQuery(rrf=Rrf(k=settings.RRF_K)),
+            query=RrfQuery(rrf=Rrf(k=rrf_k or settings.RRF_K)),
             limit=limit,
         ).points
         return [
@@ -129,7 +147,7 @@ class InMemoryVectorStore:
     def add(self, collection: str, text: str, metadata: dict, vector: List[float]):
         self._collections.setdefault(collection, []).append((text, metadata, np.array(vector, dtype=float)))
 
-    def search(self, collection, vector, limit, filters=None, sparse=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
         entries = self._collections.get(collection, [])
         weights = document_vectors({i: text for i, (text, _, _) in enumerate(entries)})
         document_freq = Counter(index for doc in weights.values() for index in doc)
@@ -152,7 +170,7 @@ class InMemoryVectorStore:
         for ranking in (dense, lexical):
             ranking.sort(key=lambda pair: pair[0], reverse=True)
             for rank, (_, i) in enumerate(ranking[:max(settings.HYBRID_PREFETCH, limit)]):
-                fused[i] = fused.get(i, 0.0) + 1 / (rank + settings.RRF_K)
+                fused[i] = fused.get(i, 0.0) + 1 / (rank + (rrf_k or settings.RRF_K))
         ranked = sorted(fused, key=fused.get, reverse=True)[:limit]
         return [Hit(text=entries[i][0], metadata=entries[i][1], score=fused[i]) for i in ranked]
 
@@ -165,9 +183,10 @@ TIERED_POOL = 30
 
 
 class Retriever:
-    def __init__(self, store, embedder):
+    def __init__(self, store, embedder, today=date.today):
         self._store = store
         self._embedder = embedder
+        self._today = today  # a clock, so tests can pin the date
 
     def retrieve_all(self, query: str, audience: str = None) -> Dict[str, List[Dict]]:
         """Everything the conversation needs, in one call:
@@ -216,10 +235,21 @@ class Retriever:
         if academic_period:
             filters["academic_period"] = academic_period
 
-        hits = self._hybrid_search(query, settings.CALENDAR_COLLECTION, top_k, filters or None, vector)
+        hits = self._hybrid_search(query, settings.CALENDAR_COLLECTION, CALENDAR_POOL,
+                                   filters or None, vector, rrf_k=settings.CALENDAR_RRF_K)
+        # two academic years of near-identical events: last year's exams would
+        # take the slots of the upcoming ones a student means. A year in the
+        # query ("2025-2026") asks for the past on purpose; and when nothing
+        # is left, the past is still the best answer there is.
+        today = self._today()
+        if not _YEAR.search(query):
+            cutoff = today - timedelta(days=CALENDAR_GRACE_DAYS)
+            current = [(hit, score) for hit, score in hits
+                       if not _ended_before(hit.metadata, cutoff)]
+            hits = current or hits
         return [
-            {"text": self._format_calendar(hit), "score": score, "metadata": hit.metadata}
-            for hit, score in hits
+            {"text": self._format_calendar(hit, today), "score": score, "metadata": hit.metadata}
+            for hit, score in hits[:top_k]
         ]
 
     def retrieve_regulations(self, query: str, top_k: int = 5, vector=None) -> List[Dict]:
@@ -335,23 +365,23 @@ class Retriever:
         # any model-specific instruction prefix lives in the embedder
         return self._embedder.embed_query(query)
 
-    def _hybrid_search(self, query, collection, top_k, filters=None, vector=None):
+    def _hybrid_search(self, query, collection, top_k, filters=None, vector=None, rrf_k=None):
         """Dense and BM25 each rank the whole collection; the store fuses
         the two rankings (RRF). Scores only compare within one call."""
         query = normalize_query(query)  # idempotent; covers direct calls too
         if vector is None:
             vector = self._embed_query(query)
         hits = self._store.search(collection, vector, limit=top_k, filters=filters,
-                                  sparse=sparse_query(query))
+                                  sparse=sparse_query(query), rrf_k=rrf_k)
         return [(hit, hit.score) for hit in hits]
 
     @staticmethod
-    def _format_calendar(hit: Hit) -> str:
+    def _format_calendar(hit: Hit, today: date) -> str:
         # render_line already produced a readable line (term + dates +
         # description) at index time — reformatting from metadata loses it.
         # The DURUM tag is computed here so the model never does date math
         # (Haiku called an upcoming date "geçmiş" when left to compare).
-        status = _calendar_status(hit.metadata)
+        status = _calendar_status(hit.metadata, today)
         return f"{hit.text} {status}" if status else hit.text
 
     @staticmethod
