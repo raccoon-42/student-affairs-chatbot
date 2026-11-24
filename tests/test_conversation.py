@@ -19,6 +19,7 @@ class FakeLLM:
 class FakeRetriever:
     def __init__(self):
         self.queries = []
+        self.also = []
 
     def retrieve_calendar(self, query, top_k=10):
         return [{"text": "📝 Final sınavları 5 Ocak'ta", "score": 1.0, "metadata": {}}]
@@ -50,8 +51,9 @@ class FakeRetriever:
                  "metadata": {"document_title": "Selma Tekir", "department": "Bilgisayar Mühendisliği",
                               "role": "akademik", "source_url": "https://example.test/selma-tekir/"}}]
 
-    def retrieve_all(self, query, audience=None):
+    def retrieve_all(self, query, audience=None, also=()):
         self.queries.append(query)
+        self.also.append(list(also))
         return {
             "calendar": self.retrieve_calendar(query),
             "regulations": self.retrieve_regulations(query),
@@ -240,6 +242,8 @@ def test_rewriter_feeds_retrieval_and_model_sees_both():
     conversation.respond("lisans icin soruyorum")    # follow-up: made standalone
 
     assert retriever.queries == ["kaç kredi lazım?", "lisans için kaç kredi gerekiyor?"]
+    # the student's own words search alongside the rewrite
+    assert retriever.also == [["kaç kredi lazım"], ["lisans icin soruyorum"]]
     _, messages = main_llm.calls[-1]
     assert "lisans icin soruyorum" in messages[-1]["content"]  # the student's own words
     # regression: "akts kac" after a CENG 322 question got "what do you mean?" —
@@ -275,7 +279,7 @@ def test_abbreviations_reach_retrieval_and_the_model_expanded():
 
 def test_prompt_states_which_departments_have_a_course_catalog():
     class CatalogRetriever(FakeRetriever):
-        def retrieve_all(self, query, audience=None):
+        def retrieve_all(self, query, audience=None, also=()):
             return {**super().retrieve_all(query, audience),
                     "course_departments": ["Bilgisayar Mühendisliği"]}
 

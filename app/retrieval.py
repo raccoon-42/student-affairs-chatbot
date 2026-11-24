@@ -102,7 +102,7 @@ class QdrantVectorStore:
     def search(self, collection: str, vector: List[float], limit: int,
                filters: Optional[Dict[str, str]] = None,
                sparse: Optional[Dict[int, float]] = None,
-               rrf_k: Optional[int] = None) -> List[Hit]:
+               rrf_k: Optional[int] = None, also=()) -> List[Hit]:
         if self._client is None:
             from qdrant_client import QdrantClient
             self._client = QdrantClient(self._url)
@@ -125,11 +125,14 @@ class QdrantVectorStore:
         # the filter goes on each ranking: the server would push a top-level
         # one down, but qdrant-client's local mode (tests) doesn't
         depth = max(settings.HYBRID_PREFETCH, limit)
-        prefetch = [Prefetch(query=vector, filter=query_filter, limit=depth)]
-        if sparse and self._has_bm25(collection):
-            prefetch.append(Prefetch(
-                query=SparseVector(indices=list(sparse), values=list(sparse.values())),
-                using=VECTOR_NAME, filter=query_filter, limit=depth))
+        prefetch = []
+        # `also`: (vector, sparse) of other phrasings, each two more rankings
+        for dense, lexical in [(vector, sparse), *also]:
+            prefetch.append(Prefetch(query=dense, filter=query_filter, limit=depth))
+            if lexical and self._has_bm25(collection):
+                prefetch.append(Prefetch(
+                    query=SparseVector(indices=list(lexical), values=list(lexical.values())),
+                    using=VECTOR_NAME, filter=query_filter, limit=depth))
         results = self._read(
             self._client.query_points,
             collection_name=collection,
@@ -183,27 +186,30 @@ class InMemoryVectorStore:
     def add(self, collection: str, text: str, metadata: dict, vector: List[float]):
         self._collections.setdefault(collection, []).append((text, metadata, np.array(vector, dtype=float)))
 
-    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
         entries = self._collections.get(collection, [])
         weights = document_vectors({i: text for i, (text, _, _) in enumerate(entries)})
         document_freq = Counter(index for doc in weights.values() for index in doc)
         idf = {index: math.log((len(entries) - n + 0.5) / (n + 0.5) + 1)
                for index, n in document_freq.items()}
 
-        query = np.array(vector, dtype=float)
-        dense, lexical = [], []
-        for i, (text, metadata, doc_vector) in enumerate(entries):
-            if filters and any(metadata.get(k) != v for k, v in filters.items()):
-                continue
-            denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
-            dense.append((float(np.dot(query, doc_vector) / denom) if denom else 0.0, i))
-            bm25 = sum(value * weights[i].get(index, 0.0) * idf.get(index, 0.0)
-                       for index, value in (sparse or {}).items())
-            if bm25 > 0:  # sparse search only returns chunks sharing a word
-                lexical.append((bm25, i))
+        rankings = []
+        for query_vector, query_sparse in [(vector, sparse), *also]:
+            query = np.array(query_vector, dtype=float)
+            dense, lexical = [], []
+            for i, (text, metadata, doc_vector) in enumerate(entries):
+                if filters and any(metadata.get(k) != v for k, v in filters.items()):
+                    continue
+                denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
+                dense.append((float(np.dot(query, doc_vector) / denom) if denom else 0.0, i))
+                bm25 = sum(value * weights[i].get(index, 0.0) * idf.get(index, 0.0)
+                           for index, value in (query_sparse or {}).items())
+                if bm25 > 0:  # sparse search only returns chunks sharing a word
+                    lexical.append((bm25, i))
+            rankings += [dense, lexical]
 
         fused = {}
-        for ranking in (dense, lexical):
+        for ranking in rankings:
             ranking.sort(key=lambda pair: pair[0], reverse=True)
             for rank, (_, i) in enumerate(ranking[:max(settings.HYBRID_PREFETCH, limit)]):
                 fused[i] = fused.get(i, 0.0) + 1 / (rank + (rrf_k or settings.RRF_K))
@@ -224,26 +230,34 @@ class Retriever:
         self._embedder = embedder
         self._today = today  # a clock, so tests can pin the date
 
-    def retrieve_all(self, query: str, audience: str = None) -> Dict[str, List[Dict]]:
-        """Everything the conversation needs, in one call:
-        the query is embedded once, the four collections are searched
-        in parallel."""
+    def retrieve_all(self, query: str, audience: str = None, also=()) -> Dict[str, List[Dict]]:
+        """Everything the conversation needs, in one call: the query is
+        embedded once and the collections are searched in parallel.
+
+        `also` takes other phrasings of the same question: the student's own
+        words when `query` is a rewrite. Each adds its rankings to every
+        search, so a rewrite that misreads the question ("mbg" expanded
+        wrong) can't hide the chunks the original words find."""
         query = normalize_query(query)
+        others = [text for text in dict.fromkeys(normalize_query(t) for t in also if t)
+                  if text.casefold() != query.casefold()]
         start = time.perf_counter()
-        vector = self._embed_query(query)
+        with ThreadPoolExecutor(max_workers=1 + len(others)) as pool:
+            vector, *other_vectors = pool.map(self._embed_query, [query, *others])
+        also = list(zip(others, other_vectors))
         embed_seconds = time.perf_counter() - start
 
         start = time.perf_counter()
         with ThreadPoolExecutor(max_workers=9) as pool:
-            calendar = pool.submit(self.retrieve_calendar, query, 10, vector)
-            regulations = pool.submit(self.retrieve_regulations, query, 5, vector)
-            faq = pool.submit(self.retrieve_faq, query, 5, vector, audience)
-            forms = pool.submit(self.retrieve_forms, query, 3, vector)
-            sks = pool.submit(self.retrieve_sks, query, 4, vector)
-            programs = pool.submit(self.retrieve_programs, query, 3, vector)
-            people = pool.submit(self.retrieve_people, query, 3, vector)
-            courses = pool.submit(self.retrieve_courses, query, 4, vector)
-            guides = pool.submit(self.retrieve_guides, query, 3, vector)
+            calendar = pool.submit(self.retrieve_calendar, query, 10, vector, also=also)
+            regulations = pool.submit(self.retrieve_regulations, query, 5, vector, also=also)
+            faq = pool.submit(self.retrieve_faq, query, 5, vector, audience, also=also)
+            forms = pool.submit(self.retrieve_forms, query, 3, vector, also=also)
+            sks = pool.submit(self.retrieve_sks, query, 4, vector, also=also)
+            programs = pool.submit(self.retrieve_programs, query, 3, vector, also=also)
+            people = pool.submit(self.retrieve_people, query, 3, vector, also=also)
+            courses = pool.submit(self.retrieve_courses, query, 4, vector, also=also)
+            guides = pool.submit(self.retrieve_guides, query, 3, vector, also=also)
             course_departments = pool.submit(self.retrieve_course_departments, vector)
             results = {
                 "calendar": calendar.result(),
@@ -262,7 +276,7 @@ class Retriever:
         self.last_timings = {"embed": embed_seconds, "search": time.perf_counter() - start}
         return results
 
-    def retrieve_calendar(self, query: str, top_k: int = 10, vector=None) -> List[Dict]:
+    def retrieve_calendar(self, query: str, top_k: int = 10, vector=None, also=()) -> List[Dict]:
         # academic_period is a reliable hard filter; event_type is not — the
         # query's intent ("son tarih" -> deadline) and the event's class
         # ("Kayıt işlemleri" -> registration) often disagree, and a hard
@@ -274,7 +288,8 @@ class Retriever:
             filters["academic_period"] = academic_period
 
         hits = self._hybrid_search(query, settings.CALENDAR_COLLECTION, CALENDAR_POOL,
-                                   filters or None, vector, rrf_k=settings.CALENDAR_RRF_K)
+                                   filters or None, vector, rrf_k=settings.CALENDAR_RRF_K,
+                                   also=also)
         # two academic years of near-identical events: last year's exams would
         # take the slots of the upcoming ones a student means. A year in the
         # query ("2025-2026") asks for the past on purpose; and when nothing
@@ -290,22 +305,23 @@ class Retriever:
             for hit, score in hits[:top_k]
         ]
 
-    def retrieve_regulations(self, query: str, top_k: int = 5, vector=None) -> List[Dict]:
-        hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k, vector=vector)
+    def retrieve_regulations(self, query: str, top_k: int = 5, vector=None, also=()) -> List[Dict]:
+        hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k, vector=vector,
+                                   also=also)
         return [
             {"text": self._format_regulation(hit), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
     def retrieve_faq(self, query: str, top_k: int = 5, vector=None,
-                     audience: str = None) -> List[Dict]:
+                     audience: str = None, also=()) -> List[Dict]:
         # FAQ chunks embed only the question; the answer travels in metadata.
         # 34 questions exist verbatim in both the lisans and lisansüstü FAQ
         # PDFs — the session's audience picks the right copy, and without a
         # profile the text dedupe below keeps the duplicate out of the top_k
         filters = {"audience": audience} if audience else None
         hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k,
-                                   filters=filters, vector=vector)
+                                   filters=filters, vector=vector, also=also)
         results, seen = [], set()
         for hit, score in hits:
             if hit.text in seen:
@@ -315,34 +331,37 @@ class Retriever:
                 {"text": self._format_faq(hit), "score": score, "metadata": hit.metadata})
         return results
 
-    def retrieve_forms(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_forms(self, query: str, top_k: int = 3, vector=None, also=()) -> List[Dict]:
         # a link catalog, not documents: the chunk is title + use-case
         # description, the payoff is the source_url in metadata
-        hits = self._hybrid_search(query, settings.FORMS_COLLECTION, top_k, vector=vector)
+        hits = self._hybrid_search(query, settings.FORMS_COLLECTION, top_k, vector=vector,
+                                   also=also)
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_sks(self, query: str, top_k: int = 4, vector=None) -> List[Dict]:
+    def retrieve_sks(self, query: str, top_k: int = 4, vector=None, also=()) -> List[Dict]:
         # campus life (spor, topluluklar, yemekhane) — chunk text already
         # leads with the page title, so it renders as-is like mevzuat
-        hits = self._hybrid_search(query, settings.SKS_COLLECTION, top_k, vector=vector)
+        hits = self._hybrid_search(query, settings.SKS_COLLECTION, top_k, vector=vector,
+                                   also=also)
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_programs(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_programs(self, query: str, top_k: int = 3, vector=None, also=()) -> List[Dict]:
         # degree-program catalog; per-level "tam liste" chunks ride along
         # so the model can ground "İYTE'de X bölümü yok" answers
-        hits = self._hybrid_search(query, settings.PROGRAMS_COLLECTION, top_k, vector=vector)
+        hits = self._hybrid_search(query, settings.PROGRAMS_COLLECTION, top_k, vector=vector,
+                                   also=also)
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_people(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_people(self, query: str, top_k: int = 3, vector=None, also=()) -> List[Dict]:
         """Instructors and staff, in three tiers: person chunks, the
         department roster, and per-area enumerations. List-type chunks
         are long and term-dense, so they'd gravitate into every people
@@ -353,7 +372,7 @@ class Retriever:
         data-complete table, so grouping/counting/"tüm hocalar" queries
         work even when an area chunk happens to win the scoring."""
         ranked = self._hybrid_search(query, settings.PEOPLE_COLLECTION, TIERED_POOL,
-                                     vector=vector)
+                                     vector=vector, also=also)
         persons = [pair for pair in ranked if pair[0].metadata.get("kind") == "person"][:top_k]
         # role-scoped enumerations ("asistanların alanları") — see the
         # vectorizer's role chunk for why these need their own tier
@@ -367,21 +386,22 @@ class Retriever:
             if all(hit.metadata.get("kind") != "roster" for hit, _ in chosen):
                 chosen += ([pair for pair in lists if pair[0].metadata.get("kind") == "roster"][:1]
                            or self._hybrid_search(query, settings.PEOPLE_COLLECTION, 1,
-                                                  filters={"kind": "roster"}, vector=vector))
+                                                  filters={"kind": "roster"}, vector=vector,
+                                                  also=also))
             hits = chosen + persons[:max(0, top_k - len(chosen))]
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
-    def retrieve_courses(self, query: str, top_k: int = 4, vector=None) -> List[Dict]:
+    def retrieve_courses(self, query: str, top_k: int = 4, vector=None, also=()) -> List[Dict]:
         # course catalog, two tiers like people: individual course chunks
         # plus per-level "tam liste" chunks. The list is term-dense (every
         # course code and name), so it's admitted only when it outscores
         # the best individual course — "X dersi var mı / hangi dersler
         # var" wins the list, "CENG 311'in önkoşulu ne" wins the course.
         ranked = self._hybrid_search(query, settings.COURSES_COLLECTION, TIERED_POOL,
-                                     vector=vector)
+                                     vector=vector, also=also)
         singles = [pair for pair in ranked if pair[0].metadata.get("kind") == "course"][:top_k]
         lists = [pair for pair in ranked if pair[0].metadata.get("kind") == "list"]
         hits = singles
@@ -406,10 +426,11 @@ class Retriever:
         return sorted({hit.metadata["department"] for hit, _ in lists
                        if hit.metadata.get("department")})
 
-    def retrieve_guides(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
+    def retrieve_guides(self, query: str, top_k: int = 3, vector=None, also=()) -> List[Dict]:
         # ÖİDB process guides (ders seçimi, yatay geçiş, ÇAP/yan dal,
         # başvuru, askerlik) — chunk text leads with the page title
-        hits = self._hybrid_search(query, settings.GUIDES_COLLECTION, top_k, vector=vector)
+        hits = self._hybrid_search(query, settings.GUIDES_COLLECTION, top_k, vector=vector,
+                                   also=also)
         return [
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
@@ -419,14 +440,17 @@ class Retriever:
         # any model-specific instruction prefix lives in the embedder
         return self._embedder.embed_query(query)
 
-    def _hybrid_search(self, query, collection, top_k, filters=None, vector=None, rrf_k=None):
-        """Dense and BM25 each rank the whole collection; the store fuses
-        the two rankings (RRF). Scores only compare within one call."""
+    def _hybrid_search(self, query, collection, top_k, filters=None, vector=None, rrf_k=None,
+                       also=()):
+        """Dense and BM25 each rank the whole collection, for the query and
+        for each (text, vector) phrasing in `also`; the store fuses all the
+        rankings (RRF). Scores only compare within one call."""
         query = normalize_query(query)  # idempotent; covers direct calls too
         if vector is None:
             vector = self._embed_query(query)
         hits = self._store.search(collection, vector, limit=top_k, filters=filters,
-                                  sparse=sparse_query(query), rrf_k=rrf_k)
+                                  sparse=sparse_query(query), rrf_k=rrf_k,
+                                  also=[(v, sparse_query(text)) for text, v in also])
         return [(hit, hit.score) for hit in hits]
 
     @staticmethod

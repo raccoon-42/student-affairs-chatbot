@@ -18,7 +18,7 @@ class ExplodingRetriever:
     be called for a blocked query — but its result (even an exception)
     must never leak into a refused response."""
 
-    def retrieve_all(self, query, audience=None):
+    def retrieve_all(self, query, audience=None, also=()):
         raise RuntimeError("speculative retrieval failed")
 
 
@@ -79,7 +79,7 @@ def test_blocked_query_streams_only_the_refusal():
 
 def test_allowed_query_flows_through():
     class FakeRetriever:
-        def retrieve_all(self, query, audience=None):
+        def retrieve_all(self, query, audience=None, also=()):
             return {"calendar": [], "regulations": [], "faq": []}
 
     gate = ScopeGate(FakeLLM("evet"), "gate-model")
