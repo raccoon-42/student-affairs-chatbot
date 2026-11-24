@@ -1,3 +1,5 @@
+import hashlib
+import re
 import sys
 import time
 import uuid
@@ -7,7 +9,7 @@ from threading import Lock, Thread
 import requests
 
 from fastapi import Cookie, FastAPI, HTTPException, Request, Response
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -613,5 +615,40 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
     return {"text": groq.json().get("text", "").strip()}
 
 
+_LOCAL_ASSET = re.compile(r'(src|href)="([\w.-]+\.(?:js|css))"')
+
+
+@app.get("/", include_in_schema=False)
+@app.get("/index.html", include_in_schema=False)
+async def index_page():
+    """The UI page with each local asset URL carrying a hash of the file:
+    a normal reload rechecks only the page, so a stale app.js cached before
+    no-cache existed kept overwriting the new model labels. A changed file
+    gets a new URL, which no cache can answer."""
+    web = settings.ROOT / "web"
+
+    def versioned(match):
+        attr, name = match.groups()
+        path = web / name
+        if not path.is_file():
+            return match.group(0)
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()[:8]
+        return f'{attr}="{name}?v={digest}"'
+
+    page = _LOCAL_ASSET.sub(versioned, (web / "index.html").read_text(encoding="utf-8"))
+    return HTMLResponse(page, headers={"Cache-Control": "no-cache"})
+
+
+class RevalidatedStaticFiles(StaticFiles):
+    """UI files the browser must revalidate on every load (a 304 when
+    unchanged): without it a cached index.html / app.js outlived updates,
+    e.g. still showing the old model names after the 5.5 upgrade."""
+
+    def file_response(self, *args, **kwargs):
+        response = super().file_response(*args, **kwargs)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
 # the web UI — mounted last so the API routes above win the match first
-app.mount("/", StaticFiles(directory=settings.ROOT / "web", html=True), name="web")
+app.mount("/", RevalidatedStaticFiles(directory=settings.ROOT / "web", html=True), name="web")
