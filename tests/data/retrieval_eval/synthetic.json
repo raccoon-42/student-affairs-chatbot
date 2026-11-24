@@ -1,0 +1,1825 @@
+{
+ "as_of": "2026-11-24",
+ "cases": [
+  {
+   "id": "syn-calendar-00",
+   "query": "2026-2027 güz döneminde ders ekleme çıkarma ne zaman?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 6 Ekim 2026 Salı ile 7 Ekim 2026 Çarşamba tarihleri arasında Lisans/Lisansüstü programlarda Öğrenci Ders Ekleme - Çıkarma."
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz yarıyılında ders ekleme-çıkarma ne zaman?"
+  },
+  {
+   "id": "syn-calendar-01",
+   "query": "2025-2026 bahar yarıyılı için sınav hakkı kullanan öğrencilerin sonuçları ÖİDB'ye en geç ne zaman bildirilmeli?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Bahar Yarıyılı] 22 Eylül 2026 Salı tarihinde Lisans Yönetmeliğinin 19. Maddesi uyarınca 2025-2026 Bahar Yarıyılı için sınav hakkını kullanan öğrencil"
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 bahar yarıyılında sınav hakkı kullanan öğrencilerin sonuçları ÖİDB'ye en geç ne zaman bildirilmelidir?"
+  },
+  {
+   "id": "syn-calendar-02",
+   "query": "2025-2026 güz döneminde bahar dönemi için açılacak derslerin ve ders programlarının ÖBS'ye girilmesi hangi tarihler arasında?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Güz Yarıyılı] 15 Aralık 2025 Pazartesi ile 9 Ocak 2026 Cuma tarihleri arasında Lisans/Lisansüstü programlarında 2025-2026 Bahar Yarıyılında açılacak "
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 güz yarıyılında bahar yarıyılı için açılacak derslerin ve ders programlarının ÖBS'ye girilmesi hangi tarihler arasında?"
+  },
+  {
+   "id": "syn-calendar-03",
+   "query": "2025-2026 bahar dönemi finaller ne zaman başlıyor, ne zaman bitiyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Bahar Yarıyılı] 17 Haziran 2026 Çarşamba ile 30 Haziran 2026 Salı tarihleri arasında Lisans/Lisansüstü programlardaki öğrencilerin yarıyıl sonu sınav"
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 bahar yarıyılı yarıyıl sonu sınavları ne zaman başlıyor ve ne zaman bitiyor?"
+  },
+  {
+   "id": "syn-calendar-04",
+   "query": "2026-2027 güzde bahar için Fen Fakültesi servis derslerini Genel Kültür Dersleri Bölümüne ne zaman bildirecek?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 9 Kasım 2026 Pazartesi ile 20 Kasım 2026 Cuma tarihleri arasında 2026-2027 Bahar Yarıyılında açılacak dersler için Fen Fakültesinden, s"
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz ve bahar yarıyılları için Fen Fakültesi servis derslerini Genel Kültür Dersleri Bölümüne ne zaman bildirecek?"
+  },
+  {
+   "id": "syn-calendar-05",
+   "query": "2026-2027 bahar yarıyılında 23 Nisan tatil mi, hangi güne denk geliyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Bahar Yarıyılı] 23 Nisan 2027 Cuma tarihinde 23 Nisan Ulusal Egemenlik ve Çocuk Bayramı."
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 bahar yarıyılında 23 Nisan tatil mi, hangi güne denk geliyor?"
+  },
+  {
+   "id": "syn-calendar-06",
+   "query": "2026-2027 güz yarıyılında yaz okulunda açılacak dersler ÖİDB tarafından birimlerden ne zaman isteniyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 1 Şubat 2027 Pazartesi tarihinde Yaz öğretiminde açılacak derslerin ÖİDB tarafından ilgili birimlerden istenmesi."
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz yarıyılında yaz okulunda açılacak dersler ÖİDB tarafından birimlerden ne zaman isteniyor?"
+  },
+  {
+   "id": "syn-calendar-07",
+   "query": "2026-2027 güz için merkezi yerleştirme puanıyla yatay geçiş değerlendirmelerini fakülteler en geç ne zaman bildirmeli?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 10 Eylül 2026 Perşembe tarihinde Lisans programları için yapılan Merkezi Yerleştirme Puanıyla Yatay Geçiş değerlendirmelerinin ilgili F"
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz yarıyılı için merkezi yerleştirme puanıyla yatay geçiş değerlendirmelerini fakülteler en geç ne zaman bildirmelidir?"
+  },
+  {
+   "id": "syn-calendar-08",
+   "query": "2026-2027 güz yarıyılı ders seçimi hangi günlerde yapılıyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 23 Eylül 2026 Çarşamba ile 24 Eylül 2026 Perşembe tarihleri arasında Ders seçme işlemleri (Lisans/Lisansüstü öğrencileri)."
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz yarıyılı ders seçimi hangi günlerde yapılıyor?"
+  },
+  {
+   "id": "syn-calendar-09",
+   "query": "2025-2026 güz yarıyılında merkezi yerleştirmeyle yatay geçiş başvurusu yapanların İngilizce seviye belirleme sınavı hangi gün?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Güz Yarıyılı] 22 Ağustos 2025 Cuma tarihinde Lisans Programlarına Merkezi Yerleştirme Puanıyla Yatay Geçiş için başvuran öğrencilerin İngilizce Seviy"
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 güz yarıyılında merkezi yerleştirmeyle yatay geçiş başvurusu yapanların İngilizce seviye belirleme sınavı hangi gün?"
+  },
+  {
+   "id": "syn-calendar-10",
+   "query": "2026-2027 güz döneminde 19. madde kapsamında sınav hakkından yararlanmak için başvuruyu en geç ne zaman yapmam gerekiyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2026-2027 Güz Yarıyılı] 27 Ocak 2027 Çarşamba tarihinde Lisans Yönetmeliğinin 19. Maddesi uyarınca 2026-2027 Güz Yarıyılı için sınav hakkından yararlanmak iste"
+     ]
+    }
+   ],
+   "rewritten": "2026-2027 güz yarıyılında 19. madde kapsamında sınav hakkından yararlanmak için başvuruyu en geç ne zaman yapmam gerekiyor?"
+  },
+  {
+   "id": "syn-calendar-11",
+   "query": "2025-2026 güz dönemi final notları ÖBS'ye en geç ne zaman girilmeli?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Güz Yarıyılı] 28 Ocak 2026 Çarşamba tarihinde Lisans/Lisansüstü programlarda yarıyıl sonu sınav notlarının ÖBS'ye girilmesi için son gün."
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 güz yarıyılı yarıyıl sonu sınavları notlarının ÖBS'ye en geç ne zaman girilmesi gerektiği nedir?"
+  },
+  {
+   "id": "syn-calendar-12",
+   "query": "2025-2026 bahar yarıyılında 19 Mayıs tatil mi, hangi güne geliyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Bahar Yarıyılı] 19 Mayıs 2026 Salı tarihinde Atatürk'ü Anma Gençlik ve Spor Bayramı."
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 bahar yarıyılında 19 Mayıs tatil mi, hangi güne geliyor?"
+  },
+  {
+   "id": "syn-calendar-13",
+   "query": "2025-2026 güz yarıyılında bahara kabul alan lisansüstü adaylar muafiyet belgelerini LUBES'e ne zaman yükleyecek?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Güz Yarıyılı] 21 Ocak 2026 Çarşamba ile 25 Ocak 2026 Pazar tarihleri arasında 2025-2026 Bahar Yarıyılına kabul alan lisansüstü adayların Muafiyet bel"
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 güz yarıyılında bahara kabul alan lisansüstü adaylar muafiyet belgelerini LUBES'e ne zaman yükleyecek?"
+  },
+  {
+   "id": "syn-calendar-14",
+   "query": "2025-2026 güz dönemi için lisansüstü programlara başvurular ne zaman bitiyor?",
+   "category": "calendar",
+   "relevant": [
+    {
+     "collection": "calendar",
+     "contains": [
+      "[2025-2026 Güz Yarıyılı] 27 Haziran 2025 Cuma tarihinde 2025-2026 Güz Yarıyılı için lisansüstü programlara öğrenci alımı başvuruları son gün."
+     ]
+    }
+   ],
+   "rewritten": "2025-2026 güz yarıyılı için lisansüstü programlara başvurular ne zaman sona eriyor?"
+  },
+  {
+   "id": "syn-regulations-00",
+   "query": "Öğrenci konseyi yönergesi hangi yönetmeliğe göre hazırlanmış?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Öğrenci Konseyi Yönergesi\nMADDE 3 - Dayanak (BİRİNCİ KISIM - Amaç, Kapsam, Dayanak ve Tanımlar)\n(1) Bu Yönerge, 13.06.2020 tarihli ve 31154 sayılı Resmî Ga"
+     ]
+    }
+   ],
+   "rewritten": "Öğrenci konseyi yönergesi hangi yönetmeliğe göre hazırlanmış?"
+  },
+  {
+   "id": "syn-regulations-01",
+   "query": "İYTE öğrenci konseyi kimleri temsil ediyor, sadece lisans öğrencilerini mi yoksa yüksek lisans öğrencilerini de mi?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Öğrenci Konseyi Yönergesi\nMADDE 2 - Kapsam (BİRİNCİ KISIM - Amaç, Kapsam, Dayanak ve Tanımlar)\n(1) Bu Yönergede sözü geçen esaslar İzmir Yüksek Teknoloji E"
+     ]
+    }
+   ],
+   "rewritten": "İYTE öğrenci konseyi kimleri temsil ediyor, sadece lisans öğrencilerini mi yoksa yüksek lisans öğrencilerini de mi?"
+  },
+  {
+   "id": "syn-regulations-02",
+   "query": "Okulda hastalanırsak sağlık hizmetleri ve işlemler nasıl yürütülüyor, hangi yönetmelikte yazıyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Öğrenci Kayıt-Kabul İşleri Yönetmeliği\nMADDE 26 - Sağlık İşleri\nÖğrencilere verilecek sağlık hizmetleri ve hastalanan öğrencilere uygulanacak işlemler ayrı"
+     ]
+    }
+   ],
+   "rewritten": "Okulda hastalanan öğrenciler için sağlık hizmetleri ve işlemler nasıl yürütülüyor, bu konu hangi yönetmelikte düzenleniyor?"
+  },
+  {
+   "id": "syn-regulations-03",
+   "query": "Eğitim Komisyonu ne işe yarıyor, bu yönergenin amacı ne?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Eğitim Komisyonu Yönergesi\nMADDE 1 - Amaç (BİRİNCİ BÖLÜM - Amaç, Kapsam, Dayanak ve Tanımlar)\n(1) Bu Yönerge'nin amacı, Eğitim Komisyonu'nun kuruluş, görev"
+     ]
+    }
+   ],
+   "rewritten": "Eğitim Komisyonu ne işe yarıyor, bu yönergenin amacı ne?"
+  },
+  {
+   "id": "syn-regulations-04",
+   "query": "Sınav sorularının güvenliğinden kim sorumlu, gözetmen ne zaman görevlendiriliyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Eğitim Programlarının Tasarlanması, Ölçülmesi, İzlenmesi Ve Değerlendirilmesi Yönergesi\nMADDE 7 - Sınav Güvenliği (ÜÇÜNCÜ BÖLÜM - Sınavlar)\n(1) İlgili Bölü"
+     ]
+    }
+   ],
+   "rewritten": "Sınav sorularının güvenliğinden kim sorumlu, gözetmen ne zaman görevlendiriliyor?"
+  },
+  {
+   "id": "syn-regulations-05",
+   "query": "Yurtdışından öğrenci kabulünde puanlar eşit olursa kim önce yerleştiriliyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Lisans Programları Yurtdışından Öğrenci Kabulü ve Eğitim Yönergesi\nMADDE 10 - Başvuruların Değerlendirilmesi\n(1) Başvurular, başvuru bitim tarihinden itiba"
+     ]
+    }
+   ],
+   "rewritten": "Yurtdışından öğrenci kabulünde puanlar eşit olursa kim önce yerleştiriliyor?"
+  },
+  {
+   "id": "syn-regulations-06",
+   "query": "Bölümler eğitim programlarını nasıl izliyor, mezun ve öğrenci memnuniyet anketleri bunun için mi yapılıyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Eğitim Programlarının Tasarlanması, Ölçülmesi, İzlenmesi Ve Değerlendirilmesi Yönergesi\nMADDE 15 (BEŞİNCİ BÖLÜM - İzleme ve Değerlendirme)\n(1) Bölüm/EABD, "
+     ]
+    }
+   ],
+   "rewritten": "Bölümler eğitim programlarını nasıl izliyor, mezun ve öğrenci memnuniyet anketleri bunun için mi yapılıyor?"
+  },
+  {
+   "id": "syn-regulations-08",
+   "query": "Genel ortalamam 1.80'in altına düşerse tekrar dönemde kaç kredi ders alabilirim?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "Lisans Öğrencileri İşleyiş Esasları\nMADDE 4 - Tekrar Durumunda Ders Yükü (İKİNCİ BÖLÜM - Eğitim ve Öğretimle İlgili Esaslar)\nÖğrenciler, genel not ortalamasının"
+     ]
+    }
+   ],
+   "rewritten": "Genel not ortalamam 1.80'in altına düşerse, bir sonraki yarıyılda kaç kredilik ders alabilirim?"
+  },
+  {
+   "id": "syn-regulations-09",
+   "query": "Merkezi yerleştirme puanıyla yatay geçişte puan nasıl hesaplanıyor, kontenjandan fazla başvuru olursa ne oluyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Merkezi Yerleştirme Puanı ile Yatay Geçiş Yönergesi\nMADDE 10 - Değerlendirme ve İntibak İşlemleri (ÜÇÜNCÜ BÖLÜM - Değerlendirme ve İntibak İşlemleri)\n(1) D"
+     ]
+    }
+   ],
+   "rewritten": "Merkezi yerleştirme puanıyla yatay geçişte puan nasıl hesaplanıyor, kontenjandan fazla başvuru olursa ne oluyor?"
+  },
+  {
+   "id": "syn-regulations-10",
+   "query": "Bir dönem kaç hafta sürüyor, finaller de bu süreye dahil mi, yaz okulu dönemden sayılır mı?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Lisans Eğitim Öğretim Yönetmeliği\nMADDE 4 - Eğitim ve öğretim yılı (İKİNCİ BÖLÜM - Eğitim ve Öğretimle İlgili Esaslar)\n(1) Bir eğitim-öğretim yılına ait fa"
+     ]
+    }
+   ],
+   "rewritten": "Bir yarıyıl kaç hafta sürüyor, yarıyıl sonu sınavları da bu süreye dahil mi, yaz okulu yarıyıl olarak sayılır mı?"
+  },
+  {
+   "id": "syn-regulations-12",
+   "query": "Kurum içi yatay geçiş yönergesinde YDYO ve ÖBS kısaltmaları neyi ifade ediyor?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Kurum İçi Yatay Geçiş Yönergesi\nMADDE 4 - Tanımlar (BİRİNCİ BÖLÜM - Amaç, Kapsam, Dayanak ve Tanımlar)\n(1) Bu Yönergede geçen; a) Enstitü / İYTE: İzmir Yük"
+     ]
+    }
+   ],
+   "rewritten": "Kurum içi yatay geçiş yönergesinde YDYO ve ÖBS kısaltmaları neyi ifade ediyor?"
+  },
+  {
+   "id": "syn-regulations-13",
+   "query": "Öğrenci Konseyi Başkanının görevleri neler, senato toplantılarına katılabiliyor mu?",
+   "category": "regulations",
+   "relevant": [
+    {
+     "collection": "regulations",
+     "contains": [
+      "İYTE Öğrenci Konseyi Yönergesi\nMADDE 19 - Öğrenci Konseyi Başkanının Görevleri (İKİNCİ KISIM - Öğrenci Konseyi / YEDİNCİ BÖLÜM - Öğrenci Konseyi Başkanı)\n(1) Öğ"
+     ]
+    }
+   ],
+   "rewritten": "Öğrenci Konseyi Başkanının görevleri neler, senato toplantılarına katılabiliyor mu?"
+  },
+  {
+   "id": "syn-faq-00",
+   "query": "askerlik tecili için okul tarafında bir şey yapmam gerekiyor mu?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Askerlik tecil işlemleri için herhangi bir işlem yapmalı mıyım?"
+     ]
+    }
+   ],
+   "rewritten": "Askerlik ertelemesi için üniversite tarafında yapmam gereken bir işlem var mı?"
+  },
+  {
+   "id": "syn-faq-01",
+   "query": "bir dönemde aldığım ders sayısını en fazla kaç ders azaltabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Ders yükümü en fazla kaç ders azaltabilirim?"
+     ]
+    }
+   ],
+   "rewritten": "Bir yarıyılda aldığım ders sayısını en fazla kaç ders azaltabilirim?"
+  },
+  {
+   "id": "syn-faq-02",
+   "query": "zorunlu olmayan bir dersi saydırmak istiyorum, bunu nasıl yapıyorum?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Zorunlu Olmayan Ders Saydırma İşlemi Nasıl yapılır?"
+     ]
+    }
+   ],
+   "rewritten": "Zorunlu olmayan bir dersi saydırmak istiyorum, bunu nasıl yapıyorum?"
+  },
+  {
+   "id": "syn-faq-03",
+   "query": "hazırlık sınıfında en fazla kaç yıl okuyabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Kaç yıl İngilizce hazırlık eğitimi alma hakkım var?"
+     ]
+    }
+   ],
+   "rewritten": "Hazırlık sınıfında en fazla kaç yıl okuyabilirim?"
+  },
+  {
+   "id": "syn-faq-04",
+   "query": "kayıt dondurursam o dönemler max okuma süremden düşer mi?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Kayıt dondurduğum süreler öğrenim süremden sayılır mı?"
+     ]
+    }
+   ],
+   "rewritten": "Kayıt dondurursam o dönemler maksimum öğrenim süremden düşer mi?"
+  },
+  {
+   "id": "syn-faq-05",
+   "query": "toplamda kaç dönem kayıt dondurabilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "En fazla kaç yarıyıl kayıt dondurulabilir?"
+     ]
+    }
+   ],
+   "rewritten": "Toplamda kaç yarıyıl kayıt dondurabilirim?"
+  },
+  {
+   "id": "syn-faq-06",
+   "query": "okulla ilgili duyuruları nereden takip edebilirim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Öğrencilerle ilgili duyuruları ve bilmem gerekenleri nasıl takip edebilirim?"
+     ]
+    }
+   ],
+   "rewritten": "Okulla ilgili duyuruları nereden takip edebilirim?"
+  },
+  {
+   "id": "syn-faq-07",
+   "query": "yatay geçiş başvurum kabul olursa en fazla kaç yıl okuyabilirim, süre nasıl hesaplanıyor?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Geçiş başvurum kabul edilirse azami öğrenim süresi nasıl hesaplanır?"
+     ]
+    }
+   ],
+   "rewritten": "Yatay geçiş başvurum kabul edilirse en fazla kaç yıl okuyabilirim ve bu süre nasıl hesaplanır?"
+  },
+  {
+   "id": "syn-faq-08",
+   "query": "yaz okulu için kayıt yaptırdım, vazgeçersem iptal edebilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Yaz Öğretimi kaydımı iptal edebilir miyim?"
+     ]
+    }
+   ],
+   "rewritten": "Yaz okulu için kaydımı yaptırdım; vazgeçersem kaydımı iptal edebilir miyim?"
+  },
+  {
+   "id": "syn-faq-09",
+   "query": "İngilizce yeterlik sınavını geçmek zorunda mıyım, hazırlık okuma hakkım var mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "İngilizce Yeterliliği sağlamak zorunda mıyım? İngilizce Hazırlık Sınıfında okuma hakkım var mı?"
+     ]
+    }
+   ],
+   "rewritten": "İngilizce yeterlik sınavını geçmek zorunda mıyım, hazırlık okuma hakkım var mı?"
+  },
+  {
+   "id": "syn-faq-10",
+   "query": "hazırlık okuma hakkım var mı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "İngilizce hazırlık eğitimi alma hakkım var mı?"
+     ]
+    }
+   ],
+   "rewritten": "Hazırlık okuma hakkım var mı?"
+  },
+  {
+   "id": "syn-faq-11",
+   "query": "dönem sonunda onur belgesi ya da yüksek onur belgesi almak için not ortalaması kaç olmalı?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Yarıyıl sonunda Onur/Yüksek Onur Belgesi almak için şartlar nelerdir?"
+     ]
+    }
+   ],
+   "rewritten": "Yarıyıl sonunda onur belgesi ya da yüksek onur belgesi almak için not ortalaması kaç olmalı?"
+  },
+  {
+   "id": "syn-faq-12",
+   "query": "kayıt dondurduğum dönemde yurt, kütüphane gibi öğrenci haklarından yararlanabilir miyim?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Kayıt dondurduğum sürede öğrencilik haklarından yararlanabilir miyim?"
+     ]
+    }
+   ],
+   "rewritten": "Kayıt dondurduğum yarıyılda yurt, kütüphane gibi öğrenci haklarından yararlanabilir miyim?"
+  },
+  {
+   "id": "syn-faq-13",
+   "query": "kayıt dondurmak için hangi tarihler arasında başvuru yapmam lazım?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Kayıt dondurmak için ne zaman başvurmam gerekir?"
+     ]
+    }
+   ],
+   "rewritten": "Kayıt dondurmak için hangi tarihler arasında başvuru yapmam gerekiyor?"
+  },
+  {
+   "id": "syn-faq-14",
+   "query": "eylül ayındaki İngilizce yeterlik sınavına kimler girebiliyor?",
+   "category": "faq",
+   "relevant": [
+    {
+     "collection": "faq",
+     "contains": [
+      "Akademik yıl başında yapılan İngilizce Yeterlik Sınavına (Eylül SBS) kimler girer?"
+     ]
+    }
+   ],
+   "rewritten": "Eylül ayındaki İngilizce yeterlik sınavına kimler girebilir?"
+  },
+  {
+   "id": "syn-forms-00",
+   "query": "kimliğimi kaybettim yenisini nasıl çıkarırım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Öğrenci Kimlik Kartı Formu\nKaybolan, çalınan veya yıpranan öğrenci kimlik kartı yerine yenisini almak isteyen öğrenci tarafından doldurulur.\nAnahtar kelimeler: "
+     ]
+    }
+   ],
+   "rewritten": "Kimliğimi kaybettim, yenisini nasıl çıkarırım?"
+  },
+  {
+   "id": "syn-forms-01",
+   "query": "okulu bırakmak istiyorum kaydımı kendim nasıl sildiririm",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Kendi İsteği İle İlişik Kesme Formu\nÖğrencinin kendi isteğiyle üniversiteden kaydını sildirmek istediğinde doldurduğu formdur.\nAnahtar kelimeler: kendi isteğiml"
+     ]
+    }
+   ],
+   "rewritten": "Okulu bırakmak istiyorum, kaydımı kendim nasıl sildirebilirim?"
+  },
+  {
+   "id": "syn-forms-02",
+   "query": "mezun olamadım 19. madde ile ek sınav hakkı için hangi formu dolduracağım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "19. Madde Başvuru Formu\nMezuniyet için gerekli şartları sağlayamayan öğrencinin ek sınav veya ek hak talebinde bulunmak için doldurduğu formdur.\nAnahtar kelimel"
+     ]
+    }
+   ],
+   "rewritten": "Mezun olamadım; 19. madde ile ek sınav hakkı için hangi formu dolduracağım?"
+  },
+  {
+   "id": "syn-forms-03",
+   "query": "hastaydım ders kaydımı zamanında yapamadım geç kayıt için hangi form lazım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Mazeretli Ders Kayıt ve veya Ücret Ödeme Formu\nGeçerli bir mazereti nedeniyle ders kaydını veya ücret ödemesini zamanında yapamayan öğrencinin ek süre talep etm"
+     ]
+    }
+   ],
+   "rewritten": "Hastaydım, ders kaydımı zamanında yapamadım. Geç kayıt için hangi form gerekiyor?"
+  },
+  {
+   "id": "syn-forms-04",
+   "query": "mezun olabilir miyim diye kontrol ettirmek için hangi formu doldurmam gerek",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Mezuniyet Durumu Formu\nÖğrencinin mezuniyet şartlarını karşılayıp karşılamadığını sorgulamak veya mezuniyet işlemlerini başlatmak için doldurduğu formdur.\nAnaht"
+     ]
+    }
+   ],
+   "rewritten": "Mezun olabilmek için hangi formu doldurmam gerekiyor?"
+  },
+  {
+   "id": "syn-forms-05",
+   "query": "mezun olunca bütün birimlerle ilişik kesme formunu nereden alıp dolduracağım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "İlişik Kesme Formu\nÜniversiteden mezuniyet, kayıt sildirme veya başka bir nedenle ayrılan öğrencinin tüm birimlerle ilişiğini kesmek için doldurduğu formdur.\nAn"
+     ]
+    }
+   ],
+   "rewritten": "Mezun olduktan sonra tüm birimlerle ilişik kesme formunu nereden alıp dolduracağım?"
+  },
+  {
+   "id": "syn-forms-06",
+   "query": "kayıt olduğum seçmeli ders açılmadı başka seçmeli almak için ne yapmalıyım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Kapanan Seçmeli Ders Değiştirme Formu\nKayıt olduğu seçmeli ders açılmadığı veya kapatıldığı için başka bir seçmeli ders almak isteyen öğrenci tarafından dolduru"
+     ]
+    }
+   ],
+   "rewritten": "Kayıt olduğum seçmeli ders açılmadı, başka seçmeli almak için ne yapmalıyım?"
+  },
+  {
+   "id": "syn-forms-07",
+   "query": "yanlışlıkla fazla harç yatırdım parayı geri almak için hangi form var",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Ücret İade Formu\nFazla veya yanlış ödenen öğrenim ücretinin geri alınması için öğrenci tarafından doldurulan formdur.\nAnahtar kelimeler: ücret iadesi, fazla öde"
+     ]
+    }
+   ],
+   "rewritten": "Yanlışlıkla fazla harç yatırdım, parayı geri almak için hangi form var?"
+  },
+  {
+   "id": "syn-forms-08",
+   "query": "erasmus için harçsız pasaport belgesi nasıl alırım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Harçsız Pasaport Talep Formu\nYurt dışında eğitim amacıyla bulunacak öğrencinin harç ödemeden pasaport çıkarabilmesi için gereken belgeyi talep etmek amacıyla do"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus için harçsız pasaport belgesi nasıl alınır?"
+  },
+  {
+   "id": "syn-forms-09",
+   "query": "yüksek lisansta daha önce aldığım seçmeli dersi programıma saydırmak istiyorum hangi formu doldurmalıyım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Lisansüstü Zorunlu Olmayan Ders Saydırma Formu\nLisansüstü öğrencinin daha önce aldığı zorunlu olmayan bir dersin programına sayılması için başvurduğu formdur.\nA"
+     ]
+    }
+   ],
+   "rewritten": "Yüksek lisansta daha önce aldığım seçmeli dersi programıma saydırmak istiyorum, hangi formu doldurmalıyım?"
+  },
+  {
+   "id": "syn-forms-10",
+   "query": "transkript ya da öğrenci belgesi nereden ve nasıl alınıyor",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Belge Taleplerine İlişkin Bilgilendirme\nÖğrenci belgesi, transkript, disiplin durum belgesi gibi resmi belgelerin nasıl ve nereden talep edileceğini öğrenmek iç"
+     ]
+    }
+   ],
+   "rewritten": "Transkript ya da öğrenci belgesi nereden ve nasıl alınır?"
+  },
+  {
+   "id": "syn-forms-11",
+   "query": "bu dönem bir dersten çekilmek istiyorum hangi formu dolduracağım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Dersten Çekilme Talep Formu\nÖğrencinin dönem içinde kayıtlı olduğu bir dersten resmi olarak çekilmek istediğinde doldurduğu formdur.\nAnahtar kelimeler: dersten "
+     ]
+    }
+   ],
+   "rewritten": "Bu dönem bir dersten çekilmek istiyorum; hangi formu doldurmam gerekiyor?"
+  },
+  {
+   "id": "syn-forms-12",
+   "query": "yazın başka üniversiteden ders alıp İYTE'de saydırabilir miyim hangi form lazım",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Yaz Öğretiminde İYTE Dışından Ders Almak İsteyen\nYaz döneminde İYTE dışındaki bir üniversiteden ders almak isteyen öğrencinin bu dersin sayılması için doldurduğ"
+     ]
+    }
+   ],
+   "rewritten": "Yazın başka bir üniversiteden ders alıp İYTE'de saydırabilir miyim? Bunun için hangi form gerekiyor?"
+  },
+  {
+   "id": "syn-forms-13",
+   "query": "lisans ders kayıt formu nedir dönem başında ders kaydı nasıl yapılıyor",
+   "category": "forms",
+   "relevant": [
+    {
+     "collection": "forms",
+     "contains": [
+      "Lisans Programları Ders Kayıt Formu\nLisans öğrencisinin dönem başında alacağı dersleri sisteme kaydettirmek için kullandığı formdur.\nAnahtar kelimeler: ders kay"
+     ]
+    }
+   ],
+   "rewritten": "Lisans ders kayıt formu nedir ve yarıyıl başında ders kaydı nasıl yapılıyor?"
+  },
+  {
+   "id": "syn-sks-00",
+   "query": "Kimya topluluğunun başkanı kim, onlara nasıl ulaşabilirim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nKimya Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; öğrencilerin kimya alanındaki sektörden haberdar"
+     ]
+    }
+   ],
+   "rewritten": "Kimya topluluğunun başkanı kim, onlara nasıl ulaşabilirim?"
+  },
+  {
+   "id": "syn-sks-01",
+   "query": "Blockchain topluluğunun danışman hocası kim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nBlockchain Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; blockchain alanında projeler geliştirmek, b"
+     ]
+    }
+   ],
+   "rewritten": "Blockchain topluluğunun danışman hocası kim?"
+  },
+  {
+   "id": "syn-sks-02",
+   "query": "Savunma sporları topluluğu ne yapıyor, taekwondo da var mı orada?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nSavunma Sporları Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktı"
+     ]
+    }
+   ],
+   "rewritten": "Savunma sporları topluluğu ne yapıyor, taekwondo da var mı orada?"
+  },
+  {
+   "id": "syn-sks-03",
+   "query": "Endüstriyel Proje Geliştirme topluluğunun mail adresi ne?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nEndüstriyel Proje Geliştirme ve İşbirliği Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; üniversite p"
+     ]
+    }
+   ],
+   "rewritten": "Endüstriyel Proje Geliştirme topluluğunun mail adresi nedir?"
+  },
+  {
+   "id": "syn-sks-04",
+   "query": "Kalite topluluğu tam olarak ne işe yarıyor, amacı ne?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nKalite Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; yükseköğretimde kalite kültürünün öğrenciler ta"
+     ]
+    }
+   ],
+   "rewritten": "Kalite topluluğu tam olarak ne işe yarıyor, amacı ne?"
+  },
+  {
+   "id": "syn-sks-05",
+   "query": "Dünya dansları topluluğunun instagram hesabı ne?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nDünya Dansları Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır."
+     ]
+    }
+   ],
+   "rewritten": "Dünya dansları topluluğunun Instagram hesabı nedir?"
+  },
+  {
+   "id": "syn-sks-06",
+   "query": "Ombudsmanlık topluluğunun tüzüğüne nereden bakabilirim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nOmbudsmanlık Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır. T"
+     ]
+    }
+   ],
+   "rewritten": "Ombudsmanlık topluluğunun tüzüğüne nereden bakabilirim?"
+  },
+  {
+   "id": "syn-sks-07",
+   "query": "Müzik Bilim topluluğunda klasik Türk müziği ile ilgili neler yapılıyor, beste ve miks eğitimi veriyorlar mı?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nMüzik Bilim Topluluğu\nKuruluş amacı: Kurumun teknik bir enstitü olması göz önünde bulundurularak güzel sanatların müzik alanına bilimsel ve"
+     ]
+    }
+   ],
+   "rewritten": "Müzik Bilim topluluğunda klasik Türk müziği ile ilgili neler yapılıyor, beste ve miks eğitimi veriyorlar mı?"
+  },
+  {
+   "id": "syn-sks-08",
+   "query": "Ekstrem sporlar topluluğunun başkanı kim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nEkstrem Sporlar Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktır"
+     ]
+    }
+   ],
+   "rewritten": "Ekstrem sporlar topluluğunun başkanı kim?"
+  },
+  {
+   "id": "syn-sks-09",
+   "query": "Industrial Design Community'nin danışmanı ve başkanı kim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nIndustrial Design Community Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda"
+     ]
+    }
+   ],
+   "rewritten": "Industrial Design Community'nin danışmanı ve başkanı kim?"
+  },
+  {
+   "id": "syn-sks-10",
+   "query": "Ekonomi topluluğu hangi etkinlikleri yapıyor, finansal okuryazarlıkla ilgili bir şey var mı?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nEkonomi Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; ekonomi bilincinin çalışma alanları üzerinde a"
+     ]
+    }
+   ],
+   "rewritten": "Ekonomi topluluğu hangi etkinlikleri yapıyor, finansal okuryazarlıkla ilgili bir şey var mı?"
+  },
+  {
+   "id": "syn-sks-11",
+   "query": "Su altı sporları topluluğuna üye olmak için kime mail atmam lazım?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nSu Altı Sporları Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunmaktı"
+     ]
+    }
+   ],
+   "rewritten": "Su altı sporları topluluğuna üye olmak için kime mail atmam lazım?"
+  },
+  {
+   "id": "syn-sks-12",
+   "query": "Tarih topluluğu neyle uğraşıyor, okulun geçmişiyle ilgili bir şey yapıyorlar mı?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nTarih Topluluğu\nKuruluş amacı: Tarihsel olguların farklı perspektifler üzerinden değerlendirilmesini sağlamak, üyeleri tarihsel konularda b"
+     ]
+    }
+   ],
+   "rewritten": "Tarih topluluğu neyle uğraşıyor, okulun geçmişiyle ilgili bir şey yapıyorlar mı?"
+  },
+  {
+   "id": "syn-sks-13",
+   "query": "Yaşam Bilimleri topluluğunun web sayfası var mı, teknik gezi falan düzenliyorlar mı?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nYaşam Bilimleri Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine katkıda bulunmak; disiplinlerarası harmanlaşmış bilgiyi "
+     ]
+    }
+   ],
+   "rewritten": "Yaşam Bilimleri topluluğunun web sayfası var mı, teknik gezi gibi etkinlikler düzenliyorlar mı?"
+  },
+  {
+   "id": "syn-sks-14",
+   "query": "Moda Takı ve Tasarım topluluğunun başkanı kim?",
+   "category": "sks",
+   "relevant": [
+    {
+     "collection": "sks",
+     "contains": [
+      "ÖĞRENCİ TOPLULUKLARI\nModa Takı ve Tasarım Topluluğu\nKuruluş amacı: Üyelerin toplumsal ve kültürel gelişimine, beden ve ruh sağlığının korunmasına katkıda bulunm"
+     ]
+    }
+   ],
+   "rewritten": "Moda Takı ve Tasarım topluluğunun başkanı kim?"
+  },
+  {
+   "id": "syn-programs-00",
+   "query": "iyte'de enerji mühendisliği doktorası var mı, ne üzerine çalışılıyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Enerji Mühendisliği (Doktora programı)\nEnerji sistemleri ve teknolojileri alanında özgün doktora araştırmaları yapılır.\nAnahtar kelimeler: energy engineering ph"
+     ]
+    }
+   ],
+   "rewritten": "İTÜ'de enerji mühendisliği doktora programı var mı ve bu programda hangi konular üzerine çalışılıyor?"
+  },
+  {
+   "id": "syn-programs-01",
+   "query": "endüstriyel tasarım yüksek lisansı neler kapsıyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Endüstriyel Tasarım (Yüksek Lisans programı)\nÜrün tasarımı alanında ileri düzey araştırma ve tasarım süreçlerini kapsar.\nAnahtar kelimeler: industrial design, i"
+     ]
+    }
+   ],
+   "rewritten": "Endüstriyel tasarım yüksek lisansı neler kapsıyor?"
+  },
+  {
+   "id": "syn-programs-02",
+   "query": "gıda mühendisliği bölümünde neler okuyoruz, hangi fakültede?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Gıda Mühendisliği (Lisans, Mühendislik Fakültesi)\nGıda üretim süreçleri, güvenliği ve kalitesi üzerine mühendislik uygulamalarını kapsar.\nAnahtar kelimeler: foo"
+     ]
+    }
+   ],
+   "rewritten": "Gıda mühendisliği bölümünde hangi dersler okutulur ve bu bölüm hangi fakültededir?"
+  },
+  {
+   "id": "syn-programs-03",
+   "query": "moleküler biyoloji ve genetik doktora programı ne ile ilgileniyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Moleküler Biyoloji ve Genetik (Doktora programı)\nGenetik ve moleküler biyoloji alanında özgün doktora araştırmaları yapılır.\nAnahtar kelimeler: molecular biolog"
+     ]
+    }
+   ],
+   "rewritten": "Moleküler biyoloji ve genetik doktora programı ne ile ilgileniyor?"
+  },
+  {
+   "id": "syn-programs-04",
+   "query": "biyomühendislik doktorası var mı iyte'de?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Biyomühendislik (Doktora programı)\nBiyomühendislik alanında özgün ve ileri düzey araştırmalar yapılarak doktora eğitimi sunar.\nAnahtar kelimeler: bioengineering"
+     ]
+    }
+   ],
+   "rewritten": "İzmir Yüksek Teknoloji Enstitüsü'nde (İYTE) biyomühendislik doktora programı var mı?"
+  },
+  {
+   "id": "syn-programs-05",
+   "query": "mimarlık doktorası nasıl bir program, ne tür araştırmalar yapılıyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Mimarlık (Doktora programı)\nMimarlık alanında özgün ve ileri düzey tasarım araştırmaları yapılarak doktora eğitimi sunar.\nAnahtar kelimeler: architecture phd, m"
+     ]
+    }
+   ],
+   "rewritten": "Mimarlık doktorası nasıl bir program, ne tür araştırmalar yapılıyor?"
+  },
+  {
+   "id": "syn-programs-06",
+   "query": "şehir ve bölge planlama bölümü ne öğretiyor, hangi fakülteye bağlı?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Şehir ve Bölge Planlama (Lisans, Mimarlık Fakültesi)\nKentlerin ve bölgelerin fiziksel, sosyal ve ekonomik gelişiminin planlanmasını inceler.\nAnahtar kelimeler: "
+     ]
+    }
+   ],
+   "rewritten": "Şehir ve bölge planlama bölümü ne öğretiyor, hangi fakülteye bağlı?"
+  },
+  {
+   "id": "syn-programs-07",
+   "query": "elektronik ve haberleşme mühendisliği bölümünde hangi konular işleniyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Elektronik ve Haberleşme Mühendisliği (Lisans, Mühendislik Fakültesi)\nElektronik devreler, sinyal işleme ve iletişim sistemleri üzerine çalışır.\nAnahtar kelimel"
+     ]
+    }
+   ],
+   "rewritten": "Elektronik ve haberleşme mühendisliği bölümünde hangi konular işleniyor?"
+  },
+  {
+   "id": "syn-programs-08",
+   "query": "iyte mimarlık yüksek lisans programı neyi kapsıyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Mimarlık (Yüksek Lisans programı)\nMimarlık alanında ileri düzey tasarım ve araştırma çalışmaları yapılır.\nAnahtar kelimeler: architecture, mimarlık yüksek lisan"
+     ]
+    }
+   ],
+   "rewritten": "İzmir Yüksek Teknoloji Enstitüsü mimarlık yüksek lisans programı neyi kapsıyor?"
+  },
+  {
+   "id": "syn-programs-09",
+   "query": "mbg lisans bölümü hangi fakültede, neler öğreniliyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Moleküler Biyoloji ve Genetik (Lisans, Fen Fakültesi)\nCanlıların genetik yapısını ve moleküler düzeydeki biyolojik süreçlerini inceler.\nAnahtar kelimeler: molec"
+     ]
+    }
+   ],
+   "rewritten": "Mühendislik Bilimleri ve Geometrik bölümü hangi fakültede bulunuyor ve bu bölümde lisans düzeyinde neler öğreniliyor?"
+  },
+  {
+   "id": "syn-programs-10",
+   "query": "malzeme bilimi ve mühendisliği yüksek lisansında ne tür araştırmalar yapılıyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Malzeme Bilimi ve Mühendisliği (Yüksek Lisans programı)\nMalzeme özellikleri ve üretim süreçleri üzerine ileri düzey araştırmalar yapılır.\nAnahtar kelimeler: mat"
+     ]
+    }
+   ],
+   "rewritten": "Malzeme bilimi ve mühendisliği yüksek lisansında ne tür araştırmalar yapılıyor?"
+  },
+  {
+   "id": "syn-programs-11",
+   "query": "mühendislik işletmeciliği tezsiz yüksek lisans ikinci öğretim mi?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Mühendislik İşletmeciliği (Tezsiz, İkinci Öğretim) (Yüksek Lisans programı)\nMühendislik ve işletme yönetimi konularında ikinci öğretim tezsiz yüksek lisans eğit"
+     ]
+    }
+   ],
+   "rewritten": "Mühendislik işletmeciliği tezsiz yüksek lisans ikinci öğretim mi?"
+  },
+  {
+   "id": "syn-programs-12",
+   "query": "inşaat mühendisliği bölümünde ne okunuyor, hangi fakültede?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "İnşaat Mühendisliği (Lisans, Mühendislik Fakültesi)\nBina, yol, köprü gibi yapıların tasarımı, analizi ve inşasını kapsar.\nAnahtar kelimeler: civil engineering, "
+     ]
+    }
+   ],
+   "rewritten": "İnşaat mühendisliği bölümünde ne okunuyor ve bu bölüm hangi fakültede yer alır?"
+  },
+  {
+   "id": "syn-programs-13",
+   "query": "çevre bilimi ve mühendisliği doktora programı ne ile ilgili?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Çevre Bilimi ve Mühendisliği (Doktora programı)\nÇevresel süreçler ve mühendislik çözümleri üzerine özgün doktora araştırmaları yapılır.\nAnahtar kelimeler: envir"
+     ]
+    }
+   ],
+   "rewritten": "Çevre bilimi ve mühendisliği doktora programı ne ile ilgili?"
+  },
+  {
+   "id": "syn-programs-14",
+   "query": "polimer bilimi ve mühendisliği yüksek lisansında neler işleniyor?",
+   "category": "programs",
+   "relevant": [
+    {
+     "collection": "programs",
+     "contains": [
+      "Polimer Bilimi ve Mühendisliği (Yüksek Lisans programı)\nPolimer malzemelerin sentezi, özellikleri ve uygulamaları üzerine ileri düzey eğitim sunar.\nAnahtar keli"
+     ]
+    }
+   ],
+   "rewritten": "Polimer bilimi ve mühendisliği yüksek lisansında neler işleniyor?"
+  },
+  {
+   "id": "syn-people-00",
+   "query": "doğal dil işleme üzerine çalışan hocalar kimler?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "doğal dil işleme alanında çalışan öğretim elemanları (11 kişi): Aytuğ Onan (Bilgisayar Mühendisliği), Buket Erşahin (Bilgisayar Mühendisliği), Emrah İnan (Bilgi"
+     ]
+    }
+   ],
+   "rewritten": "Doğal dil işleme üzerine çalışan hocalar kimler?"
+  },
+  {
+   "id": "syn-people-01",
+   "query": "Işıl Öz hocanın ofisi kaç numara, mail adresi ne?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Işıl Öz — Associate Professor, Bilgisayar Mühendisliği\nIşıl Öz received the B.Sc. and M.Sc. degrees in computer engineering from Marmara University. She receive"
+     ]
+    }
+   ],
+   "rewritten": "Işıl Öz hocanın ofis numarası ve e-posta adresi nedir?"
+  },
+  {
+   "id": "syn-people-02",
+   "query": "Aytuğ Onan hoca kimdir, hangi konularda çalışıyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Aytuğ Onan — Professor, Bilgisayar Mühendisliği\nDr. Aytuğ Onan received his B.Sc. degree in Computer Engineering from Izmir University of Economics, Turkey, in "
+     ]
+    }
+   ],
+   "rewritten": "Aytuğ Onan hoca kimdir, hangi konularda çalışıyor?"
+  },
+  {
+   "id": "syn-people-03",
+   "query": "Altuğ Yiğit hocanın ofis numarası ve telefonu nedir?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Altuğ Yiğit — Dr., Bilgisayar Mühendisliği\nResearch Assistant Altuğ Yiğit received his B.Sc. (2015) and M.Sc. (2017) from Trakya University, Computer Engineerin"
+     ]
+    }
+   ],
+   "rewritten": "Altuğ Yiğit hocanın ofis numarası ve telefonu nedir?"
+  },
+  {
+   "id": "syn-people-04",
+   "query": "yüksek başarımlı hesaplama alanında çalışan hocalar kim?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "yüksek başarımlı hesaplama alanında çalışan öğretim elemanları (2 kişi): Işıl Öz (Bilgisayar Mühendisliği), Hakan Çoban (Bilgisayar Mühendisliği, arş. gör.). Bu"
+     ]
+    }
+   ],
+   "rewritten": "Yüksek başarımlı hesaplama alanında çalışan hocalar kimlerdir?"
+  },
+  {
+   "id": "syn-people-05",
+   "query": "Berra Yıldız Avcı kimdir, tezini kimle yapıyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Berra Yıldız Avcı — Araştırma Görevlisi, Bilgisayar Mühendisliği\nBerra Yıldız Avcı received her B.Sc. degree in Computer Engineering from Izmir Institute of Tec"
+     ]
+    }
+   ],
+   "rewritten": "Berra Yıldız Avcı kimdir, tezini kimle yapıyor?"
+  },
+  {
+   "id": "syn-people-06",
+   "query": "Bengisu Şahin hangi odada oturuyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Bengisu Şahin — Araştırma Görevlisi, Bilgisayar Mühendisliği\nBengisu Şahin holds a B.Sc. in Computer Engineering from Eskişehir Osmangazi University (2024) and "
+     ]
+    }
+   ],
+   "rewritten": "Bengisu Şahin hangi odada oturuyor?"
+  },
+  {
+   "id": "syn-people-07",
+   "query": "Mahdi Hashemzadeh hoca nereden mezun, hangi alanlarda çalışıyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Mahdi Hashemzadeh — Professor, Bilgisayar Mühendisliği\nProf. Dr. Mahdi Hashemzadeh received his B.S. and M.S. degrees in Software Engineering from Qazvin Azad U"
+     ]
+    }
+   ],
+   "rewritten": "Mahdi Hashemzadeh hoca nereden mezun olmuş ve hangi alanlarda çalışıyor?"
+  },
+  {
+   "id": "syn-people-08",
+   "query": "Ertuğrul Demir'in ofisi nerede, telefonu kaç?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Ertuğrul Demir — Araştırma Görevlisi, Bilgisayar Mühendisliği\nErtuğrul Demir received his BS degree from Izmir Institute of Technology in Computer Engineering i"
+     ]
+    }
+   ],
+   "rewritten": "Ertuğrul Demir'in ofisi nerede ve telefon numarası kaçtır?"
+  },
+  {
+   "id": "syn-people-09",
+   "query": "Damla Oğuz hoca bölüm başkan yardımcısı mı, ofisi kaç numara?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Damla Oğuz — Assistant Professor / Vice Chair, Bilgisayar Mühendisliği\nDamla Oğuz received B.Sc. degrees in Software Engineering and Industrial Systems Engineer"
+     ]
+    }
+   ],
+   "rewritten": "Damla Oğuz hoca bölüm başkan yardımcısı mı, ofisi kaç numarada?"
+  },
+  {
+   "id": "syn-people-10",
+   "query": "yapay zeka alanında çalışan bilgisayar mühendisliği hocaları kimler?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "yapay zeka alanında çalışan öğretim elemanları (21 kişi): Altuğ Yiğit (Bilgisayar Mühendisliği), Aytuğ Onan (Bilgisayar Mühendisliği), Berat Alper Erol (Bilgisa"
+     ]
+    }
+   ],
+   "rewritten": "Yapay zeka alanında çalışan bilgisayar mühendisliği hocaları kimlerdir?"
+  },
+  {
+   "id": "syn-people-11",
+   "query": "Cüneyt Bazlamaçcı hoca hangi derslere giriyor, ilgi alanları neler?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Cüneyt F. Bazlamaçcı — Professor, Bilgisayar Mühendisliği\nCüneyt F. Bazlamaçcı received his B.Sc. and M.Sc. degrees both in Electrical and Electronics Engineeri"
+     ]
+    }
+   ],
+   "rewritten": "Cüneyt Bazlamaçcı hoca hangi derslere giriyor, ilgi alanları neler?"
+  },
+  {
+   "id": "syn-people-12",
+   "query": "bilgisayar mühendisliğinde robotik üzerine çalışan hoca var mı?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "robotik alanında çalışan öğretim elemanları (1 kişi): Berat Alper Erol (Bilgisayar Mühendisliği). Bu liste kişilerin biyografilerindeki bilgiye dayanır."
+     ]
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliğinde robotik üzerine çalışan öğretim üyesi var mı?"
+  },
+  {
+   "id": "syn-people-13",
+   "query": "Yunus Emre Şahbaz kimdir, hangi konularda çalışıyor?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Yunus Emre Şahbaz — Araştırma Görevlisi, Bilgisayar Mühendisliği\nYunus Emre Şahbaz, İzmir Ekonomi Üniversitesi Bilgisayar Mühendisliği bölümünden lisans dereces"
+     ]
+    }
+   ],
+   "rewritten": "Yunus Emre Şahbaz kimdir, hangi konularda çalışıyor?"
+  },
+  {
+   "id": "syn-people-14",
+   "query": "bilgisayar mühendisliği bölüm başkanı kim, ofisi nerede?",
+   "category": "people",
+   "relevant": [
+    {
+     "collection": "people",
+     "contains": [
+      "Onur Demirörs — Professor / Chair, Bilgisayar Mühendisliği\nProf. Dr. Onur Demirörs received his B.Sc. in Computer Engineering from Middle East Technical Univers"
+     ]
+    }
+   ],
+   "rewritten": "Bilgisayar mühendisliği bölüm başkanı kim, ofisi nerede?"
+  },
+  {
+   "id": "syn-courses-00",
+   "query": "CENG 534 dersinde neler işleniyor, dönem projesi var mı?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 534 — Deep Learning for Natural Language Processing (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nNatural language processing (NLP) is one of the"
+     ]
+    }
+   ],
+   "rewritten": "CENG 534 dersinde hangi konular işleniyor ve yarıyıl projesi var mı?"
+  },
+  {
+   "id": "syn-courses-01",
+   "query": "CENG 416 dersinin önkoşulu ne, kaç AKTS?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 416 — Senior Design Project & Seminar II (Bilgisayar Mühendisliği, lisans dersi)\nInvited speakers, change management, coding documentation, coding standard"
+     ]
+    }
+   ],
+   "rewritten": "CENG 416 dersinin önkoşulu nedir ve kaç AKTS kredisi vardır?"
+  },
+  {
+   "id": "syn-courses-02",
+   "query": "CENG 543 Information Retrieval Systems dersi ne anlatıyor?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 543 — Information Retrieval Systems (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nThis course covers the components of information retrieval syst"
+     ]
+    }
+   ],
+   "rewritten": "CENG 543 Information Retrieval Systems dersi ne anlatıyor?"
+  },
+  {
+   "id": "syn-courses-03",
+   "query": "CENG 661 dersi nasıl bir ders, çok matematik içeriyor mu?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 661 — Advanced Asymmetrical Cryptosystems (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nThis course follows on from the introductory cryptography"
+     ]
+    }
+   ],
+   "rewritten": "CENG 661 dersi nasıl bir ders, çok matematik içeriyor mu?"
+  },
+  {
+   "id": "syn-courses-04",
+   "query": "CENG 318 Human Computer Interaction kaçıncı dönemde veriliyor, kaç kredi?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 318 — Human Computer Interaction (Bilgisayar Mühendisliği, lisans dersi)\nA review of HCI concepts and history, input devices and interaction techniques, in"
+     ]
+    }
+   ],
+   "rewritten": "CENG 318 Human Computer Interaction dersi hangi yarıyılda veriliyor ve kaç kredilik?"
+  },
+  {
+   "id": "syn-courses-05",
+   "query": "CENG 541 Advanced Database Management Systems dersinde hangi konular var?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 541 — Advanced Database Management Systems (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nRelational theory and extensions, such as relational cal"
+     ]
+    }
+   ],
+   "rewritten": "CENG 541 Advanced Database Management Systems dersinde hangi konular var?"
+  },
+  {
+   "id": "syn-courses-06",
+   "query": "CENG 641 Data Integration dersinin içeriği ne?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 641 — Data Integration (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nThis course will begin by explaining the different reasons that make data in"
+     ]
+    }
+   ],
+   "rewritten": "CENG 641 Data Integration dersinin içeriği nedir?"
+  },
+  {
+   "id": "syn-courses-07",
+   "query": "CENG 564 dersi ne hakkında?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 564 — Information Systems Policy, Management and Organization (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nThe policy based management for plann"
+     ]
+    }
+   ],
+   "rewritten": "CENG 564 dersi ne hakkında?"
+  },
+  {
+   "id": "syn-courses-08",
+   "query": "CENG 312 Computer Networks dersi kaç AKTS ve hangi dönemde alınıyor?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 312 — Computer Networks (Bilgisayar Mühendisliği, lisans dersi)\nOverview of computer networks: Network architecture and the ISO-OSI model. Circuit switchin"
+     ]
+    }
+   ],
+   "rewritten": "CENG 312 Computer Networks dersi kaç AKTS kredisi değerindedir ve hangi yarıyılda alınır?"
+  },
+  {
+   "id": "syn-courses-09",
+   "query": "CENG 432 dersinde SAP kullanılıyor mu, ders neyi kapsıyor?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 432 — Fundamentals of Enterprise Application Development (Bilgisayar Mühendisliği, lisans dersi)\nThis course explores advanced application development tech"
+     ]
+    }
+   ],
+   "rewritten": "CENG 432 dersinde SAP kullanılıyor mu, ders neyi kapsıyor?"
+  },
+  {
+   "id": "syn-courses-10",
+   "query": "CENG 386 Fuzzy Logic Systems dersinde ne öğreniyoruz?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 386 — Fuzzy Logic Systems (Bilgisayar Mühendisliği, lisans dersi)\nFuzzy set theory, fuzzy relations, fuzzy rule base, approximate reasoning, fuzzy control,"
+     ]
+    }
+   ],
+   "rewritten": "CENG 386 Fuzzy Logic Systems dersinde ne öğreniyoruz?"
+  },
+  {
+   "id": "syn-courses-11",
+   "query": "CENG 472 Network Security dersinde firewall ve saldırılar işleniyor mu?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 472 — Network Security (Bilgisayar Mühendisliği, lisans dersi)\nLink Encryption, End-to-End Encryption, Network and Internet Based Attacks, Firewalls, Email"
+     ]
+    }
+   ],
+   "rewritten": "CENG 472 Network Security dersinde firewall ve saldırılar işleniyor mu?"
+  },
+  {
+   "id": "syn-courses-12",
+   "query": "CENG 216 Numerical Computation kaçıncı dönem dersi ve kaç AKTS?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 216 — Numerical Computation (Bilgisayar Mühendisliği, lisans dersi)\nSurveys and applications of numerical techniques related to matrix inversion, systems o"
+     ]
+    }
+   ],
+   "rewritten": "CENG 216 Numerical Computation hangi yarıyılda okunuyor ve kaç AKTS?"
+  },
+  {
+   "id": "syn-courses-13",
+   "query": "CENG 501 dersinde hangi istatistik konuları işleniyor?",
+   "category": "courses",
+   "relevant": [
+    {
+     "collection": "courses",
+     "contains": [
+      "CENG 501 — Introduction to Statistical Data Processing (Bilgisayar Mühendisliği, yüksek lisans, doktora dersi)\nOrganization and application of computers and sta"
+     ]
+    }
+   ],
+   "rewritten": "CENG 501 dersinde hangi istatistik konuları işleniyor?"
+  },
+  {
+   "id": "syn-guides-00",
+   "query": "ders kaydı ekran görüntülü anlatan kılavuz var mı, ÖBS'den ders seçmeyi adım adım görmek istiyorum",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Öğrenci Ders Kayıt Kılavuzu (PDF)\nÖBS/UBYS üzerinden ders seçiminin nasıl yapıldığını ekran görüntüleriyle adım adım gösteren kılavuz. Ders kaydı, ders seçme ek"
+     ]
+    }
+   ],
+   "rewritten": "Ders kaydını ekran görüntülü olarak adım adım anlatan bir kılavuz var mı? ÖBS üzerinden ders seçimini adım adım görmek istiyorum."
+  },
+  {
+   "id": "syn-guides-01",
+   "query": "tezli yüksek lisans yapınca askerlik tecili kaç yıl uzuyor, doktorada kaç yıl?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Askerlik İşlemleri\nLisansüstü Öğrencilerinin Askerlik İşlemleri\nLisansüstü öğrencilerin askerlik işlemleri (öğrenime yeni başlayanların sevk tehiri) 7179 sayılı"
+     ]
+    }
+   ],
+   "rewritten": "Tezli yüksek lisans yapınca askerlik tecili kaç yıl uzuyor, doktorada kaç yıl?"
+  },
+  {
+   "id": "syn-guides-02",
+   "query": "yurtdışından lisans programına başvurmak istiyorum, öğrenci işleri mi bakıyor yoksa başka bir birim mi?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisans Programlarına Yurtdışından Öğrenci Başvuru Bilgileri\nLisans Programlarına Yurtdışından Öğrenci Başvurusu\nLisans programlarına yurtdışından öğrenci başvur"
+     ]
+    }
+   ],
+   "rewritten": "Yurtdışından lisans programına başvurmak istiyorum; bu başvuruya öğrenci işleri mi bakıyor yoksa başka bir birim mi?"
+  },
+  {
+   "id": "syn-guides-03",
+   "query": "yüksek lisanstan başka üniversitedeki yüksek lisans programına yatay geçiş yapmak istiyorum, nereye başvuracağım?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisansüstü Programlara Yatay Geçiş\nLisansüstü Programlara Yatay Geçiş\nLisansüstü programlara yatay geçiş başvuru işlemleri Öğrenci İşleri Daire Başkanlığı taraf"
+     ]
+    }
+   ],
+   "rewritten": "Yüksek lisans programından başka bir üniversitedeki yüksek lisans programına yatay geçiş yapmak istiyorum, nereye başvuracağım?"
+  },
+  {
+   "id": "syn-guides-04",
+   "query": "başka üniversiteden İYTE'ye kurumlar arası yatay geçiş için programların içeriği ne kadar aynı olmalı?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Kurumlar Arası Yatay Geçiş\nKurumlar Arası Yatay Geçiş\nKurumlar Arası Yatay Geçiş, diğer üniversitelerde öğrenim gören öğrencilerin, öğrenim gördükleri programda"
+     ]
+    }
+   ],
+   "rewritten": "Başka bir üniversiteden İYTE'ye kurumlar arası yatay geçiş için programların içeriği ne kadar aynı olmalı?"
+  },
+  {
+   "id": "syn-guides-05",
+   "query": "ÖBS'de seçmeli ders alırken teknik seçmeliyi mi sosyal seçmeliyi mi hangi gruptan seçiyoruz, ELT ELS ne demek?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme\nSeçmeli Ders Kaydında Dikkat Edilmesi Gereken Hususlar\nÖğrenci Bilgi Sistemi (ÖBS) üzerinde "
+     ]
+    }
+   ],
+   "rewritten": "ÖBS'de seçmeli ders alırken teknik seçmeli ile sosyal seçmeli derslerden hangi gruptan ders seçiyoruz ve ELT, ELS ne anlama geliyor?"
+  },
+  {
+   "id": "syn-guides-06",
+   "query": "birinci sınıfken üst sınıftan ders alabilir miyim? ortalamam 1,80'in altına düşerse yeni ders alamıyor muyum?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme\nDers Seçimi İle İlgili Diğer Hususlar (Lisans Yönetmeliği Maddeleri)\nDers seçimiyle ilgili d"
+     ]
+    }
+   ],
+   "rewritten": "Birinci sınıftayken üst sınıf dersi alabilir miyim? Ortalamam 1,80'in altına düşerse yeni ders alamıyor muyum?"
+  },
+  {
+   "id": "syn-guides-07",
+   "query": "dersin kontenjanı dolu, kota artırımını kim yapıyor? öğrenci işlerine mi yazmam lazım?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme\nDerslerde Kota Artırımı\nDerslerin kota artırımı, dersi açan bölümün uygun bulması durumunda,"
+     ]
+    }
+   ],
+   "rewritten": "Dersin kontenjanı dolu; kontenjan artırımını kim yapıyor ve bu konuda öğrenci işlerine mi yazmam gerekiyor?"
+  },
+  {
+   "id": "syn-guides-08",
+   "query": "ders kayıt işlemlerinin adımlarını özetleyen bir belge var mı?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Ders Kayıtlanma Adımları (PDF)\nDers kayıt sürecinin işlem adımlarını sırasıyla özetleyen belge: katkı payı, ders seçimi ve danışman onayı."
+     ]
+    }
+   ],
+   "rewritten": "Ders kayıt işlemlerinin adımlarını özetleyen bir belge var mı?"
+  },
+  {
+   "id": "syn-guides-09",
+   "query": "askerlik durumumu öğrenci işleri takip ediyor mu, tecil işlemlerini nereden kontrol edeceğim?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Askerlik İşlemleri\nAskerlik İşlemlerinin Genel Takibi\nAskerlik ile ilgili işlemler, öğrencinin kesin kaydı yapıldıktan sonra Enstitü tarafından web servisleri a"
+     ]
+    }
+   ],
+   "rewritten": "Askerlik durumumu öğrenci işleri takip ediyor mu, tecil işlemlerini nereden kontrol edeceğim?"
+  },
+  {
+   "id": "syn-guides-10",
+   "query": "çift anadal hangi bölümlerde var? fizik ve inşaat mühendisliğinde yapabilir miyim?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Çift Anadal\nÇift Ana Dal Programı Olan Bölümler\nEnstitümüzde çift ana dal programı bulunan bölümler şunlardır:\n\nMimarlık Fakültesi:\n- Mimarlık\n- Şehir ve Bölge "
+     ]
+    }
+   ],
+   "rewritten": "Çift anadal hangi bölümlerde var? Fizik ve inşaat mühendisliğinde yapabilir miyim?"
+  },
+  {
+   "id": "syn-guides-11",
+   "query": "yerleştirme puanıyla yatay geçiş nedir, hedef bölümün taban puanını tutturursam geçebilir miyim?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Merkezi Yerleştirme Puanı ile Yatay Geçiş\nMerkezi Yerleştirme Puanı ile Yatay Geçiş\nMerkezi Yerleştirme Puanı ile Yatay Geçiş, İYTE öğrencilerinin veya diğer ün"
+     ]
+    }
+   ],
+   "rewritten": "Yerleştirme puanıyla yatay geçiş nedir, hedef bölümün taban puanını tutturursam geçebilir miyim?"
+  },
+  {
+   "id": "syn-guides-12",
+   "query": "kurum içi yatay geçişte mimarlık ve inşaat mühendisliği için ek şart var mı?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Kurum İçi Yatay Geçiş\nKurum İçi Yatay Geçiş\nKurum İçi Yatay Geçiş, İYTE öğrencilerinin fakülte içi ve fakülteler arası program değişikliği yapmalarına olanak sa"
+     ]
+    }
+   ],
+   "rewritten": "Kurum içi yatay geçişte mimarlık ve inşaat mühendisliği için ek şart var mı?"
+  },
+  {
+   "id": "syn-guides-13",
+   "query": "ders kaydı tamamlanması için hangi adımlar gerekli, katkı payını kimler ödüyor, danışman onayı şart mı?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisans Programı Öğrencilerinin Ders Seçimi İle İlgili Bilgilendirme\nLisans Ders Kaydı Genel Bilgilendirme ve Kayıt İşlem Adımları\nDers seçimlerinin Enstitü Yöne"
+     ]
+    }
+   ],
+   "rewritten": "Ders kaydının tamamlanması için hangi adımlar gerekli, katkı payını kimler ödüyor ve danışman onayı şart mı?"
+  },
+  {
+   "id": "syn-guides-14",
+   "query": "yüksek lisans ya da doktora başvurusunu nereye yapıyoruz?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Lisansüstü Programlara Başvuru Bilgileri\nLisansüstü Programlara Başvuru Bilgileri\nLisansüstü programlara başvuru işlemleri Lisansüstü Eğitim Enstitüsü tarafında"
+     ]
+    }
+   ],
+   "rewritten": "Yüksek lisans ya da doktora başvurusunu nereye yapıyoruz?"
+  }
+ ]
+}
