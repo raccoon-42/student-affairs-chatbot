@@ -73,6 +73,9 @@ LLM_TIMEOUT_SECONDS = float(os.getenv("LLM_TIMEOUT_SECONDS", "90"))
 
 # LLM-as-judge (evaluation) — OpenRouter by default
 JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5.5")
+# comparing one answer with an expected one needs little thinking, and
+# thinking is billed as output
+JUDGE_REASONING_EFFORT = os.getenv("JUDGE_REASONING_EFFORT", "low")
 
 # Scope gate: cheap model that decides if a question is university-related
 GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-5.5")
