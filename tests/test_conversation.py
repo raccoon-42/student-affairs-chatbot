@@ -289,6 +289,18 @@ def test_prompt_states_which_departments_have_a_course_catalog():
     assert "Ders kataloğu olan bölümler: Bilgisayar Mühendisliği" in messages[-1]["content"]
 
 
+def test_image_questions_are_read_by_the_image_model():
+    rewriter_llm = FakeLLM(reply="final sınavları ne zaman?")
+    retriever = FakeRetriever()
+    conversation = Conversation(FakeLLM(), retriever, model="test-model",
+                                rewriter=QueryRewriter(rewriter_llm, "small-model", "vision-model"))
+    list(conversation.respond_stream("", image="data:image/jpeg;base64,AAAA"))
+    list(conversation.respond_stream("peki bahar?"))
+
+    assert [model for model, _ in rewriter_llm.calls] == ["vision-model", "small-model"]
+    assert retriever.queries[0] == "final sınavları ne zaman?"
+
+
 def test_rewriter_failure_falls_back_to_raw_query():
     class ExplodingLLM:
         def chat(self, model, messages):

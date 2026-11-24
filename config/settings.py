@@ -77,6 +77,18 @@ JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5.5")
 # Scope gate: cheap model that decides if a question is university-related
 GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-5.5")
 
+# Reading an attached image into a search query: a misread screenshot (a
+# calendar table, a form) derails the whole answer, so not the cheap model
+IMAGE_MODEL = os.getenv("IMAGE_MODEL", "anthropic/claude-sonnet-5.5")
+
+# Corpus parsers (PDF/HTML -> chunks, descriptions, area tags). Separate from
+# the chat model: a parsing mistake stays invisible until a student gets a
+# wrong date, and parsing only re-runs for documents that changed.
+PARSER_MODEL = os.getenv("PARSER_MODEL", "anthropic/claude-sonnet-5.5")
+# covers thinking plus the JSON; the longest parsed regulation is ~58k
+# characters of JSON, roughly 25k tokens
+PARSER_MAX_TOKENS = int(os.getenv("PARSER_MAX_TOKENS", "64000"))
+
 # Speech-to-text: Groq-hosted Whisper (the UI hides the mic button when unset)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3")

@@ -18,18 +18,16 @@ Outputs land in preprocessing/data/processed/takvim/<name>.{txt,json}.
 Requires OPENROUTER_API_KEY in the environment / .env.
 """
 import json
-import re
 import sys
-import time
 from datetime import date
 from pathlib import Path
 
 import pdfplumber
-import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from config import settings
+from preprocessing.parsers.llm_call import json_array
 
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "takvim"
 
@@ -63,33 +61,7 @@ def extract_raw_text(pdf_path):
 
 
 def call_llm(raw_text):
-    # transient TLS resets happen on long uploads — retry before giving up
-    for attempt in range(3):
-        try:
-            response = requests.post(
-                f"{settings.OPENROUTER_BASE_URL}/chat/completions",
-                headers={"Authorization": f"Bearer {settings.OPENROUTER_API_KEY}"},
-                json={
-                    "model": settings.OPENROUTER_MODEL,
-                    "messages": [{"role": "user", "content": PROMPT + raw_text}],
-                    "temperature": 0,
-                },
-                timeout=300,
-            )
-            break
-        except (requests.ConnectionError, requests.Timeout) as e:
-            if attempt == 2:
-                raise
-            wait = 5 * (attempt + 1)
-            print(f"{e.__class__.__name__}, retrying in {wait}s...")
-            time.sleep(wait)
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    # Strip a possible ```json fence before parsing
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    return json_array(PROMPT + raw_text, timeout=300)
 
 
 def format_date_tr(iso_date):
@@ -121,7 +93,7 @@ def main():
     output_txt = OUTPUT_DIR / f"{pdf_path.stem}.txt"
 
     raw_text = extract_raw_text(pdf_path)
-    print(f"Extracted {len(raw_text)} chars, sending to {settings.OPENROUTER_MODEL}...")
+    print(f"Extracted {len(raw_text)} chars, sending to {settings.PARSER_MODEL}...")
     events = call_llm(raw_text)
     print(f"LLM returned {len(events)} events.")
 
