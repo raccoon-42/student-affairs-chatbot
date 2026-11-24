@@ -94,6 +94,11 @@ class Hit:
     score: float
 
 
+# fused results fetched past the limit, so equal scores straddling it can be
+# ordered before the cut (tie groups are a few chunks at most)
+TIE_MARGIN = 10
+
+
 class QdrantVectorStore:
     def __init__(self, url=None, client=None):
         self._url = url or settings.QDRANT_URL
@@ -138,8 +143,13 @@ class QdrantVectorStore:
             collection_name=collection,
             prefetch=prefetch,
             query=RrfQuery(rrf=Rrf(k=rrf_k or settings.RRF_K)),
-            limit=limit,
+            limit=limit + TIE_MARGIN,
         ).points
+        # equal fused scores are common (ranks 1 and 3 score like ranks 3
+        # and 1) and Qdrant returns them in no fixed order: break ties by
+        # point id, a content hash, so a question always gets the same
+        # chunks (docs/adr/0007)
+        results = sorted(results, key=lambda hit: (-hit.score, str(hit.id)))[:limit]
         return [
             Hit(text=hit.payload["text"], metadata=hit.payload.get("metadata", {}), score=hit.score)
             for hit in results
