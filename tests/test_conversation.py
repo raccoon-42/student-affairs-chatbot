@@ -218,7 +218,7 @@ def test_history_keeps_bare_question_not_reference_data():
     assert user_messages == [{"role": "user", "content": "sınavlar ne zaman"}]
 
 
-def test_rewriter_feeds_retrieval_but_model_sees_original():
+def test_rewriter_feeds_retrieval_and_model_sees_both():
     rewriter_llm = FakeLLM(reply="lisans için kaç kredi gerekiyor?")
     retriever = FakeRetriever()
     main_llm = FakeLLM(reply="cevap")
@@ -229,7 +229,10 @@ def test_rewriter_feeds_retrieval_but_model_sees_original():
 
     assert retriever.queries == ["kaç kredi lazım", "lisans için kaç kredi gerekiyor?"]
     _, messages = main_llm.calls[-1]
-    assert "lisans icin soruyorum" in messages[-1]["content"]  # original, not rewrite
+    assert "lisans icin soruyorum" in messages[-1]["content"]  # the student's own words
+    # regression: "akts kac" after a CENG 322 question got "what do you mean?" —
+    # the model saw only the bare follow-up, never what the rewrite resolved
+    assert "lisans için kaç kredi gerekiyor?" in messages[-1]["content"]
 
 
 def test_rewriter_failure_falls_back_to_raw_query():
