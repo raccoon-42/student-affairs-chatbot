@@ -9,6 +9,9 @@
 #     conversations, corpora and index state survive rebuilds
 #   - restart: unless-stopped everywhere
 #   - container logs capped (json-file grows unbounded by default)
+# The app runs as uid 1000 (Dockerfile): on the host, data/ and
+# preprocessing/data/ must be writable by it, e.g.
+#   sudo chown -R 1000:1000 data preprocessing/data
 x-logging: &logging
   driver: json-file
   options:
@@ -33,6 +36,14 @@ services:
       - qdrant
     restart: unless-stopped
     logging: *logging
+    # the image has no curl; check-updates (same image) serves nothing, so
+    # the check sits here, not in the Dockerfile
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
   qdrant:
     image: qdrant/qdrant:v1.20.2  # pinned, see docker-compose.yml
