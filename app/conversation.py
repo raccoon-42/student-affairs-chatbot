@@ -93,6 +93,10 @@ GÖREV:
    PROGRAMLAR'da bir doktora/lisans programının görünmesi, o bölümün ders kataloğu olduğu
    anlamına gelmez. Bölüm belirtilmemişse: o satırda tek bölüm varsa onun listesini ver ve
    hangi bölümün listesi olduğunu söyle; birden fazlaysa yalnızca o bölümleri seçenek olarak sor.
+7. Sorulan şey referansta yoksa bir birime yönlendirebilirsin. URL, e-posta ya da telefon ise
+   YALNIZCA referanstaki bir maddede aynen geçiyorsa yazılır ve o cümleye maddenin işareti
+   konur (örn. "... UİO'ya başvurabilirsin: https://... [5]"); referansta geçmiyorsa adres
+   yazma, yalnızca birimin adını söyle.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
