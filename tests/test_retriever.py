@@ -103,7 +103,21 @@ def test_retrieve_all_embeds_the_query_exactly_once():
 
     assert embedder.calls == 1  # one embed shared by all nine searches
     assert set(results) == {"calendar", "regulations", "faq", "forms", "sks", "programs",
-                            "people", "courses", "guides"}
+                            "people", "courses", "guides", "course_departments"}
+
+
+def test_retrieve_all_names_the_departments_with_a_course_catalog():
+    # regression: with no coverage stated, the model listed İnşaat/Matematik
+    # (seen in PROGRAMS) as "departments whose course catalog I have"
+    store = InMemoryVectorStore()
+    for department, level in (("Bilgisayar Mühendisliği", "lisans"),
+                              ("Bilgisayar Mühendisliği", "doktora"), ("Fizik", "lisans")):
+        store.add(settings.COURSES_COLLECTION, f"{department} {level} derslerinin tam listesi",
+                  {"kind": "list", "department": department, "levels": [level]}, [0.0, 1.0, 0.0, 0.1])
+    store.add(settings.COURSES_COLLECTION, "CENG 311 — Computer Architecture",
+              {"kind": "course", "department": "Bilgisayar Mühendisliği"}, [1.0, 0.0, 0.0, 0.1])
+    results = Retriever(store, FakeEmbedder()).retrieve_all("doktora dersleri ne")
+    assert results["course_departments"] == ["Bilgisayar Mühendisliği", "Fizik"]
 
 
 def test_faq_returns_question_and_answer():

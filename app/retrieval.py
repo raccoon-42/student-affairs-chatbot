@@ -208,6 +208,7 @@ class Retriever:
             people = pool.submit(self.retrieve_people, query, 3, vector)
             courses = pool.submit(self.retrieve_courses, query, 4, vector)
             guides = pool.submit(self.retrieve_guides, query, 3, vector)
+            course_departments = pool.submit(self.retrieve_course_departments, vector)
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
@@ -218,6 +219,7 @@ class Retriever:
                 "people": people.result(),
                 "courses": courses.result(),
                 "guides": guides.result(),
+                "course_departments": course_departments.result(),
             }
         # the conversation logs these per turn (CLI + dev mode in the UI);
         # last-write-wins across sessions is fine for diagnostics
@@ -351,6 +353,15 @@ class Retriever:
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
+
+    def retrieve_course_departments(self, vector) -> List[str]:
+        """Departments whose course catalog is indexed, read off the per-level
+        list chunks. The prompt states them outright: left to infer coverage,
+        the model took PROGRAMS' PhD programs for catalogs it has."""
+        lists = self._hybrid_search("ders listesi", settings.COURSES_COLLECTION, 100,
+                                    filters={"kind": "list"}, vector=vector)
+        return sorted({hit.metadata["department"] for hit, _ in lists
+                       if hit.metadata.get("department")})
 
     def retrieve_guides(self, query: str, top_k: int = 3, vector=None) -> List[Dict]:
         # ÖİDB process guides (ders seçimi, yatay geçiş, ÇAP/yan dal,

@@ -61,6 +61,7 @@ CONTEXT_TEMPLATE = """
     {people_context}
 
     # DERS KATALOĞU (ders içerikleri ve önkoşullar; güncel dönem programı/şubeler burada yoktur):
+    Ders kataloğu olan bölümler: {course_departments}. Diğer bölümlerin ders kataloğu elimde yok.
     {courses_context}
 
     # ÖĞRENCİ İŞLERİ SÜREÇ REHBERLERİ (ders seçimi, yatay geçiş, çift ana dal/yan dal, başvuru, askerlik):
@@ -72,7 +73,7 @@ GÖREV:
 1. SADECE <student_question> etiketleri arasındaki soruyu yanıtla.
 2. <available_reference_data> içindeki bilgileri SADECE öğrencinin sorusuna yanıt vermek için kullan.
 3. Eğer öğrencinin sorusu belirsizse veya eksik bilgi varsa, açıklama iste.
-4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan.
+4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan (istisna: 6).
 5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Takvim maddelerinin sonundaki
    (DURUM: ...) etiketi bugüne göre HESAPLANMIŞTIR — geçti/gelecek kararını yalnızca bu
    etikete dayandır, kendi tarih karşılaştırmanı yapma. "geçti" etiketli tarihi gelecekmiş
@@ -81,6 +82,13 @@ GÖREV:
    DURUM etiketini yanıtına kopyalama; en yakın güncel tarihi öne çıkar.
    Takvim sorusu dönem belirtmiyorsa açıklama isteme: önce devam eden veya en yakın
    gelecekteki dönemin tarihini ver, diğer dönemleri istenirse ekle.
+6. "X dersleri neler", "hangi dersler var" sorusunda DERS KATALOĞU'nda o seviyenin tam listesi
+   varsa HER dersi kod ve adıyla madde imli listele; özetleme, alan başlıklarına gruplama.
+   Yönetmelikteki ders yükü/ders sayısı ayrı bir sorudur, yalnızca o sorulursa ver. Hangi
+   bölümlerin ders kataloğu olduğunu YALNIZCA "Ders kataloğu olan bölümler" satırından al;
+   PROGRAMLAR'da bir doktora/lisans programının görünmesi, o bölümün ders kataloğu olduğu
+   anlamına gelmez. Bölüm belirtilmemişse: o satırda tek bölüm varsa onun listesini ver ve
+   hangi bölümün listesi olduğunu söyle; birden fazlaysa yalnızca o bölümleri seçenek olarak sor.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -377,6 +385,7 @@ class Conversation:
             programs_context="\n\n".join(numbered["programs"]),
             people_context="\n\n".join(numbered["people"]),
             courses_context="\n\n".join(numbered["courses"]),
+            course_departments=", ".join(results.get("course_departments") or []) or "yok",
             guides_context="\n\n".join(numbered["guides"]),
         )
 

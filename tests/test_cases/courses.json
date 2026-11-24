@@ -30,6 +30,16 @@
     "description": "Dönemlik açılan dersler (katalog != dönem programı — iddia etmemeli)"
   },
   {
+    "query": "bilgisayar mühendisliği doktora dersleri ne",
+    "expected": "Bilgisayar Mühendisliği doktora derslerini kod ve adıyla tek tek listeler (örn. CENG 501, CENG 506); toplam sayıyla ya da alan başlıklarıyla özetlemez, yönetmelikteki doktora ders yükünü anlatmaz.",
+    "description": "Ders listesi sorusu (özetlemeden tam liste)"
+  },
+  {
+    "query": "doktora dersleri ne",
+    "expected": "Ya hangi bölümü sorduğunu sorar ve elinde yalnızca Bilgisayar Mühendisliği'nin ders kataloğu olduğunu söyler, ya da bunu belirterek Bilgisayar Mühendisliği doktora derslerini listeler. Yönetmelikteki doktora ders yükünü (ders sayısı, kredi) cevap olarak vermez.",
+    "description": "Bölümsüz ders listesi sorusu (yalnızca katalogu olan bölümü önermeli)"
+  },
+  {
     "query": "ceng322 kaç kredi",
     "expected": "CENG 322 (Operating Systems) dersinin 4 kredi ve 8 AKTS olduğunu söyler; başka bir kredi değeri uydurmaz.",
     "description": "Ders kredisi (program PDF'inden; uydurmamalı)"
