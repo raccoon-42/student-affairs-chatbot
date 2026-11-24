@@ -30,9 +30,14 @@ GUIDES_COLLECTION = os.getenv("GUIDES_COLLECTION", "guides")
 # source files (vectorizer) after switching.
 OPENROUTER_EMBEDDING_MODEL = os.getenv("OPENROUTER_EMBEDDING_MODEL", "google/gemini-embedding-2")
 
-# Hybrid retrieval score = SEMANTIC_WEIGHT * cosine + BM25_WEIGHT * bm25
-SEMANTIC_WEIGHT = 0.7
-BM25_WEIGHT = 0.3
+# Hybrid retrieval: dense and BM25 each rank the collection, then the two
+# rankings are fused: RRF score = sum over both of 1 / (rank + RRF_K),
+# rank counted from 0
+# Qdrant's default. Small k lets a #1 in either ranking win: an exact course
+# code that dense ranks 23rd but BM25 ranks 1st lands 2nd (with the RRF
+# paper's k=60 it landed 7th, past the courses top_k)
+RRF_K = 2
+HYBRID_PREFETCH = 50  # how deep each ranking goes before fusion
 
 # LLM backends
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")

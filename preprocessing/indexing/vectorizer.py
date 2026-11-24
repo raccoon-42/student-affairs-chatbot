@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from config import settings
+from preprocessing.indexing.bm25 import VECTOR_NAME, document_vectors
 
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 SKS_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "sks" / "manifest.json"
@@ -560,6 +561,45 @@ def plan_sync(desired_ids, existing_ids):
     return sorted(desired - existing), sorted(existing - desired)
 
 
+def _sparse_vector(weights):
+    from qdrant_client.http.models import SparseVector
+    return SparseVector(indices=list(weights), values=list(weights.values()))
+
+
+def has_bm25(qdrant, collection_name):
+    sparse = qdrant.get_collection(collection_name).config.params.sparse_vectors or {}
+    return VECTOR_NAME in sparse
+
+
+def rebuild_bm25(qdrant, collection_name):
+    """(Re)compute every point's BM25 vector from its stored text — no
+    embedding calls. Adds the sparse vector to a collection indexed before
+    hybrid search (needs Qdrant 1.18+), and re-levels the length
+    normalization; rerun after any change to bm25.tokenize()."""
+    from qdrant_client.http.models import (Modifier, PointVectors, SparseVectorConfig,
+                                           SparseVectorNameConfig)
+
+    if not has_bm25(qdrant, collection_name):
+        print(f"{collection_name}: adding the '{VECTOR_NAME}' sparse vector")
+        qdrant.create_vector_name(collection_name, VECTOR_NAME, SparseVectorNameConfig(
+            sparse=SparseVectorConfig(modifier=Modifier.IDF)))
+
+    texts, offset = {}, None
+    while True:
+        records, offset = qdrant.scroll(
+            collection_name=collection_name, limit=1000, offset=offset,
+            with_payload=["text"], with_vectors=False)
+        texts.update({record.id: record.payload["text"] for record in records})
+        if offset is None:
+            break
+
+    points = [PointVectors(id=pid, vector={VECTOR_NAME: _sparse_vector(weights)})
+              for pid, weights in document_vectors(texts).items()]
+    for start in range(0, len(points), 500):
+        qdrant.update_vectors(collection_name=collection_name, points=points[start:start + 500])
+    print(f"{collection_name}: BM25 vectors written for {len(points)} chunks")
+
+
 def store_embedding(chunks, collection_name, build_payload=_calendar_payload, recreate=False):
     """Sync chunks into Qdrant: the given chunks are the desired state.
 
@@ -571,7 +611,8 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import Distance, VectorParams, PointStruct, PointIdsList
+    from qdrant_client.http.models import (Distance, Modifier, PointIdsList, PointStruct,
+                                           SparseVectorParams, VectorParams)
 
     from app.embeddings import default_embedder
 
@@ -597,6 +638,8 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     # pre-sync collections have integer ids, which are not valid as strings
     existing = {}
     if qdrant.collection_exists(collection_name=collection_name):
+        if not has_bm25(qdrant, collection_name):  # indexed before hybrid search
+            rebuild_bm25(qdrant, collection_name)
         offset = None
         while True:
             records, offset = qdrant.scroll(
@@ -629,10 +672,15 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
             qdrant.create_collection(
                 collection_name=collection_name,
                 vectors_config=VectorParams(size=len(vectors[0]), distance=Distance.COSINE),
+                sparse_vectors_config={VECTOR_NAME: SparseVectorParams(modifier=Modifier.IDF)},
             )
 
+        # length-normalized against every chunk in the collection; unchanged
+        # points keep the average they were indexed with until rebuild_bm25
+        sparse = document_vectors({pid: payload["text"] for pid, payload in desired.items()})
         qdrant.upsert(collection_name=collection_name, points=[
-            PointStruct(id=pid, vector=vector, payload=desired[pid])
+            PointStruct(id=pid, vector={"": vector, VECTOR_NAME: _sparse_vector(sparse[pid])},
+                        payload=desired[pid])
             for pid, vector in zip(new_ids, vectors)
         ])
 
