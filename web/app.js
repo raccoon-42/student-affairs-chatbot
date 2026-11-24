@@ -401,17 +401,31 @@ function renderMessages() {
 }
 
 /* Minimal markdown for bot answers: HTML is escaped first, then bold,
- * italic, inline code and list markers are converted — safe against
+ * italic, inline code, list markers and links are converted — safe against
  * anything the model (or the data) emits. Newlines survive via the
  * bubble's pre-wrap. */
 function renderMarkdown(text) {
-  return text
+  return linkify(text
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/^#{1,4} (.+)$/gm, "<strong>$1</strong>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|\s)\*([^*\n]+)\*/g, "$1<em>$2</em>")
     .replace(/`([^`\n]+)`/g, "<code>$1</code>")
-    .replace(/^[-*] /gm, "• ");
+    .replace(/^[-*] /gm, "• "));
+}
+
+/* [page name](https://…) becomes a link named after the page it opens, and
+ * a bare https://… becomes a link too. http(s) only, so a javascript: or
+ * data: href can't get in; < > were escaped above and " is never matched.
+ * Citation markers like [3] have no (url) after them, so chips are safe. */
+function linkify(html) {
+  const link = (url, text) =>
+    `<a class="answer-link" href="${url}" target="_blank" rel="noopener">${text}</a>`;
+  return html
+    .replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)<"]+)\)/g, (_, text, url) => link(url, text))
+    // not inside an href or an anchor written above: those follow " or >
+    .replace(/(^|[\s(])(https?:\/\/[^\s<)"]+?)([.,;:!?]*)(?=$|[\s)<])/gm,
+             (_, lead, url, tail) => lead + link(url, url) + tail);
 }
 
 function escapeAttr(value) {

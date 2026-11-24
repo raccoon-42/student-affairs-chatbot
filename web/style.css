@@ -718,6 +718,13 @@ header h1 {
   max-width: 100%;
 }
 
+/* links the model names in its answer ([page](url)); chips keep their own look */
+.message.bot a.answer-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .msg-actions {
   display: flex;
   gap: 0.3rem;
