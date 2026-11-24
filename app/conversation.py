@@ -4,6 +4,7 @@ Prompt assembly, retrieval context, and history trimming live here once.
 Which LLM answers is decided by the adapter passed in (OpenRouter, or a
 fake in tests) — history is owned by the instance, not the module.
 """
+import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -128,6 +129,7 @@ def _now_tr():
 
 REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
 - Soruyu CEVAPLAMA, sadece yeniden yaz.
+- Açılımını bilmediğin kısaltmaları (bölüm kodları gibi: "id", "eee") yazıldığı gibi soruda bırak; tahmin etme, silme. Bu konuda açıklama yazma, yine yalnızca soruyu döndür.
 - Yazım hatalarını ve öğrenci kısaltmalarını düzelt (örn. "bilgiayarda" → bilgisayar mühendisliğinde, "yl" → yüksek lisans); soruya yeni bilgi ekleme, anlamını değiştirme.
 - Akademik takvim sorularını takvimin terimleriyle yaz: "okul kapanıyor" / "dönem bitiyor" → yarıyıl derslerinin ve yarıyıl sonu sınavlarının bitişi, "okul açılıyor" → yarıyıl derslerinin başlangıcı, "dönem" → yarıyıl, "final" → yarıyıl sonu sınavları.
 - Mesaj zaten bağımsız ve düzgünse olduğu gibi döndür.
@@ -150,6 +152,11 @@ IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönde
 - Soruyu CEVAPLAMA, sadece yaz.
 - Görselde soru yoksa, görselin neyle ilgili olduğunu kısa bir arama sorgusu olarak yaz.
 - Sadece soruyu/sorguyu döndür, açıklama ekleme."""
+
+
+# the university the student named must survive the rewrite: lowercase
+# "iyte" came back as "İTÜ", "İYTE'de" once as "İZTE'de"
+_IYTE = re.compile(r"\b[iıIİ]yte\b|izmir\s+yüksek\s+teknoloji", re.IGNORECASE)
 
 
 class QueryRewriter:
@@ -175,7 +182,18 @@ class QueryRewriter:
                 "role": "user",
                 "content": REWRITE_PROMPT.format(history=lines, query=query),
             }])
-            return rewritten.strip() or query
+            rewritten = rewritten.strip()
+            # on an unknown abbreviation the model sometimes answers with its
+            # reasoning ("bu kısaltmayı tahmin etmek riskli...") instead of
+            # one question; none of 330 real rewrites had a line break
+            if "\n" in rewritten:
+                print(f"[rewrite] not a single question, using raw query: {rewritten[:80]!r}",
+                      file=sys.stderr)
+                return query
+            if _IYTE.search(query) and not _IYTE.search(rewritten):
+                print(f"[rewrite] dropped İYTE, using raw query: {rewritten[:80]!r}", file=sys.stderr)
+                return query
+            return rewritten or query
         except Exception as error:
             # retrieval on the raw query beats no answer at all
             print(f"[rewrite] failed, using raw query: {error}", file=sys.stderr)
@@ -344,7 +362,9 @@ class Conversation:
                 query = search_query
         elif self._rewriter is not None:
             rewrite_start = time.perf_counter()
-            search_query = self._rewriter.rewrite(query, self._messages[1:])
+            # the rewriter guesses codes it doesn't know ("mbg" became
+            # "Makine Bilgisayar Mühendisliği"), so it gets them named
+            search_query = self._rewriter.rewrite(normalize_query(query), self._messages[1:])
             self._track("rewrite", self._rewriter._model, self._rewriter.last_usage)
             self._log_row("rewrite", f"{time.perf_counter() - rewrite_start:.2f}s",
                           f"{query!r}\n{'':<20}-> {search_query!r}"

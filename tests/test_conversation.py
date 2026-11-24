@@ -268,6 +268,21 @@ def test_first_message_is_rewritten_too():
     assert "yl dersleri ne bilgiayarda" in messages[-1]["content"]
 
 
+def test_rewriter_gets_department_codes_named():
+    # "mbg" alone made the rewriter invent departments ("Makine Bilgisayar
+    # Mühendisliği"); with the name next to the code it keeps the real one
+    rewriter_llm = FakeLLM(reply="Moleküler Biyoloji ve Genetik nerede?")
+    main_llm = FakeLLM()
+    conversation = Conversation(main_llm, FakeRetriever(), model="test-model",
+                                rewriter=QueryRewriter(rewriter_llm, "small-model"))
+    conversation.respond("mbg nerede")
+
+    _, prompt = rewriter_llm.calls[0]
+    assert "mbg moleküler biyoloji ve genetik nerede" in prompt[0]["content"]
+    _, messages = main_llm.calls[-1]
+    assert "Öğrenci: mbg nerede" in messages[-1]["content"]  # the student's words stay as typed
+
+
 def test_abbreviations_reach_retrieval_and_the_model_expanded():
     retriever = FakeRetriever()
     main_llm = FakeLLM()
@@ -299,6 +314,23 @@ def test_image_questions_are_read_by_the_image_model():
 
     assert [model for model, _ in rewriter_llm.calls] == ["vision-model", "small-model"]
     assert retriever.queries[0] == "final sınavları ne zaman?"
+
+
+def test_a_rewrite_that_explains_itself_is_not_used():
+    # on an unknown abbreviation the rewriter sometimes answers with its
+    # reasoning; that paragraph was searched and shown as the question
+    rewriter = QueryRewriter(FakeLLM(reply='"mbg" kısaltmasının açılımından emin değilim.\n\n'
+                                           "Mbg lisans bölümü hangi fakültede?"), "small-model")
+    assert rewriter.rewrite("mbg lisans bölümü hangi fakültede", []) == "mbg lisans bölümü hangi fakültede"
+
+
+def test_a_rewrite_that_changes_the_university_is_not_used():
+    # "İYTE'de" came back as "İZTE'de", lowercase "iyte" as "İTÜ"
+    message = "biyomühendislik doktorası var mı İYTE'de?"
+    rewriter = QueryRewriter(FakeLLM(reply="İZTE'de biyomühendislik doktora programı var mı?"), "small-model")
+    assert rewriter.rewrite(message, []) == message
+    spelled_out = QueryRewriter(FakeLLM(reply="İzmir Yüksek Teknoloji Enstitüsü'nde doktora var mı?"), "m")
+    assert spelled_out.rewrite(message, []) == "İzmir Yüksek Teknoloji Enstitüsü'nde doktora var mı?"
 
 
 def test_rewriter_failure_falls_back_to_raw_query():
