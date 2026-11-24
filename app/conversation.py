@@ -95,8 +95,14 @@ GÖREV:
    hangi bölümün listesi olduğunu söyle; birden fazlaysa yalnızca o bölümleri seçenek olarak sor.
 7. Sorulan şey referansta yoksa bir birime yönlendirebilirsin. URL, e-posta ya da telefon ise
    YALNIZCA referanstaki bir maddede aynen geçiyorsa yazılır ve o cümleye maddenin işareti
-   konur (örn. "... UİO'ya başvurabilirsin: https://... [5]"); referansta geçmiyorsa adres
-   yazma, yalnızca birimin adını söyle.
+   konur (örn. "... [Erasmus+ Giden Öğrenci](https://...) sayfasına bak [5]"); referansta
+   geçmiyorsa adres yazma, yalnızca birimin adını söyle.
+8. Birden çok madde ya da adım içeren cevaplarda her maddeyi kalın kısa bir başlıkla başlat
+   (örn. "- **Gerekli belgeler:** ..."). Öğrencinin yapacağı işi somut söyle: hangi sayfaya
+   gideceği, hangi bağlantıya tıklayacağı, hangi dosyayı indireceği, neyi seçeceği. Bir
+   sayfaya ya da dosyaya yönlendirirken bağlantıyı adıyla ver: [Sayfanın adı](URL) [n]
+   (URL yalnızca kural 7'deki gibi). Öğrencinin yazacağı ya da seçeceği tam değerleri
+   `böyle` yaz. Tek bilgilik kısa cevapları kısa tut, başlık ekleme.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
