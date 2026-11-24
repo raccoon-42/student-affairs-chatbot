@@ -36,8 +36,8 @@ const STRINGS = {
     rowTheme: "Tema",
     rowModel: "Model",
     rowModelNote: "Haiku hızlı, Sonnet daha güçlü.",
-    modelHaiku: "Haiku 4.5",
-    modelSonnet: "Sonnet 5",
+    modelHaiku: "Haiku 5.5",
+    modelSonnet: "Sonnet 5.5",
     themeLight: "Açık",
     themeDark: "Koyu",
     yesterday: "Dün",
@@ -95,8 +95,8 @@ const STRINGS = {
     rowTheme: "Theme",
     rowModel: "Model",
     rowModelNote: "Haiku is fast, Sonnet is more capable.",
-    modelHaiku: "Haiku 4.5",
-    modelSonnet: "Sonnet 5",
+    modelHaiku: "Haiku 5.5",
+    modelSonnet: "Sonnet 5.5",
     themeLight: "Light",
     themeDark: "Dark",
     yesterday: "Yesterday",
@@ -1227,6 +1227,12 @@ const settingsDialog = document.getElementById("settings-dialog");
 let devMode = localStorage.getItem("devmode") === "1";
 // empty = let the server pick its default model
 let chatModel = localStorage.getItem("chat_model") || "";
+// a choice saved before a model upgrade names a model the API no longer
+// accepts — fall back to the server default instead of failing every message
+if (chatModel && ![...document.getElementById("set-model").options].some((o) => o.value === chatModel)) {
+  chatModel = "";
+  localStorage.removeItem("chat_model");
+}
 
 function openSettings() {
   document.getElementById("set-lang").value = lang;
@@ -1267,8 +1273,11 @@ async function loadUsage() {
   const kindModels = {};
   for (const entry of rows) (kindModels[entry.kind] ??= new Set()).add(entry.model);
   const shortModel = (id) => ({
-    "anthropic/claude-haiku-4.5": t("modelHaiku"),
-    "anthropic/claude-sonnet-5": t("modelSonnet"),
+    "anthropic/claude-haiku-5.5": t("modelHaiku"),
+    "anthropic/claude-sonnet-5.5": t("modelSonnet"),
+    // usage rows recorded before the 5.5 upgrade keep their model ids
+    "anthropic/claude-haiku-4.5": "Haiku 4.5",
+    "anthropic/claude-sonnet-5": "Sonnet 5",
   })[id] || (id || "").split("/").pop();
   let calls = 0, tokens = 0, cost = 0;
   for (const entry of rows) {

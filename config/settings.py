@@ -46,29 +46,36 @@ HYBRID_PREFETCH = 50  # how deep each ranking goes before fusion
 # LLM backends
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-haiku-4.5")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "anthropic/claude-haiku-5.5")
 
 # Models a client may request via model_name; anything else is rejected so
 # the public API can't be pointed at an arbitrary (expensive) model
 ALLOWED_CHAT_MODELS = {m.strip() for m in os.getenv(
     "ALLOWED_CHAT_MODELS",
-    "anthropic/claude-haiku-4.5,anthropic/claude-sonnet-5").split(",") if m.strip()}
-# answer length cap; unset upstream defaults have truncated mid-sentence
-LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2048"))
+    "anthropic/claude-haiku-5.5,anthropic/claude-sonnet-5.5").split(",") if m.strip()}
+# Models run with thinking off. Haiku 5.5 thinks by default, which pushed the
+# first visible text from ~3s to 6-11s with no answer gain measured; Sonnet
+# 5.5 rejects thinking-off with a 400, so it must never be listed here.
+REASONING_OFF_MODELS = {m.strip() for m in os.getenv(
+    "REASONING_OFF_MODELS", "anthropic/claude-haiku-5.5").split(",") if m.strip()}
+# answer length cap; unset upstream defaults have truncated mid-sentence.
+# Haiku 5.5 / Sonnet 5.5 think by default and thinking counts against it,
+# so it leaves room for thinking plus a full course list
+LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "8192"))
 
-# context window of the chat models (Haiku 4.5 and Sonnet 5 are both 200k);
+# context window of the chat models (Haiku 5.5 and Sonnet 5.5 are both 1M);
 # only used for the context-fill percentage shown in the UI
-LLM_CONTEXT_WINDOW = int(os.getenv("LLM_CONTEXT_WINDOW", "200000"))
+LLM_CONTEXT_WINDOW = int(os.getenv("LLM_CONTEXT_WINDOW", "1000000"))
 
 # Per-attempt HTTP timeout for LLM calls (the OpenAI SDK retries twice on
 # top of this). Without it a stalled connection hangs a request ~10 min.
 LLM_TIMEOUT_SECONDS = float(os.getenv("LLM_TIMEOUT_SECONDS", "90"))
 
 # LLM-as-judge (evaluation) — OpenRouter by default
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5")
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5.5")
 
 # Scope gate: cheap model that decides if a question is university-related
-GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-4.5")
+GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-5.5")
 
 # Speech-to-text: Groq-hosted Whisper (the UI hides the mic button when unset)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
