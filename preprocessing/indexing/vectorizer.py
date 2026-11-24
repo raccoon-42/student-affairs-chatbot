@@ -451,6 +451,11 @@ def courses_chunks_from_dir(input_dir):
                      course.get("description") or ""]
             if course.get("prerequisites"):
                 lines.append(f"Önkoşul: {course['prerequisites']}")
+            if course.get("credits"):
+                plan = (f", lisans eğitim planında {course['semester']}. dönem"
+                        if course.get("semester") else "")
+                lines.append(f"Kredi: {course['credits']}, AKTS: {course['ects']}, haftalık saat "
+                             f"(teori+uygulama): {course['hours']}{plan}")
             chunks.append({
                 "text": "\n".join(line for line in lines if line),
                 "metadata": {

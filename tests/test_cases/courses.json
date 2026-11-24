@@ -28,5 +28,10 @@
     "query": "bu dönem bilgisayar mühendisliğinde hangi dersler açılıyor?",
     "expected": "Katalogdaki dersleri BU DÖNEM AÇIK diye sunmamalı: kataloğun dönemlik açılan dersleri/ders programını içermediğini belirtip ÖBS/UBYS'ye ya da bölüme yönlendirmeli. Katalogdan söz ederse bunun tüm katalog olduğunu açıkça söylemeli.",
     "description": "Dönemlik açılan dersler (katalog != dönem programı — iddia etmemeli)"
+  },
+  {
+    "query": "ceng322 kaç kredi",
+    "expected": "CENG 322 (Operating Systems) dersinin 4 kredi ve 8 AKTS olduğunu söyler; başka bir kredi değeri uydurmaz.",
+    "description": "Ders kredisi (program PDF'inden; uydurmamalı)"
   }
 ]
