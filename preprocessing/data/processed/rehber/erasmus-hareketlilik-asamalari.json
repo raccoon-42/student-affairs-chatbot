@@ -1,70 +1,189 @@
 [
   {
     "baslik": "Erasmus+ KA131 Yerleştirme Sonrası İletişim ve E-posta Takibi",
-    "metin": "2024 Erasmus (+) Yerleştirme Listelerindeki (Asil ve Yedek) öğrencilerle iletişim, TurnaPortal'daki Çevrimiçi Başvuru Formlarına girdikleri e-posta adresleri üzerinden sağlanır.\n- İlgili e-postanın yeni duyurular ve bildirimler için düzenli (günlük) kontrol edilmesi gerekir.\n- E-postanın kotası doluysa temizlenmelidir.\n- İlgili e-postayı düzenli kontrol etmek öğrencinin sorumluluğundadır."
+    "metin": "2024 Erasmus (+) Yerleştirme Listelerindeki (Asil ve Yedek) öğrencilerle iletişim, TurnaPortal'daki Çevrimiçi Başvuru Formlarına girdikleri e-posta adresleri üzerinden sağlanır.\n- İlgili e-postanın yeni duyurular ve bildirimler için düzenli (günlük) kontrol edilmesi gerekir.\n- E-postanın kotası doluysa temizlenmelidir.\n- İlgili e-postayı düzenli kontrol etmek öğrencinin sorumluluğundadır.",
+    "sorular": [
+      "Erasmus yerleştirme listesine girdikten sonra okul bana hangi e-posta adresinden ulaşacak?",
+      "erasmus asil yedek listesindeyim duyurulari nereden takip edecegim",
+      "Erasmus başvuru formuna yazdığım mailin kotası dolarsa ne olur?",
+      "erasmus icin basvuruda verdigim maili ne siklikla kontrol etmem gerekiyor",
+      "Erasmus yerleştirmesinden sonra gelen bildirimleri kaçırırsam bu benim sorumluluğumda mı?"
+    ]
   },
   {
     "baslik": "Erasmus+ Gitmekten Vazgeçme (Feragat) ve Feragatte Puan Kesintileri",
-    "metin": "Gitmekten vazgeçme (feragat):\n- Bir üniversiteye yerleşmiş olan öğrenciler isterlerse haklarından feragat edebilirler.\n- Feragat etmek isteyen öğrencilerin iptallerini Ofis Erasmus Danışmanlarına e-posta ile bildirmeleri yeterlidir. Sözlü iptal bildirimleri geçersizdir.\n- İptal eden öğrencilerin hakları bir sonraki yıl için saklı kalmaz. Ancak 19.04.2024 tarihinde YDYO'nun düzenlediği Erasmus İngilizce Sınavına katılan ve sınavdan en az 50 puan alan öğrenciler, 2024 İngilizce Sınav Sonuçlarının 2025 yılı Erasmus (+) Öğrenim Hareketliliği başvurularında işleme alınmasını isteyebilirler.\n\nFeragat halinde puan kesintileri:\n\nAsil listedeki öğrenciler için:\n- Yurtdışı başvuru son tarihinden 10 gün önceye kadar feragat: 0 puan kesinti.\n- Yurtdışı başvuru son tarihine 10 günden daha yakın bir zamanda feragat: -10 puan.\n- Yurtdışı başvuru son tarihine 10 günden daha yakın bir zamanda ve zorunlu bir sebeple feragat: 0 puan kesinti.\n\nYedek listeye kontenjan hakkı doğması durumunda:\n- Yurtdışı başvuru son tarihinden 3 gün önceye kadar feragat: 0 puan kesinti.\n- Yurtdışı başvuru son tarihine 3 günden daha yakın bir zamanda feragat: -10 puan.\n- Yurtdışı başvuru son tarihine 3 günden daha yakın bir zamanda ve zorunlu bir sebeple feragat: 0 puan kesinti.\n- İptal eden öğrenciden boşalan kontenjan, ilgili program listesindeki en yüksek Erasmus Puanına sahip yedek öğrenciye, ilgili üniversiteyi başvuru formunda tercih etmiş olması şartıyla sorulur."
+    "metin": "Gitmekten vazgeçme (feragat):\n- Bir üniversiteye yerleşmiş olan öğrenciler isterlerse haklarından feragat edebilirler.\n- Feragat etmek isteyen öğrencilerin iptallerini Ofis Erasmus Danışmanlarına e-posta ile bildirmeleri yeterlidir. Sözlü iptal bildirimleri geçersizdir.\n- İptal eden öğrencilerin hakları bir sonraki yıl için saklı kalmaz. Ancak 19.04.2024 tarihinde YDYO'nun düzenlediği Erasmus İngilizce Sınavına katılan ve sınavdan en az 50 puan alan öğrenciler, 2024 İngilizce Sınav Sonuçlarının 2025 yılı Erasmus (+) Öğrenim Hareketliliği başvurularında işleme alınmasını isteyebilirler.\n\nFeragat halinde puan kesintileri:\n\nAsil listedeki öğrenciler için:\n- Yurtdışı başvuru son tarihinden 10 gün önceye kadar feragat: 0 puan kesinti.\n- Yurtdışı başvuru son tarihine 10 günden daha yakın bir zamanda feragat: -10 puan.\n- Yurtdışı başvuru son tarihine 10 günden daha yakın bir zamanda ve zorunlu bir sebeple feragat: 0 puan kesinti.\n\nYedek listeye kontenjan hakkı doğması durumunda:\n- Yurtdışı başvuru son tarihinden 3 gün önceye kadar feragat: 0 puan kesinti.\n- Yurtdışı başvuru son tarihine 3 günden daha yakın bir zamanda feragat: -10 puan.\n- Yurtdışı başvuru son tarihine 3 günden daha yakın bir zamanda ve zorunlu bir sebeple feragat: 0 puan kesinti.\n- İptal eden öğrenciden boşalan kontenjan, ilgili program listesindeki en yüksek Erasmus Puanına sahip yedek öğrenciye, ilgili üniversiteyi başvuru formunda tercih etmiş olması şartıyla sorulur.",
+    "sorular": [
+      "erasmustan vazgecmek istiyorum feragat nasil yapilir, sozlu soylesem olur mu",
+      "Erasmus'tan feragat edersem haklarım seneye de saklı kalır mı?",
+      "erasmus asil listedeyken feragat edersem puan kesintisi oluyor mu",
+      "Erasmus'ta yedek listeye kontenjan çıkınca iptal eden öğrencinin yeri kime soruluyor?",
+      "erasmus feragatinde zorunlu sebebim varsa yine de puan kirilir mi"
+    ]
   },
   {
     "baslik": "Erasmus+ Hibelendirme ve Hibe Borcu Uyarıları",
-    "metin": "Hibelendirme:\n- Enstitü ile Ulusal Ajans arasında ilgili Erasmus (+) Projesine ilişkin Hibe Sözleşmesinin imzalanmış olması şartıyla, Kuruma tahsis edilecek toplam hibe miktarı kesinlik kazanır.\n- Kuruma tahsis edilen toplam hibenin yetersiz olması durumunda, yerleştirilen öğrencilerden kimlerin hibe alacağına Enstitü Uluslararası İlişkiler Ofisi Koordinasyon Kurulu karar verir.\n\nUyarılar:\n- Erasmus Ofisine hibe borcu olan öğrenciler, borçlu oldukları hibe miktarını iade etmeden mezun olamazlar.\n- Borçlu öğrencinin İYTE öğrenciliği sürüyorsa, hareketlilik dönemini takip eden dönemde ders kaydı yapmasına izin verilir. Ancak hareketliliği takip eden 2. dönem başında hâlâ borçluysa ders kaydı yapamaz."
+    "metin": "Hibelendirme:\n- Enstitü ile Ulusal Ajans arasında ilgili Erasmus (+) Projesine ilişkin Hibe Sözleşmesinin imzalanmış olması şartıyla, Kuruma tahsis edilecek toplam hibe miktarı kesinlik kazanır.\n- Kuruma tahsis edilen toplam hibenin yetersiz olması durumunda, yerleştirilen öğrencilerden kimlerin hibe alacağına Enstitü Uluslararası İlişkiler Ofisi Koordinasyon Kurulu karar verir.\n\nUyarılar:\n- Erasmus Ofisine hibe borcu olan öğrenciler, borçlu oldukları hibe miktarını iade etmeden mezun olamazlar.\n- Borçlu öğrencinin İYTE öğrenciliği sürüyorsa, hareketlilik dönemini takip eden dönemde ders kaydı yapmasına izin verilir. Ancak hareketliliği takip eden 2. dönem başında hâlâ borçluysa ders kaydı yapamaz.",
+    "sorular": [
+      "Erasmus hibesi herkese yetmezse kimlerin hibe alacağına kim karar veriyor?",
+      "erasmus hibe borcum varsa mezun olabilir miyim",
+      "Erasmus hibe borcu olan öğrenci ders kaydı yapabilir mi?",
+      "erasmus toplam hibe miktari kesinlesmesi icin hangi sozlesmenin imzalanmasi lazim",
+      "erasmustan sonra hibe borcum hala duruyorsa donem basinda kayit yaptirabilir miyim"
+    ]
   },
   {
     "baslik": "Online Linguistic Support (OLS) - Çevrimiçi Dil Desteği",
-    "metin": "- Hareketlilikten yararlanacak öğrenciler için Avrupa Komisyonunun “EU Academy” adlı kurumsal öğrenim yönetim platformu üzerinden ücretsiz çevrimiçi dil desteği sağlanmaktadır.\n- Hareketlilik öğrencileri, öğrenmek istedikleri dili/dilleri, kurs ve dil sayı sınırlaması olmaksızın seçebilirler.\n- OLS'den yararlanmak isteyen öğrencilerin e-postaları, Erasmus hareketlilik faaliyetleri başlamadan önce Ofis tarafından EU Academy Veri Yönetim Sistemi'ne girilir.\n- Öğrenciler, e-posta adreslerine gönderilen web sayfası bağlantısı üzerinden EU Academy sayfasına erişim hakkı kazanır ve çevrimiçi dil desteğinden yararlanabilirler."
+    "metin": "- Hareketlilikten yararlanacak öğrenciler için Avrupa Komisyonunun “EU Academy” adlı kurumsal öğrenim yönetim platformu üzerinden ücretsiz çevrimiçi dil desteği sağlanmaktadır.\n- Hareketlilik öğrencileri, öğrenmek istedikleri dili/dilleri, kurs ve dil sayı sınırlaması olmaksızın seçebilirler.\n- OLS'den yararlanmak isteyen öğrencilerin e-postaları, Erasmus hareketlilik faaliyetleri başlamadan önce Ofis tarafından EU Academy Veri Yönetim Sistemi'ne girilir.\n- Öğrenciler, e-posta adreslerine gönderilen web sayfası bağlantısı üzerinden EU Academy sayfasına erişim hakkı kazanır ve çevrimiçi dil desteğinden yararlanabilirler.",
+    "sorular": [
+      "Erasmus OLS nedir, ücretsiz mi?",
+      "erasmus icin online dil destegi hangi platformdan veriliyor",
+      "Erasmus OLS'de istedigim kadar dil secebilir miyim",
+      "erasmus ols'ye erisim icin ofis ne yapiyor, mailime ne geliyor",
+      "Erasmus'a gitmeden önce çevrimiçi dil desteği almak istiyorum nasıl yapılır?"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 1: Oryantasyon Sunumuna Katılım",
-    "metin": "1. Oryantasyon sunumuna katılın.\n- Uluslararası İlişkiler Ofisi (UİO), Erasmus+ hareketliliğine katılacak öğrenciler için tüm sürecin anlatıldığı bir oryantasyon toplantısı düzenler.\n- Toplantıda sunumdan sonra soru-cevap süresi de olacaktır.\n- Asil olarak yerleşen öğrencilerin UİO'nun düzenleyeceği oryantasyon sunumuna katılımı zorunludur.\n- Katılmayan asil öğrencilere, aynı kademe (lisans, yüksek lisans veya doktora eğitimleri) içindeki öğrenim veya staj başvurularında 10 puan kesinti uygulanır."
+    "metin": "1. Oryantasyon sunumuna katılın.\n- Uluslararası İlişkiler Ofisi (UİO), Erasmus+ hareketliliğine katılacak öğrenciler için tüm sürecin anlatıldığı bir oryantasyon toplantısı düzenler.\n- Toplantıda sunumdan sonra soru-cevap süresi de olacaktır.\n- Asil olarak yerleşen öğrencilerin UİO'nun düzenleyeceği oryantasyon sunumuna katılımı zorunludur.\n- Katılmayan asil öğrencilere, aynı kademe (lisans, yüksek lisans veya doktora eğitimleri) içindeki öğrenim veya staj başvurularında 10 puan kesinti uygulanır.",
+    "sorular": [
+      "erasmus oryantasyon sunumuna katilmak zorunlu mu",
+      "Erasmus oryantasyonuna gitmezsem puan kırılır mı?",
+      "erasmus oryantasyon toplantisinda soru sorma imkani var mi",
+      "UİO'nun erasmus oryantasyon sunumu asil ogrenciler icin mi, yedekler icin mi",
+      "erasmus oryantasyonuna katılmayan asil öğrenci sonraki staj başvurularında da ceza alır mı"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 2: Pasaport Çıkarma",
-    "metin": "2. Pasaport çıkarın.\n- Pasaportu olmayan öğrenci pasaport başvurusu yapmalıdır.\n- 25 yaş ve üstü öğrenciler, pasaport harcı ödememek için Ofisten e-imzalı yazı alabilirler.\n- 25 yaş altı öğrenciler pasaport harcından muaftır.\n- Defter harcını ise tüm öğrenciler ödemek durumundadır."
+    "metin": "2. Pasaport çıkarın.\n- Pasaportu olmayan öğrenci pasaport başvurusu yapmalıdır.\n- 25 yaş ve üstü öğrenciler, pasaport harcı ödememek için Ofisten e-imzalı yazı alabilirler.\n- 25 yaş altı öğrenciler pasaport harcından muaftır.\n- Defter harcını ise tüm öğrenciler ödemek durumundadır.",
+    "sorular": [
+      "erasmus icin pasaport harci odemem gerekiyor mu",
+      "Erasmus pasaport harcını ödememek için ofisten e-imzalı yazı almam gerekir mi?",
+      "erasmus pasaport defter harcini herkes oder mi",
+      "pasaportum yok erasmus'a gidecegim ne yapmaliyim",
+      "Erasmus için pasaport çıkarırken yaşa göre harç muafiyeti var mı?"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 3: Karşı Kuruma Başvuru",
-    "metin": "3. Karşı kuruma başvurun.\n1) Uluslararası İlişkiler Ofisi öğrencinin Nomination işlemini yapar.\n2) Karşı kurum, öğrenciye başvuru süreç aşamalarını içeren e-posta gönderir.\n3) Öğrenci karşı kurum başvuru sürecini tamamlar.\n- Öğrenci, karşı kurum başvuru sürecine ilişkin Uluslararası İlişkiler Ofisinden danışmanlık alabilir.\n- Başvuru işlemlerini ve son başvuru tarihini takip etmek öğrencinin sorumluluğundadır.\n\nBaşvuruda istenebilecek belgeler:\n- Pasaport\n- Online Learning Agreement (OLA) (Onaylı)\n- Onaylı Başvuru Formu (Her kurumun kendine özgü başvuru formu bulunabilmektedir.)\n- Kuruma bağlı olarak başka belgeler de istenebilir. Örneğin Yabancı Dil Yeterlilik Belgesi (İngilizce isteniyorsa YDYO'dan talep edilebilir)."
+    "metin": "3. Karşı kuruma başvurun.\n1) Uluslararası İlişkiler Ofisi öğrencinin Nomination işlemini yapar.\n2) Karşı kurum, öğrenciye başvuru süreç aşamalarını içeren e-posta gönderir.\n3) Öğrenci karşı kurum başvuru sürecini tamamlar.\n- Öğrenci, karşı kurum başvuru sürecine ilişkin Uluslararası İlişkiler Ofisinden danışmanlık alabilir.\n- Başvuru işlemlerini ve son başvuru tarihini takip etmek öğrencinin sorumluluğundadır.\n\nBaşvuruda istenebilecek belgeler:\n- Pasaport\n- Online Learning Agreement (OLA) (Onaylı)\n- Onaylı Başvuru Formu (Her kurumun kendine özgü başvuru formu bulunabilmektedir.)\n- Kuruma bağlı olarak başka belgeler de istenebilir. Örneğin Yabancı Dil Yeterlilik Belgesi (İngilizce isteniyorsa YDYO'dan talep edilebilir).",
+    "sorular": [
+      "erasmus karsi kuruma basvuru nasil yapiliyor, nomination ne demek",
+      "Erasmus karşı kurum başvurusunda hangi belgeler isteniyor?",
+      "erasmus karsi kurum basvurusu icin YDYO'dan dil belgesi alinabilir mi",
+      "Erasmus'ta karşı kurum başvuru son tarihini takip etmek kimin sorumluluğunda?",
+      "erasmus karsi kurum basvuru surecinde UİO'dan danismanlik alabilir miyim"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 4: Vize Başvurusu",
-    "metin": "4. Vizeye başvurun.\n- İlgili ülkenin vize başvurusu için gerekli belgeleri konsolosluklardan araştırabilir ya da isterseniz aracı firmaya danışabilirsiniz.\n- Vize başvurusu yapabilmek için karşı kurumdan davet yazısının (letter of acceptance) gelmiş olması gerekir. Davet yazıları, karşı kuruma başvuru yapıldıktan sonra karşı kurum tarafından gönderilir.\n- Çek Cumhuriyeti vizesini almak uzun sürdüğünden bu vize için erken başvuruda bulunun.\n- Vize başvurusuna gitmeden önce tüm belgelerin hazır olduğundan emin olun.\n- Bu süreçte hem hibeli hem de hibesiz öğrenciler, Konsolosluğa verilmek üzere Ofisten ıslak imzalı, mühürlü vize yazısı almalıdır. Ofis bu belgeyi kabul mektubu geldikten sonra hazırlar."
+    "metin": "4. Vizeye başvurun.\n- İlgili ülkenin vize başvurusu için gerekli belgeleri konsolosluklardan araştırabilir ya da isterseniz aracı firmaya danışabilirsiniz.\n- Vize başvurusu yapabilmek için karşı kurumdan davet yazısının (letter of acceptance) gelmiş olması gerekir. Davet yazıları, karşı kuruma başvuru yapıldıktan sonra karşı kurum tarafından gönderilir.\n- Çek Cumhuriyeti vizesini almak uzun sürdüğünden bu vize için erken başvuruda bulunun.\n- Vize başvurusuna gitmeden önce tüm belgelerin hazır olduğundan emin olun.\n- Bu süreçte hem hibeli hem de hibesiz öğrenciler, Konsolosluğa verilmek üzere Ofisten ıslak imzalı, mühürlü vize yazısı almalıdır. Ofis bu belgeyi kabul mektubu geldikten sonra hazırlar.",
+    "sorular": [
+      "erasmus vize basvurusu icin davet yazisi sart mi",
+      "Erasmus vizesi için konsolosluğa verilecek yazıyı ofis ne zaman hazırlıyor?",
+      "erasmus icin hangi ulkenin vizesi uzun surdugu icin erken basvurulmali",
+      "Hibesiz gidiyorum, Erasmus vizesi için ofisten yazı almam gerekir mi?",
+      "erasmus vize belgelerini araci firmaya danisabilir miyim"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 5: Euro Hesabı Açma (Hibeli Öğrenciler İçin)",
-    "metin": "5. Euro hesabı açın (hibeli öğrenciler için).\n- Hibeli gidecek öğrenci, Ziraat Bankası'nın herhangi bir şubesinden Vadesiz Euro Hesabı açtırır ve hesap bilgilerini sözleşme için Ofise iletir.\n- Ziraat Bankası dışındaki bankalar kabul edilmez.\n- Euro Hesabı dışındaki diğer döviz hesapları (Dolar vb.) kabul edilmez.\n- Öğrenci ortak hesap açtırabilir."
+    "metin": "5. Euro hesabı açın (hibeli öğrenciler için).\n- Hibeli gidecek öğrenci, Ziraat Bankası'nın herhangi bir şubesinden Vadesiz Euro Hesabı açtırır ve hesap bilgilerini sözleşme için Ofise iletir.\n- Ziraat Bankası dışındaki bankalar kabul edilmez.\n- Euro Hesabı dışındaki diğer döviz hesapları (Dolar vb.) kabul edilmez.\n- Öğrenci ortak hesap açtırabilir.",
+    "sorular": [
+      "erasmus hibesi icin hangi bankada euro hesabi acmam lazim",
+      "Erasmus'ta dolar hesabı kabul ediliyor mu?",
+      "erasmus euro hesabi ortak hesap olabilir mi",
+      "Hibeli Erasmus öğrencisi hangi tür hesap açtırmalı, vadeli mi vadesiz mi?",
+      "erasmus hibesi icin baska bankadan euro hesabi acsam olur mu"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 6: Seyahat Sağlık Sigortası ve SGK Formülerleri",
-    "metin": "6. Seyahat sağlık sigortası yaptırın.\n- Öğrenciler, gidecekleri ülkenin vize yetkilisinin talep ettiği seyahat sağlık sigortasını yaptırmakla yükümlüdür.\n\nSGK ile anlaşması olan ülkeler için prosedür:\n1) Anne babalarından ötürü eski sağlık sigorta sistemine göre SSK'lı olan öğrencilerden, Türkiye ile sosyal güvenlik sözleşmesi olan Almanya, Avusturya, Belçika, Hırvatistan, Hollanda, Kuzey Makedonya, Romanya ve Çek Cumhuriyeti'ne gidecek olanların, her ülke için ayrı ayrı hazırlanan formülerlerini almak için SGK-Sosyal Güvenlik Merkezi'ne başvurmaları gerekir. SGK'ya başvuru sırasında kullanılmak üzere Ofisten e-imzalı belge alınmalıdır.\n2) SADECE ALMANYA için geçerli olmak üzere, anne ve babadan dolayı SSK'lı, Emekli Sandığı ve Bağ-Kur mensubu olan öğrenciler de SGK'nın sağlık hizmetinden yararlanabilir. Bunun için formüler belgelerinin (A/T11) SGK-Sosyal Güvenlik Merkezine onaylatılması gerekir. SGK'ya başvuru sırasında kullanılmak üzere Ofisten e-imzalı belge alınmalıdır.\n3) Sadece BELÇİKA ve HOLLANDA'ya özgü olarak, anne-baba için (sağlık hizmetini kimin üzerinden alıyorsanız) emekli-çalışan ayrımı vardır. Bu iki ülke için anne-baba emekliyse formüler belgesi başvurusu yapılamaz.\n\nDiğer ülkelere gidecek olanlar özel bir sigorta şirketinden geçerli bir Seyahat Sağlık Sigortası almakla yükümlüdür. Sigortanın eğitim için uygun olduğu, gidilecek ülkede ve kalınacak sürenin tamamında (seyahat edilen günler dahil) geçerli olacağı konusunda ilgili şirketten teyit alınmalıdır."
+    "metin": "6. Seyahat sağlık sigortası yaptırın.\n- Öğrenciler, gidecekleri ülkenin vize yetkilisinin talep ettiği seyahat sağlık sigortasını yaptırmakla yükümlüdür.\n\nSGK ile anlaşması olan ülkeler için prosedür:\n1) Anne babalarından ötürü eski sağlık sigorta sistemine göre SSK'lı olan öğrencilerden, Türkiye ile sosyal güvenlik sözleşmesi olan Almanya, Avusturya, Belçika, Hırvatistan, Hollanda, Kuzey Makedonya, Romanya ve Çek Cumhuriyeti'ne gidecek olanların, her ülke için ayrı ayrı hazırlanan formülerlerini almak için SGK-Sosyal Güvenlik Merkezi'ne başvurmaları gerekir. SGK'ya başvuru sırasında kullanılmak üzere Ofisten e-imzalı belge alınmalıdır.\n2) SADECE ALMANYA için geçerli olmak üzere, anne ve babadan dolayı SSK'lı, Emekli Sandığı ve Bağ-Kur mensubu olan öğrenciler de SGK'nın sağlık hizmetinden yararlanabilir. Bunun için formüler belgelerinin (A/T11) SGK-Sosyal Güvenlik Merkezine onaylatılması gerekir. SGK'ya başvuru sırasında kullanılmak üzere Ofisten e-imzalı belge alınmalıdır.\n3) Sadece BELÇİKA ve HOLLANDA'ya özgü olarak, anne-baba için (sağlık hizmetini kimin üzerinden alıyorsanız) emekli-çalışan ayrımı vardır. Bu iki ülke için anne-baba emekliyse formüler belgesi başvurusu yapılamaz.\n\nDiğer ülkelere gidecek olanlar özel bir sigorta şirketinden geçerli bir Seyahat Sağlık Sigortası almakla yükümlüdür. Sigortanın eğitim için uygun olduğu, gidilecek ülkede ve kalınacak sürenin tamamında (seyahat edilen günler dahil) geçerli olacağı konusunda ilgili şirketten teyit alınmalıdır.",
+    "sorular": [
+      "erasmus icin saglik sigortasi zorunlu mu, ozel sigorta mi SGK mi yapilacak",
+      "Erasmus SGK formülerleri hangi ülkelere gidenlere veriliyor?",
+      "anne babam emekliyse erasmus icin SGK formuleri alabilir miyim",
+      "Erasmus özel seyahat sağlık sigortası seyahat edilen günleri de kapsamalı mı?",
+      "erasmus sgk formuler basvurusunda ofisten ne belge alinmasi gerekiyor"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 7: Öğrenci Hareketlilik Sözleşmesi (Hibeli veya Hibesiz)",
-    "metin": "7. Sözleşme imzalayın (hibeli veya hibesiz).\n- Sözleşme, yurtdışına çıkış yapılmadan önce Öğrenci ile Kurum arasında imzalanır.\n1) Öğrenci hibeli gidecekse Ziraat Bankası'nın herhangi bir şubesinden Vadesiz Euro Hesabı açtırıp hesap bilgilerini sözleşme için Ofise iletir.\n2) Öğrenci (hibeli ya da hibesiz) sağlık sigortası (özel ya da SGK'dan) yaptırıp sözleşme için Ofise iletir.\n3) Sözleşme imzalanır.\n- Sözleşme başlıca; öğrenci hibeli ise azami hibe miktarını, öğrencinin hareketlilik tarih aralığını, tarafların hak ve yükümlülüklerini içerir. Sözleşme hibesizse hibe bilgisi içermez.\n- Sözleşmede her iki tarafın (Öğrenci ve Kurum Temsilcisi) ıslak imzası olmalıdır.\n- Sözleşmeyi çok dikkatli okuyup imzalayınız.\n- İki tarafça ıslak imzalı sözleşmenin bir kopyası öğrenciye verilir, diğer kopyası Ofiste muhafaza edilir."
+    "metin": "7. Sözleşme imzalayın (hibeli veya hibesiz).\n- Sözleşme, yurtdışına çıkış yapılmadan önce Öğrenci ile Kurum arasında imzalanır.\n1) Öğrenci hibeli gidecekse Ziraat Bankası'nın herhangi bir şubesinden Vadesiz Euro Hesabı açtırıp hesap bilgilerini sözleşme için Ofise iletir.\n2) Öğrenci (hibeli ya da hibesiz) sağlık sigortası (özel ya da SGK'dan) yaptırıp sözleşme için Ofise iletir.\n3) Sözleşme imzalanır.\n- Sözleşme başlıca; öğrenci hibeli ise azami hibe miktarını, öğrencinin hareketlilik tarih aralığını, tarafların hak ve yükümlülüklerini içerir. Sözleşme hibesizse hibe bilgisi içermez.\n- Sözleşmede her iki tarafın (Öğrenci ve Kurum Temsilcisi) ıslak imzası olmalıdır.\n- Sözleşmeyi çok dikkatli okuyup imzalayınız.\n- İki tarafça ıslak imzalı sözleşmenin bir kopyası öğrenciye verilir, diğer kopyası Ofiste muhafaza edilir.",
+    "sorular": [
+      "erasmus hareketlilik sozlesmesi ne zaman imzalaniyor",
+      "Erasmus sözleşmesinde neler yazıyor?",
+      "erasmus sozlesmesini imzalamadan once ofise hangi belgeleri vermem gerekiyor",
+      "Erasmus sözleşmesinin bir kopyası bana veriliyor mu?",
+      "hibesiz erasmus sozlesmesinde hibe bilgisi yer alir mi"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 8: Online Learning Agreement (OLA) Hazırlama ve İmzalatma",
-    "metin": "8. Online Learning Agreement (OLA) hazırlayın ve imzalatın.\n- OLA; karşı kurumda alınacak dersleri ve bu derslerin İYTE eşdeğerlerini içeren, öğrenci, İYTE Bölüm Erasmus Koordinatörü ve Karşı Kurumdaki Yetkili Kişi tarafından çevrimiçi imzalanan Öğrenim Anlaşmasıdır.\n- Öğrenciler OLA süreçlerini İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Erasmus Koordinatör Yardımcısı ile birlikte yürütür.\n- Öğrenciler, bir dönem için Erasmus hareketliliğinde karşı kurumdan en az 30, en fazla 36 ECTS kredilik ders seçebilirler."
+    "metin": "8. Online Learning Agreement (OLA) hazırlayın ve imzalatın.\n- OLA; karşı kurumda alınacak dersleri ve bu derslerin İYTE eşdeğerlerini içeren, öğrenci, İYTE Bölüm Erasmus Koordinatörü ve Karşı Kurumdaki Yetkili Kişi tarafından çevrimiçi imzalanan Öğrenim Anlaşmasıdır.\n- Öğrenciler OLA süreçlerini İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Erasmus Koordinatör Yardımcısı ile birlikte yürütür.\n- Öğrenciler, bir dönem için Erasmus hareketliliğinde karşı kurumdan en az 30, en fazla 36 ECTS kredilik ders seçebilirler.",
+    "sorular": [
+      "erasmus OLA nedir, kimler imzalar",
+      "Erasmus OLA'da bir dönem için en az kaç ECTS ders seçmem gerekiyor?",
+      "erasmus ola surecini kimlerle yurutecegim",
+      "Erasmus'ta karşı kurumdan dönem başına en fazla kaç kredilik ders alabilirim?",
+      "erasmus online learning agreement'ta ders esdegerlikleri nasil yaziliyor"
+    ]
   },
   {
     "baslik": "Hareketlilik Öncesi Adım 9: Recognition Sheet (RS) Hazırlama ve Onaylatma",
-    "metin": "9. Recognition Sheet (RS) hazırlayın ve onaylatın.\n- RS; karşı kurumda alınacak dersleri ve bu derslerin İYTE eşdeğerlerini içeren, İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Başkanı tarafından imzalanan belgedir.\n- RS karşı kuruma gönderilmez, ancak işlemleri karşı kuruma gönderilen OLA ile eş zamanlı yürütülür.\n- Öğrenci RS süreçlerini İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Erasmus Koordinatör Yardımcısı ile birlikte yürütür.\n- İlgili belge öğrenci yurtdışına çıkmadan önce önce Bölüm tarafından, sonrasında Fakülte Yönetim Kurulu tarafından (Lisansüstü öğrenciler için Lisansüstü Eğitim Enstitüsü Yönetim Kurulu tarafından) onaylanmalıdır."
+    "metin": "9. Recognition Sheet (RS) hazırlayın ve onaylatın.\n- RS; karşı kurumda alınacak dersleri ve bu derslerin İYTE eşdeğerlerini içeren, İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Başkanı tarafından imzalanan belgedir.\n- RS karşı kuruma gönderilmez, ancak işlemleri karşı kuruma gönderilen OLA ile eş zamanlı yürütülür.\n- Öğrenci RS süreçlerini İYTE Bölüm Erasmus Koordinatörü ve İYTE Bölüm Erasmus Koordinatör Yardımcısı ile birlikte yürütür.\n- İlgili belge öğrenci yurtdışına çıkmadan önce önce Bölüm tarafından, sonrasında Fakülte Yönetim Kurulu tarafından (Lisansüstü öğrenciler için Lisansüstü Eğitim Enstitüsü Yönetim Kurulu tarafından) onaylanmalıdır.",
+    "sorular": [
+      "erasmus recognition sheet nedir, kim imzalar",
+      "Erasmus RS karşı kuruma gönderiliyor mu?",
+      "erasmus RS yurtdisina cikmadan once hangi kurullardan onay almali",
+      "Lisansüstü öğrenciyim, Erasmus Recognition Sheet'i hangi kurul onaylıyor?",
+      "erasmus RS islemlerini kimle yuruteyim"
+    ]
   },
   {
     "baslik": "Hareketlilik Sırasında: Karşı Kurumda Kayıt ve Oryantasyon",
-    "metin": "1. Karşı kurumda kayıt yapın.\n- Karşı Kurumun Uluslararası Ofisine gidip kaydınızı yaptırın.\n\n2. Oryantasyon programlarına katılın.\n- Karşı Kurumun Oryantasyon Programına mutlaka katılın. Oryantasyon Programı'nda ilgili ülke, şehir ve üniversiteye ilişkin bilgiler verilmektedir."
+    "metin": "1. Karşı kurumda kayıt yapın.\n- Karşı Kurumun Uluslararası Ofisine gidip kaydınızı yaptırın.\n\n2. Oryantasyon programlarına katılın.\n- Karşı Kurumun Oryantasyon Programına mutlaka katılın. Oryantasyon Programı'nda ilgili ülke, şehir ve üniversiteye ilişkin bilgiler verilmektedir.",
+    "sorular": [
+      "erasmus karsi kurumda vardiktan sonra kayit nerede yapiliyor",
+      "Erasmus'ta gittiğim üniversitenin oryantasyon programına katılmam şart mı?",
+      "erasmus karsi kurum oryantasyon programinda neler anlatiliyor",
+      "Erasmus hareketliliği sırasında karşı kurumda ilk yapmam gerekenler neler?",
+      "erasmusta gittigim okulun uluslararasi ofisine kayit yaptirmam gerekir mi"
+    ]
   },
   {
     "baslik": "Hareketlilik Sırasında: Ders Ekle-Çıkar İşlemleri (OLA ve RS Güncelleme)",
-    "metin": "3. Ders ekle-çıkar işlemlerini yapın (OLA ve RS güncelleme) (gerekiyorsa).\n- Karşı kurumun daha kısa bir süre talep etmemesi şartıyla, çeşitli sebeplerle öğrenim anlaşmasında yapılacak değişikliklerin, gidilen yükseköğretim kurumunda akademik dönemin başlamasını takiben en geç 5 hafta içinde yapılmış olması gerekir. Anlaşmanın (OLA-During Mobility) tarafları, değişiklik talep edildikten sonra en geç 2 hafta içinde onay vermelidir.\n- Ders Ekle-Çıkar sürecinde OLA (Online Learning Agreement) During Mobility bölümü işlemleri, Bölüm Erasmus Koordinatörü ve Bölüm Erasmus Koordinatör Yardımcısı ile yürütülmelidir.\n- Ders Ekle-Çıkar sürecinde RS (Recognition Sheet) işlemleri de Bölüm Erasmus Koordinatörü ve Bölüm Erasmus Koordinatör Yardımcısı ile yürütülmelidir. İlgili belge önce Bölüm tarafından, sonrasında Fakülte Yönetim Kurulu tarafından (Lisansüstü öğrenciler için Lisansüstü Eğitim Enstitüsü Yönetim Kurulu tarafından) onaylanmalıdır."
+    "metin": "3. Ders ekle-çıkar işlemlerini yapın (OLA ve RS güncelleme) (gerekiyorsa).\n- Karşı kurumun daha kısa bir süre talep etmemesi şartıyla, çeşitli sebeplerle öğrenim anlaşmasında yapılacak değişikliklerin, gidilen yükseköğretim kurumunda akademik dönemin başlamasını takiben en geç 5 hafta içinde yapılmış olması gerekir. Anlaşmanın (OLA-During Mobility) tarafları, değişiklik talep edildikten sonra en geç 2 hafta içinde onay vermelidir.\n- Ders Ekle-Çıkar sürecinde OLA (Online Learning Agreement) During Mobility bölümü işlemleri, Bölüm Erasmus Koordinatörü ve Bölüm Erasmus Koordinatör Yardımcısı ile yürütülmelidir.\n- Ders Ekle-Çıkar sürecinde RS (Recognition Sheet) işlemleri de Bölüm Erasmus Koordinatörü ve Bölüm Erasmus Koordinatör Yardımcısı ile yürütülmelidir. İlgili belge önce Bölüm tarafından, sonrasında Fakülte Yönetim Kurulu tarafından (Lisansüstü öğrenciler için Lisansüstü Eğitim Enstitüsü Yönetim Kurulu tarafından) onaylanmalıdır.",
+    "sorular": [
+      "erasmus gittigim okulda ders degistirmek istiyorum en gec ne zamana kadar yapabilirim",
+      "Erasmus'ta OLA During Mobility değişikliği için taraflar kaç hafta içinde onay vermeli?",
+      "erasmus ders ekle cikar yapinca RS de guncellenmeli mi",
+      "Erasmus'ta ders değişikliği OLA güncellemesi kimlerle yürütülür?",
+      "erasmus ders degisikligi sonrasi RS onayi hangi kurullardan gecer"
+    ]
   },
   {
     "baslik": "Hareketlilik Sırasında: Süre Uzatma Talebi",
-    "metin": "4. Süre uzatma talebinde bulunun (gerekiyorsa).\n- Öğrencinin faaliyet süresinin uzatılmasını istemesi halinde talebi, Erasmus ofisi ve öğrencinin bölüm yetkilileri tarafından değerlendirilir.\n- Süre uzatımı, gidilen kurumun onayına ve öğrencinin akademik durumunun uygun olmasına bağlı olarak mümkündür.\n- Sürenin uzatılması için talebin, başlangıçta planlanan hareketlilik bitiş tarihinden en geç 1 ay önce sunulması gerekir.\n- Talep tüm taraflarca kabul edilirse öğrenci sözleşmesinde değişiklik yapılmalı ve sürenin uzatılmasına ilişkin tüm gerekli işlemler (OLA ve RS) tamamlanmalıdır.\n\nSözleşme durumları:\n- Hibe alarak gitmiş öğrenci için: Sözleşmede belirtilen azami hibe miktarında artış olacaksa (Kurumun yeterli hibesi varsa) öğrenci ile ek hibeli sözleşme yapılmalıdır. Azami hibe miktarında artış olmayacaksa (Kurumun yeterli hibesi yoksa) öğrenci ile ek hibesiz sözleşme yapılmalıdır.\n- Hibe almayarak gitmiş öğrenci uzatma yapacaksa, uzatma dönemi için öğrenci ile ek hibesiz sözleşme yapılmalıdır."
+    "metin": "4. Süre uzatma talebinde bulunun (gerekiyorsa).\n- Öğrencinin faaliyet süresinin uzatılmasını istemesi halinde talebi, Erasmus ofisi ve öğrencinin bölüm yetkilileri tarafından değerlendirilir.\n- Süre uzatımı, gidilen kurumun onayına ve öğrencinin akademik durumunun uygun olmasına bağlı olarak mümkündür.\n- Sürenin uzatılması için talebin, başlangıçta planlanan hareketlilik bitiş tarihinden en geç 1 ay önce sunulması gerekir.\n- Talep tüm taraflarca kabul edilirse öğrenci sözleşmesinde değişiklik yapılmalı ve sürenin uzatılmasına ilişkin tüm gerekli işlemler (OLA ve RS) tamamlanmalıdır.\n\nSözleşme durumları:\n- Hibe alarak gitmiş öğrenci için: Sözleşmede belirtilen azami hibe miktarında artış olacaksa (Kurumun yeterli hibesi varsa) öğrenci ile ek hibeli sözleşme yapılmalıdır. Azami hibe miktarında artış olmayacaksa (Kurumun yeterli hibesi yoksa) öğrenci ile ek hibesiz sözleşme yapılmalıdır.\n- Hibe almayarak gitmiş öğrenci uzatma yapacaksa, uzatma dönemi için öğrenci ile ek hibesiz sözleşme yapılmalıdır.",
+    "sorular": [
+      "erasmus sure uzatmak icin en gec ne zaman basvurmam gerekiyor",
+      "Erasmus'ta kalış süremi uzatmak istiyorum, şartlar neler?",
+      "erasmus sure uzatinca ek sozlesme yapilir mi, hibeli hibesiz fark eder mi",
+      "Erasmus'a hibesiz gittim, uzatma dönemi için nasıl bir sözleşme yapılıyor?",
+      "erasmus sure uzatma talebini kimler degerlendiriyor"
+    ]
   },
   {
     "baslik": "Hareketlilik Sonrası İşlemler: Katılım Sertifikası, Transkript, Yurda Giriş/Çıkış Belgesi, Anket ve Not Çevrimi",
-    "metin": "1. Katılım sertifikasını (Confirmation Letter) teslim edin.\n- Katılım Sertifikası (Confirmation Letter), Ofis Erasmus Danışmanına karşı kurum Erasmus Yetkilisi tarafından e-posta ile gönderilmelidir. Gönderimin takibi öğrencinin sorumluluğundadır.\n\n2. Transkripti teslim edin.\n- Transcript of Records (ToR): Transkript, Ofis Erasmus Danışmanına ve İYTE Bölüm Erasmus Koordinatör Yardımcısına karşı kurum Erasmus Yetkilisi tarafından eş zamanlı olarak e-posta ile gönderilmelidir. Gönderimin takibi öğrencinin sorumluluğundadır.\n\n3. Yurda Giriş/Çıkış Belgesini e-posta ile danışmanınıza gönderin.\n- Bu belge https://turkiye.gov.tr/ (E-devlet) (bağlantı: https://turkiye.gov.tr/) üzerinden alınır. Türkiye'ye döndükten sonra Erasmus danışmanına gönderilmelidir.\n\n4. Katılımcı anketini doldurun.\n- Öğrencinin katılımcı anketini doldurması gerekir. Anketi içeren e-posta öğrenciye “EU CORPORATE NOTIFICATION SYSTEM”den gelir.\n\n5. Not çevrim işlemlerini takip edin (Proof of Academic Recognition Sheet).\n- Karşı kurumun transkriptinde, yerel notların yanı sıra AKTS notları da (ECTS Grades) bulunmalıdır.\n- Transkriptte AKTS notu yoksa, karşı kurumun yerel notlarını AKTS notlarına çeviren, karşı kurum onaylı bir çevrim tablosunun, transkripte ek olarak İYTE Bölüm Erasmus Koordinatör Yardımcısına ve Ofise aynı anda e-posta ile karşı kurum yetkilisi tarafından gönderilmesi sağlanmalıdır.\n- Karşı kurumdan alınan başarılı ve başarısız tüm notlar, İYTE'deki Bölüm Erasmus Koordinatör Yardımcısı tarafından İYTE notlarına çevrilir.\n- Not Çevrim Belgesi (Proof of Academic Recognition Sheet), Bölüm tarafından resmi yazı ile Öğrenci İşleri Daire Başkanlığına gönderilir.\n- Not çevrim işlemlerini takip etmek öğrencilerin sorumluluğundadır."
+    "metin": "1. Katılım sertifikasını (Confirmation Letter) teslim edin.\n- Katılım Sertifikası (Confirmation Letter), Ofis Erasmus Danışmanına karşı kurum Erasmus Yetkilisi tarafından e-posta ile gönderilmelidir. Gönderimin takibi öğrencinin sorumluluğundadır.\n\n2. Transkripti teslim edin.\n- Transcript of Records (ToR): Transkript, Ofis Erasmus Danışmanına ve İYTE Bölüm Erasmus Koordinatör Yardımcısına karşı kurum Erasmus Yetkilisi tarafından eş zamanlı olarak e-posta ile gönderilmelidir. Gönderimin takibi öğrencinin sorumluluğundadır.\n\n3. Yurda Giriş/Çıkış Belgesini e-posta ile danışmanınıza gönderin.\n- Bu belge https://turkiye.gov.tr/ (E-devlet) (bağlantı: https://turkiye.gov.tr/) üzerinden alınır. Türkiye'ye döndükten sonra Erasmus danışmanına gönderilmelidir.\n\n4. Katılımcı anketini doldurun.\n- Öğrencinin katılımcı anketini doldurması gerekir. Anketi içeren e-posta öğrenciye “EU CORPORATE NOTIFICATION SYSTEM”den gelir.\n\n5. Not çevrim işlemlerini takip edin (Proof of Academic Recognition Sheet).\n- Karşı kurumun transkriptinde, yerel notların yanı sıra AKTS notları da (ECTS Grades) bulunmalıdır.\n- Transkriptte AKTS notu yoksa, karşı kurumun yerel notlarını AKTS notlarına çeviren, karşı kurum onaylı bir çevrim tablosunun, transkripte ek olarak İYTE Bölüm Erasmus Koordinatör Yardımcısına ve Ofise aynı anda e-posta ile karşı kurum yetkilisi tarafından gönderilmesi sağlanmalıdır.\n- Karşı kurumdan alınan başarılı ve başarısız tüm notlar, İYTE'deki Bölüm Erasmus Koordinatör Yardımcısı tarafından İYTE notlarına çevrilir.\n- Not Çevrim Belgesi (Proof of Academic Recognition Sheet), Bölüm tarafından resmi yazı ile Öğrenci İşleri Daire Başkanlığına gönderilir.\n- Not çevrim işlemlerini takip etmek öğrencilerin sorumluluğundadır.",
+    "sorular": [
+      "erasmus katilim sertifikasi confirmation letter'i kim kime gonderiyor",
+      "Erasmus dönüşünde transkript ofise nasıl ulaşıyor, kim gönderiyor?",
+      "erasmus yurda giris cikis belgesi nereden alinir",
+      "Erasmus katılımcı anketi hangi e-postadan geliyor?",
+      "erasmus transkriptte ECTS notu yoksa not cevrimi icin ne yapilmali"
+    ]
   }
 ]

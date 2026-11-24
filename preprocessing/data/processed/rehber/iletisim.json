@@ -1,14 +1,35 @@
 [
   {
     "baslik": "Uluslararası İlişkiler Ofisi Adresi ve Faks",
-    "metin": "İzmir Yüksek Teknoloji Enstitüsü\nUluslararası İlişkiler Ofisi\nYabancı Diller Yüksekokulu İdari Bina\nGülbahçe Urla 35430 İzmir TÜRKİYE\nFaks: +90-232-750 7895"
+    "metin": "İzmir Yüksek Teknoloji Enstitüsü\nUluslararası İlişkiler Ofisi\nYabancı Diller Yüksekokulu İdari Bina\nGülbahçe Urla 35430 İzmir TÜRKİYE\nFaks: +90-232-750 7895",
+    "sorular": [
+      "IYTE Uluslararası İlişkiler Ofisi'nin açık adresi nedir?",
+      "uluslararasi iliskiler ofisi hangi binada, nasil bulurum",
+      "IYTE uluslararası ilişkiler ofisinin faks numarası kaç?",
+      "iyte io ofisine posta veya evrak göndereceğim, tam adres lazım",
+      "uluslararasi iliskiler ofisine faks cekmek istiyorum numara var mi"
+    ]
   },
   {
     "baslik": "Uluslararası İlişkiler Ofisi E-posta İletişim Adresleri",
-    "metin": "Tüm soru, dilek, şikayet ve önerilerinizi ilgili departmanın aşağıda yer alan e-posta adresine iletebilirsiniz.\nDeğişim Programları: erasmuskoordinator@iyte.edu.tr\nTam Zamanlı Uluslararası Lisans Öğrencileri: io-student@iyte.edu.tr\nTam Zamanlı Uluslararası Lisansüstü Öğrencileri: gradinfo@iyte.edu.tr\nUluslararası Akademisyen & Ziyaretçiler: io-academic@iyte.edu.tr"
+    "metin": "Tüm soru, dilek, şikayet ve önerilerinizi ilgili departmanın aşağıda yer alan e-posta adresine iletebilirsiniz.\nDeğişim Programları: erasmuskoordinator@iyte.edu.tr\nTam Zamanlı Uluslararası Lisans Öğrencileri: io-student@iyte.edu.tr\nTam Zamanlı Uluslararası Lisansüstü Öğrencileri: gradinfo@iyte.edu.tr\nUluslararası Akademisyen & Ziyaretçiler: io-academic@iyte.edu.tr",
+    "sorular": [
+      "IYTE Uluslararası İlişkiler Ofisi'nde değişim programları (Erasmus) için hangi e-posta adresine yazmalıyım?",
+      "tam zamanli uluslararasi lisans ogrencisiyim, io ofisine hangi maile yazmam lazim",
+      "iyte uluslararası lisansüstü öğrenciler için iletişim e-postası ne?",
+      "IYTE'ye gelen uluslararası akademisyen ve ziyaretçiler hangi mail adresinden ulaşabilir?",
+      "iyte uluslararasi iliskiler ofisi departmanlarinin mail adresleri neler"
+    ]
   },
   {
     "baslik": "Dilek, Şikayet ve Öneri İletme (Paydaş Geri Bildirim Sistemi)",
-    "metin": "İYTE UBYS kullanıcıları, dilek, şikayet ve öneri taleplerini 'Paydaş Geri Bildirim Sistemi' üzerinden de iletebilir. Ayrıca soru, dilek, şikayet ve öneriler ilgili departmanın e-posta adresine de gönderilebilir (Değişim Programları: erasmuskoordinator@iyte.edu.tr; Tam Zamanlı Uluslararası Lisans Öğrencileri: io-student@iyte.edu.tr; Tam Zamanlı Uluslararası Lisansüstü Öğrencileri: gradinfo@iyte.edu.tr; Uluslararası Akademisyen & Ziyaretçiler: io-academic@iyte.edu.tr)."
+    "metin": "İYTE UBYS kullanıcıları, dilek, şikayet ve öneri taleplerini 'Paydaş Geri Bildirim Sistemi' üzerinden de iletebilir. Ayrıca soru, dilek, şikayet ve öneriler ilgili departmanın e-posta adresine de gönderilebilir (Değişim Programları: erasmuskoordinator@iyte.edu.tr; Tam Zamanlı Uluslararası Lisans Öğrencileri: io-student@iyte.edu.tr; Tam Zamanlı Uluslararası Lisansüstü Öğrencileri: gradinfo@iyte.edu.tr; Uluslararası Akademisyen & Ziyaretçiler: io-academic@iyte.edu.tr).",
+    "sorular": [
+      "IYTE'de dilek, şikayet ve önerimi nereden iletebilirim?",
+      "paydas geri bildirim sistemi nedir, iyte ubys kullanicilari bunu nasil kullanir",
+      "iyte uluslararasi iliskiler ofisine sikayet iletmek icin mail disinda yol var mi",
+      "UBYS üzerinden IYTE'ye öneri göndermek mümkün mü?",
+      "iyte paydas geri bildirim sistemi kimler icin"
+    ]
   }
 ]
