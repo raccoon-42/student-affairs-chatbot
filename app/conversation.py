@@ -65,7 +65,7 @@ CONTEXT_TEMPLATE = """
     Ders kataloğu olan bölümler: {course_departments}. Diğer bölümlerin ders kataloğu elimde yok.
     {courses_context}
 
-    # ÖĞRENCİ İŞLERİ SÜREÇ REHBERLERİ (ders seçimi, yatay geçiş, çift ana dal/yan dal, başvuru, askerlik):
+    # SÜREÇ REHBERLERİ (ders seçimi, yatay geçiş, çift ana dal/yan dal, başvuru, askerlik, Erasmus ve değişim programları):
     {guides_context}
     </available_reference_data>
 </conversation>

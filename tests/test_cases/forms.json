@@ -16,7 +16,7 @@
   },
   {
     "query": "erasmus başvuru formunu nereden indirebilirim?",
-    "expected": "Elindeki form listesinde Erasmus başvuru formu olmadığını söyler, form uydurmaz veya alakasız bir form önermez; ilgili birime (Uluslararası İlişkiler / Erasmus ofisi veya öğrenci işleri) yönlendirebilir.",
-    "description": "Listede olmayan form (Erasmus) -> uydurmamalı"
+    "expected": "İndirilecek bir Erasmus başvuru formu olmadığını, başvurunun UİO ilanına göre Ulusal Ajans'ın Turna portalından e-Devlet ile online yapıldığını kaynak işaretiyle söyler. Form uydurmaz, ilgisiz bir formu Erasmus formu diye önermez.",
+    "description": "Erasmus başvurusu (form yok, online başvuru)"
   }
 ]

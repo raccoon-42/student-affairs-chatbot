@@ -28,5 +28,25 @@
     "query": "askerlik tecili nasıl yapılıyor?",
     "expected": "Rehberdeki askerlik işlemleri bilgisine dayanır: kayıt sonrası YÖKSİS üzerinden bildirim/tecil sürecinden bahseder; referansta olmayan adım uydurmaz.",
     "description": "Askerlik tecil işlemleri"
+  },
+  {
+    "query": "erasmus başvuruları ne zaman ve nasıl yapılıyor?",
+    "expected": "2026-2027 dönemi için başvuruların 17 Mart – 2 Nisan 2026 tarihleri arasında Ulusal Ajans'ın Turna portalından e-Devlet ile online yapıldığını söyler; bu tarihlerin geçtiğini belirtmesi ve yeni ilan için UİO'yu göstermesi de kabul edilir. Tarih uydurmaz.",
+    "description": "Erasmus başvuru tarihleri ve kanalı"
+  },
+  {
+    "query": "erasmusa gideceğim, hangi belgeler lazım?",
+    "expected": "UİO'nun hareketlilik belgelerinden en az birkaçını sayar: pasaport, kabul mektubu, Online Learning Agreement, Recognition Sheet (ders denklik formu), seyahat sağlık sigortası, vize. Listede olmayan belge uydurmaz.",
+    "description": "Erasmus hareketlilik belgeleri"
+  },
+  {
+    "query": "bilgisayar mühendisliği erasmus koordinatörü kim?",
+    "expected": "Bilgisayar Mühendisliği Erasmus bölüm koordinatörünün Dr. Burak Galip Aslan (burakaslan@iyte.edu.tr) olduğunu söyler.",
+    "description": "Erasmus bölüm koordinatörü"
+  },
+  {
+    "query": "bilgisayar mühendisliğinin erasmus anlaşması olan üniversiteler hangileri?",
+    "expected": "Bilgisayar Mühendisliği'nin anlaşmalı üniversitelerinden birkaçını ülkesiyle sayar (örn. Universität Heidelberg, Universität Bonn, TU Kaiserslautern, Politechnika Gdanska, University of Piraeus). Listede olmayan üniversite uydurmaz.",
+    "description": "Erasmus anlaşmalı üniversiteler (bölüm)"
   }
 ]
