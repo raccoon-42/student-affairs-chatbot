@@ -13,7 +13,7 @@
      }
     }
    ],
-   "rewritten": "Hazırlık sınıfını geçmek için gereken minimum not kaçtır?"
+   "rewritten": "Hazırlık sınıfından geçmek için gereken minimum not kaçtır?"
   },
   {
    "id": "faq-001",
@@ -321,7 +321,7 @@
      }
     }
    ],
-   "rewritten": "Ortalama notu 1.80'in altında olan bir öğrenci ileri seviye dersler alabilir mi?"
+   "rewritten": "Ortalama notu 1.80'in altında olan bir öğrenci ileri seviyedeki dersleri alabilir mi?"
   },
   {
    "id": "faq-023",
@@ -335,7 +335,7 @@
      }
     }
    ],
-   "rewritten": "Hangi öğrenciler dersi tekrar alır?"
+   "rewritten": "Hangi öğrenciler dersi tekrar alırlar?"
   },
   {
    "id": "faq-024",
@@ -349,7 +349,7 @@
      }
     }
    ],
-   "rewritten": "Ders programımda çakışma varsa nasıl davranmalıyım?"
+   "rewritten": "Ders programında çakışma varsa nasıl davranmalıyım?"
   },
   {
    "id": "faq-025",
@@ -419,7 +419,7 @@
      }
     }
    ],
-   "rewritten": "Dersten ayrılma (W) işlemi hangi yarıyıl içinde gerçekleştirilir?"
+   "rewritten": "Dersten ayrılma (W) işlemi hangi dönemde gerçekleştirilir?"
   },
   {
    "id": "faq-030",
@@ -531,7 +531,7 @@
      }
     }
    ],
-   "rewritten": "Kayıt dondurulan dönem için ücret ödenmesi zorunlu mu?"
+   "rewritten": "Kayıt dondurulan yarıyıl için ücret ödenmesi zorunlu mu?"
   },
   {
    "id": "faq-038",
@@ -615,7 +615,7 @@
      }
     }
    ],
-   "rewritten": "Çift Ana Dal Programına başvurabilmek için sağlanması gereken koşullar nelerdir?"
+   "rewritten": "Çift Ana Dal Programını seçebilmek için sağlanması gereken gereklilikler nedir?"
   },
   {
    "id": "faq-044",
@@ -685,7 +685,7 @@
      }
     }
    ],
-   "rewritten": "Seçmeli ders seçme hakkım var mı?"
+   "rewritten": "Seçim hakkım var mı?"
   },
   {
    "id": "faq-049",
@@ -825,7 +825,7 @@
      }
     }
    ],
-   "rewritten": "Bölümün özel seçme kriterlerini yerine getirmek zorunlu mudur?"
+   "rewritten": "Bölümün özel seçme kriterlerini yerine getirmesi zorunlu mudur?"
   },
   {
    "id": "faq-059",
@@ -881,7 +881,7 @@
      }
     }
    ],
-   "rewritten": "Başvurduğum dönemden itibaren mi eğitime devam edeceğim?"
+   "rewritten": "Müracaat ettiğim dönemden itibaren mi eğitime devam edeceğim?"
   },
   {
    "id": "faq-063",
@@ -979,7 +979,7 @@
      }
     }
    ],
-   "rewritten": "Okuduğum yarıyılda ders almamam ya da derslerden başarısız olmam başvurumu etkiler mi?"
+   "rewritten": "Okuduğum yarıyılda ders almamam ya da derslerden başarısız olmam, başvurumu etkiler mi?"
   },
   {
    "id": "faq-070",
@@ -1077,7 +1077,7 @@
      }
     }
    ],
-   "rewritten": "Kayıt olmak istediğim yarıyıldan mı yeni programımda eğitime başlayacağım?"
+   "rewritten": "Kayıt olmak istediğim yarıyıl derslerinin başlangıcından mı yeni programımda eğitime başlayacağım?"
   },
   {
    "id": "faq-077",
@@ -1105,7 +1105,7 @@
      }
     }
    ],
-   "rewritten": "İngilizce yeterlilik seviyesini göstermek zorunlu mu? Dil hazırlık sınıfına kaydolabilir miyim?"
+   "rewritten": "İngilizcede yeterlilik seviyesini göstermek zorunlu mu? Dil hazırlık sınıfına kaydolabilir miyim?"
   },
   {
    "id": "faq-079",
@@ -1189,7 +1189,7 @@
      }
     }
    ],
-   "rewritten": "Güz yarıyılından sonraki yarıyıla geçiş için başvuru yapabilir miyim?"
+   "rewritten": "Güz yarıyılından sonra gelen yarıyıla geçiş için başvuru yapabilir miyim?"
   },
   {
    "id": "faq-085",
@@ -1231,7 +1231,7 @@
      }
     }
    ],
-   "rewritten": "Kalan derslerim ya da eğitimime ara vermiş olmam, yüksek lisans başvurumu engelleme riski taşır mı?"
+   "rewritten": "Kalan derslerimin ya da eğitime ara vermiş olmamın başvuruyu engelleme riski var mıdır?"
   },
   {
    "id": "faq-088",
@@ -1245,7 +1245,7 @@
      }
     }
    ],
-   "rewritten": "Kabul edildiğim üniversitede ilk yılımı tamamladıktan sonra, aynı yıl içinde başka bir programa geçiş başvurusu yapabilir miyim?"
+   "rewritten": "Kabul edildiğim üniversiteye ilk yılımda, aynı yıl içinde başka bir programa geçiş başvurusu yapabilir miyim?"
   },
   {
    "id": "faq-089",
@@ -1287,7 +1287,7 @@
      }
     }
    ],
-   "rewritten": "İngilizce hazırlık sınıfına devam etme imkânı bulunmakta mıdır?"
+   "rewritten": "İngilizce hazırlık sınıfına gitme imkanım bulunmakta mıdır?"
   },
   {
    "id": "faq-092",
@@ -1357,7 +1357,7 @@
      }
     }
    ],
-   "rewritten": "Başvuruyu yaptığım akademik dönemden itibaren mi eğitime başlayacağım?"
+   "rewritten": "Başvurduğum akademik dönemden itibaren mi eğitime başlayacağım?"
   },
   {
    "id": "faq-097",
@@ -1371,7 +1371,7 @@
      }
     }
    ],
-   "rewritten": "Bir önceki seferde Ek madde 1 kapsamında yatay geçiş yaptım. Aynı madde ile tekrar yatay geçiş talebinde bulunabilir miyim?"
+   "rewritten": "Bir önceki seferde Ek madde 1 kapsamında yatay geçiş yaptım. Aynı madde kapsamında tekrar yatay geçiş talebinde bulunabilir miyim?"
   },
   {
    "id": "faq-098",
@@ -1385,7 +1385,7 @@
      }
     }
    ],
-   "rewritten": "Ek madde 1 kapsamında yatay geçiş yaptıktan sonra eski bölüme geri dönüş talebinde bulunabilir miyim?"
+   "rewritten": "Ek madde 1 ile yatay geçiş yaptıktan sonra eski bölüme geri dönüş talebinde bulunabilir miyim?"
   },
   {
    "id": "faq-099",
@@ -1399,7 +1399,7 @@
      }
     }
    ],
-   "rewritten": "Aynı anda birden fazla programa yatay geçiş başvurusunda bulunabilir miyim?"
+   "rewritten": "Aynı anda birden fazla programa yatay geçiş başvurusu yapabilir miyim?"
   },
   {
    "id": "faq-100",
@@ -1441,7 +1441,7 @@
      }
     }
    ],
-   "rewritten": "Diplomamı kaybettim, bu durumda hangi adımları atmalıyım?"
+   "rewritten": "Diplomamı kaybettim, bu durumda ne adımlar atmalıyım?"
   },
   {
    "id": "faq-103",
@@ -1483,7 +1483,7 @@
      }
     }
    ],
-   "rewritten": "Herhangi bir yarıyılda kayıt yaptırmamış olsam bile bu süre, toplam öğrenim süreme dahil edilir mi?"
+   "rewritten": "Herhangi bir yarıyılda kayıt olmamış olsam bile bu, toplam öğrenim sürelerime dahil edilir mi?"
   },
   {
    "id": "faq-106",
@@ -1511,7 +1511,7 @@
      }
     }
    ],
-   "rewritten": "Azami süresi dolan öğrencilerin sınav yapabilme hakkı hangi koşullarda tanınır?"
+   "rewritten": "Azami süresi dolduğunda sınav yapabilme hakkı hangi öğrencilerin önüne açılır?"
   },
   {
    "id": "faq-108",
@@ -1539,7 +1539,7 @@
      }
     }
    ],
-   "rewritten": "Maksimum öğrenim süresini aşan öğrencilerin üniversiteyle ilişiği hangi durumlarda sonlandırılır?"
+   "rewritten": "Maksimum öğrenim süresini aştıktan sonra hangi öğrencilerin üniversiteyle ilişiği kesilir?"
   },
   {
    "id": "faq-110",
@@ -1553,7 +1553,7 @@
      }
     }
    ],
-   "rewritten": "Kişisel tercihimle öğrenim gördüğüm bölümle ilişiğimi kesmek için ne yapmam gerekir?"
+   "rewritten": "Şahsi tercihimle öğrenim gördüğüm bölümle ilişkimi sona erdirmek için ne yapmalıyım?"
   },
   {
    "id": "faq-111",
@@ -1595,7 +1595,7 @@
      }
     }
    ],
-   "rewritten": "Üniversiteden gelen haberler ve gerekli bilgilere nasıl ulaşabilirim?"
+   "rewritten": "Üniversiteden gelen haberlere ve gerekli bilgilere nasıl ulaşabilirim?"
   },
   {
    "id": "faq-114",
@@ -1651,7 +1651,7 @@
      }
     }
    ],
-   "rewritten": "Gerekenden daha fazla eğitim katkısı ödediysem bunu geri almak mümkün müdür?"
+   "rewritten": "Gerekenden fazla eğitim katkı payı ödediğim durumda, bu tutarı geri almak mümkün müdür?"
   },
   {
    "id": "faq-118",
@@ -1679,7 +1679,7 @@
      }
     }
    ],
-   "rewritten": "Derslere katılım zorunlu mudur?"
+   "rewritten": "Derslere katılım şart mıdır?"
   },
   {
    "id": "faq-120",
@@ -1707,7 +1707,7 @@
      }
     }
    ],
-   "rewritten": "Kayıt dondurmak için en fazla kaç yarıyıl izin alabilirim?"
+   "rewritten": "Kayıt dondurmak için maksimum kaç yarıyıl bekleyebilirim?"
   },
   {
    "id": "faq-122",
@@ -1735,7 +1735,7 @@
      }
     }
    ],
-   "rewritten": "Dondurulan yarıyılda harç veya ücret ödenmesi zorunlu mudur?"
+   "rewritten": "Dondurulan dönemde harç veya ücret ödenmesi zorunlu mudur?"
   },
   {
    "id": "faq-124",
@@ -1749,7 +1749,7 @@
      }
     }
    ],
-   "rewritten": "Kayıt dondurma döneminde öğrenci statüsüne bağlı avantajlardan faydalanabilir miyim?"
+   "rewritten": "Kayıt dondurma dönemlerinde öğrenci statüsüne bağlı avantajlardan faydalanabilir miyim?"
   },
   {
    "id": "faq-125",
@@ -1763,7 +1763,7 @@
      }
     }
    ],
-   "rewritten": "Dondurduğum yarıyıllar, toplam öğrenim süresine dahil edilir mi?"
+   "rewritten": "Dondurduğum dönemler toplam eğitim müddetine dahil olur mu?"
   },
   {
    "id": "faq-126",
@@ -1777,7 +1777,7 @@
      }
     }
    ],
-   "rewritten": "Yaz öğretiminde en fazla kaç ders alabilirim?"
+   "rewritten": "Yaz dönemi öğretiminde en fazla kaç ders alınabilir?"
   },
   {
    "id": "faq-127",
@@ -1875,7 +1875,7 @@
      }
     }
    ],
-   "rewritten": "Diplomamı kaybettim, yenisini almak için ne yapmalıyım?"
+   "rewritten": "Diplomamı kaybettim, yenisini almak için ne yapmam gerekiyor?"
   },
   {
    "id": "faq-134",
@@ -1903,7 +1903,7 @@
      }
     }
    ],
-   "rewritten": "Hangi ağırlıklı not ortalamasında mezun olabilirim?"
+   "rewritten": "Hangi ağırlıklı not ortalamasıyla mezun olabilirim?"
   },
   {
    "id": "faq-136",
@@ -1945,7 +1945,7 @@
      }
     }
    ],
-   "rewritten": "Kayıt yaptırılmayan yarıyıllar öğrenim süresi hesaplamasına dahil edilir mi?"
+   "rewritten": "Kaydı yapılmayan dönemler öğrenim süresi hesaplamasına dahil edilir mi?"
   },
   {
    "id": "faq-139",
