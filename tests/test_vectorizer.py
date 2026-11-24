@@ -88,7 +88,8 @@ def test_course_chunks_carry_prereqs_and_per_level_full_lists(tmp_path):
          "description": "Basic computer organization concepts. Pipelining.",
          "prerequisites": "CENG 214", "levels": ["lisans"],
          "department": "Bilgisayar Mühendisliği",
-         "source_url": "https://ceng.iyte.edu.tr/courses/ceng-311/"},
+         "source_url": "https://ceng.iyte.edu.tr/courses/ceng-311/",
+         "hours": "3+2", "credits": "4", "ects": "8", "semester": 5},
         {"code": "CENG 524", "name": "Advanced Computer Architecture",
          "description": "Advanced topics.", "prerequisites": None,
          "levels": ["yukseklisans", "doktora"],
@@ -101,11 +102,13 @@ def test_course_chunks_carry_prereqs_and_per_level_full_lists(tmp_path):
 
     c311 = next(c for c in chunks if c["metadata"]["code"] == "CENG 311")
     assert "Önkoşul: CENG 214" in c311["text"]
+    assert "Kredi: 4, AKTS: 8" in c311["text"]  # from the lisans curriculum
     assert c311["metadata"]["kind"] == "course"
     assert c311["metadata"]["source_url"].endswith("ceng-311/")
     c524 = next(c for c in chunks if c["metadata"]["code"] == "CENG 524")
     assert "yüksek lisans, doktora dersi" in c524["text"]
     assert "Önkoşul" not in c524["text"]
+    assert "Kredi" not in c524["text"]  # electives/grad courses: no plan row, no credits
 
     # absence/enumeration questions need the complete per-level catalog
     lists = [c for c in chunks if c["metadata"]["kind"] == "list"]

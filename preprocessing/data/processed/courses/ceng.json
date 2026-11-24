@@ -2,200 +2,272 @@
   {
     "code": "CENG 111",
     "name": "Concepts in Computer Engineering",
-    "description": "Basic computer knowledge: History of computing, terms and definitions, system components and processes, computer architecture, data storage, computer networks and internet, software engineering, problem solving and algorithm design, data structures, application fields of computers.",
+    "description": "An orientation course to provide counsel to the students about the Department and Computer Engineering in general. An introduction to the faculty and their activities. Visit to several Computer Centers in and outside the University. Basic computer literacy: terminology, system components and operation. Internet, HTML Coding and Java, Desktop Softwares, Windows- Unix-Dos Operating Systems, Library Usage. To be able to use main concepts of computer science. To be able to analyze problems and provide solutions to them. To be able to explain field of applications in computer engineering. Teaching the algorithmic thinking and design in a higher level.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-111/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 1
   },
   {
     "code": "CENG 112",
     "name": "Data Structures",
-    "description": "Basic concepts of data, data structures and data types: arrays, strings, linear structures, sequential searching and sorting techniques, stacks, queues, pointers, linked lists. Various forms of m-way search and B-trees.",
+    "description": "Basic concepts of data, data structures and data types: arrays, strings, linear structures, sequential searching and sorting techniques, stacks, queues, pointers, linked lists. Various forms of m-way search and B-trees. To be able to use and design abstract data structures. To be able to materialize array and list data types. To be able to design and analyze data structures and algorithms. To be able to design and materialize abstract data structures. To be able to materialize and use data structures and algorithms for search applications.",
     "prerequisites": "CENG 113",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-112/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 2
   },
   {
     "code": "CENG 113",
     "name": "Programming Basics",
-    "description": "Fundamentals of computer programming: sequence, decision, repetion, syntax, compilation, debugging and maintenance, procedures, parameters, arrays, object, top-down structured design, layout and style. The emphasis is on an engineering “right-first-time” approach to solving large problems using computers. Basic concepts of algorithmics and algorithmic terminologies.",
+    "description": "Fundamentals of computer programming: sequence, decision, repetion, syntax, compilation, debugging and maintenance, procedures, parameters, arrays, object, top-down structured design, layout and style. The emphasis is on an engineering “right-first-time” approach to solving large problems using computers. Basic concepts of algorithmics and algorithmic terminologies. To be able to provide algorithmic solutions for basic problems. To be able to use and explain main concepts of programming. To be able to design and apply decision structures. To be able to design and apply loop structures. To be able to monitor and analyze computer software. To be able to design, define and use functions. To be able to use recursive approach for problem solving. To be able to design, define and use class.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-113/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+2",
+    "credits": "4",
+    "ects": "6",
+    "semester": 1
   },
   {
     "code": "CENG 115",
     "name": "Discrete Structures",
-    "description": "Logic, propositions and proof methods. Sets. Functions, sequences and summations. Algorithms and complexity analysis. Integers and division. Matrices. Mathematical induction. Recursive definitions and algorithms. Probability theory. Counting techniques. Graphs. Trees.",
+    "description": "Sets, and Functions, The Fundamentals: Algorithms, the Integers, and Matrices, Methods of Proof, Mathematical Induction, Recursive Definitions, Recursive Algorithms, Program Correctness, Basics of Counting, The Pigeonhole Principle, Permutations and Combinations, Recurrence Relations, Divide-and-Conquer Relations, Inclusion-Exclusion, Relations and Their Properties, n-ary Relations, Representing Relations, Closures of Relations, Equivalence Relations, Partial Orderings, Graph Terminology, Representing Graphs and Graph Isomorphism, Connectivity, Euler and Hamiltonian Paths, Shortest Path Problems, Planar Graphs and Graph Coloring, Tree Traversal, Trees and Sorting, Spanning Trees, Minimum Spanning Trees, Boolean Functions and Their Representations, Minimization, Elements of Computability, Complexity Classes, P – NP – NP Completeness, Space Complexity, Number Conversion, Calculational Logi",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-115/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 1
   },
   {
     "code": "CENG 211",
     "name": "Programming Fundamentals",
-    "description": "Control Structures, Classes and Methods, Inheritance, Polymorphism, Interfaces, Exception Handling, Streams and File I/O, Recursion, Dynamic Data Structures and Generics.",
+    "description": "Ideas from object-oriented programming, methods, classes, information hiding, and inheritance; fundamental algorithms, sorting and searching; user defined classes; concept of recursion, benefits and problems; exception handling; using APIs; simple graphics programming; concept of software design. To be able to design object-oriented problem solutions. To be able to provide solutions by using object-oriented programming language. To be able to gain ability of objected-oriented programming with inheritance approach. To be able to gain ability of objected-oriented programming with abstraction approach. To be able to use data structures in an object-oriented manner.",
     "prerequisites": "CENG 113",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-211/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 3
   },
   {
     "code": "CENG 212",
     "name": "Concepts of Programming Languages",
-    "description": "In this course, the fundamental concepts of programming languages and different programming paradigms will be covered. Students will gain knowledge in the following areas: Introduction to Programming Languages: The history of programming languages, types, and fundamental features. Programming Language Syntax: The structure of programming languages, syntax rules, and structural elements of a language. Names, Scopes, and Bindings: Relationships between variables, functions, and other constructs, scope concepts, and how bindings work. Control Flow: Conditional statements, loops, and control structures for managing program flow. Functional Languages (Introduction to Scheme): Functional programming paradigm, features of functional languages, and an introduction to the Scheme language. Data Types: Definition of data types, basic data structures, and type conversions. Subroutines and Control Ab",
+    "description": "Syntax, semantics and pragmatics of programming languages. Data, storage and control. Binding of identifiers. Procedural abstraction. Definitions, sequences and concurrent processes. Types. Formal semantics. Study of key features of existing programming languages. To able to use languages belong to different programming paradigms. To able to easier to use a new programming language. To be able to explain compilation and execution steps of a program. To be able to implement high-level functions.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-212/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 4
   },
   {
     "code": "CENG 213",
     "name": "Theory of Computation",
-    "description": "Abstract automata, especially finite state machines; push-down automata; and Turing machines. Formal languages, especially context-free languages. The relationship between automata and languages. Computability and solvability.",
+    "description": "Abstract automata, especially finite state machines; push-down automata; and Turing machines. Formal languages, especially context-free languages. The relationship between automata and languages. Computability and solvability. To be able to classify language definitions. To be able to analyze problems and provide appropriate representations for them. To be able to show abstraction ability. To be able to identify some difficult problems in computer science.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-213/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 3
   },
   {
     "code": "CENG 214",
     "name": "Logic Design",
-    "description": "The course content provides the student with the basic knowledge, concepts and experiences required to understand and design computer architecture. The content includes theoretical and experimental studies such as boolean algebra, logic gates, multi-level logic gates, combinational arithmetic and logic systems, sequential logic, registers and counters, memory units and problem solving with programmable logic. The student’s ability to design logic and arithmetic circuits theoretically, test them and apply them in a laboratory environment is developed.",
+    "description": "Introduction to Computer Architecture. Number Systems. Boolean Algebra. Logic Gates and Flip Flops. Combinational and Sequential Circuit Design. Registers, Counters. Bus Transfer. RAM, ROM units. Instruction Execution and Hardwired Control. To be able to analyze and design combinational circuits. To be able to design arithmetic and logic processing units. To be able to understand fundamentals of memory units and programmable logic circuits and use them for a circuit design. To be able to design finite state machines and sequential logic circuits.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-214/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+2",
+    "credits": "4",
+    "ects": "6",
+    "semester": 4
   },
   {
     "code": "CENG 215",
     "name": "Circuits and Electronics",
-    "description": "Fundamentals of electric circuits, including the basic concepts (e.g. voltage, current, power), basic components (e.g. resistance, inductance, capacity, MOS transistor, operational amplifier), basic laws (e.g., Ohm’s law, Kirchhoff’s law, equivalent resistance exchange) and methods of circuit analysis. Transient analysis, frequency response, Laplace transforms, Fourier series, introduction to electronic materials and devices, diodes, bipolar transistors and logic families, MOS technology.",
+    "description": "Fundamentals of electric circuits, including the basic concepts (e.g. voltage, current, power), basic components (e.g. resistance, inductance, capacity, MOS transistor, operational amplifier), basic laws (e.g., Ohm’s law, Kirchhoff’s law, equivalent resistance exchange) and methods of circuit analysis. Transient analysis, frequency response, Laplace transforms, Fourier series, introduction to electronic materials and devices, diodes, bipolar transistors and logic families, MOS technology. 1.To be able to analyse circuits and devise solutions to design problems. 2.To be able to design and conduct experiments, to be able to interpret the results. 3.To be able to analyse and use fundamental electronics equipment, to design electronic circuits. 4.To be able to realize logic gates based the fundamentals of digital electronics.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-215/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+2",
+    "credits": "4",
+    "ects": "6",
+    "semester": 3
   },
   {
     "code": "CENG 216",
     "name": "Numerical Computation",
-    "description": "Surveys and applications of numerical techniques related to matrix inversion, systems of linear equations and optimization, finite difference expressions, interpolation and approximation, numerical differentiation and integration. The problems of speed, accuracy and applicability of the topics are examined with related algorithms. The applications of these numerical methods and subjects on computers using efficient programming techniques and with necessary programming languages.",
+    "description": "Surveys and applications of numerical techniques related to matrix inversion, systems of linear equations and optimization, finite difference expressions, interpolation and approximation, numerical differentiation and integration. The problems of speed, accuracy and applicability of the topics are examined with related algorithms. The applications of these numerical methods and subjects on computers using efficient programming techniques and with necessary programming languages. To be able to explain effects of finite representation of real numbers for a given algorithm. To be able to find numerical errors in calculations and compare numerical errors of different algorithms for the same problem. To be able to solve numerical problems that include derivative, integral, interpolation and/or optimization. To be able to apply recursive solutions to numerical problems. To be able to implement",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-216/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 4
   },
   {
     "code": "CENG 218",
     "name": "Analysis and Design of Algorithms",
-    "description": "The role of algorithms in computing, Growth of functions, recurrences, probabilistic analysis and randomized algorithms, dynamic programming, greedy algorithms, advanced data structures, graph algorithms, NP-Completeness.",
+    "description": "The role of algoritms in computing, Growth of functions, recurrences, probabilistic analysis and randomized algorithms, dynamic programming, greedy algorithms, advanced data structures, graph algorithms, NP-Completeness. To be able to provide solutions for problems with an algorithmic approach. To be able to identify algorithm design options for a given problem. To be able to analyse complexity of applications.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-218/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 4
   },
   {
     "code": "CENG 222",
     "name": "Probability and Statistics",
-    "description": "This course provides an elementary introduction to probability and statistics with an emphasis on experimentation using computer programming. Topics: permutation, combination, random variables, probability distributions, Bayesian inference, hypothesis testing and confidence intervals.",
+    "description": "Elementary probability theory, conditional probability and independence, random variables, distribution functions, joint and conditional distributions, law of large numbers, central limit theorem, parameter estimation, confidence intervals, and hypothesis testing. 1.To be able to explain and apply the concepts of probability and random variables. 2.To be able to describe and use common probability distributions and their properties. 3.To be able to employ descriptive statistics. 4.To be able to estimate distribution parameters. 5.To be able to calculate confidence intervals. 6.To be able to conduct hypothesis testing. 7.To be able to utilize computation as a tool to explore concepts in probability and statistics and to do quantitative analysis.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-222/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "5",
+    "semester": 4
   },
   {
     "code": "CENG 311",
     "name": "Computer Architecture",
-    "description": "Basic computer organization concepts. Instruction set architecture. Assembly-level programming. Processor design. Pipelining. Data and control hazards. Memory hierarchy and cache. Parallelism and system performance.",
+    "description": "Basic computer organization and design. Instruction fetch, decode and execution. CPU organization. Hardwired and microprogrammed control organization. Arithmetic algorithms and arithmetic processor design. Input-Output organization. Memory organization, virtual memories, caches, and their management. Machine language and assembly language. Instruction formats and addressing modes. Survey of computer architectures: Von Neumann, Parallel and RISC. Pipelining and other advanced techniques for performance improvements. Introduction to parallel computing, interconnection networks, and multiprocessors. 1.To be able to design general purpose and dedicated microprocessors. 2.To be able to realize and test designed microprocessor. 3.To be able to develop programs in Assembly language.",
     "prerequisites": "CENG 214",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-311/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+2",
+    "credits": "4",
+    "ects": "8",
+    "semester": 5
   },
   {
     "code": "CENG 312",
     "name": "Computer Networks",
-    "description": "Overview of computer networks; packet switching, Internet, layered architecture; network applications; web, email, domain name system; reliable data transfer, congestion and flow control, UDP, TCP; switching, forwarding, routing, IP; medium access control, local area networks, Ethernet. LECTURES 3 hours each week OBJECTIVE To equip students with fundamental knowledge of computer networks. 1. Understand the general structure of computer networks and the layered architecture. 2. Examine the operating principles of fundamental network protocols. 3. Analyze the algorithms used for routing, congestion control, flow control, medium access control. LEARNING OUTCOMES 1. Ability to analyze communication systems using fundamental concepts of communication. 2. Ability to analyze the layered network model and Internet protocols. 3. Ability to design networks and protocols. TEXTBOOK Computer Networki",
+    "description": "Overview of computer networks: Network architecture and the ISO-OSI model. Circuit switching, packet switching. Network topology: Connectivity analysis, delay analysis and backbone analysis. Physical layer: Transmission and multiplexing, terminal handling, errors. Data link layer and link protocols. Network layer: Routing and congestion, satellite and packet radio networks, local networks. Transmission and session layer, presentation layer, application layer. Ethernet, token ring networks, protocols, discussion of some networks and their properties, network planning and management. 1.To be able to analyse systems using fundamental concepts of communication. 2.To be able to analyse layered network architecture and Internet protocols. 3.To be able to realize the designed networks and protocols.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-312/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "7",
+    "semester": 6
   },
   {
     "code": "CENG 315",
     "name": "Information Management",
-    "description": "Introduction to Database Management Systems, Architecture of Database Management Systems, Relational Model, Relational Database Design, Relational Algebra, SQL (DML), SQL (DDL), Normalization, Consistency and Security, Query Optimization, Concurrency, Term Projects",
+    "description": "Relevance of information management in the context of computer engineering; introduction to database systems and the relational model; normal forms and their benefits; building databases, underlying methodology, database languages; issues associated with information retrieval; SQL, its use and power; information systems in the context of networks, intranets, extranets; special systems and applications; particular issues, access, security, and integrity; relevant legal and ethical issues. 1. To be able to design a relational database. 2.To be able to create a relational database. 3.To be able to learn relational algebra and SQL. 4.To be able to learn how to apply normalization to databases. 5.To be able to learn database concurrency methods. 6.To be able to learn methods to provide consistency and privacy in databases. 7.To be able to learn project development and presentation capability ",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-315/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6",
+    "semester": 5
   },
   {
     "code": "CENG 316",
     "name": "Software Engineering",
-    "description": "Reference Standards – Software Design: IEEE STD 1016 – Systems Design—Software Design Descriptions – Software Test: IEEE STD 29119 – Software and Systems Engineering — Software Testing",
+    "description": "Software engineering, role of software engineers; evaluation of software and principles thereof, software lifecycle models; notions of requirements, specification, design implementation; main techniques; importance of maintenance; quality concerns at all stages of the software development process; important benefits of and good practice in software re-use; verification and validation; the use of metrics; structure of teams; human computer interface as a software engineering activity. To be able to identify requirements for a given project topic. To be able to find difference between functional and non-functional requirements in a project. To be able to make software design with an object-oriented approach. To be able to write project definition. To be able to use and apply software process model.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-316/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6",
+    "semester": 6
   },
   {
     "code": "CENG 318",
     "name": "Human Computer Interaction",
-    "description": "A review of HCI concepts and history, input devices and interaction techniques, information appliances, user interface design paradigms, 3D user interfaces, adaptive interfaces, user modeling, speech recognition and conversational interfaces, wearable computers, multimodal interfaces, and perceptual interfaces.",
+    "description": "A review of HCI concepts and history, input devices and interaction techniques, information appliances, user interface design paradigms, 3D user interfaces, adaptive interfaces, user modeling, speech recognition and conversational interfaces, wearable computers, multimodal interfaces, and perceptual interfaces. 1.To be able to gain an understanding of human-computer interaction theory and research. 2.To be able to recognize the impact of system design on users’ attitudes and behaviors. 3.To be able to describe user-centered design and evaluation processes. 4.To be able to employ user-centered design processes in designing and building systems.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-318/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6",
+    "semester": 6
   },
   {
     "code": "CENG 322",
     "name": "Operating Systems",
-    "description": "The course provides the main operating system functionalities and implementation details. It covers basic operating systems concepts, introduces process concepts and process management policies, discusses main memory and virtual memory techniques, and storage and I/O management issues.",
+    "description": "Classification and structure of operating systems. Storage media, memory management and dynamic storage strategies. Scheduling algorithms. I/O and interrupt structures. Protection and security. Queueing and network control models. System software: Linkers, loaders, assemblers, translators and programming environments. Case studies of existing operating systems and implementation of operating system modules. To be able to learn principles of operating systems. To be able to analyze and identify corresponding problems for the platforms including operating systems. To able to compare different solution methods for problems of operating system and select the most appropriate one. Restricted Elective I (3+0)3 6 Ects (CENG 323 Project Management) This course is designed to introduce the engineering students to economic and management concepts. Topics will include economic concepts such as; cas",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-322/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+2",
+    "credits": "4",
+    "ects": "8",
+    "semester": 6
   },
   {
     "code": "CENG 323",
@@ -211,101 +283,128 @@
   {
     "code": "CENG 370",
     "name": "Mainframe Computing",
-    "description": "Mainframe Computers, Hercules mainframe emulator, VM/SP Operating System, GCS/RSCS, Rexx and COBOL Programming",
+    "description": "This course introduces students to the fundamentals of mainframe computer systems, including their history and their current implementations on personal computers. 1. Learn the workings of the IBM mainframe operating systems 2. Be able to operate, network and administer a mainframe operating system 3. Be able to identify and write programs in Rexx and in COBOL language on the mainframe 4. Be able to present project results",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-370/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 381",
     "name": "Stochastic Processes",
-    "description": "A brief review of the concepts of probability, random variables, and parameters; probability distributions; moments; inequalities related to probabilities; the central limit theorem; stochastic processes; the Poisson process; birth-death processes; Markov chains; an introduction to queueing theory and its fundamental concepts; Little’s Law; and M/M/1 queueing systems.",
+    "description": "Probability spaces, random variables, distribution and density functions, random vectors, sequences of random variables, convergence notions, the central limit theorem, the law of large numbers, stochastic processes, stationary notions, Poisson processes, Gaussian processes, transformations of stochastic processes, ergodicity, second order random processes, representation theorems, Markov processes, homogeneous Markov models and applications. 1. The ability to understand and define random variables. 2. Gaining knowledge of stochastic processes and the ability to perform basic analyses. 3. The ability to understand queueing systems and to analyze simple queueing models. 4. The ability to compute and analyze certain performance criteria in queueing systems.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-381/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 382",
     "name": "Information Theory",
-    "description": "An introduction to Shannon’s information theory and elementary binary coding schemes with and without noise. The concept of information, entropy, simple sources, Markov sources, continuous sources, information channels, average error, ambiguity, transformation, capacity, noiseless coding, Kraft-McMillan theorem, Shannon-Fano and Huffmann coding schemes, error-correcting codes, linear codes, cyclic codes. Data Compression.",
+    "description": "An introduction to Shannon’s information theory and elementary binary coding schemes with and without noise. The concept of information, entropy, simple sources, Markov sources, continuous sources, information channels, average error, ambiguity, transformation, capacity, noiseless coding, Kraft-McMillan theorem, Shannon-Fano and Huffmann coding schemes, error-correcting codes, linear codes, cyclic codes. Data Compression. 1. To do analyzing and modeling by using of fundamental concepts of information theory for signal processing and communication. 2. Analyzing, defining and doing research capability for the new requirements of information theory depend on technological evolution. 3. To have the ability for analyzing, developing and using of information theory for interdisciplinary projects. 4. To be able to measure and analyse the signal proceesing and communication quality and efficienc",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-382/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 383",
     "name": "Real-Time Systems",
-    "description": "Specification and verification techniques for real-time systems with many interacting components. formal design of real-time systems using (a) programming languages with unambiguous semantics of time – related behavior and (b) scheduling algorithms. Real-time operating systems, concepts of programming languages for real-time systems. Synchronous programming languages for reactive systems and their mathematical background. Software development for real-time systems.",
+    "description": "Specification and verification techniques for real-time systems with many interacting components. formal design of real-time systems using (a) programming languages with unambiguous semantics of time – related behavior and (b) scheduling algorithms. Real-time operating systems, concepts of programming languages for real-time systems. Synchronous programming languages for reactive systems and their mathematical background. Software development for real-time systems. 1. To classify various kinds of real-time systems 2. To identify real-time sytems and design by formal techniques. 3. To be able to create real-time kernels, and to develop programmes on operating systems 4. To demonstrate the ability to use formal methods",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-383/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 384",
     "name": "Microprocessors",
-    "description": "8051 hardware and software. 8051 assembly language. 8051 architecture. 8051 I/O port programming, timer programming, serial port programming, interrupt control.",
+    "description": "Elements of microprocessors and microcomputers, software and hardware for microprocessors; microcontrollers; embedded system design with microcontrollers, memory interface, analog- digital input/output interfaces and interrupt interface of typical microprocessors/controllers; programming with assembly and high level languages; real-time working, real-time operating systems; design of single and general purpose microprocessor/controllers using FPGAs; system control, analysis of feedback control systems, controller design; data acquisition, fundamentals of digital signal processing. 1. Teaching 8051 programming with assembly language. 2. Explain and compare the concepts of microprocessor and microcontroller. 3. To teach the 8051 microcontroller family and its architecture. 4. Explain the software and hardware features of 8051.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-384/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 385",
     "name": "Mathematical Logic",
-    "description": "Using propositional, predicate and temporal logics, in order to logically analyse, specify and solve complex problems. Course Contents 1.Specify in mathematical logics sentences given in natural languages 2.Infer mathematical conclusions from specifications given in mathematical logics 3.Specify mathematically uncertainty, multi-valence interpretation and temporal change of complex problems 4.Solve sample complex problems using automated reasoning applications",
+    "description": "Propositional logic: syntax, semantics, decision procedures; first-order logic: syntax, semantics, definability, formal system, completeness, undecidability, incompleteness; second-order logic; advanced topics: many-valued logic, modal logic, temporal logic, fuzzy logic. 1. Resolve ambiguities in natural language sentences 2. Specifies problems in mathematical logics 3. Explains mechanisms for automated reasoning 4. Develops logical systems",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-385/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 386",
     "name": "Fuzzy Logic Systems",
-    "description": "Analyse the mathematical basics of fuzzy logics; analyse properties of theoretical fuzzy logical systems; model flexible human logics using fuzzy systems; develop applications of sample fuzzy systems.",
+    "description": "Fuzzy set theory, fuzzy relations, fuzzy rule base, approximate reasoning, fuzzy control, fuzzy logic system design. 1. Model adaptive logic using fuzzy logic 2. Simulate flexible system behaviours using fuzzy logic 3. Develop possibilistic systems 4. Evaluate reasonable system behaviour",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-386/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 388",
     "name": "Web Programming",
-    "description": "Web and .NET framework, software development with ASP.NET, web services programming, MVC programming.",
+    "description": "During this course, we will be creating and maintaining a web server, creating HTML pages and learn how to program effectively in PHP. We will create a web site of your choosing as Project. 1. To introduce Web software development with ASP .NET 2. To describe Web software development methodologies on .NET platform 3. To provide students with the fundamental concepts of Web Services 4. To demonstrate software project development with MS Visual Studio",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-388/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 389",
     "name": "Mobile Application Development",
-    "description": "This course covers the fundamentals of programming mobile devices, how to access and use mobile device hardware, and the interaction between mobile apps and web services. Topics include the design and implementation of user interfaces on the Android platform, cross-platform mobile application development, and programming with sensor such as the camera and the GPS.",
+    "description": "This course covers the fundamentals of programming mobile devices, how to access and use mobile device hardware, and the interaction between mobile apps and web services. Topics include the design and implementation of user interfaces on the Android platform, cross- platform mobile application development, and programming with sensor such as the camera and the GPS. 1. Be able to explain the fundamental concepts of mobile device programming 2. Be able to design and implement mobile application user interfaces 3. Be able to design and implement mobile applications that utilize network services 4. Be able to analyze the user experience of mobile applications",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-389/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 390",
@@ -316,29 +415,38 @@
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-390/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 391",
     "name": "Introduction to Image Understanding",
-    "description": "This course covers the basic image processing techniques and approaches for image content analysis.. The course content includes memory representation of images, basic image processing techniques, keypoint extraction and description, image matching and fundamentals of camera geometry.",
+    "description": "This course covers the basic image processing techniques and approaches for image content analysis.. The course content includes memory representation of images, basic image processing techniques, keypoint extraction and description, image matching and fundamentals of camera geometry. 1. To be able to apply image analysis methods to industrial problems 2. To be able to compare different image content analysis methods for a given problem 3. To be able to use basic image processing methods in problem solving 4. To be able to list basic image processing methods and their features CENG398 Applied Generative AI for the Workplace (3+0)3 6 Akts Generative AI (GenAI) is transforming the way businesses operate accelerating content creation, automating knowledge work, personalizing customer experiences, and driving product and service innovation. This module introduces students to the business pot",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-391/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 399",
     "name": "Concepts of Artificial Intelligence",
-    "description": "This course is a service course offered by the Department of Computer Engineering at İzmir Institute of Technology for students from different disciplines. It is designed as an application-oriented introductory course that aims to introduce artificial intelligence through its basic concepts, methods, and application areas rather than through technical details. The course content begins with the basic concepts of artificial intelligence and machine learning, and continues with data representation, data preprocessing, visualization, classification, regression, clustering, and model validation. In the following weeks, artificial neural networks, an introduction to deep learning, generative artificial intelligence, large language models, discipline-specific applications, case studies, and responsible AI are covered. Practical exercises will make use of tools such as Python, Jupyter Notebook,",
+    "description": "This course provides an introductory and interdisciplinary overview of Artificial Intelligence with a particular focus on the foundations of machine learning. It explores the evolution, principles, and applications of intelligent systems that learn from data to make decisions and predictions. The course examines data representation, supervised and unsupervised learning approaches, and model evaluation techniques. It introduces essential algorithms for classification, regression, and clustering, as well as the basic logic of neural networks and deep learning. Students also explore applications of AI in areas such as natural language processing, computer vision, and data-driven problem solving across engineering, science, and management disciplines. Ethical and societal considerations, including bias, fairness, and data privacy, are integrated throughout.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-399/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 400",
@@ -349,40 +457,56 @@
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-400/"
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-400/",
+    "semester": 7,
+    "hours": "",
+    "credits": "0",
+    "ects": "4"
   },
   {
     "code": "CENG 411",
     "name": "Professional Issues in Computer Engineering",
-    "description": "Study of the larger ethical and social issues of computing, including the role of a digital society in the modern world. Practical and theoretical applications of computer privacy and security, including network security measures and encryption protocols. Ethical theory and its application to problems in computing. Seminar discussion on valuesystems, social impact, and human factors, and about use and misuse of computers.",
+    "description": "Critical examination of ethical problems associated with computer engineering; discussion of these problems conducted within the framework of classical philosophical ethical theories; legal and quasi-legal (i.e., policy and regulative) issues; topics addressed include the process of ethical decision-making, privacy and confidentiality, computer crime, professional codes and responsibilities, professional practice, system security, impact of computers on society. 1.To be able to understand ethical issues in information technology. 2.The internalization of general ethical issues. 3.To be able to understand basics of privacy. 4.To be able to understand basics of property rights.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-411/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6",
+    "semester": 7
   },
   {
     "code": "CENG 415",
     "name": "Senior Design Project & Seminar I",
-    "description": "Writing technical reports, project management and planning, system analysis, requirement analysis, engineering ethics, data design, software design, presenting a project",
+    "description": "Writing technical reports, project management and planning, system analysis, requirement analysis, engineering ethics, data design, software design, presenting a project 1.To be able to identify problem. 2.To be able to analyze the problem, to define the scope, constraint, requirements, to be able to design a solution. 3.To be able to design a solution that is innovative, sustainable and beneficial to the environment and society. 4.To be able to learn and use new methods and technologies. 5.To be able to gain teamwork skills. 6.To be able to present written and oral presentation skills of the project. 7.To be able to describe the concepts about entrepreneurship and innovation.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-415/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "8",
+    "semester": 7
   },
   {
     "code": "CENG 416",
     "name": "Senior Design Project & Seminar II",
-    "description": "Invited speakers, change management, coding documentation, coding standards, testing, reliability, security, protyping, user manuals, group demos.",
+    "description": "Invited speakers, change management, coding documentation, coding standards, testing, reliability, security, protyping, user manuals, group demos 1.To be able to identify problem. 2.To be able to analyze the problem, define the scope, constraint, requirements, and design a solution. 3.To be able to design a solution that is innovative, sustainable and beneficial to the environment and society. 4.To be able to learn and use new methods and technologies. 5.To be able to gain teamwork skills. 6.To be able to present written and oral presentation skills of the project.",
     "prerequisites": "CENG 415",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-416/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "8",
+    "semester": 8
   },
   {
     "code": "CENG 418",
@@ -398,24 +522,30 @@
   {
     "code": "CENG 421",
     "name": "Network Programming",
-    "description": "This course covers all aspects of TCP/IP and network programming. Starting with a review of IP and TCP, including its services and Ipv6, we will then learn about socket programming, web programming (PHP and MySQL), and time permitting, we will be exploring new trends in networking and programming.",
+    "description": "This course covers all aspects of TCP/IP and network socket programming. Starting with a review of IP and TCP, including its services and IPv6, we will then learn about socket programming and time permitting, we will be exploring new trends in networking and programming. 1. To acquire knowledge on TCP/P layers and its applications 2. To program in C/C++ using TCP sockets 3. To be able to create a full-fledged web site using PHP, MySQL and HTML 4. To improve the student s ability to write programs",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-421/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 422",
     "name": "Network Design & Management",
-    "description": "LAN/WAN analysis and design; LAN standards, internetworking, recent technologies, LAN design procedures; WAN design, network services, WAN design procedures; LAN management, SNMP (simple network management protocol); design tools, network simulators.",
+    "description": "LAN/WAN analysis and design; LAN standards, internetworking, recent technologies, LAN design procedures; WAN design, network services, WAN design procedures; LAN management, SNMP (simple network management protocol); design tools, network simulators. 1. To have the necessary knowledge and experience to design LANs and WANs 2. To demonstrate the ability of analysing and configuring network protocols 3. To demonstrate the ability of designing a new protocol 4. To have the experience and familiarity with simulators and other tools to analyse and design networks 5. To know the fundamentals of network security",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-422/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 424",
@@ -431,343 +561,464 @@
   {
     "code": "CENG 431",
     "name": "Building Software Systems",
-    "description": "Object oriented analysis and design. UML usage. Advanced topics of object oriented programming. Software reuse, refactoring, unit testing. Fundamental design patterns. Software components, libraries and framework usage and ve creation.",
+    "description": "Concepts of open source, shareware, freeware; issues of quality, conditions of use, availability; issues of software reuse; program libraries, software components; creation of additional libraries and other components; application program interfaces; use of separate compilations; use of software libraries and other software components; problems of building large systems; assessment of software including interfaces such as metrics and measures; criteria; simple principles of interface design; multimedia issues; special problems associated with color, sound, video and multimedia; advanced issues in object-oriented programming, modularity, storage management issues, parallelism; client server computing, different kinds of servers, the role of middleware; overview of the software support needed for client services and server services; illustrations of the use of object oriented techniques ap",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-431/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 432",
     "name": "Fundamentals of Enterprise Application Development",
-    "description": "Course Objectives: The objective of this course is to explain the Enterprise Applications, their usage areas and development methods. Students will be familiar with different types of Enterprise Applications, especially Enterprise Resource Planning (ERP) systems and its modules via SAP, which is one of the most common commercial ERP package programs. They will also learn basics of SAP ABAP, the popular enterprise programming language. WEEK COURSE OUTLINE CONTENT 1 Introduction to Enterprise Applications Introduction to Enterprise Application Development 2 Enterprise Applications Evolution, Integration & Implementation Methodologies Enterprise Applications Evolution – MRP & ERP 3 Enterprise Applications Evolution – HRM & SCM & CRM & PLM 4 Enterprise Applications Structure and Integration Methodologies 5 Enterprise Application Projects Implementation Methodologies 6 SAP S/4 Hana Introducti",
+    "description": "This course explores advanced application development techniques in a large enterprise-wide setting. Topics include agile software development, multi-tier applications, server side programming, transaction processing, web programming, application installation and deployment issues. 1. To be able to define and explain different types of Enterprise Applications 2. To be able to describe the development and implementation strategies of Enterprise Applications 3. To be able to demonstrate configuration, customization and programming of Enterprise Applications with examples using SAP sources",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-432/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 433",
     "name": "Scalable Software Development for Internet",
-    "description": "Logical / physical arhitecture design and server components, performance measurement, advanced caching strategies, horizontal scaling with MySQL and handling peak load.",
+    "description": "Logical / physical arhitecture design and server components, performance measurement, advanced caching strategies, horizontal scaling with MySQL and handling peak load. 1. To be able implement sites that can scale up to thousands of concurrent users 2. To develop a project on Play Framework. 3. To be able implement various cache mechanisms 4. To be able to perform horizontal scaling with MySQL and handling peak load",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-433/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 434",
     "name": "Enterprise Application Integration",
-    "description": "This course topics include types of enterprise application integration, their design and implementation issues as well as their qualites such as security, reliability and fault tolerance.",
+    "description": "This course topics include types of enterprise application integration, their design and implementation issues as well as their qualites such as security, reliability and fault tolerance. 1. Use web service based programming techniques. 2. Know and compare different enterprise software integration approaches. 3. Analyze enterprise integration problems, design and implement solutions. 4. Demonstrate the ability to abstract in enterprise integration context. 5. Apply enterprise applicaton integration methods to real world problems.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-434/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 435",
     "name": "Database System Design and Implementation",
-    "description": "Revisiting database systems, data definition, relational algebra, disk management, file management, memory management, transaction management, record management, metadata management, query processing, parsing, planning, database server, indexing, query optimization",
+    "description": "This course will cover a number of advanced topics in database management systems and modern database applications. The specific topics include advanced concurrency control techniques, query processing and optimization strategies for relational database systems, advanced indexing methods, parallel and distributed database systems, next-generation data models, data mining on large databases, data on the web, and topics in data security and privacy. 1. To install SimpleDB database management system, customize it as required 2. To develop applications that realize all the functions of a database management system 3. To learn the approaches and methods behind the functions of a database management system 4. Finding, implementing and presening solution to an engineering problem by means of software development in a team",
     "prerequisites": "CENG 315",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-435/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 436",
     "name": "Distributed Information Management",
-    "description": "This course investigates principles of distributed database systems including design and architecture, security, integrity, query processing and optimization, transaction management, concurrency control, and fault tolerance. The course blends theory with practice in that each student will use distributed database concepts to develop a JDBC application and to implement a JDBC driver onto Web-based distributed databases.",
+    "description": "This course investigates principles of distributed database systems including design and architecture, security, integrity, query processing and optimization, transaction management, concurrency control, and fault tolerance. The course blends theory with practice in that each student will use distributed database concepts to develop a JDBC application and to implement a JDBC driver onto Web-based distributed databases. 1. Learn design and planning principles of distributed database management systems 2. Gain the ability of creating and using distributed database 3. Learn the methods to provide consistency and security methods in distributed database management systems 4. Learn query optization in distributed databases in detail 5. Gain the skills to prepare projects as teams",
     "prerequisites": "CENG 315",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-436/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 437",
     "name": "Software Quality Management",
-    "description": "This course covers the topics of software quality management, quality management paradigms (CMMI, ISO, IEEE), methods used in quality management, enhancement of quality process, management of quality cost, error, preventive error avoidance.",
+    "description": "This course covers the topics of software quality management, quality management paradigms (CMMI, ISO, IEEE), methods used in quality management, enhancement of quality process, management of quality cost, error, preventive error avoidance. 1. Ability to explain the components of Software Quality Assurance 2. Ability to apply quality components starting from the early stages of the Project 3. Ability to measure the effectiveness of Software Quality Assurance processes 4. Ability to control the impact of Software Quality 5. Assurance processes on the project budget and schedule",
     "prerequisites": "CENG 316",
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-437/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 441",
     "name": "Introduction to Parallel Programming",
-    "description": "Introduction to the programming techniques to effectively utilize modern multicore computers. Identifying the parallelism, naming shared data, synchronizing threads, the latency and bandwidth associated with communication, analyzing & improving parallel performance, parallel programming tools, miscallenous lab works & exercises.",
+    "description": "Introduction to the programming techniques to effectively utilize modern multicore computers. Identifying the parallelism, naming shared data, synchronizing threads, the latency and bandwidth associated with communication, analyzing & improving parallel performance, parallel programming tools, miscallenous lab works & exercises. 1. Analyze the requirements for the usage of parallel programming models and efficiently implement them. 2. Comparing different parallel programming methodologies and tools, then effectively take a decision which one will be used. 3. Efficiently analyzing and conversion of sequential algorithm to parallel algorithm. 4. Analyze the efficiency of a parallelized",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-441/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 442",
     "name": "Multicore Architectures and Operating Systems",
-    "description": "An evolutionary approach to the multicore architectures, integration of multicore architectures with operating systems, OS kernel design for multiprocessors and multithreding, OS support for threads, User level threads, Kernel level threads, An example: Solaris threads, Threads and libraries, Hardware support for multithreading in a uniprocessor and in a multiprocessor.",
+    "description": "An evolutionary approach to the multicore architectures, integration of multicore architectures with operating systems, OS kernel design for multiprocessors and multithreding, OS support for threads, User level threads, Kernel level threads, An example: Solaris threads, Threads and libraries, Hardware support for multithreading in a uniprocessor and in a multiprocessor. 1. Analyze and implement the design steps of computer architecture by using different multicore architecture models. 2. Analyzing the components of the operating systems for multicore architectures. 3. Analyzing hardware design problems of multicore architectures. 4. Analyzing the limits of solutions and restrictions of operating systems for different multicore architecture models.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-442/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 443",
     "name": "Heterogenous Parallel Programming",
-    "description": "The course provides GPU-based heterogeneous programming basics. It covers the basic concepts of parallel architectures and parallel programming, CUDA programming model topics, and practical examples by presenting the fundamentals of accelerated computing with CUDA.",
+    "description": "Heterogeneous GPU architecture, GPU programming models and techniques, CUDA programming. 1. To demonstrate the ability to design and implement programs for heterogeneous parallel programming platforms 2. To demonstrate the experience to apply the parallel programming patterns on various programming problems 3. To be able to analyze the parallel program performance and make performance optimizations",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-443/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 444",
     "name": "Parallel Programming Patterns",
-    "description": "The course presents basic parallel algorithm design skills and parallel programming patterns. It covers the basic concepts of parallel architectures and parallel programming, OpenMP programming model topics, and control and data patterns by presenting the fundamentals of parallel software development.",
+    "description": "Paralel programming, concurrency, task parallelism, synchronization patterns. 1. To Be able to understand the parallel programming problems and related patterns 2. To demonstrate the experience to apply the parallel programming patterns on various programming problems 3. To be able to make a qualitative evaluation of different programming patterns and models",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-444/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 451",
     "name": "Advanced Digital System Design",
-    "description": "Finite state machine design and analysis; high-level hardware description languages, VHDL, automated synthesis in design; digital integrated circuit design and advanced design principles; electrical properties of digital circuits, synchronous and asynchronous circuits, computer arithmetic, and interfacing to external circuitry, digital system testing and design for testability; implementation of embedded computing systems in terms of Application Specific Integrated Circuits; Design for reuse.",
+    "description": "Finite state machine design and analysis; high-level hardware description languages, VHDL, automated synthesis in design; digital integrated circuit design and advanced design principles; electrical properties of digital circuits, synchronous and asynchronous circuits, computer arithmetic and interfacing to external circuitry, digital system testing and design for testability; implementation of embedded computing systems in terms of Application Specific Integrated Circuits; Design for reuse. 1. Ability to analyze complex digital circuits 2. Ability to design complex digital circuits 3. Demonstrating the ability to use VHDL in hardware design 4. Having fundamental knowledge of digital signal processing 5. Ability to use design tools",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-451/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 452",
     "name": "Building Software for Embedded Systems",
-    "description": "Design and implementation of software for programmable embedded systems; software tools such as compilers, schedulers, code generators, and system-level design tools; data-flow and control models of computation and software synthesis for uniprocessor and multiprocessor architectures; synchronous/reactive languages and their mathematical properties; implementation of signal processing, communication and control algorithms using variety of technologies such as digital signal processors, microcontrollers, FPGAs, ASICs and real-time operating systems; real-time kernel design; software implemented fault-tolerance techniques.",
+    "description": "Design and implementation of software for programmable embedded systems; software tools such as compilers, schedulers, code generators, and system-level design tools; data-flow and control models of computation and software synthesis for uniprocessor and multiprocessor architectures; synchronous/reactive languages and their mathematical properties; implementation of signal processing, communication and control algorithms using variety of technologies such as digital signal processors, microcontrollers, FPGAs, ASICs and real-time operating systems; real-time kernel design; software implemented fault-tolerance techniques. 1. Have knowledge on the requirements of embedded software development 2. Have knowledge on various standards and tools 3. Be able to analyze and design common algorithms used in various embedded systems 4. Be able to use the knowledge of software verification, validation",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-452/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 461",
     "name": "Artificial Intelligence",
-    "description": "Declarative programming; problem solving; knowledge representation; reasoning; acting logically; uncertainty; learning; communicating.",
+    "description": "Declarative programming; problem solving; knowledge representation; reasoning; acting logically; uncertainty; learning; communicating. 1. Comprehension of different artificial intelligence techniques used for simulation of human behavior 2. Interpretation of traditional artificial intelligence methods based on mathematical logic 3. Construction of intelligent behavior with respect to hybrid application of artificial intelligence methods 4. Demonstration of applications with the use result-oriented languages based and hybrid techniques",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-461/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 462",
     "name": "Soft Computing",
-    "description": "This course introduces students to the many concepts and techniques in Artificial Intelligence (AI). Topics covered include: problem spaces and search, heuristic search techniques, predicate logic, game playing techniques, planning, learning, natural language processing, and machine perception",
+    "description": "Artificial neural networks; evolutionary computation; fuzzy systems. 1. Effectively use evolutionary computation in applications 2. Effectively use artificial neural networks in applications 3. Effectively use fuzzy logic in applications 4. By using these meta heuristics, provide applications with smart behaviours",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-462/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 463",
     "name": "Introduction to Machine Learning",
-    "description": "An introduction to the machine learning with examples in different application areas. Bayesian decision theory. Supervised learning techniques. Model selection. Dimensionality reduction. Clustering. Support vector machines. Graphical models. Introduction to neural networks. Reinforcement learning.",
+    "description": "An Introduction to the machine learning with examples in different application areas. Bayesian decision theory. Supervised learning techniques. Model selection. Dimensionality reduction. Clustering. Support vector machines. Graphical models. Introduction to neural networks. Reinforcement learning. 1. To be able to describe the fundamental concepts in machine learning 2. To be able to analyze the machine learning problems and identify appropriate solution techniques 3. To be able to apply proper algorithms using proper tools to solve the encountered machine learning problems 4. To be able to interpret the output of the implementations from algorithmic point of view",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-463/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 464",
     "name": "Text Mining",
-    "description": "In this course, we will cover important topics in text mining including: basic natural language processing techniques, document representation, text categorization and clustering, document summarization, sentiment analysis, social network and social media analysis, probabilistic topic models and text visualization.",
+    "description": "This course provides an opportunity to learn key components of text mining and analytics aided by the real-world datasets and the text mining toolkit written in Python. Hands-on experience in core text mining techniques including text preprocessing, sentiment analysis, and topic modeling. 1. Using Python and NLTK (Natural Language Toolkit) to build out your own text classifiers and solve common NLP problems 2. Performing data analysis and machine learning tasks using Python 3. Understanding the basics of computational linguistics 4. Building models for general natural language processing tasks 5. Evaluating the performance of a model with the right metrics 6. Visualizing, quantifying, and performing exploratory analysis from any text data",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-464/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 465",
     "name": "Principles of Data-Intensive Systems",
-    "description": "In this course, students will gain knowledge in the following areas: Data models and query languages; storage and retrieval; replication and partitioning in distributed data; transactions; challenges of distributed systems, consistency, and consensus in distributed systems; batch and stream processing. Objectives of the Course The main aim of this course is to familiarize students with the fundamental concepts underlying a broad range of data-intensive systems. Students will learn to compare different approaches, techniques, and tools for storing and processing data, evaluate their strengths and weaknesses, and determine the most appropriate solutions for various application needs.",
+    "description": "The main aim of this course is to familiarize students with fundamental ideas behind a broad variety of data systems. The students will be able to compare diverse approaches, techniques, and tools for storing and processing data so that they can discuss the strengths and weaknesses of each and decide the most suitable one for their applications. Data models and query languages; storage and retrieval; replication and partitioning in distributed data; transactions; challenges of distributed systems, consistency, and consensus in distributed systems; batch and stream processing. 1. To be able to define the basic terminology used in data-intensive applications 2. To be able to compare different data models and query languages 3. To be able to decide the technologies, techniques, and tools appropriate for a given task 4. To be able to design data-intensive applications",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-465/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
+  },
+  {
+    "code": "CENG 466",
+    "name": "Big-Data and Data-driven Decision-Making",
+    "description": "The digital revolution is generating unprecedented volumes of data across business, government, science, and society. Organizations are increasingly seeking professionals who can transform raw data into actionable insights that inform decision-making and drive innovation. This module introduces students to the principles and practices of big data analytics, emphasizing data exploration, visualization, and interpretation in real-world contexts. Students will have the opportunity to practice data discovery, visualization and analytical techniques through case studies and hands-on exercises using some commercial (i.e. Tableau) and cloud- based solutions (i.e. AWS tools)",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 467",
-    "name": "NATURAL LANGUAGE UNDERSTANDING AND GENERATION",
-    "description": "This course focuses on deep learning methods for natural language understanding and generation. It covers tokenization and pre-training for language models, the transformer architecture, machine translation, parsing, summarisation, question answering, instruction fine tuning, ethics in NLP, in context learning and retrieval-augmented generation. The main objective of the course is to provide students with a basic knowledge of natural language processing, machine learning and programming with a more advanced knowledge of existing deep learning techniques for natural language understanding and generation. The target audience is senior undergraduate students. The course covers the foundations for the deep learning for natural language processing graduate course. The Natural Language Understanding and Generation course contributes to students’ ability to conduct research and develop products",
+    "name": "Natural Language Understanding and Generation",
+    "description": "The main objective of the course is to provide students with a basic knowledge of natural language processing, machine learning and programming with a more advanced knowledge of existing deep learning techniques for natural language understanding and generation. The target audience is senior undergraduate students. The course covers the foundations for the deep learning for natural language processing graduate course. 1. Apply deep learning methods for natural language processing to industrial problems 2. Be aware of the social implications of natural language processing and know the relevant ethical terminology 3. Use different language model architectures in problem solving 4. List different natural language processing tasks and their features",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-467/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 471",
     "name": "Cryptography",
-    "description": "Basic terminology, history & background, Symmetrical cryptosystems, DES-AES, DES-AES likes, Asymmetrical cryptosystems, primality, hashing, factorization based (RSA)- ECC-Lattice cryptosystems, cryptographic protocols & applications, secrecy, authentication, integrity-authenticity, digital signatures, standards.",
+    "description": "Secrecy, integrity, authentication, history of the cryptography, the fundamental concepts of information theory, secrecy systems, monoalphabetical substitution, polyalphabetical substitution, transposition, block ciphers, Data Encryption Standard (DES), Advanced Encryption Standard (AES), key management, combining block ciphers, Symmetrical cryptosystem security architectures, Symmetrical cryptosystem design & verification. Factorization based (RSA), ECC based asymmetrical cryptosystems, Random number generators, prime number generators and primality testers, hashing algorithms (MD5-SHA0- SHA1-SHA2), PKI and related models, standards: IEEE P1363, Fips 186.2, – 140.2, x9.62, x9.63, PKCS#6, x509v3. 1. Analyze vulnerabilities, threats and which security functions are realized. 2. Selection, implementation and testing of cryptographic tools for essential security functions. 3. Objectively re",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-471/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 472",
     "name": "Network Security",
-    "description": "Link Encryption, End-to-End Encryption, Network and Internet Based Attacks, Firewalls, Email Security Issues, Web Based Security Issues, Disaster Recovery, C2 Functionality Stand-alone vs Network Operation, Hackers and Crackers, Network Crackings.",
+    "description": "Link Encryption, End-to-End Encryption, Network and Internet Based Attacks, Firewalls, Email Security Issues, Web Based Security Issues, Disaster Recovery, C2 Functionality Stand- alone vs Network Operation, Hackers and Crackers, Network Crackings. 1. Know and compare different network security approaches. 2. Analyze network security problems, design and implement solutions. 3. Demonstrate the ability to abstract in security context. 4. Apply security engineering methods to real world problems.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-472/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 473",
     "name": "Security of Information and Communication Technologies",
-    "description": "Introduction to security of information and communication technologies, fundamental security functions and related cryptographic tools, network security and related problems, protection mechanisms and tool will be evaluated. Then current hot topic security problems will be analyzed for “cloud computing”, “web applications and services”, “wireless networks”, etc. and at last security management of information systems will be discussed. Students will have a term project for the course about an up-to-date problem of these topics, which they are interested in and will prepare a written report about it then, present their work.",
+    "description": "Introduction to security of information and communication technologies, fundamental security functions and related cryptographic tools, network security and related problems, protection mechanisms and tool will be evaluated. Then current hot topic security problems will be analyzed for “cloud computing”, “web applications and services”, “wireless networks”, etc. and security management of information systems will be discussed. Students will have a term project for the course about an up-to-date problem of these topics, which they are interested in and will prepare a written report about it then, present their work. 1. Having the competence to analyze security risks related to information and communication technologies. 2. Being able to select and test the appropriate tools for solving security problems. 3. Gaining the ability to follow technological developments and identify potential se",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-473/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 481",
     "name": "Theoretical Approaches in Computer Science",
-    "description": "Turning theoretical ideas into solution sets in computer science. Integration of mathematical approaches with general problem solving techniques and computer science applications. Topics will be from Algorithms, Complexity Theory, Game Theory, Probability Theory, Graph Theory, Automata Theory, Algebra, and Cryptography.",
+    "description": "Turning theoretical ideas into solution sets in computer science. Integration of mathematical approaches with general problem solving techniques and computer science applications. Topics will be from Algorithms, Complexity Theory, Game Theory, Probability Theory, Graph Theory, Automata Theory, Algebra, and Cryptography. 1. Analyzing capability to find new requirements and problems of current application areas of computer scince 2. Defining and modelling capability of computer science hot topic research problems. 3. To have the vision and to be able to do an evaluation for the future career plans on computer science 4. To be able to apply fundamental theorems of computer science with interdisciplinary research and studies.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-481/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 482",
     "name": "Evolutionary Computation",
-    "description": "Evolutionary computation methods, discrete and continuous optimization problems, software libraries for evolutionary computation, Genetic Algorithms, Genetic Programming, Evolution Strategies, Differential Evolution, Particle Swarm Optimization, Multi-objective optimization.",
+    "description": "Evolution strategies, evolutionary programming, genetic algorithms, genetic programming, overview of selected evolutionary computation techniques. 1. To be able to explain evolutionary computation and its main components. 2. To be able to identify the most appropriate evolutionary computation method to a given problem. 3. To be able to apply evolutionary computation methods to optimization problems. 4. To be able to design experimental studies for evolutionary algorithms",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-482/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 483",
     "name": "Behavioural Robotics",
-    "description": "Approach robotics mainly software- and application-oriented; inspect mechatronic parts and hardware architectures of robots; analyse software components and software architectures; analyse software architectures and their properties that might provide smart behaviours; analyse hardware and software requirements for collaborative robots; develop collaborative and smart appearing robot applications.",
+    "description": "Mechatronics; architectures; control; AI components; computer vision; mapping; planning; navigation; communication; co-operation; robot ethics; applications. 1. Distinguish robot types and behaviours 2. Use techniques for smart robot behaviours 3. Use techniques for collaborative robot behaviours 4. Develop robots from robotics kits",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-483/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 484",
     "name": "Data Mining",
-    "description": "Knowledge discovery overview, data mining in general, data preparation, basics of data mining, association rule mining, classification and prediction, cluster analysis, web mining, data mining applications, term projects.",
+    "description": "Data mining in general, data warehousing, data preparation and data mining primitives, concept description, mining association rules in large databases, classification and prediction, cluster analysis, web mining, applications in data mining. 1. Learn the process of knowledge discovery and data mining algorithms 2. Gain the ability of using data mining tools 3. Understand a data mining problem, design the process overflow and implement the steps 4. Document and present a Project",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-484/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 485",
     "name": "Information Technology Entrepreneurship",
-    "description": "In addition to an introductory treatment of business fundamentals in information technology, course topics will include paradigms, strategies and methods in goal setting, team formation, intellectual property, customer projects and business management for information technologies.",
+    "description": "In addition to an introductory treatment of business fundamentals in information technology, course topics will include paradigms, strategies and methods in goal setting, team formation, intellectual property, customer projects and business management for information technologies. 1. To know entrepreneurship in information sciences industry. 2. To understand entrepreneur vision and thinking. 3. To be prepared to build business and products. 4. To understand the sustainable growth concept",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-485/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 486",
     "name": "Entrepreneurship for Smart Business",
-    "description": "Components of smart business and its ecosystem. Automation of business processes. Business models for Smart Business and their implementation.",
+    "description": "Components of smart business and its ecosystem. Automation of business processes. Business models for Smart Business and their implementation. 1. To be able to identify the needs of the real (International Business) world 2. To be able to analyze chaotic business situations and improve using Internet-based Technologies 3. To be able to identify critical components and systems that impact success in business 4. To be able to demonstrate development in data transformationa and pathway to smartness 5. To be able to demonstrate ability to improve business processes with automation and smartness in smart business",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-486/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 487",
     "name": "Introduction to Computer Graphics",
-    "description": "This course covers rendering techniques and programming interfaces for Computer Graphics. The course topics include basic mathematical concepts in Computer Graphics (two and three dimensional transformations), lighting models, methods for basic scene modeling and visibility analysis. Application of these Computer Graphics techniques on modern hardware using OpenGL is also covered.",
+    "description": "This course covers rendering techniques and programming interfaces for Computer Graphics. The course topics include basic mathematical concepts in Computer Graphics (two and three dimensional transformations), lighting models, methods for basic scene modeling and visibility analysis. Application of these Computer Graphics techniques on modern hardware using OpenGL is also covered. 1. Ability to apply computer graphics techniques using standard programming interfaces 2. Ability to derive the mathematical relationship between 3D objects and image representations 3. Ability to compare different lighting models 4. Ability to optimize rendering software using visibility data structures",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-487/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 488",
     "name": "Computer Graphics",
-    "description": "This course covers advanced rendering techniques for Computer Graphics. The course topics include advanced lighting models, acceleration and volume rendering techniques. Acceleration of these Computer Graphics techniques on modern hardware is also covered. Course Objective The main aim of the course is to familiarize the students with advanced techniques in Computer Graphics topics such as modeling, rendering, texturing, and lighting. The students will also gain practice in applying their knowledge.",
+    "description": "This course covers advanced rendering techniques for Computer Graphics. The course topics include advanced lighting models, acceleration and volume rendering techniques. Acceleration of these Computer Graphics techniques on modern hardware is also covered. 1. Apply advanced computer graphics techniques in practice 2. Derive the mathematical equations for illumination and volume rendering techniques 3. Compare different kinds of lighting models 4. Optimize rendering software",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-488/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
+  },
+  {
+    "code": "CENG 490",
+    "name": "Blockchain Technology",
+    "description": "The main aim of this course is to familiarize students with fundamental concepts behind blockchain and related technologies. The students will be able to develop blockchain and web3 distributed applications. Basic concepts and fundamentals of blockchain and related technologies: Decentralization philosophy; Information on the existing blockchains; Smart contracts; Consensus algorithms; Tokenization and cryptocurrency trading; NFTs and decentralized Web3 applications.",
+    "prerequisites": null,
+    "levels": [
+      "lisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 491",
-    "name": "Field Course",
-    "description": "Requirements for a Field Course to Be Considered as a Technical Elective Course Students may complete an educational program and achieve their certificate as a supporting field course, provided the following conditions are met: Regulation defining this course is defined here. One of the technical elective courses not offered in our department can be taken as a supporting field course. You must obtain a certificate of completion for the course before enrolling in CENG491. The course must include a minimum of 30 contact hours. The course must include at least one exam and/or project. The results of the exam(s) and/or project(s) must be shared with the course instructors when the relevant assignments are announced. Please ensure that these requirements are met for your course to be accepted as a technical elective.",
+    "name": "Supporting Area Course in Educational Curriculum",
+    "description": "Selected topics of computer science, computer engineering, software engineering and information technologies. CENG 499 Cooperative Education Course (0+6)3 6 This course is designed to foster collaborative partnerships between industry and academia, providing students with valuable real-world work experiences. Throughout the program, students will engage in practical, hands-on activities within professional environments, helping them connect theoretical concepts with real-life applications. The course will also guide students in exploring career options, setting professional goals, building industry networks, understanding workplace culture, and enhancing their interpersonal and communication skills essential for their future careers.",
     "prerequisites": null,
     "levels": [
       "lisans"
     ],
     "department": "Bilgisayar Mühendisliği",
-    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-491/"
+    "source_url": "https://ceng.iyte.edu.tr/wp-content/uploads/sites/124/2026/10/IZTECH_COMPUTER_ENGINEERING_UNDERGRADUATE_PROGRAM.pdf",
+    "hours": "3+0",
+    "credits": "3",
+    "ects": "6"
   },
   {
     "code": "CENG 499",
@@ -949,8 +1200,8 @@
   },
   {
     "code": "CENG 515",
-    "name": "Topics in Computer Science",
-    "description": "In this course the recent popular subjects and new technologies are discussed. The inspiring innovations in different fields in computational sciences are examined. New ideas are discussed and open subjects in hot topics are clarified.",
+    "name": "Numerical Methods for Computer Graphics",
+    "description": "In this course, recent advances in computer graphics and fundamental topics in numerical methods for computer graphics are discussed.",
     "prerequisites": null,
     "levels": [
       "yukseklisans",
@@ -1054,6 +1305,18 @@
     ],
     "department": "Bilgisayar Mühendisliği",
     "source_url": "https://ceng.iyte.edu.tr/courses/ceng-525/"
+  },
+  {
+    "code": "CENG 526",
+    "name": "High Performance Artificial Intelligence",
+    "description": "CENG526 High Performance Artificial Intelligence This course provides the knowledge to understand and leverage high performance computing (HPC) for artificial intelligence applications. It explains fundamental HPC concepts, including parallel programming, distributed computing, and HPC infrastructure. The students will explore common AI workloads and their computational requirements by hands-on exercises, gaining insights into how HPC platforms and parallelism techniques optimize AI model training and inference.",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans",
+      "doktora"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-526/"
   },
   {
     "code": "CENG 531",
@@ -1286,10 +1549,11 @@
   {
     "code": "CENG 567",
     "name": "Reinforcement Learning",
-    "description": "Course Information CENG 567 Reinforcement Learning Course Semester T+A Credits ECTS Credits 3+0 3 9 Course Language English Course Level Graduate Department/Program Computer Engineering Department/Computer Engineering MS Program Mode of delivery Face to face Course Type Compulsory [ ] / Technical Elective [ x ]",
+    "description": "CENG567 Reinforcement Learning This course introduces reinforcement learning, covering key techniques like multi-armed bandits, Q-learning, and deep reinforcement learning. Students will learn decision-making under uncertainty and apply advanced methods like actor-critic models to real-world problems.",
     "prerequisites": null,
     "levels": [
-      "yukseklisans"
+      "yukseklisans",
+      "doktora"
     ],
     "department": "Bilgisayar Mühendisliği",
     "source_url": "https://ceng.iyte.edu.tr/courses/ceng-567/"
@@ -1300,7 +1564,8 @@
     "description": "Course Information CENG568 Multiagent Systems Course Semester T+A Credits ECTS Credits 3+0 3 9 Course Language English Course Level Graduate Department/Program Computer Engineering/Master of Science Mode of delivery Face to face Course Type Compulsory [ ] / Technical Elective [ X ]",
     "prerequisites": null,
     "levels": [
-      "yukseklisans"
+      "yukseklisans",
+      "doktora"
     ],
     "department": "Bilgisayar Mühendisliği",
     "source_url": "https://ceng.iyte.edu.tr/courses/ceng-568/"
@@ -1315,6 +1580,17 @@
     ],
     "department": "Bilgisayar Mühendisliği",
     "source_url": "https://ceng.iyte.edu.tr/courses/ceng-590/"
+  },
+  {
+    "code": "CENG 599",
+    "name": "Generative Artificial Intelligence for Interdisciplinary Research",
+    "description": "This course covers the practical use of Generative Artificial Intelligence (GenAI) as a research support tool in engineering and scientific disciplines, with a strong emphasis on hands-on applications. The course introduces the capabilities, limitations, and effective use of modern generative AI systems, including large language models, multimodal models, and AI-assisted development environments, within real research workflows. Core content includes applied prompt engineering, AI-assisted literature review, automated knowledge synthesis, and research problem formulation using generative AI tools. Students will explore how to integrate AI into key stages of the research lifecycle, such as coding support, experimental prototyping, data preprocessing, synthetic data generation, and technical documentation. Practical implementation of retrieval-augmented generation (RAG) and domain-specific ",
+    "prerequisites": null,
+    "levels": [
+      "yukseklisans"
+    ],
+    "department": "Bilgisayar Mühendisliği",
+    "source_url": "https://ceng.iyte.edu.tr/courses/ceng-599/"
   },
   {
     "code": "CENG 600",
@@ -1585,7 +1861,7 @@
   {
     "code": "SEDS 513",
     "name": "Principles of Human Computer Interaction",
-    "description": "Fundamental theory and practice of the design, implementation, and evaluation of human-computer interfaces. Topics include: life cycles for user interface development; principles of design; design techniques; methods for evaluating interfaces; and techniques for prototyping and implementing graphical user interfaces. Students will perform the analysis, design and evaluation of a user interface of a software system as class project.",
+    "description": "Course Description Fundamental principles and practices of human-computer interaction, with an emphasis on designing, prototyping, and evaluating interactive systems. Topics include human factors, interaction design, user research, user-centered design, interface design principles, prototyping, usability evaluation, accessibility, and human-AI interaction. Students will analyze real-world interfaces, create and critique interactive designs, and develop a semester project using contemporary design and AI-assisted tools. Course Focus This course approaches Human-Computer Interaction as a practical discipline concerned with how people interact with digital products and how those interactions can be improved through better design. The course combines established HCI principles with contemporary UI/UX practices. Students will learn how to understand users, identify interaction problems, trans",
     "prerequisites": null,
     "levels": [
       "yukseklisans"
