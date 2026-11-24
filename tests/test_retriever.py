@@ -1,5 +1,7 @@
 """Retriever tested through its real interface, offline: the in-memory
 adapter stands in for Qdrant, a fake embedder stands in for the model."""
+from datetime import date
+
 from app.retrieval import Retriever, InMemoryVectorStore
 from config import settings
 
@@ -44,9 +46,9 @@ class InMemoryVectorStoreWrapper:
         self.store = store
         self.last_filters = "unset"
 
-    def search(self, collection, vector, limit, filters=None, sparse=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
         self.last_filters = filters
-        return self.store.search(collection, vector, limit, filters, sparse)
+        return self.store.search(collection, vector, limit, filters, sparse, rrf_k)
 
 
 def test_query_filter_extraction_reaches_the_store():
@@ -185,6 +187,52 @@ def test_people_roster_rides_along_when_an_area_chunk_wins():
     results = retriever.retrieve_people("tatil planlaması çalışan hocalar")
     kinds = [r["metadata"]["kind"] for r in results]
     assert kinds[0] == "area" and kinds[1] == "roster"
+
+
+TODAY = date(2026, 11, 24)  # 2026-2027 güz yarıyılı
+PAST_FALL = ("[2025-2026 Güz Yarıyılı] 12 Ocak 2026 ile 23 Ocak 2026 arasında yarıyıl sonu sınavları",
+             "fall", "2026-01-12", "2026-01-23", [1.0, 0.0, 0.0, 0.1])
+PAST_SPRING = ("[2025-2026 Bahar Yarıyılı] 17 Haziran 2026 ile 30 Haziran 2026 arasında yarıyıl sonu sınavları",
+               "spring", "2026-06-17", "2026-06-30", [1.0, 0.0, 0.0, 0.1])
+UPCOMING_FALL = ("[2026-2027 Güz Yarıyılı] 11 Ocak 2027 ile 22 Ocak 2027 arasında yarıyıl sonu sınavları",
+                 "fall", "2027-01-11", "2027-01-22", [0.9, 0.0, 0.4, 0.1])
+JUST_ENDED = ("[2026-2027 Güz Yarıyılı] 2 Kasım 2026 ile 20 Kasım 2026 arasında doktora yeterlik sınavları",
+              "fall", "2026-11-02", "2026-11-20", [0.9, 0.0, 0.4, 0.1])
+
+
+def make_calendar_retriever(*events):
+    store = InMemoryVectorStore()
+    for text, period, start, end, vector in events:
+        store.add(settings.CALENDAR_COLLECTION, text,
+                  {"academic_period": period, "date1": start, "date2": end}, vector)
+    return Retriever(store, FakeEmbedder(), today=lambda: TODAY)
+
+
+def test_calendar_drops_ended_events_that_crowd_out_upcoming_ones():
+    # regression: "sinavlar ne zaman" in Nov 2026 answered with spring dates
+    # because last year's exam events, ranked higher, filled every slot
+    retriever = make_calendar_retriever(PAST_FALL, PAST_SPRING, UPCOMING_FALL)
+    texts = [r["text"] for r in retriever.retrieve_calendar("sınavlar ne zaman", top_k=2)]
+    assert any("11 Ocak 2027" in text for text in texts)
+    assert not any("2026 arasında yarıyıl sonu" in text for text in texts)
+
+
+def test_calendar_keeps_events_inside_the_grace_window():
+    retriever = make_calendar_retriever(PAST_FALL, JUST_ENDED, UPCOMING_FALL)
+    texts = [r["text"] for r in retriever.retrieve_calendar("sınavlar ne zaman")]
+    assert any("20 Kasım 2026" in text for text in texts)
+    assert not any("23 Ocak 2026" in text for text in texts)
+
+
+def test_calendar_keeps_past_events_when_the_query_names_a_year():
+    retriever = make_calendar_retriever(PAST_FALL, UPCOMING_FALL)
+    texts = [r["text"] for r in retriever.retrieve_calendar("2025-2026 güz sınavları ne zaman")]
+    assert any("23 Ocak 2026" in text for text in texts)
+
+
+def test_calendar_falls_back_to_past_events_when_nothing_is_upcoming():
+    retriever = make_calendar_retriever(PAST_FALL, PAST_SPRING)
+    assert retriever.retrieve_calendar("sınavlar ne zaman")
 
 
 def test_bm25_breaks_a_dense_tie():

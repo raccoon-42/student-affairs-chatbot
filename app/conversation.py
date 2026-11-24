@@ -79,6 +79,8 @@ GÖREV:
    gibi sunma; "gelecekte" veya "devam ediyor" etiketli tarihe "geçti" deme. Konuşma
    geçmişinde bunlarla çelişen bir ifaden varsa etikete güven, eski ifadeni tekrarlama.
    DURUM etiketini yanıtına kopyalama; en yakın güncel tarihi öne çıkar.
+   Takvim sorusu dönem belirtmiyorsa açıklama isteme: önce devam eden veya en yakın
+   gelecekteki dönemin tarihini ver, diğer dönemleri istenirse ekle.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",

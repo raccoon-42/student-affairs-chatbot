@@ -37,6 +37,10 @@ OPENROUTER_EMBEDDING_MODEL = os.getenv("OPENROUTER_EMBEDDING_MODEL", "google/gem
 # code that dense ranks 23rd but BM25 ranks 1st lands 2nd (with the RRF
 # paper's k=60 it landed 7th, past the courses top_k)
 RRF_K = 2
+# The calendar holds ~100 near-identical exam events; there BM25's top ranks
+# are ties ("sınav" matches them all), and k=2 let them push the right event
+# from 5th to 12th. A flatter k keeps dense's picks in play.
+CALENDAR_RRF_K = 20
 HYBRID_PREFETCH = 50  # how deep each ranking goes before fusion
 
 # LLM backends
