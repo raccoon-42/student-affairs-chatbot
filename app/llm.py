@@ -19,21 +19,24 @@ def chat_with_usage(llm, model, messages):
     return llm.chat(model, messages), None
 
 
-def _extra_body(model):
-    # OpenRouter extensions: the charged cost (USD) in usage, and thinking
-    # off for the models listed in REASONING_OFF_MODELS
+def _extra_body(model, effort=None):
+    # OpenRouter extensions: the charged cost (USD) in usage, thinking off
+    # for the models listed in REASONING_OFF_MODELS, else the adapter's effort
     body = {"usage": {"include": True}}
     if model in settings.REASONING_OFF_MODELS:
         body["reasoning"] = {"effort": "none"}
+    elif effort:
+        body["reasoning"] = {"effort": effort}
     return body
 
 
 class OpenRouterLLM:
     """Adapter for OpenRouter (OpenAI-compatible API)."""
 
-    def __init__(self, api_key=None, base_url=None):
+    def __init__(self, api_key=None, base_url=None, reasoning_effort=None):
         self._api_key = api_key or settings.OPENROUTER_API_KEY
         self._base_url = base_url or settings.OPENROUTER_BASE_URL
+        self._effort = reasoning_effort  # thinking effort for models that think
         self._client = None  # created on first use, not at import
 
     def _ensure_client(self):
@@ -54,7 +57,7 @@ class OpenRouterLLM:
         self._ensure_client()
         completion = self._client.chat.completions.create(
             model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS,
-            extra_body=_extra_body(model))
+            extra_body=_extra_body(model, self._effort))
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")
         usage = None
@@ -72,7 +75,7 @@ class OpenRouterLLM:
             model=model, messages=messages, stream=True,
             max_tokens=settings.LLM_MAX_TOKENS,
             stream_options={"include_usage": True},
-            extra_body=_extra_body(model))
+            extra_body=_extra_body(model, self._effort))
         finish_reason = None
         usage = None
         for chunk in stream:

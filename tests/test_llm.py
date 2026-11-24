@@ -33,3 +33,13 @@ def test_sonnet_keeps_its_default_thinking():
     llm, completions = make_llm()
     llm.chat("anthropic/claude-sonnet-5.5", [{"role": "user", "content": "soru"}])
     assert "reasoning" not in completions.kwargs["extra_body"]
+
+
+def test_an_adapter_effort_applies_to_models_that_think():
+    # the judge asks Sonnet for low effort; Haiku stays at thinking off
+    llm, completions = make_llm()
+    llm._effort = "low"
+    llm.chat("anthropic/claude-sonnet-5.5", [{"role": "user", "content": "soru"}])
+    assert completions.kwargs["extra_body"]["reasoning"] == {"effort": "low"}
+    llm.chat("anthropic/claude-haiku-5.5", [{"role": "user", "content": "soru"}])
+    assert completions.kwargs["extra_body"]["reasoning"] == {"effort": "none"}
