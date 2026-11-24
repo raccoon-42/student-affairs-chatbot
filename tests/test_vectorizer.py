@@ -166,3 +166,22 @@ def test_program_full_list_chunk_per_level_enables_absence_answers(tmp_path):
     assert "Bilgisayar Mühendisliği" in lisans["text"] and "Fizik" in lisans["text"]
     # the completeness sentence is what grounds "İYTE'de X yok" answers
     assert "olmayan" in lisans["text"]
+
+
+def test_guide_questions_ride_along_and_extend_only_the_searched_text(tmp_path):
+    from preprocessing.indexing.vectorizer import index_text
+
+    manifest = [{"title": "Erasmus Başvuruları", "topic": "erasmus",
+                 "source_url": "https://x/erasmus/", "file": "erasmus.html"}]
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    (tmp_path / "erasmus.json").write_text(json.dumps(
+        [{"baslik": "Başvuru Tarihleri", "metin": "17 Mart - 2 Nisan", "sorular": ["ne zaman"]}],
+        ensure_ascii=False), encoding="utf-8")
+
+    chunk = _page_corpus_chunks(tmp_path, tmp_path / "manifest.json",
+                                lambda c: f"{c['baslik']}\n{c['metin']}", "rehber")[0]
+
+    assert chunk["questions"] == ["ne zaman"]
+    assert "ne zaman" not in chunk["text"]  # the model reads the text without them
+    assert index_text({"text": chunk["text"], "questions": chunk["questions"]}) == chunk["text"] + "\nne zaman"
+    assert index_text({"text": "MADDE 5"}) == "MADDE 5"  # corpora without questions: unchanged

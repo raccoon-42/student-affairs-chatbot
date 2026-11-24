@@ -318,11 +318,14 @@ def sync_guides(old, dry_run):
     changed_pages = [key for key in changed if key != "manifest.json"]
     stale = [Path(key).stem for key in changed_pages + removed if key != "manifest.json"]
     if dry_run:
-        print(f"  would re-parse {len(changed_pages)} page(s) (~{len(changed_pages)} LLM calls) and reindex")
+        print(f"  would re-parse {len(changed_pages)} page(s) and write their questions "
+              f"(~{2 * len(changed_pages)} LLM calls) and reindex")
         return None
     delete_processed(PROCESSED / "rehber", stale)
     if changed_pages:
         run_module("preprocessing.parsers.guides_parser_llm", "--all")
+        # a re-parsed page comes back without its students' questions
+        run_module("preprocessing.parsers.guide_questions_llm", "--all")
     reindex(*index_args)
     return new
 

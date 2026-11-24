@@ -85,3 +85,46 @@ def test_a_dropped_request_is_sent_again():
     client.query_points = flaky_query
     hits = QdrantVectorStore(client=client).search("c", QUERY, limit=1)
     assert dropped and hits[0].text == "Genel hükümler"
+
+
+def test_guide_questions_are_searched_but_never_returned(monkeypatch):
+    """A chunk's student questions go into its embedding and its BM25 field;
+    the hit the model gets is the chunk text alone."""
+    import qdrant_client
+
+    from app import embeddings
+    from preprocessing.indexing import vectorizer
+
+    client = QdrantClient(":memory:")
+    embedded = []
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            embedded.extend(texts)
+            return [[1.0, 0.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    dates = {"text": "Başvuru Tarihleri\n17 Mart - 2 Nisan arası online", "metadata": {"topic": "erasmus"},
+             "questions": ["erasmus başvuruları ne zaman"]}
+    rules = {"text": "Asgari Şartlar\nLisans için en az 2.20 ortalama", "metadata": {"topic": "erasmus"}}
+
+    vectorizer.store_embedding([dates, rules], "g", vectorizer._sks_payload)
+
+    assert sorted(embedded) == sorted([dates["text"] + "\nerasmus başvuruları ne zaman", rules["text"]])
+    hits = QdrantVectorStore(client=client).search("g", [1.0, 0.0, 0.0], limit=1,
+                                                   lexical=bm25_text("ne zaman"))
+    assert hits[0].text == dates["text"]  # found by its question, returned without it
+
+    # new questions change the point id: only that chunk is embedded again
+    embedded.clear()
+    vectorizer.store_embedding([{**dates, "questions": ["erasmus son gün"]}, rules], "g",
+                               vectorizer._sks_payload)
+    assert embedded == [dates["text"] + "\nerasmus son gün"]
+
+    # the BM25 rebuild keeps the questions in the field
+    rebuild_bm25(client, "g")
+    hits = QdrantVectorStore(client=client).search("g", [1.0, 0.0, 0.0], limit=1,
+                                                   lexical=bm25_text("son gün"))
+    assert hits[0].text == dates["text"]
+

@@ -262,7 +262,9 @@ class Retriever:
             programs = pool.submit(self.retrieve_programs, query, 3, vector, also=also)
             people = pool.submit(self.retrieve_people, query, 3, vector, also=also)
             courses = pool.submit(self.retrieve_courses, query, 4, vector, also=also)
-            guides = pool.submit(self.retrieve_guides, query, 3, vector, also=also)
+            # 4, not 3: a long page splits into many look-alike chunks
+            # (docs/adr/0006)
+            guides = pool.submit(self.retrieve_guides, query, 4, vector, also=also)
             course_departments = pool.submit(self.retrieve_course_departments, vector)
             results = {
                 "calendar": calendar.result(),
@@ -431,7 +433,7 @@ class Retriever:
         return sorted({hit.metadata["department"] for hit, _ in lists
                        if hit.metadata.get("department")})
 
-    def retrieve_guides(self, query: str, top_k: int = 3, vector=None, also=()) -> List[Dict]:
+    def retrieve_guides(self, query: str, top_k: int = 4, vector=None, also=()) -> List[Dict]:
         # ÖİDB process guides (ders seçimi, yatay geçiş, ÇAP/yan dal,
         # başvuru, askerlik) — chunk text leads with the page title
         hits = self._hybrid_search(query, settings.GUIDES_COLLECTION, top_k, vector=vector,
