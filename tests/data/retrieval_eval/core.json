@@ -89,7 +89,7 @@
     }
    ],
    "note": "2026-11-24 miss: calendar never says okul/kapan; fixed by the rewrite",
-   "rewritten": "Üniversitenin yarıyıl derslerinin ve yarıyıl sonu sınavlarının ne zaman bittiğini öğrenmek istiyorum."
+   "rewritten": "Yarıyıl dersleri ne zaman bitiyor?"
   },
   {
    "id": "cal-sinavlar",
@@ -105,7 +105,7 @@
     }
    ],
    "note": "2026-11-24 miss: got last spring's exams before ended events were dropped",
-   "rewritten": "Yarıyıl sonu sınavları ne zaman?"
+   "rewritten": "Yarıyıl sonu sınavları ne zaman yapılacak?"
   },
   {
    "id": "cal-cekilme",
@@ -191,7 +191,7 @@
      }
     }
    ],
-   "rewritten": "CENG 322 dersi kaç kredi?"
+   "rewritten": "CENG 322 kaç kredi?"
   },
   {
    "id": "crs-akts-takip",
@@ -311,7 +311,7 @@
     }
    ],
    "note": "2026-11-24 miss: typo read as 'nerede'",
-   "rewritten": "Yüksek lisans derslerini bilgisayar mühendisliğinde nasıl alabilirim?"
+   "rewritten": "Bilgisayar mühendisliğinde yüksek lisans dersleri nelerdir?"
   },
   {
    "id": "frm-kimlik",
@@ -339,7 +339,7 @@
      }
     }
    ],
-   "rewritten": "Bir dersten çekilmek istiyorum; dilekçeyi nereden bulabilirim?"
+   "rewritten": "Bir dersten çekilmek istiyorum; bu dilekçeyi nereden bulabilirim?"
   },
   {
    "id": "frm-kayit-sil",
@@ -428,7 +428,7 @@
      }
     }
    ],
-   "rewritten": "Başka bir üniversiteden İYTE'ye (İzmir Yüksek Teknoloji Enstitüsü) geçmek için ne yapmam gerekir?"
+   "rewritten": "Başka bir üniversiteden İYTE'ye (İzmir Yüksek Teknoloji Enstitüsü) geçmek istiyorum, bunun için ne yapmam gerekir?"
   },
   {
    "id": "gd-cap",
@@ -484,7 +484,7 @@
      }
     }
    ],
-   "rewritten": "Bilgisayar mühendisliği bölümünün hocaları kimlerdir?"
+   "rewritten": "Bilgisayar mühendisliği hocaları kimler?"
   },
   {
    "id": "ppl-grupla",
@@ -527,7 +527,7 @@
     }
    ],
    "note": "no department named, no Turkish characters",
-   "rewritten": "Asistanların çalışma alanı nedir?"
+   "rewritten": "Asistanların çalışma alanı ne?"
   },
   {
    "id": "ppl-selma",
@@ -570,7 +570,7 @@
      }
     }
    ],
-   "rewritten": "Bilgisayar mühendisliği bölümünde doğal dil işleme alanında çalışan öğretim üyesi var mı?"
+   "rewritten": "Bilgisayar mühendisliğinde doğal dil işleme (NLP) alanında çalışan öğretim üyesi var mı?"
   },
   {
    "id": "ppl-ai",
@@ -632,7 +632,7 @@
     }
    ],
    "note": "the full list answers an existence question too",
-   "rewritten": "İYTE'de (İzmir Yüksek Teknoloji Enstitüsü) bilgisayar mühendisliği bölümü var mı?"
+   "rewritten": "İzmir Yüksek Teknoloji Enstitüsü'nde (İYTE) bilgisayar mühendisliği bölümü var mı?"
   },
   {
    "id": "prg-lisans-liste",
@@ -661,7 +661,7 @@
     }
    ],
    "note": "absence: only the full list can show it is missing",
-   "rewritten": "İYTE'de endüstri mühendisliği lisans programı var mı?"
+   "rewritten": "İYTE'de endüstri mühendisliği okumak mümkün mü?"
   },
   {
    "id": "prg-yazilim",
@@ -675,7 +675,7 @@
      ]
     }
    ],
-   "rewritten": "Yazılım mühendisliği alanında yüksek lisans programı var mı?"
+   "rewritten": "Yüksek lisans düzeyinde yazılım mühendisliği programı var mı?"
   },
   {
    "id": "sks-para",
@@ -709,7 +709,7 @@
      ]
     }
    ],
-   "rewritten": "Kimliğim yanımda değil, yemekhaneye girebilir miyim?"
+   "rewritten": "Kimliğim yanımda yok, yemekhaneye girebilir miyim?"
   },
   {
    "id": "sks-uyelik",
@@ -752,7 +752,7 @@
     }
    ],
    "note": "kulüp -> topluluk vocabulary bridge",
-   "rewritten": "Yeni bir öğrenci kulübü kurmak için ne yapmam gerekiyor?"
+   "rewritten": "Yeni bir kulüp kurmak istiyorum, ne yapmam gerekiyor?"
   },
   {
    "id": "reg-azami",
@@ -767,7 +767,7 @@
      }
     }
    ],
-   "rewritten": "Bir lisans öğrencisi olarak okulu en fazla kaç yılda tamamlamam gerekiyor?"
+   "rewritten": "Bir öğrencinin lisans eğitimini tamamlaması için azami süre ne kadar?"
   },
   {
    "id": "reg-devam",
@@ -782,7 +782,7 @@
      }
     }
    ],
-   "rewritten": "Derslere devam zorunlu mu, kaç saat devamsızlık hakkım var?"
+   "rewritten": "Derslere devam zorunlu mu ve kaç saat devamsızlık hakkım var?"
   },
   {
    "id": "reg-mazeret",
@@ -799,7 +799,7 @@
      }
     }
    ],
-   "rewritten": "Hastalık nedeniyle yarıyıl sonu sınavına giremediğim için mazeret sınavına girebilir miyim?"
+   "rewritten": "Hastalığım nedeniyle yarıyıl sonu sınavına giremedim; mazeret sınavına girebilir miyim?"
   },
   {
    "id": "reg-cap",
@@ -878,7 +878,7 @@
      }
     }
    ],
-   "rewritten": "Erasmus programına gideceğim, hangi belgeler gerekli?"
+   "rewritten": "Erasmus programına katılmak için hangi belgeler gerekiyor?"
   },
   {
    "id": "gd-erasmus-koordinator",
@@ -907,7 +907,7 @@
      ]
     }
    ],
-   "rewritten": "Ceng'in Erasmus anlaşmaları hangi üniversitelerle?"
+   "rewritten": "CENG bilgisayar mühendisliğinin Erasmus anlaşmaları hangi üniversitelerle?"
   },
   {
    "id": "gd-erasmus-sart",
@@ -949,7 +949,7 @@
      ]
     }
    ],
-   "rewritten": "Erasmus programına seçildikten sonra gitmekten vazgeçersem ne olur?"
+   "rewritten": "Erasmus'a seçildikten sonra gitmekten vazgeçersem ne olur?"
   },
   {
    "id": "gd-erasmus-ingilizce",
@@ -963,7 +963,7 @@
      ]
     }
    ],
-   "rewritten": "Erasmus İngilizce sınavı ne zaman yapılıyor?"
+   "rewritten": "Erasmus İngilizce sınavı ne zaman yapılır?"
   },
   {
    "id": "gd-uio-adres",

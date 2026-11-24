@@ -132,8 +132,10 @@ def freeze_rewrites():
         todo = [c for c in data["cases"] if not c.get("rewritten")]
         cost = 0.0
         for case in todo:
-            # what Conversation._resolve_search_query hands to retrieval
-            case["rewritten"] = normalize_query(rewriter.rewrite(case["query"], case.get("history", [])))
+            # what Conversation._resolve_search_query does: the rewriter gets
+            # department codes named, retrieval gets the normalized rewrite
+            case["rewritten"] = normalize_query(
+                rewriter.rewrite(normalize_query(case["query"]), case.get("history", [])))
             cost += (rewriter.last_usage or {}).get("cost") or 0.0
         path.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print(f"{path.name}: {len(todo)} rewrites frozen (${cost:.3f})")
