@@ -59,6 +59,35 @@ def test_normalize_query_expands_student_abbreviations():
     assert normalize_query("yıldız hoca, dr ali") == "yıldız hoca, dr ali"  # "dr" is a title too
 
 
+def test_normalize_query_names_the_department_behind_its_code():
+    # the corpus spells departments out, so the name joins the code
+    assert (normalize_query("ceng'in erasmus anlaşmaları")
+            == "ceng bilgisayar mühendisliği'in erasmus anlaşmaları")
+    assert normalize_query("MBG hocaları") == "MBG moleküler biyoloji ve genetik hocaları"
+    # before a number it is a course code and stays one
+    assert normalize_query("ceng 322 ne anlatıyor") == "ceng 322 ne anlatıyor"
+    assert normalize_query("ceng-322 kaç kredi") == "ceng-322 kaç kredi"
+    assert normalize_query("CENG322 önkoşulu") == "CENG 322 önkoşulu"
+
+
+def test_normalize_query_writes_iyte_as_a_name():
+    # lowercase "iyte" read to the rewriter like a typo: "iyte mimarlık
+    # yüksek lisans" became "İTÜ mimarlık ..." 5 times out of 5
+    assert normalize_query("iyte mimarlık yüksek lisans") == "İYTE mimarlık yüksek lisans"
+    assert normalize_query("ıyte'de doktora var mı") == "İYTE'de doktora var mı"
+    assert normalize_query("IYTE nerede") == "İYTE nerede"
+    assert normalize_query("iytede kaç bölüm var") == "iytede kaç bölüm var"  # only the word itself
+
+
+def test_normalize_query_is_idempotent():
+    # every entry point normalizes, so the same query passes through
+    # several times; a second pass must change nothing
+    for query in ("ceng'in erasmus anlaşmaları", "mbg ve ceng hocaları", "ceng322 yl dersleri",
+                  "Ceng Bilgisayar Mühendisliği erasmus", "iyte'de mbg"):
+        once = normalize_query(query)
+        assert normalize_query(once) == once
+
+
 def test_query_filter_extraction_reaches_the_store():
     retriever = make_retriever()
     retriever.retrieve_calendar("güz dönemi sınavları ne zaman")

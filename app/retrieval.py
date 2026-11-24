@@ -35,8 +35,31 @@ _COURSE_CODE = re.compile(r'\b([a-zA-Z]{2,4})(\d{3})\b')
 _ABBREVIATIONS = {"yl": "yüksek lisans", "phd": "doktora"}
 _ABBREVIATION = re.compile(r'\b(' + '|'.join(_ABBREVIATIONS) + r')\b', re.IGNORECASE)
 
+# department codes students use; the corpus spells departments out, so
+# "ceng'in erasmus anlaşmaları" matched no department (docs/adr/0008). The
+# code stays and the name joins it; before a number it is a course code
+# ("ceng 322") and stays one
+_DEPARTMENTS = {"ceng": "bilgisayar mühendisliği", "mbg": "moleküler biyoloji ve genetik"}
+_DEPARTMENT = re.compile(r'\b(' + '|'.join(_DEPARTMENTS) + r')\b(?![\s-]*\d)', re.IGNORECASE)
+
+
+def _name_department(match):
+    code, name = match.group(1), _DEPARTMENTS[match.group(1).lower()]
+    # every entry point normalizes the same query, so a second pass must
+    # not add the name again
+    if match.string[match.end():].lstrip().lower().startswith(name):
+        return code
+    return f"{code} {name}"
+
+
+# lowercase "iyte" read to the rewriter like a typo for a better-known
+# university: "iyte mimarlık yüksek lisans" became "İTÜ mimarlık ..." 5 of 5
+_IYTE = re.compile(r'\b[iıIİ]yte\b', re.IGNORECASE)
+
 
 def normalize_query(query: str) -> str:
+    query = _IYTE.sub("İYTE", query)
+    query = _DEPARTMENT.sub(_name_department, query)
     query = _ABBREVIATION.sub(lambda m: _ABBREVIATIONS[m.group(1).lower()], query)
     return _COURSE_CODE.sub(r'\1 \2', query)
 
