@@ -111,6 +111,7 @@ def _now_tr():
 REWRITE_PROMPT = """Görevin bir sohbetteki son öğrenci mesajını, sohbet geçmişi olmadan da anlaşılacak bağımsız bir soruya dönüştürmek.
 - Soruyu CEVAPLAMA, sadece yeniden yaz.
 - Yazım hatalarını ve öğrenci kısaltmalarını düzelt (örn. "bilgiayarda" → bilgisayar mühendisliğinde, "yl" → yüksek lisans); soruya yeni bilgi ekleme, anlamını değiştirme.
+- Akademik takvim sorularını takvimin terimleriyle yaz: "okul kapanıyor" / "dönem bitiyor" → yarıyıl derslerinin ve yarıyıl sonu sınavlarının bitişi, "okul açılıyor" → yarıyıl derslerinin başlangıcı, "dönem" → yarıyıl, "final" → yarıyıl sonu sınavları.
 - Mesaj zaten bağımsız ve düzgünse olduğu gibi döndür.
 - Sadece yeniden yazılmış soruyu döndür, açıklama ekleme.
 
