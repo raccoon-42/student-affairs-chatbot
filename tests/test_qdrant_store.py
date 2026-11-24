@@ -128,3 +128,60 @@ def test_guide_questions_are_searched_but_never_returned(monkeypatch):
                                                    lexical=bm25_text("son gün"))
     assert hits[0].text == dates["text"]
 
+
+def test_collections_are_kept_in_one_segment(monkeypatch):
+    """Segments searched in parallel returned equal-score chunks in a new
+    order every run. Local mode has no segments, so this checks the setting
+    is asked for; the order itself was checked against the server."""
+    import qdrant_client
+
+    from app import embeddings
+    from preprocessing.indexing import vectorizer
+
+    client = QdrantClient(":memory:")
+    asked = []
+    for method in ("create_collection", "update_collection"):
+        real = getattr(client, method)
+        monkeypatch.setattr(client, method, lambda *a, _real=real, _name=method, **k: (
+            asked.append((_name, k["optimizers_config"].default_segment_number))
+            if k.get("optimizers_config") else None) or _real(*a, **k))
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            return [[1.0, 0.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    chunk = {"text": "Final sınavları", "metadata": {}}
+
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload)  # a new collection
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload)  # an existing one
+
+    assert asked[0] == ("create_collection", 1)
+    assert ("update_collection", 1) in asked[1:]
+
+
+def test_equal_fused_scores_are_ordered_by_point_id():
+    # dense ranks A over B, BM25 ranks B over A: the same RRF score. The
+    # server returns such ties in no fixed order (local mode happens to sort
+    # them, so the server's order is simulated by reversing its answer)
+    a = ("00000000-0000-0000-0000-000000000001", "alpha beta", [1.0, 0.0, 0.0])
+    b = ("00000000-0000-0000-0000-000000000002", "beta gamma", [0.6, 0.8, 0.0])
+    client = QdrantClient(":memory:")
+    client.create_collection("t", vectors_config=VectorParams(size=3, distance=Distance.COSINE))
+    client.create_payload_index("t", FIELD, index_params())
+    client.upsert("t", points=[PointStruct(id=pid, vector={"": vector},
+                                           payload={"text": text, FIELD: bm25_text(text)})
+                               for pid, text, vector in (a, b)])
+    real_query = client.query_points
+
+    def any_order(*args, **kwargs):
+        response = real_query(*args, **kwargs)
+        response.points.reverse()
+        return response
+
+    client.query_points = any_order
+    hits = QdrantVectorStore(client=client).search("t", [1.0, 0.1, 0.0], limit=2,
+                                                   lexical=bm25_text("beta gamma"))
+    assert hits[0].score == hits[1].score
+    assert [hit.text for hit in hits] == ["alpha beta", "beta gamma"]

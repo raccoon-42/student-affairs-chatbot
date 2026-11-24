@@ -616,6 +616,23 @@ def rebuild_bm25(qdrant, collection_name):
         print(f"{collection_name}: old '{OLD_SPARSE_VECTOR}' sparse vectors removed")
 
 
+def keep_one_segment(qdrant, collection_name):
+    """Keep the collection in a single segment. Qdrant splits a collection
+    into segments (one per CPU by default) and searches them in parallel,
+    so chunks with equal scores came back in whichever order the segments
+    finished: the same BM25 query ranked tied calendar events differently
+    run to run, and the fused ranking with them. These collections hold a
+    few hundred chunks; one segment costs nothing and fixes the order."""
+    from qdrant_client.http.models import OptimizersConfigDiff
+
+    info = qdrant.get_collection(collection_name)
+    if info.config.optimizer_config.default_segment_number != 1:
+        qdrant.update_collection(collection_name,
+                                 optimizers_config=OptimizersConfigDiff(default_segment_number=1))
+        if (info.segments_count or 0) > 1:
+            print(f"{collection_name}: merging {info.segments_count} segments into one")
+
+
 def store_embedding(chunks, collection_name, build_payload=_calendar_payload, recreate=False):
     """Sync chunks into Qdrant: the given chunks are the desired state.
 
@@ -627,7 +644,8 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import Distance, PointIdsList, PointStruct, VectorParams
+    from qdrant_client.http.models import (Distance, OptimizersConfigDiff, PointIdsList, PointStruct,
+                                           VectorParams)
 
     from app.embeddings import default_embedder
 
@@ -658,6 +676,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     if qdrant.collection_exists(collection_name=collection_name):
         if not has_bm25(qdrant, collection_name):  # indexed before the BM25 field
             rebuild_bm25(qdrant, collection_name)
+        keep_one_segment(qdrant, collection_name)
         offset = None
         while True:
             records, offset = qdrant.scroll(
@@ -690,6 +709,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
             qdrant.create_collection(
                 collection_name=collection_name,
                 vectors_config=VectorParams(size=len(vectors[0]), distance=Distance.COSINE),
+                optimizers_config=OptimizersConfigDiff(default_segment_number=1),  # see keep_one_segment
             )
             qdrant.create_payload_index(collection_name, FIELD, index_params(), wait=True)
 
