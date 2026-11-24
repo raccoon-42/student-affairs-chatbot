@@ -355,8 +355,10 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
         cached = _sessions.get(("openrouter", session_id))
     if cached and cached[0].last_sources:
         # usage rides along: the UI fetches this after every answer, so the
-        # token counter needs no extra request
-        return {"sources": cached[0].last_sources, "usage": cached[0].last_usage}
+        # token counter needs no extra request. So does the answer after the
+        # citation check, which can differ from the streamed tokens
+        return {"sources": cached[0].last_sources, "usage": cached[0].last_usage,
+                "answer": cached[0].last_answer}
     # the cache is per-process: a restart (e.g. --reload in dev) between
     # streaming and this call would lose the sources — fall back to the
     # persisted transcript's latest assistant message
@@ -535,9 +537,11 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
         # stream stays open until this generator returns, so a slow SQLite
         # write would show as a hang after the last visible token.
         if user and answer not in REFUSALS.values():
-            # image-only messages have no text; the image itself isn't stored
+            # image-only messages have no text; the image itself isn't stored.
+            # The stored answer is the one after the citation check
             Thread(target=storage.record_exchange,
-                   args=(session_id, user["email"], query or "(görsel)", answer),
+                   args=(session_id, user["email"], query or "(görsel)",
+                         conversation.last_answer or answer),
                    kwargs={"sources": conversation.last_sources,
                            "usage": conversation.last_usage},
                    daemon=True).start()
