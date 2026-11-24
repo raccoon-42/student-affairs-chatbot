@@ -1,102 +1,277 @@
 [
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Fen Fakültesi Fizik Bölümü",
-    "metin": "Fen Fakültesi Fizik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nBirleşik Krallık — University of St Andrews\nFransa — Universite de Limoges\nHırvatistan — University of Split\nİskoçya — University of St Andrews\nİtalya — Universita degli Studi di Perugia\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — University of Pisa\nLetonya — University of Latvia\nPolonya — Politechnika Gdanska\nRomanya — University of Pitesti"
+    "metin": "Fen Fakültesi Fizik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nBirleşik Krallık — University of St Andrews\nFransa — Universite de Limoges\nHırvatistan — University of Split\nİskoçya — University of St Andrews\nİtalya — Universita degli Studi di Perugia\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — University of Pisa\nLetonya — University of Latvia\nPolonya — Politechnika Gdanska\nRomanya — University of Pitesti",
+    "sorular": [
+      "Fen Fakültesi Fizik Bölümü için Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "fizik bolumunde erasmusla hangi okullara gidebilirim",
+      "Erasmus'ta fizik bölümü öğrencileri hangi ülkelerdeki üniversitelerle anlaşmamız var",
+      "fen fak fizik erasmus anlaşmalı üni listesi",
+      "fizik okuyorum, erasmus+ için kurumlararası anlaşması olan okullar neler?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Fen Fakültesi Fotonik Bölümü",
-    "metin": "Fen Fakültesi Fotonik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAvusturya — Johannes Kepler Universitaet Linz\nBelçika — Vrije Universiteit Brussel\nFransa — Universite de Limoges\nİtalya — Politecnico di Bari\nYunanistan — University of the Peloponnese"
+    "metin": "Fen Fakültesi Fotonik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAvusturya — Johannes Kepler Universitaet Linz\nBelçika — Vrije Universiteit Brussel\nFransa — Universite de Limoges\nİtalya — Politecnico di Bari\nYunanistan — University of the Peloponnese",
+    "sorular": [
+      "Fotonik Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "fotonik bolumu erasmus icin hangi universiteler var",
+      "Fen Fakültesi Fotonik öğrencisiyim, Erasmus ile hangi okullara gidebilirim?",
+      "fotonik erasmus anlasmali okullar neler",
+      "erasmus+ fotonik bölümü kurumlararası anlaşma listesi"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Fen Fakültesi Kimya Bölümü",
-    "metin": "Fen Fakültesi Kimya Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nAvusturya — Technische Universitat Wien\nBulgaristan — Sofia University St. Kliment Ohridski\nÇek Cumhuriyeti — University of Chemistry Technology Prague\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — Sapienza Universita di Roma\nLetonya — University of Latvia\nPolonya — Politechnika Wroclawska\nPolonya — Politechnika Gdanska\nPolonya — West Pomeranian University of Technology\nRomanya — Babes-Bolyai University\nRomanya — University of Pitesti\nSlovenya — University of Ljubljana"
+    "metin": "Fen Fakültesi Kimya Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nAvusturya — Technische Universitat Wien\nBulgaristan — Sofia University St. Kliment Ohridski\nÇek Cumhuriyeti — University of Chemistry Technology Prague\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — Sapienza Universita di Roma\nLetonya — University of Latvia\nPolonya — Politechnika Wroclawska\nPolonya — Politechnika Gdanska\nPolonya — West Pomeranian University of Technology\nRomanya — Babes-Bolyai University\nRomanya — University of Pitesti\nSlovenya — University of Ljubljana",
+    "sorular": [
+      "Fen Fakültesi Kimya Bölümü Erasmus+ anlaşmalı üniversiteleri hangileri?",
+      "fen fakültesi kimya bölümü için erasmus anlaşmaları hangi ülkelerde var",
+      "kimya bolumu erasmus ile gidilebilecek universiteler",
+      "kimya (fen fak) erasmus anlasmali okul listesi",
+      "Kimya bölümü öğrencisi olarak Erasmus+'ta hangi okulları seçebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Fen Fakültesi Matematik Bölümü",
-    "metin": "Fen Fakültesi Matematik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nÇek Cumhuriyeti — University of Ostrava\nHırvatistan — University of Split\nİspanya — University of Almeria\nİsveç — Umea University\nLetonya — University of Latvia\nPolonya — Politechnika Gdanska\nPortekiz — Universidade do Porto\nRomanya — University of Pitesti\nRomanya — Lucian Blaga University of Sibiu\nSlovenya — University of Primorska\nYunanistan — University of the Aegean\nYunanistan — National Technical University of Athens"
+    "metin": "Fen Fakültesi Matematik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nÇek Cumhuriyeti — University of Ostrava\nHırvatistan — University of Split\nİspanya — University of Almeria\nİsveç — Umea University\nLetonya — University of Latvia\nPolonya — Politechnika Gdanska\nPortekiz — Universidade do Porto\nRomanya — University of Pitesti\nRomanya — Lucian Blaga University of Sibiu\nSlovenya — University of Primorska\nYunanistan — University of the Aegean\nYunanistan — National Technical University of Athens",
+    "sorular": [
+      "Matematik Bölümü için Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "matematik bolumu erasmus hangi okullarla anlasma var",
+      "Fen Fakültesi matematik erasmus anlaşmalı üni listesi",
+      "matematik okuyorum erasmusla nereye gidebilirim",
+      "Erasmus+ matematik bölümü kurumlararası anlaşmalı okullar neler?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Fen Fakültesi Moleküler Biyoloji ve Genetik Bölümü",
-    "metin": "Fen Fakültesi Moleküler Biyoloji ve Genetik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Universitat Bielefeld\nAlmanya — Freie Universitaet Berlin\nİsveç — Göteborgs Universitet\nLetonya — University of Latvia\nPolonya — University of Rzeszow\nRomanya — Babes-Bolyai University\nSlovenya — University of Primorska"
+    "metin": "Fen Fakültesi Moleküler Biyoloji ve Genetik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Universitat Bielefeld\nAlmanya — Freie Universitaet Berlin\nİsveç — Göteborgs Universitet\nLetonya — University of Latvia\nPolonya — University of Rzeszow\nRomanya — Babes-Bolyai University\nSlovenya — University of Primorska",
+    "sorular": [
+      "Moleküler Biyoloji ve Genetik Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "mbg erasmus anlaşmalı okullar",
+      "moleku­ler biyoloji ve genetik erasmus icin hangi universiteler var",
+      "MBG öğrencisiyim, Erasmus+ ile hangi üniversitelere gidebilirim?",
+      "fen fakültesi moleküler biyoloji genetik erasmus anlaşma listesi"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mimarlık Fakültesi Endüstriyel Tasarım Bölümü",
-    "metin": "Mimarlık Fakültesi Endüstriyel Tasarım Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Kassel University\nBulgaristan — Technical University of Varna\nEstonya — Estonian Academy of Arts\nİsveç — Jönköping University\nİtalya — University of Bologna\nİtalya — Universita degli Studi di Ferrara\nPortekiz — Escola Superior De Artes E Design\nPortekiz — Instituto Politecnico da Guarda\nYunanistan — University of West Attica"
+    "metin": "Mimarlık Fakültesi Endüstriyel Tasarım Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Kassel University\nBulgaristan — Technical University of Varna\nEstonya — Estonian Academy of Arts\nİsveç — Jönköping University\nİtalya — University of Bologna\nİtalya — Universita degli Studi di Ferrara\nPortekiz — Escola Superior De Artes E Design\nPortekiz — Instituto Politecnico da Guarda\nYunanistan — University of West Attica",
+    "sorular": [
+      "Endüstriyel Tasarım Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "endustriyel tasarim erasmus icin hangi okullar var",
+      "Mimarlık Fakültesi Endüstriyel Tasarım erasmus anlaşmalı üni listesi",
+      "endüstriyel tasarım öğrencisi erasmusla nereye gidebilir",
+      "end tasarım erasmus+ kurumlararası anlaşmalar neler"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mimarlık Fakültesi Mimari Restorasyon Bölümü",
-    "metin": "Mimarlık Fakültesi Mimari Restorasyon Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Brandenburg University of Technology\nİsveç — Uppsala Universitet\nİsveç — Göteborgs Universitet\nİtalya — Universita degli Studi di Napoli Federico II\nPolonya — Lodz University of Technology"
+    "metin": "Mimarlık Fakültesi Mimari Restorasyon Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Brandenburg University of Technology\nİsveç — Uppsala Universitet\nİsveç — Göteborgs Universitet\nİtalya — Universita degli Studi di Napoli Federico II\nPolonya — Lodz University of Technology",
+    "sorular": [
+      "Mimari Restorasyon Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "mimari restorasyon erasmus anlasmali okullar",
+      "restorasyon bölümü olarak Erasmus'la hangi üniversitelere başvurabiliriz?",
+      "Mimarlık Fakültesi Mimari Restorasyon erasmus+ anlaşma listesi",
+      "mimari restorasyon bolumu erasmus icin hangi universiteler var"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mimarlık Fakültesi Mimarlık Bölümü",
-    "metin": "Mimarlık Fakültesi Mimarlık Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nAlmanya — HS-Koblenz\nAlmanya — TH Mittelhessen\nÇek Cumhuriyeti — Czech University of Life Sciences Prague\nİtalya — Universita degli Studi di Ferrara\nİtalya — Universita degli Studi di Napoli Federico II\nLitvanya — Vilnius Gediminas Technical University\nMacaristan — Budapest University of Technology and Economics\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Gdanska\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Slaska\nPolonya — Warsaw University of Life Sciences\nSlovakya — Technical University of Kosice\nYunanistan — National Technical University of Athens"
+    "metin": "Mimarlık Fakültesi Mimarlık Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nAlmanya — HS-Koblenz\nAlmanya — TH Mittelhessen\nÇek Cumhuriyeti — Czech University of Life Sciences Prague\nİtalya — Universita degli Studi di Ferrara\nİtalya — Universita degli Studi di Napoli Federico II\nLitvanya — Vilnius Gediminas Technical University\nMacaristan — Budapest University of Technology and Economics\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Gdanska\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Slaska\nPolonya — Warsaw University of Life Sciences\nSlovakya — Technical University of Kosice\nYunanistan — National Technical University of Athens",
+    "sorular": [
+      "Mimarlık Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "mimarlik bolumu erasmus hangi okullarla anlasmali",
+      "mimarlık fakültesi mimarlık erasmus anlaşmalı üni listesi",
+      "mimarlık okuyorum erasmus ile hangi ülkelere gidebilirim",
+      "Erasmus+ mimarlık bölümü kurumlararası anlaşmalı üniversiteler neler?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mimarlık Fakültesi Şehir ve Bölge Planlama Bölümü",
-    "metin": "Mimarlık Fakültesi Şehir ve Bölge Planlama Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Brandenburg University of Technology\nAlmanya — FH Frankfurt am Main\nÇek Cumhuriyeti — Czech University of Life Sciences Prague\nHollanda — Universiteit van Amsterdam\nPolonya — Jagiellonian University in Krakow\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Wroclawska\nPolonya — University of Zielona Gora\nYunanistan — University of Thessaly"
+    "metin": "Mimarlık Fakültesi Şehir ve Bölge Planlama Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Brandenburg University of Technology\nAlmanya — FH Frankfurt am Main\nÇek Cumhuriyeti — Czech University of Life Sciences Prague\nHollanda — Universiteit van Amsterdam\nPolonya — Jagiellonian University in Krakow\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Wroclawska\nPolonya — University of Zielona Gora\nYunanistan — University of Thessaly",
+    "sorular": [
+      "Şehir ve Bölge Planlama Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "sehir ve bolge planlama erasmus icin hangi okullar var",
+      "şbp erasmus anlaşmalı üniversiteler",
+      "Mimarlık Fakültesi Şehir ve Bölge Planlama erasmus+ anlaşma listesi",
+      "şehir planlama öğrencisi olarak erasmusla nereye gidebilirim"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Bilgisayar Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Bilgisayar Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Ruprecht Karls Universitat Heidelberg\nAlmanya — TH Mittelhessen\nAlmanya — Universitat Bonn\nAlmanya — FH Südwestfalen\nAlmanya — T.U. Kaiserslauthern\nBulgaristan — New Bulgarian University\nBulgaristan — Technical University of Varna\nÇek Cumhuriyeti — Tomas Bata University\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nMacaristan — Eötvös Loránd University\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Slaska\nPolonya — Politechnika Gdanska\nRomanya — Bucharest University of Economic Studies\nRomanya — Lucian Blaga University of Sibiu\nRomanya — Universitatea Romano-Americana\nSlovenya — University of Primorska\nYunanistan — University of Piraeus"
+    "metin": "Mühendislik Fakültesi Bilgisayar Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Ruprecht Karls Universitat Heidelberg\nAlmanya — TH Mittelhessen\nAlmanya — Universitat Bonn\nAlmanya — FH Südwestfalen\nAlmanya — T.U. Kaiserslauthern\nBulgaristan — New Bulgarian University\nBulgaristan — Technical University of Varna\nÇek Cumhuriyeti — Tomas Bata University\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nMacaristan — Eötvös Loránd University\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Slaska\nPolonya — Politechnika Gdanska\nRomanya — Bucharest University of Economic Studies\nRomanya — Lucian Blaga University of Sibiu\nRomanya — Universitatea Romano-Americana\nSlovenya — University of Primorska\nYunanistan — University of Piraeus",
+    "sorular": [
+      "Bilgisayar Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "bilgisayar muhendisligi erasmus anlasmali okullar neler",
+      "bilg müh erasmus için hangi üniversitelerle anlaşma var",
+      "Mühendislik Fakültesi bilgisayar mühendisliği Erasmus+ kurumlararası anlaşma listesi",
+      "bilgisayar mühendisliği öğrencisiyim erasmusla hangi okullara gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Biyomühendislik Bölümü",
-    "metin": "Mühendislik Fakültesi Biyomühendislik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — ESIEE Paris Universite Gustave Eiffel\nAlmanya — Hochschule Ruhr West\nPolonya — West Pomeranian University of Technology\nRomanya — University of Pitesti (University of Politechnika of Bucharest)"
+    "metin": "Mühendislik Fakültesi Biyomühendislik Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — ESIEE Paris Universite Gustave Eiffel\nAlmanya — Hochschule Ruhr West\nPolonya — West Pomeranian University of Technology\nRomanya — University of Pitesti (University of Politechnika of Bucharest)",
+    "sorular": [
+      "Biyomühendislik Bölümü Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "biyomuhendislik erasmus icin hangi okullar var",
+      "biyomühendislik öğrencileri Erasmus ile hangi üniversitelere gidebilir?",
+      "Mühendislik Fakültesi Biyomühendislik erasmus+ anlaşmalı üni listesi",
+      "biyomuh erasmus anlasmalari"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Çevre Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Çevre Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Technische Universitaet Berlin\nBulgaristan — Technical University of Varna\nİtalya — Universita degli Studi di Napoli Federico II\nMacaristan — University of Szeged\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Lubelska\nPolonya — Politechnika Wroclawska\nPortekiz — Instituto Politecnico da Guarda\nRomanya — Lucian Blaga University of Sibiu\nSlovakya — Slovak University of Technology in Bratislava\nSlovakya — Technical University of Kosice"
+    "metin": "Mühendislik Fakültesi Çevre Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Technische Universitaet Berlin\nBulgaristan — Technical University of Varna\nİtalya — Universita degli Studi di Napoli Federico II\nMacaristan — University of Szeged\nPolonya — Bialystok University of Technology\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Lubelska\nPolonya — Politechnika Wroclawska\nPortekiz — Instituto Politecnico da Guarda\nRomanya — Lucian Blaga University of Sibiu\nSlovakya — Slovak University of Technology in Bratislava\nSlovakya — Technical University of Kosice",
+    "sorular": [
+      "Çevre Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "cevre muhendisligi erasmus hangi okullarla anlasmali",
+      "çevre müh erasmus anlaşmalı üni listesi",
+      "Mühendislik Fakültesi Çevre Mühendisliği için Erasmus+ kurumlararası anlaşmalar neler?",
+      "çevre mühendisliği okuyorum erasmusla nereye gidebilirim"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Elektrik Elektronik Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Elektrik Elektronik Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nBelçika — Universite de Mons\nBulgaristan — Technical University of Varna\nFransa — ESIEE Paris Universite Gustave Eiffel\nFransa — Universite de Limoges\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nFransa — École d’ingénieurs généralistes La Rochelle\nHırvatistan — Zagreb University of Applied Sciences\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİtalya — Universita della Calabria\nLetonya — Latvia University of Life Sciences and Technologies\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Slaska\nPolonya — Politechnika Wroclawska\nPolonya — Bialystok University of Technology\nRomanya — University of Oradea\nYunanistan — University of West Attica"
+    "metin": "Mühendislik Fakültesi Elektrik Elektronik Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nBelçika — Universite de Mons\nBulgaristan — Technical University of Varna\nFransa — ESIEE Paris Universite Gustave Eiffel\nFransa — Universite de Limoges\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nFransa — École d’ingénieurs généralistes La Rochelle\nHırvatistan — Zagreb University of Applied Sciences\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİtalya — Universita della Calabria\nLetonya — Latvia University of Life Sciences and Technologies\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Slaska\nPolonya — Politechnika Wroclawska\nPolonya — Bialystok University of Technology\nRomanya — University of Oradea\nYunanistan — University of West Attica",
+    "sorular": [
+      "Elektrik Elektronik Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "eem erasmus anlaşmalı okullar",
+      "elektrik elektronik muhendisligi erasmus icin hangi universiteler var",
+      "Mühendislik Fakültesi EEM bölümü Erasmus+ kurumlararası anlaşma listesi",
+      "elektrik elektronik öğrencisi erasmusla hangi ülkelere gidebilir?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Enerji Sistemleri Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Enerji Sistemleri Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Albert-Ludwigs-Universitaet Freiburg\nAlmanya — TH Mittelhessen\nAvusturya — Leoben University\nBulgaristan — Technical University of Varna\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — ESIEE Paris Universite Gustave Eiffel\nİspanya — Universidad de Burgos\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Ferrara\nPolonya — Bialystok University of Technology\nPolonya — AGH University of Science and Technology\nRomanya — Technical University of Cluj Napoca"
+    "metin": "Mühendislik Fakültesi Enerji Sistemleri Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Albert-Ludwigs-Universitaet Freiburg\nAlmanya — TH Mittelhessen\nAvusturya — Leoben University\nBulgaristan — Technical University of Varna\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — ESIEE Paris Universite Gustave Eiffel\nİspanya — Universidad de Burgos\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Ferrara\nPolonya — Bialystok University of Technology\nPolonya — AGH University of Science and Technology\nRomanya — Technical University of Cluj Napoca",
+    "sorular": [
+      "Enerji Sistemleri Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "enerji sistemleri muhendisligi erasmus hangi okullar",
+      "enerji sistemleri müh erasmus anlaşmalı üni listesi",
+      "Mühendislik Fakültesi Enerji Sistemleri için Erasmus+ ile gidebileceğim okullar neler?",
+      "enerji sistemleri erasmus anlasmalari"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Gıda Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Gıda Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİtalya — Universita degli Studi di Milano\nLetonya — University of Latvia\nPolonya — University of Techology and Life Sciences in Bydgoszcz\nPolonya — Warsaw University of Life Sciences\nPolonya — University of Rzeszow\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nRomanya — Lucian Blaga University of Sibiu\nSlovakya — Slovak University of Technology in Bratislava\nYunanistan — Agricultural University of Athens\nYunanistan — University of West Attica"
+    "metin": "Mühendislik Fakültesi Gıda Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİtalya — Universita degli Studi di Milano\nLetonya — University of Latvia\nPolonya — University of Techology and Life Sciences in Bydgoszcz\nPolonya — Warsaw University of Life Sciences\nPolonya — University of Rzeszow\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nRomanya — Lucian Blaga University of Sibiu\nSlovakya — Slovak University of Technology in Bratislava\nYunanistan — Agricultural University of Athens\nYunanistan — University of West Attica",
+    "sorular": [
+      "Gıda Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "gida muhendisligi erasmus icin hangi okullarla anlasma var",
+      "gıda müh erasmus anlaşmalı üni listesi",
+      "Mühendislik Fakültesi Gıda Mühendisliği Erasmus+ kurumlararası anlaşmalar neler?",
+      "gıda mühendisliği öğrencisiyim erasmusla nereye gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi İnşaat Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi İnşaat Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİsveç — Jönköping University\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Lubelska\nPolonya — Politechnika Slaska\nPolonya — Politechnika Wroclawska\nPolonya — Bialystok University of Technology\nPolonya — Warsaw University of Life Sciences\nRomanya — Technical University of Iasi\nSlovakya — Slovak University of Technology in Bratislava\nYunanistan — Aristotle University of Thessaloniki"
+    "metin": "Mühendislik Fakültesi İnşaat Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nHırvatistan — Josip Juraj Strossmayer University of Osijek\nİsveç — Jönköping University\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Lubelska\nPolonya — Politechnika Slaska\nPolonya — Politechnika Wroclawska\nPolonya — Bialystok University of Technology\nPolonya — Warsaw University of Life Sciences\nRomanya — Technical University of Iasi\nSlovakya — Slovak University of Technology in Bratislava\nYunanistan — Aristotle University of Thessaloniki",
+    "sorular": [
+      "İnşaat Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "insaat muhendisligi erasmus anlasmali okullar neler",
+      "inş müh erasmus için hangi üniversiteler var",
+      "Mühendislik Fakültesi İnşaat Mühendisliği Erasmus+ kurumlararası anlaşma listesi",
+      "inşaat mühendisliği okuyorum erasmusla hangi okullara gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Kimya Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Kimya Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nBelçika — Universite de Mons\nÇek Cumhuriyeti — University of Chemical Technology Prague\nHırvatistan — University of Split\nİtalya — Universita della Calabria\nPolonya — University of Techology and Life Sciences in Bydgoszcz\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Poznanska\nPolonya — West Pomeranian University of Technology\nSlovakya — Slovak University of Technology in Bratislava\nSlovenya — University of Ljubljana"
+    "metin": "Mühendislik Fakültesi Kimya Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nBelçika — Universite de Mons\nÇek Cumhuriyeti — University of Chemical Technology Prague\nHırvatistan — University of Split\nİtalya — Universita della Calabria\nPolonya — University of Techology and Life Sciences in Bydgoszcz\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Poznanska\nPolonya — West Pomeranian University of Technology\nSlovakya — Slovak University of Technology in Bratislava\nSlovenya — University of Ljubljana",
+    "sorular": [
+      "Kimya Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "kimya muhendisligi erasmus icin hangi okullar var",
+      "kimya müh erasmus anlaşmalı üni listesi",
+      "Mühendislik Fakültesi Kimya Mühendisliği bölümünün Erasmus+ anlaşmaları neler?",
+      "kimya mühendisliği öğrencisi erasmusla nereye gidebilir"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Makine Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Makine Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — FH Südwestfalen\nAlmanya — Beuth University of Applied Sciences Berlin\nAlmanya — Aachen University\nAlmanya — Ravensburg-Weingarten University of Applied Sciences\nAvusturya — FH-Joanneum University of Applied Sciences\nBulgaristan — Technical University of Varna\nEstonya — Tallinn University of Technology\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — École Normale Supérieure de Cachan\nHırvatistan — Zagreb University of Applied Sciences\nHırvatistan — University of Split\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Cassino\nİtalya — Universita degli Studi di Ferrara\nİtalya — Universita degli Studi di della Campania Luigi Vanvitelli\nİtalya — Università degli studi di Modena e Reggio Emilia\nİtalya — Universita Degli Studi di Salerno\nİtalya — Universita degli Studi di Perugia\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — Politecnico di Torino\nPolonya — Politechnika Krakowska\nPolonya — Bialystok University of Technology\nRomanya — Universitatea Politehnica Timisoara\nSlovenya — University of Maribor\nYunanistan — University of West Attica\nYunanistan — National Technical University of Athens"
+    "metin": "Mühendislik Fakültesi Makine Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — FH Südwestfalen\nAlmanya — Beuth University of Applied Sciences Berlin\nAlmanya — Aachen University\nAlmanya — Ravensburg-Weingarten University of Applied Sciences\nAvusturya — FH-Joanneum University of Applied Sciences\nBulgaristan — Technical University of Varna\nEstonya — Tallinn University of Technology\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — École Normale Supérieure de Cachan\nHırvatistan — Zagreb University of Applied Sciences\nHırvatistan — University of Split\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Cassino\nİtalya — Universita degli Studi di Ferrara\nİtalya — Universita degli Studi di della Campania Luigi Vanvitelli\nİtalya — Università degli studi di Modena e Reggio Emilia\nİtalya — Universita Degli Studi di Salerno\nİtalya — Universita degli Studi di Perugia\nİtalya — Universita degli Studi di Roma “Tor Vergata”\nİtalya — Politecnico di Torino\nPolonya — Politechnika Krakowska\nPolonya — Bialystok University of Technology\nRomanya — Universitatea Politehnica Timisoara\nSlovenya — University of Maribor\nYunanistan — University of West Attica\nYunanistan — National Technical University of Athens",
+    "sorular": [
+      "Makine Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "makine muhendisligi erasmus hangi okullarla anlasmali",
+      "makine müh erasmus anlaşmalı üni listesi",
+      "Mühendislik Fakültesi Makine Mühendisliği Erasmus+ kurumlararası anlaşma listesi nedir?",
+      "makine mühendisliği okuyorum erasmus ile hangi ülkelere gidebilirim"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Mühendislik Fakültesi Malzeme Bilimi ve Mühendisliği Bölümü",
-    "metin": "Mühendislik Fakültesi Malzeme Bilimi ve Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — École Normale Supérieure de Cachan\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nİtalya — Università degli studi di Modena e Reggio Emilia\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Slaska\nPortekiz — Universidade do Minho\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nSlovakya — Technical University of Kosice\nYunanistan — National Technical University of Athens\nYunanistan — University of Patras"
+    "metin": "Mühendislik Fakültesi Malzeme Bilimi ve Mühendisliği Bölümü için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nFransa — École Normale Supérieure de Cachan\nFransa — University of Technology of Tarbes Occitanie Pyrénées (UTTOP)\nİtalya — Università degli studi di Modena e Reggio Emilia\nPolonya — Politechnika Gdanska\nPolonya — Politechnika Krakowska\nPolonya — Politechnika Slaska\nPortekiz — Universidade do Minho\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nSlovakya — Technical University of Kosice\nYunanistan — National Technical University of Athens\nYunanistan — University of Patras",
+    "sorular": [
+      "Malzeme Bilimi ve Mühendisliği Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "malzeme bilimi ve muhendisligi erasmus icin hangi okullar var",
+      "malzeme müh erasmus anlaşmalı üniversiteler neler",
+      "Mühendislik Fakültesi Malzeme Bilimi ve Mühendisliği Erasmus+ anlaşma listesi",
+      "malzeme bilimi öğrencisiyim erasmusla hangi okullara gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Lisansüstü Eğitim Enstitüsü Biyoteknoloji Anabilim Dalı",
-    "metin": "Lisansüstü Eğitim Enstitüsü Biyoteknoloji Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nİspanya — Universidad Autonoma De Madrid\nPolonya — University of Rzeszow\nPolonya — Politechnika Wroclawska\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nSlovakya — Slovak University of Technology in Bratislava"
+    "metin": "Lisansüstü Eğitim Enstitüsü Biyoteknoloji Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Beuth University of Applied Sciences Berlin\nİspanya — Universidad Autonoma De Madrid\nPolonya — University of Rzeszow\nPolonya — Politechnika Wroclawska\nRomanya — University of Pitesti (University of Politechnika of Bucharest)\nSlovakya — Slovak University of Technology in Bratislava",
+    "sorular": [
+      "Lisansüstü Eğitim Enstitüsü Biyoteknoloji Anabilim Dalı Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "biyoteknoloji yuksek lisans erasmus icin hangi okullar var",
+      "biyoteknoloji anabilim dalı erasmus anlaşmalı üni listesi",
+      "LEE biyoteknoloji erasmus+ kurumlararası anlaşmalar neler",
+      "biyoteknoloji yüksek lisans öğrencisi erasmusla nereye gidebilir?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Lisansüstü Eğitim Enstitüsü Enerji Mühendisliği Anabilim Dalı",
-    "metin": "Lisansüstü Eğitim Enstitüsü Enerji Mühendisliği Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Albert-Ludwigs-Universitaet Freiburg\nAvusturya — Leoben University\nBulgaristan — Technical University of Varna\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — ESIEE Paris Universite Gustave Eiffel\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Ferrara\nİtalya — Politecnico di Torino\nPolonya — AGH University of Science and Technology\nRomanya — Technical University of Cluj Napoca"
+    "metin": "Lisansüstü Eğitim Enstitüsü Enerji Mühendisliği Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — Albert-Ludwigs-Universitaet Freiburg\nAvusturya — Leoben University\nBulgaristan — Technical University of Varna\nFransa — École d’ingénieurs généralistes La Rochelle\nFransa — ESIEE Paris Universite Gustave Eiffel\nİtalya — Universita della Calabria\nİtalya — Universita degli Studi di Ferrara\nİtalya — Politecnico di Torino\nPolonya — AGH University of Science and Technology\nRomanya — Technical University of Cluj Napoca",
+    "sorular": [
+      "Lisansüstü Enerji Mühendisliği Anabilim Dalı Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "enerji muhendisligi yuksek lisans erasmus anlasmali okullar",
+      "enerji mühendisliği anabilim dalı erasmus için hangi üniversiteler var",
+      "Lisansüstü Eğitim Enstitüsü Enerji Mühendisliği Erasmus+ anlaşma listesi",
+      "enerji müh yüksek lisans erasmusla hangi okullara gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Lisansüstü Eğitim Enstitüsü Mühendislik İşletmeciliği Anabilim Dalı",
-    "metin": "Lisansüstü Eğitim Enstitüsü Mühendislik İşletmeciliği Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — FH Südwestfalen\nPolonya — Bialystok University of Technology\nYunanistan — University of Patras"
+    "metin": "Lisansüstü Eğitim Enstitüsü Mühendislik İşletmeciliği Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversiteler:\nAlmanya — FH Südwestfalen\nPolonya — Bialystok University of Technology\nYunanistan — University of Patras",
+    "sorular": [
+      "Lisansüstü Mühendislik İşletmeciliği Anabilim Dalı Erasmus+ anlaşmalı üniversiteler hangileri?",
+      "muhendislik isletmeciligi yuksek lisans erasmus hangi okullar",
+      "mühendislik işletmeciliği erasmus anlaşmalı üni listesi",
+      "Lisansüstü Eğitim Enstitüsü Mühendislik İşletmeciliği için Erasmus+ anlaşmaları neler?",
+      "müh işletmeciliği yüksek lisans erasmusla nereye gidebilirim"
+    ]
   },
   {
     "baslik": "Erasmus+ Anlaşmalı Üniversiteler – Lisansüstü Eğitim Enstitüsü Uluslararası Su Kaynakları Anabilim Dalı",
-    "metin": "Lisansüstü Eğitim Enstitüsü Uluslararası Su Kaynakları Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversite:\nAlmanya — Kiel University"
+    "metin": "Lisansüstü Eğitim Enstitüsü Uluslararası Su Kaynakları Anabilim Dalı için Erasmus+ kurumlararası anlaşmalı üniversite:\nAlmanya — Kiel University",
+    "sorular": [
+      "Uluslararası Su Kaynakları Anabilim Dalı Erasmus+ anlaşmalı üniversite hangisi?",
+      "uluslararasi su kaynaklari erasmus icin hangi okul var",
+      "su kaynakları yüksek lisans erasmus anlaşmalı üni hangisi",
+      "Lisansüstü Eğitim Enstitüsü Uluslararası Su Kaynakları Erasmus+ kurumlararası anlaşması nerede?",
+      "su kaynakları anabilim dalı erasmus ile nereye gidebilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Ders Verme Hareketliliği Anlaşmalı Üniversiteler",
-    "metin": "Erasmus+ Ders Verme Hareketliliği için kurumlararası anlaşmalı üniversiteler:\nAvusturya — MCI Management Center Innsbruck\nBelçika — KU Leuven\nEstonya — Eesti Kunstiakadeemia\nFransa — Université de Strasbourg\nHırvatistan — University of Dubrovnik\nİtalya — Universidad Telemática E-campus\nİtalya — The University of Pavia\nİtalya — University of Pisa\nİtalya — University of Trento\nİzlanda — University of Iceland\nLetonya — Latvia University of Life Sciences and Technologies\nPolonya — Uniwersytet Warszawski\nPolonya — Politechnika Wroclawska\nYunanistan — University of Patras"
+    "metin": "Erasmus+ Ders Verme Hareketliliği için kurumlararası anlaşmalı üniversiteler:\nAvusturya — MCI Management Center Innsbruck\nBelçika — KU Leuven\nEstonya — Eesti Kunstiakadeemia\nFransa — Université de Strasbourg\nHırvatistan — University of Dubrovnik\nİtalya — Universidad Telemática E-campus\nİtalya — The University of Pavia\nİtalya — University of Pisa\nİtalya — University of Trento\nİzlanda — University of Iceland\nLetonya — Latvia University of Life Sciences and Technologies\nPolonya — Uniwersytet Warszawski\nPolonya — Politechnika Wroclawska\nYunanistan — University of Patras",
+    "sorular": [
+      "Erasmus+ Ders Verme Hareketliliği için anlaşmalı üniversiteler hangileri?",
+      "erasmus ders verme hareketliligi icin hangi okullarla anlasma var",
+      "akademisyen olarak Erasmus+ ders verme hareketliliği ile nerelere gidebilirim?",
+      "erasmus ders verme hareketliliği anlaşmalı üni listesi",
+      "ders verme hareketliligi erasmus+ kurumlararasi anlasmalar neler"
+    ]
   },
   {
     "baslik": "Erasmus+ KA171 Projesi Anlaşmalı Üniversiteler",
-    "metin": "Erasmus+ KA171 Projesi kapsamındaki anlaşmalı üniversiteler:\nAzerbaycan — Khazar University\nCezayir — Biskra University\nFilistin — Palestine Technical University – Kadoorie\nİran — University of Tabriz\nZambiya — University of Zambia"
+    "metin": "Erasmus+ KA171 Projesi kapsamındaki anlaşmalı üniversiteler:\nAzerbaycan — Khazar University\nCezayir — Biskra University\nFilistin — Palestine Technical University – Kadoorie\nİran — University of Tabriz\nZambiya — University of Zambia",
+    "sorular": [
+      "Erasmus+ KA171 projesi kapsamında anlaşmalı üniversiteler hangileri?",
+      "erasmus ka171 hangi universitelerle anlasmali",
+      "KA171 projesi erasmus+ hangi ülkeleri kapsıyor?",
+      "erasmus ka171 anlaşmalı okul listesi",
+      "Erasmus+ KA171 ile hangi üniversitelere gidilebiliyor"
+    ]
   }
 ]

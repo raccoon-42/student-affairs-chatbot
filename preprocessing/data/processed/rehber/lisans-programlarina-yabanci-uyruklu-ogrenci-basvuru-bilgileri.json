@@ -1,6 +1,13 @@
 [
   {
     "baslik": "Lisans Programlarına Yurtdışından Öğrenci Başvurusu",
-    "metin": "Lisans programlarına yurtdışından öğrenci başvuru işlemleri Öğrenci İşleri Daire Başkanlığı tarafından değil, Uluslararası İlişkiler Ofisi tarafından yürütülmektedir. Başvuru ile ilgili detaylı bilgilendirmeye ulaşmak için Uluslararası İlişkiler Ofisi'nin ilgili sayfasını ziyaret ediniz (bağlantı: https://uio.iyte.edu.tr/lisans-ogrencileri/)."
+    "metin": "Lisans programlarına yurtdışından öğrenci başvuru işlemleri Öğrenci İşleri Daire Başkanlığı tarafından değil, Uluslararası İlişkiler Ofisi tarafından yürütülmektedir. Başvuru ile ilgili detaylı bilgilendirmeye ulaşmak için Uluslararası İlişkiler Ofisi'nin ilgili sayfasını ziyaret ediniz (bağlantı: https://uio.iyte.edu.tr/lisans-ogrencileri/).",
+    "sorular": [
+      "Yurtdışından lisans programına öğrenci başvurusunu hangi birim yürütüyor?",
+      "yurtdisindan lisans basvurusu icin Ogrenci Isleri'ne mi gitmem gerekiyor yoksa baska bir ofis mi bakiyor",
+      "Lisansa yurtdışından öğrenci başvurusu hakkında detaylı bilgiyi nereden bulabilirim?",
+      "yurtdisi lisans ogrenci basvurusu ile ilgili hangi sayfaya bakmam lazım",
+      "Yurtdışı öğrenci lisans başvurusu işlemleri için hangi ofisle iletişime geçmeliyim, ÖİDB mi UİO mu?"
+    ]
   }
 ]

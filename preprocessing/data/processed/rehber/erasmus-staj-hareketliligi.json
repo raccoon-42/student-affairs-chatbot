@@ -1,46 +1,123 @@
 [
   {
     "baslik": "Erasmus+ Staj Hareketliliği Nedir? Genel Bilgiler",
-    "metin": "Erasmus Staj Hareketliliği, öğrencilerin Programa üye bir ülkede yer alan bir işletme veya organizasyon bünyesinde uygulamalı iş deneyimi elde etmesidir.\n- Staj faaliyeti, belirli bir öğretim programı kapsamında yapılan akademik çalışmalara ilişkin araştırma ödevleri, bilimsel yayın araştırmaları, analiz çalışmaları gibi çalışmaları içermemelidir.\n- Staj yapılacak alan ve staj kurumu, öğrenim görülen eğitim programı ile uyumlu olmalıdır.\n- Yeterli hibe olması durumunda Program, seçilen öğrencileri karşılıksız hibe ile desteklemektedir. Dileyen katılımcılar maddi destekten feragat edebilmektedir.\n- Programın ülkemizdeki yürütücüsü AB Eğitim ve Gençlik Programları Merkezi Başkanlığı'dır (Ulusal Ajans) (bağlantı: http://www.ua.gov.tr/).\n- Web sayfasındaki bilgiler \"2025 Dönemi Yükseköğretim Kurumları İçin El Kitabı\"ndan derlenmiştir. Ulusal Ajans'tan gelen açıklamalara bağlı olarak sayfadaki bilgiler güncellenebilir.\n\nStaj Hareketliliği Bilgilendirme Sunumu (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/04/27.02.2026_Erasmus_Staj_Hareketliliği_Sunumu.pdf)"
+    "metin": "Erasmus Staj Hareketliliği, öğrencilerin Programa üye bir ülkede yer alan bir işletme veya organizasyon bünyesinde uygulamalı iş deneyimi elde etmesidir.\n- Staj faaliyeti, belirli bir öğretim programı kapsamında yapılan akademik çalışmalara ilişkin araştırma ödevleri, bilimsel yayın araştırmaları, analiz çalışmaları gibi çalışmaları içermemelidir.\n- Staj yapılacak alan ve staj kurumu, öğrenim görülen eğitim programı ile uyumlu olmalıdır.\n- Yeterli hibe olması durumunda Program, seçilen öğrencileri karşılıksız hibe ile desteklemektedir. Dileyen katılımcılar maddi destekten feragat edebilmektedir.\n- Programın ülkemizdeki yürütücüsü AB Eğitim ve Gençlik Programları Merkezi Başkanlığı'dır (Ulusal Ajans) (bağlantı: http://www.ua.gov.tr/).\n- Web sayfasındaki bilgiler \"2025 Dönemi Yükseköğretim Kurumları İçin El Kitabı\"ndan derlenmiştir. Ulusal Ajans'tan gelen açıklamalara bağlı olarak sayfadaki bilgiler güncellenebilir.\n\nStaj Hareketliliği Bilgilendirme Sunumu (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/04/27.02.2026_Erasmus_Staj_Hareketliliği_Sunumu.pdf)",
+    "sorular": [
+      "Erasmus staj hareketliliği tam olarak nedir, ne işe yarıyor?",
+      "erasmus staj kapsaminda arastirma odevi veya bilimsel yayin taramasi yapmak staj sayilir mi",
+      "Erasmus+ staj yapacağım yer okuduğum bölümle alakalı olmak zorunda mı?",
+      "erasmus staj hibesinden vazgecebilir miyim, maddi destek almak zorunlu mu",
+      "Erasmus staj programını ülkemizde hangi kurum yürütüyor, Ulusal Ajans kim?"
+    ]
   },
   {
     "baslik": "Staj Hareketliliği Başvuru Tarihleri ve Staj Başvuru Formu",
-    "metin": "Başvuru Tarihleri:\n- Başlangıç tarihi: 2 Şubat 2026\n- Bitiş tarihi: 13 Mart 2026 (saat 11.30)\n\nStaj Başvuru Formu (son tarih: 13 Mart 2026, saat 11.30) için adımlar:\n1. 2 Şubat 2026 tarihinden itibaren TurnaPortal'a girin (bağlantı: http://turnaportal.ua.gov.tr).\n2. E-Devlet aracılığıyla giriş yapın.\n3. \"Başvurularım\" menüsünden \"Erasmus Staj Başvuru\" ekranına ulaşın.\n4. Başvuru formunu doldurun. Formu doldururken Staj Başvuru Formu Rehberi'ne bakabilirsiniz (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2025/03/Staj_Başvuru_Formu_Rehber.pdf).\n\nBaşvuru iptali:\n- Staj Hareketliliği Programına başvuran öğrenciler, başvurularını 13 Mart 2026 saat 11.30'a kadar sistemden silerek iptal edebilir.\n- 13 Mart 2026 saat 11.30'dan sonra, Nihai Öğrenim Yerleştirme Listeleri ve Nihai Staj Başarı Puanı Listeleri açıklanana kadar iptal işlemi yapılmaz. Listeler açıklandıktan sonra dileyen öğrenciler staj başvurularını iptal edebilir."
+    "metin": "Başvuru Tarihleri:\n- Başlangıç tarihi: 2 Şubat 2026\n- Bitiş tarihi: 13 Mart 2026 (saat 11.30)\n\nStaj Başvuru Formu (son tarih: 13 Mart 2026, saat 11.30) için adımlar:\n1. 2 Şubat 2026 tarihinden itibaren TurnaPortal'a girin (bağlantı: http://turnaportal.ua.gov.tr).\n2. E-Devlet aracılığıyla giriş yapın.\n3. \"Başvurularım\" menüsünden \"Erasmus Staj Başvuru\" ekranına ulaşın.\n4. Başvuru formunu doldurun. Formu doldururken Staj Başvuru Formu Rehberi'ne bakabilirsiniz (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2025/03/Staj_Başvuru_Formu_Rehber.pdf).\n\nBaşvuru iptali:\n- Staj Hareketliliği Programına başvuran öğrenciler, başvurularını 13 Mart 2026 saat 11.30'a kadar sistemden silerek iptal edebilir.\n- 13 Mart 2026 saat 11.30'dan sonra, Nihai Öğrenim Yerleştirme Listeleri ve Nihai Staj Başarı Puanı Listeleri açıklanana kadar iptal işlemi yapılmaz. Listeler açıklandıktan sonra dileyen öğrenciler staj başvurularını iptal edebilir.",
+    "sorular": [
+      "erasmus staj başvuruları ne zaman başlıyor, son gün ne zaman?",
+      "erasmus staj basvurusunu nereden ve nasil yapiyorum, turnaportal adimlari neler",
+      "Erasmus staj başvuru formunu doldururken bakabileceğim bir rehber var mı?",
+      "erasmus staj basvurusunu yanlis yaptim sistemden silip iptal edebilir miyim",
+      "Erasmus staj başvuru süresi bittikten sonra başvurumu iptal etmek mümkün mü, ne zaman olur?"
+    ]
   },
   {
     "baslik": "Staj Kabul Mektubu: Son Tarih, Puan ve Kurallar",
-    "metin": "Kabul mektubu için son tarih: 15 Mayıs 2026.\n1. 13 Mart 2026 (saat 11.30) itibarıyla kabul mektubunuzu TurnaPortal üzerinden başvuru formunuza yüklerseniz +10 puan kazanırsınız.\n2. Kabul mektubunu TurnaPortal'a yükleyemediyseniz en geç 15 Mayıs 2026 tarihine kadar ilgili web adresine yüklemeniz gerekir. Söz konusu web adresi ileriki zamanda erişime açılacaktır.\n3. 13 Mart 2026 saat 11.30'dan sonra kabul mektubu teslim eden öğrenciler +10 puan alamaz.\n4. 15 Mayıs 2026 tarihine kadar kabul mektubunu teslim etmeyen öğrencilerin Staj Hareketliliği başvuruları geçersiz sayılır.\n\nEk bilgiler:\n- Staj kurumları kabul mektubunu hazırlarken kendi formatlarını kullanabilir. İYTE'nin formatını kullanmak isteyen kurumlar için Kabul Mektubu İçerik Örneği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2024/12/kabul_mektubu_örneği.docx).\n- Belgelerin tamamlanmış olması şartıyla staj en erken 15 Haziran 2026'da başlayabilir.\n- Kurumunuzun staj yapmaya uygun olduğuna dair Bölüm Staj Koordinatörü ve Bölüm Erasmus Koordinatörünüzden onay almanız önemle tavsiye edilir."
+    "metin": "Kabul mektubu için son tarih: 15 Mayıs 2026.\n1. 13 Mart 2026 (saat 11.30) itibarıyla kabul mektubunuzu TurnaPortal üzerinden başvuru formunuza yüklerseniz +10 puan kazanırsınız.\n2. Kabul mektubunu TurnaPortal'a yükleyemediyseniz en geç 15 Mayıs 2026 tarihine kadar ilgili web adresine yüklemeniz gerekir. Söz konusu web adresi ileriki zamanda erişime açılacaktır.\n3. 13 Mart 2026 saat 11.30'dan sonra kabul mektubu teslim eden öğrenciler +10 puan alamaz.\n4. 15 Mayıs 2026 tarihine kadar kabul mektubunu teslim etmeyen öğrencilerin Staj Hareketliliği başvuruları geçersiz sayılır.\n\nEk bilgiler:\n- Staj kurumları kabul mektubunu hazırlarken kendi formatlarını kullanabilir. İYTE'nin formatını kullanmak isteyen kurumlar için Kabul Mektubu İçerik Örneği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2024/12/kabul_mektubu_örneği.docx).\n- Belgelerin tamamlanmış olması şartıyla staj en erken 15 Haziran 2026'da başlayabilir.\n- Kurumunuzun staj yapmaya uygun olduğuna dair Bölüm Staj Koordinatörü ve Bölüm Erasmus Koordinatörünüzden onay almanız önemle tavsiye edilir.",
+    "sorular": [
+      "erasmus staj kabul mektubunu en geç ne zaman teslim etmem lazım?",
+      "Erasmus staj kabul mektubunu erken yüklersem ek puan alıyor muyum, kaç puan?",
+      "kabul mektubunu zamaninda teslim etmezsem erasmus staj basvurum gecersiz mi olur",
+      "Erasmus stajı en erken hangi tarihte başlayabilir?",
+      "staj kurumu erasmus kabul mektubunu kendi formatinda hazirlayabilir mi, ornek var mi"
+    ]
   },
   {
     "baslik": "Hibe Sonuçlarından Önce Staja Başlama ve Sıfır Hibeli Hareketlilik Sözleşmesi",
-    "metin": "Hibe sonuçları belli olmadan önce stajına başlamak isteyen katılımcılarla Sıfır Hibeli Hareketlilik Sözleşmesi imzalanır.\n- Hibe sonuçları belli olduktan sonra katılımcıya hibe sırası gelirse Sıfır Hibeli Hareketlilik Sözleşmesi iptal edilir ve Hibeli Hareketlilik Sözleşmesi hazırlanır.\n- Hibe sırası gelmezse Sıfır Hibeli Hareketlilik Sözleşmesi geçerliliğini korur.\n\nHibelerle İlgili Önemli Uyarı:\n- Enstitüde Erasmus katılımcı adayları, kuruma tahsis edilecek hibe miktarı belli olmadan önce seçilir. Amaç, adayların vize belgelerini vakitlice hazırlayabilmesidir. Bu nedenle Ulusal Ajans (Merkez) seçimlerden ve sonuçlarından sorumlu değildir.\n- Seçilen katılımcılar \"Erasmus Stajyer Adayı\" konumundadır.\n- Ulusal Ajans hibe dağıtım sonuçlarını ilan ettikten sonra seçim sonuçları kesinlik kazanır. Faaliyete katılacağı kesinleşen katılımcılarla kurum arasında Hareketlilik Sözleşmesi imzalandıktan sonra \"Erasmus Stajyer Adayı\" sıfatı kalkar.\n- Türk Ulusal Ajansı yükseköğretim kurumlarına hibe dağıtım sonuçlarını açıkladıktan sonra kurum da hibe dağıtım sonuçlarını açıklayabilir.\n- Adayların hareketliliklerine başladıkları sırada hibe hakkı kazanıp kazanmadıkları yüksek olasılıkla belli olmayacaktır; bu belirsizliğin ne kadar süreceği de muğlaktır. Ulusal Ajans ile Enstitü arasında hibe sözleşmesi henüz imzalanmadıysa seçilen adaylarla Sıfır Hibeli Öğrenci Sözleşmesi imzalanır.\n- Enstitü ile Ulusal Ajans arasında hibe sözleşmesi imzalanıp Enstitünün hak ettiği hibe kuruma aktarılıncaya kadar adayların \"TÜM MALİ SONUÇLARA KATLANMASI\" gerekir."
+    "metin": "Hibe sonuçları belli olmadan önce stajına başlamak isteyen katılımcılarla Sıfır Hibeli Hareketlilik Sözleşmesi imzalanır.\n- Hibe sonuçları belli olduktan sonra katılımcıya hibe sırası gelirse Sıfır Hibeli Hareketlilik Sözleşmesi iptal edilir ve Hibeli Hareketlilik Sözleşmesi hazırlanır.\n- Hibe sırası gelmezse Sıfır Hibeli Hareketlilik Sözleşmesi geçerliliğini korur.\n\nHibelerle İlgili Önemli Uyarı:\n- Enstitüde Erasmus katılımcı adayları, kuruma tahsis edilecek hibe miktarı belli olmadan önce seçilir. Amaç, adayların vize belgelerini vakitlice hazırlayabilmesidir. Bu nedenle Ulusal Ajans (Merkez) seçimlerden ve sonuçlarından sorumlu değildir.\n- Seçilen katılımcılar \"Erasmus Stajyer Adayı\" konumundadır.\n- Ulusal Ajans hibe dağıtım sonuçlarını ilan ettikten sonra seçim sonuçları kesinlik kazanır. Faaliyete katılacağı kesinleşen katılımcılarla kurum arasında Hareketlilik Sözleşmesi imzalandıktan sonra \"Erasmus Stajyer Adayı\" sıfatı kalkar.\n- Türk Ulusal Ajansı yükseköğretim kurumlarına hibe dağıtım sonuçlarını açıkladıktan sonra kurum da hibe dağıtım sonuçlarını açıklayabilir.\n- Adayların hareketliliklerine başladıkları sırada hibe hakkı kazanıp kazanmadıkları yüksek olasılıkla belli olmayacaktır; bu belirsizliğin ne kadar süreceği de muğlaktır. Ulusal Ajans ile Enstitü arasında hibe sözleşmesi henüz imzalanmadıysa seçilen adaylarla Sıfır Hibeli Öğrenci Sözleşmesi imzalanır.\n- Enstitü ile Ulusal Ajans arasında hibe sözleşmesi imzalanıp Enstitünün hak ettiği hibe kuruma aktarılıncaya kadar adayların \"TÜM MALİ SONUÇLARA KATLANMASI\" gerekir.",
+    "sorular": [
+      "erasmus staj hibe sonuçları çıkmadan stajıma başlayabilir miyim?",
+      "Sıfır hibeli hareketlilik sözleşmesi nedir, erasmus stajda ne işe yarıyor?",
+      "erasmus staj icin hibe sirasi gelmezse sifir hibeli sozlesme gecerli kalir mi",
+      "Erasmus stajyer adayı ne demek, bu sıfat ne zaman kalkıyor?",
+      "erasmus staj hibesi kuruma aktarilana kadar mali sonuclari ben mi ustleniyorum, ulusal ajans secimlerden sorumlu mu"
+    ]
   },
   {
     "baslik": "Erasmus İngilizce Seviye Belirleme Sınavı (2026)",
-    "metin": "2026 yılı Erasmus+ (Öğrenim ve Staj Hareketliliği) başvurularına yönelik İngilizce Seviye Belirleme (Proficiency) sınavı 17 Nisan 2026 tarihinde yapılacaktır.\n- Sınav başlangıç saati: 14.30\n- Sınav bitiş saati: 16.10\n- Saat, oturum ve yönetmelik bilgileri için sınav yönergesi (Türkçe): https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/03/sınav_saat_oturum_esaslar.pdf\n- Sınav yönergesi (İngilizce): https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/03/exam_time_sessions_regulations.pdf\n- Telafi sınavı olmayacaktır.\n- Sınav için ayrı bir başvuru formu yoktur.\n- 2026 Erasmus Öğrenim ve/veya Staj Hareketliliği Başvuru Formunu dolduran ve başvurusu uygunluk kontrolünden geçen öğrenciler sınava katılma hakkı kazanır.\n\n(English) The English Proficiency Exam for 2026 Erasmus+ (Study and Traineeship Mobility) applications will be held on April 17th, 2026, from 2.30 PM to 4.10 PM. There will be no make-up exam and no separate application form. Students who fill out the 2026 Erasmus Study and/or Traineeship Mobility Application Form and whose application passes the eligibility check are eligible to take the exam."
+    "metin": "2026 yılı Erasmus+ (Öğrenim ve Staj Hareketliliği) başvurularına yönelik İngilizce Seviye Belirleme (Proficiency) sınavı 17 Nisan 2026 tarihinde yapılacaktır.\n- Sınav başlangıç saati: 14.30\n- Sınav bitiş saati: 16.10\n- Saat, oturum ve yönetmelik bilgileri için sınav yönergesi (Türkçe): https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/03/sınav_saat_oturum_esaslar.pdf\n- Sınav yönergesi (İngilizce): https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/03/exam_time_sessions_regulations.pdf\n- Telafi sınavı olmayacaktır.\n- Sınav için ayrı bir başvuru formu yoktur.\n- 2026 Erasmus Öğrenim ve/veya Staj Hareketliliği Başvuru Formunu dolduran ve başvurusu uygunluk kontrolünden geçen öğrenciler sınava katılma hakkı kazanır.\n\n(English) The English Proficiency Exam for 2026 Erasmus+ (Study and Traineeship Mobility) applications will be held on April 17th, 2026, from 2.30 PM to 4.10 PM. There will be no make-up exam and no separate application form. Students who fill out the 2026 Erasmus Study and/or Traineeship Mobility Application Form and whose application passes the eligibility check are eligible to take the exam.",
+    "sorular": [
+      "erasmus staj icin ingilizce seviye belirleme sinavi ne zaman, saat kacta?",
+      "Erasmus İngilizce proficiency sınavının telafisi var mı?",
+      "erasmus staj ingilizce sinavina girmek icin ayri bir basvuru yapiliyor mu",
+      "Erasmus staj başvurusu yaptım, İngilizce sınavına kimler girebiliyor?",
+      "erasmus ingilizce sinav yonergesi ve oturum saatleri nerede yayinlanmis"
+    ]
   },
   {
     "baslik": "Staj Hareketliliği Program Bilgileri Belgeleri",
-    "metin": "Program Bilgileri bölümünde aşağıdaki belgeler PDF olarak yer alır:\n- Staj Kurumları (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_Kurumları.pdf)\n- Erasmus İngilizce Sınavı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Erasmus_İngilizce_Sınavı.pdf)\n- Asgari Staj Süresi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Asgari_Staj_Süresi-1.pdf)\n- Sıkça Sorulan Sorular (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Sıkça_Sorulan_Sorular.pdf)\n- Başvuru Koşulları (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Başvuru_Koşulları.pdf)\n- Hibelerle İlgili Önemli Uyarı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Hibelerle-İlgili-Önemli-Uyarı.pdf)\n- Başvuru Değerlendirme Ölçütleri (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Başvuru_Değerlendirme_Ölçütleri-1.pdf)\n- Program Ülkeleri (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_Program_Ülkeleri.pdf)\n- İlave Hibe Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_İlave_Hibe_Desteği.pdf)\n- Yeşil Seyahat Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Yeşil_Seyahat_Desteği.pdf)\n- İçerme Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_İçerme_Desteği.pdf)"
+    "metin": "Program Bilgileri bölümünde aşağıdaki belgeler PDF olarak yer alır:\n- Staj Kurumları (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_Kurumları.pdf)\n- Erasmus İngilizce Sınavı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Erasmus_İngilizce_Sınavı.pdf)\n- Asgari Staj Süresi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Asgari_Staj_Süresi-1.pdf)\n- Sıkça Sorulan Sorular (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Sıkça_Sorulan_Sorular.pdf)\n- Başvuru Koşulları (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Başvuru_Koşulları.pdf)\n- Hibelerle İlgili Önemli Uyarı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Hibelerle-İlgili-Önemli-Uyarı.pdf)\n- Başvuru Değerlendirme Ölçütleri (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Başvuru_Değerlendirme_Ölçütleri-1.pdf)\n- Program Ülkeleri (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_Program_Ülkeleri.pdf)\n- İlave Hibe Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_İlave_Hibe_Desteği.pdf)\n- Yeşil Seyahat Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Yeşil_Seyahat_Desteği.pdf)\n- İçerme Desteği (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/2026_Staj_İçerme_Desteği.pdf)",
+    "sorular": [
+      "Erasmus staj program bilgileri bölümünde hangi belgeler var?",
+      "erasmus staj icin program ulkeleri listesi pdf nerede",
+      "Erasmus staj asgari staj süresi belgesine nereden ulaşırım?",
+      "erasmus staj yesil seyahat ve icerme destegi dosyalari nerede bulabilirim",
+      "Erasmus staj başvuru değerlendirme ölçütleri ve sıkça sorulan sorular PDF'i var mı?"
+    ]
   },
   {
     "baslik": "Staja Başlamadan Önce Yapılması Gerekenler",
-    "metin": "Başvuru formu doldurulduktan sonra staja başlamadan önce tamamlanması gereken adımlar ve belgeler:\n- Staj Başlamadan Önce Tamamlanması Gereken Adımlar (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/04/STAJ_BAŞLAMADAN_ÖNCE_TAMAMLANMASI_GEREKEN_ADIMLAR_başvurulardan_sonra.pdf)\n- Staj Öğrenim Anlaşması Taslağı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/02/Öğrenim_Anlaşması_learning_agreement.docx)\n- Staj Öncesi İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_BAŞLAMADAN_ÖNCE_KONTROL_LİSTESİ.pdf)"
+    "metin": "Başvuru formu doldurulduktan sonra staja başlamadan önce tamamlanması gereken adımlar ve belgeler:\n- Staj Başlamadan Önce Tamamlanması Gereken Adımlar (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/04/STAJ_BAŞLAMADAN_ÖNCE_TAMAMLANMASI_GEREKEN_ADIMLAR_başvurulardan_sonra.pdf)\n- Staj Öğrenim Anlaşması Taslağı (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/02/Öğrenim_Anlaşması_learning_agreement.docx)\n- Staj Öncesi İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_BAŞLAMADAN_ÖNCE_KONTROL_LİSTESİ.pdf)",
+    "sorular": [
+      "erasmus staja baslamadan once hangi adimlari tamamlamam gerekiyor?",
+      "Erasmus staj öğrenim anlaşması (learning agreement) taslağını nereden indirebilirim?",
+      "erasmus staj oncesi kontrol listesi var mi",
+      "Erasmus stajına gitmeden önce yapılacaklar belgesi nerede?",
+      "erasmus staj basvurusu bittikten sonra staj baslamadan hangi belgeleri hazirlamaliyim"
+    ]
   },
   {
     "baslik": "Staj Esnasında: Süre Uzatma Talebi",
-    "metin": "Staj sırasında süre uzatma talebi olursa aşağıdaki belgelere bakılır:\n- Staj Esnasında Süre Uzatma Talebi Olursa (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_ESNASINDA_SÜRE_UZATMA_TALEBİ_OLURSA.pdf)\n- Staj Uzatma İşlemi İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_ESNASI_KONTROL_LİSTESİ.pdf)"
+    "metin": "Staj sırasında süre uzatma talebi olursa aşağıdaki belgelere bakılır:\n- Staj Esnasında Süre Uzatma Talebi Olursa (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_ESNASINDA_SÜRE_UZATMA_TALEBİ_OLURSA.pdf)\n- Staj Uzatma İşlemi İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_ESNASI_KONTROL_LİSTESİ.pdf)",
+    "sorular": [
+      "erasmus staj sırasında süreyi uzatmak istersem ne yapmalıyım?",
+      "Erasmus stajda uzatma talebi için hangi belgelere bakmam lazım?",
+      "erasmus staj uzatma islemi kontrol listesi nerede",
+      "Erasmus staj yaparken staj süresini uzatma işlemi nasıl oluyor?",
+      "erasmus stajim devam ederken uzatma istiyorum hangi pdf'e bakayim"
+    ]
   },
   {
     "baslik": "Staj Sonrasında Yapılması Gerekenler",
-    "metin": "Staj bittikten sonra aşağıdaki belgelere bakılır:\n- Staj Sonrası Yapılması Gerekenler (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_SONRASI_YAPILMASI_GEREKENLER.pdf)\n- Staj Sonrası İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_SONRASI_KONTROL_LİSTESİ.pdf)\n- Staj Sertifikası (Traineeship Certificate) (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Staj_Sertifikası.docx)"
+    "metin": "Staj bittikten sonra aşağıdaki belgelere bakılır:\n- Staj Sonrası Yapılması Gerekenler (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_SONRASI_YAPILMASI_GEREKENLER.pdf)\n- Staj Sonrası İçin Kontrol Listesi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/STAJ_SONRASI_KONTROL_LİSTESİ.pdf)\n- Staj Sertifikası (Traineeship Certificate) (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/01/Staj_Sertifikası.docx)",
+    "sorular": [
+      "erasmus staj bittikten sonra ne yapmam gerekiyor?",
+      "Erasmus staj sonrası kontrol listesi nerede?",
+      "erasmus staj sertifikasi (traineeship certificate) nasil alinir, formu nerede",
+      "Erasmus stajından döndükten sonra hangi belgeleri teslim etmem lazım?",
+      "erasmus staj sonrasi yapilacaklar pdf dosyasina nereden ulasirim"
+    ]
   },
   {
     "baslik": "Başarı Puanı ve Hibe Dağıtım Sonuçlarına İtiraz Süreci",
-    "metin": "İtiraz süreci:\n1. Erasmus Staj Hareketliliği Öğrenci Seçim Sonuçları (Başarı Puanı açıklamaları) ve Hibe Dağıtım Sonuçları web sayfasında ilan edildiğinde, başvuran tüm öğrencilere e-posta ile bildirilir.\n2. Gönderilen e-postada, Başarı Puanlarına ve Hibe Dağıtım Sonuçlarına itirazı olan öğrencilerin, e-postanın gönderilmesinden en geç 5 gün (takvim günü) sonrasına kadar itirazlarını Ofise yazılı olarak (dilekçe teslimi veya e-posta gönderimi şeklinde) iletmeleri gerektiği belirtilir.\n3. Hibe dağıtım sonuçlarına itirazı olan öğrenciler ayrıca itiraz formunu doldurmalıdır (bağlantı: https://form.iyte.edu.tr/view.php?id=626367).\n\nİlgili açıklamalar:\n- Hibe Dağıtım Algoritması (Lisans Bölümleri) (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/09/Hibe_Dağıtım_Algoritması.pdf)\n- Hibe Dağıtım Yöntemi Lisans Bölümleri Açıklama (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/09/Hibe_Dağıtım_Yöntemi_Lisanslar_Açıklama.docx)\n- İtiraz süreci sonrası güncellenen Başarı Puanları, isimler baz alınarak alfabetik sıraya göre yayımlanır; bu sıranın hibe dağıtım sırası ile bir ilgisi yoktur."
+    "metin": "İtiraz süreci:\n1. Erasmus Staj Hareketliliği Öğrenci Seçim Sonuçları (Başarı Puanı açıklamaları) ve Hibe Dağıtım Sonuçları web sayfasında ilan edildiğinde, başvuran tüm öğrencilere e-posta ile bildirilir.\n2. Gönderilen e-postada, Başarı Puanlarına ve Hibe Dağıtım Sonuçlarına itirazı olan öğrencilerin, e-postanın gönderilmesinden en geç 5 gün (takvim günü) sonrasına kadar itirazlarını Ofise yazılı olarak (dilekçe teslimi veya e-posta gönderimi şeklinde) iletmeleri gerektiği belirtilir.\n3. Hibe dağıtım sonuçlarına itirazı olan öğrenciler ayrıca itiraz formunu doldurmalıdır (bağlantı: https://form.iyte.edu.tr/view.php?id=626367).\n\nİlgili açıklamalar:\n- Hibe Dağıtım Algoritması (Lisans Bölümleri) (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/09/Hibe_Dağıtım_Algoritması.pdf)\n- Hibe Dağıtım Yöntemi Lisans Bölümleri Açıklama (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/sites/216/2026/09/Hibe_Dağıtım_Yöntemi_Lisanslar_Açıklama.docx)\n- İtiraz süreci sonrası güncellenen Başarı Puanları, isimler baz alınarak alfabetik sıraya göre yayımlanır; bu sıranın hibe dağıtım sırası ile bir ilgisi yoktur.",
+    "sorular": [
+      "erasmus staj başarı puanıma nasıl itiraz edebilirim?",
+      "Erasmus staj hibe dağıtım sonuçlarına itiraz için kaç gün süre var?",
+      "erasmus staj hibe itirazi icin ayrica form doldurmam gerekiyor mu",
+      "Erasmus staj hibe dağıtım algoritması nasıl çalışıyor, açıklaması var mı?",
+      "erasmus staj itiraz sonrasi guncellenen basari puani listesi neye gore siralaniyor, hibe sirasi mi"
+    ]
   },
   {
     "baslik": "Erasmus+ Staj Hareketliliği İletişim",
-    "metin": "E-posta: ozgetopcuoglu@iyte.edu.tr (e-posta ile iletişim tercih edilmektedir)\nAdres: Yabancı Diller Yüksekokulu İdari Bina No: 206"
+    "metin": "E-posta: ozgetopcuoglu@iyte.edu.tr (e-posta ile iletişim tercih edilmektedir)\nAdres: Yabancı Diller Yüksekokulu İdari Bina No: 206",
+    "sorular": [
+      "erasmus staj ofisine nasıl ulaşırım, iletişim e-postası nedir?",
+      "Erasmus+ staj hareketliliği ofisi nerede, adresi ne?",
+      "erasmus staj icin kime mail atmam lazim",
+      "Erasmus staj hakkında soru sormak için hangi iletişim yolu tercih ediliyor?",
+      "erasmus staj ofisi hangi binada, oda numarasi ne"
+    ]
   }
 ]

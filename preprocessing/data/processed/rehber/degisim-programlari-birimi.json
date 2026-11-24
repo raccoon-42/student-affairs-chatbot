@@ -1,38 +1,101 @@
 [
   {
     "baslik": "Değişim Programları Birimi Erasmus Programı Görev Tanımı",
-    "metin": "Değişim Programları Birimi'nin Erasmus Programı kapsamındaki görevleri şunlardır:\n- Erasmus+ programının Yükseköğretimde Öğrenci ve Personel Hareketliliği faaliyetlerinin yürütülmesini ve organizasyonunu sağlamak.\n- Değişime katılan giden öğrenciler için ilana çıkmak, öğrencileri seçmek ve yerleştirmek, Erasmus belgelerini hazırlamak (vize yazısı, hareketlilik sözleşmesi vb.), Değişim Programları kapsamında öğrenci ve personel hibe dağıtımı yapmak ve kurumsal paya düşen bütçe işlemlerini yönetmek.\n- Gelen öğrenci ve personele Erasmus+ Programı'nı Kurum'da tanıtmak ve programa yönelik tanıtım materyallerini hazırlamak.\n- Giden ve gelen öğrencilere yönelik bilgilendirme toplantıları düzenlemek (giden ve gelen öğrenciler için ayrı ayrı yapılmaktadır).\n- K171 projelerini hazırlamak ve kabul edilen projelerin organizasyonunu sağlamak.\n- Üniversitenin Erasmus kurumlararası anlaşmalarını takip etmek ve organizasyonunu sağlamak.\n- İlgili üniversitelerle yazışmaları yürütmek ve kurumlararası anlaşmaların imza süreçlerini takip etmek.\n- Personel hareketliliği kapsamında giden personelin başvuru, değerlendirme ve seçim süreçlerini ve gitmeye hak kazanan personelin idari işlemlerini yürütmek.\n- Ulusal Ajans ile Kurum arasındaki koordinasyonu sağlamak.\n- Hibe talep başvurusu, ara rapor ve nihai rapor işlemlerini takip etmek ve zamanında yapmak."
+    "metin": "Değişim Programları Birimi'nin Erasmus Programı kapsamındaki görevleri şunlardır:\n- Erasmus+ programının Yükseköğretimde Öğrenci ve Personel Hareketliliği faaliyetlerinin yürütülmesini ve organizasyonunu sağlamak.\n- Değişime katılan giden öğrenciler için ilana çıkmak, öğrencileri seçmek ve yerleştirmek, Erasmus belgelerini hazırlamak (vize yazısı, hareketlilik sözleşmesi vb.), Değişim Programları kapsamında öğrenci ve personel hibe dağıtımı yapmak ve kurumsal paya düşen bütçe işlemlerini yönetmek.\n- Gelen öğrenci ve personele Erasmus+ Programı'nı Kurum'da tanıtmak ve programa yönelik tanıtım materyallerini hazırlamak.\n- Giden ve gelen öğrencilere yönelik bilgilendirme toplantıları düzenlemek (giden ve gelen öğrenciler için ayrı ayrı yapılmaktadır).\n- K171 projelerini hazırlamak ve kabul edilen projelerin organizasyonunu sağlamak.\n- Üniversitenin Erasmus kurumlararası anlaşmalarını takip etmek ve organizasyonunu sağlamak.\n- İlgili üniversitelerle yazışmaları yürütmek ve kurumlararası anlaşmaların imza süreçlerini takip etmek.\n- Personel hareketliliği kapsamında giden personelin başvuru, değerlendirme ve seçim süreçlerini ve gitmeye hak kazanan personelin idari işlemlerini yürütmek.\n- Ulusal Ajans ile Kurum arasındaki koordinasyonu sağlamak.\n- Hibe talep başvurusu, ara rapor ve nihai rapor işlemlerini takip etmek ve zamanında yapmak.",
+    "sorular": [
+      "Değişim Programları Birimi'nin Erasmus programı kapsamındaki görevleri neler?",
+      "erasmus ofisi tam olarak ne is yapiyor, giden ogrencileri secip yerlestirmek onlarin isi mi?",
+      "Erasmus hibe dağıtımını ve vize yazısı, hareketlilik sözleşmesi gibi belgeleri hangi birim hazırlıyor?",
+      "degisim programlari birimi ulusal ajansla yazisma ve koordinasyonu yapiyor mu, erasmus anlasmalarini da takip ediyor mu",
+      "Erasmus'ta giden ve gelen öğrenciler için bilgilendirme toplantısını kim düzenliyor?"
+    ]
   },
   {
     "baslik": "Erasmus+ Giden Öğrenci Başvuruları: Sayfa ve İletişim",
-    "metin": "Erasmus+ Değişim Programı Giden Öğrenci Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-giden-ogrenci/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-750-7890 / 7893"
+    "metin": "Erasmus+ Değişim Programı Giden Öğrenci Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-giden-ogrenci/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-750-7890 / 7893",
+    "sorular": [
+      "Erasmus giden öğrenci başvuru sayfasının linki ne?",
+      "erasmus a gidecek ogrenciler basvuru sayfasina nereden ulasir",
+      "Erasmus+ giden öğrenci işleri için hangi e-posta adresine yazmam lazım?",
+      "giden ogrenci erasmus basvurusu icin ofisin telefon numarasi nedir",
+      "Değişim Programları Birimi'ne Erasmus giden öğrenci sorularım için nasıl ulaşabilirim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Gelen Öğrenci Başvuruları: Sayfa ve İletişim",
-    "metin": "Erasmus+ Değişim Programı Gelen Öğrenci Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/en/erasmus-incoming-students/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507890"
+    "metin": "Erasmus+ Değişim Programı Gelen Öğrenci Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/en/erasmus-incoming-students/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507890",
+    "sorular": [
+      "Erasmus gelen öğrenci başvuru sayfası nerede, linki nedir?",
+      "erasmus incoming students basvuru sayfasi hangi adreste",
+      "Erasmus+ ile üniversiteye gelen öğrenciler için iletişim e-postası ne?",
+      "yurt disindan erasmusla gelen ogrenci icin ofis telefonu kac",
+      "Gelen Erasmus öğrencisi olarak Değişim Programları Birimi ile nasıl iletişime geçerim?"
+    ]
   },
   {
     "baslik": "Erasmus+ Staj Hareketliliği Başvuruları: Sayfa ve İletişim",
-    "metin": "Erasmus+ Değişim Programı Staj Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-staj-hareketliligi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891"
+    "metin": "Erasmus+ Değişim Programı Staj Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-staj-hareketliligi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891",
+    "sorular": [
+      "Erasmus staj hareketliliği başvuru sayfasının linki nedir?",
+      "erasmus ile staj yapmak istiyorum basvuru sayfasi nerede",
+      "Erasmus+ staj hareketliliği için hangi mail adresine ulaşabilirim?",
+      "erasmus staj hareketliligi icin aranacak telefon numarasi ne",
+      "Değişim Programları Birimi'nde Erasmus staj başvurularıyla ilgili iletişim bilgileri neler?"
+    ]
   },
   {
     "baslik": "Erasmus+ Karma Yoğun Programlar: Sayfa ve İletişim",
-    "metin": "Erasmus+ Karma Yoğun Programlar sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-karma-yogun-programlar/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507896"
+    "metin": "Erasmus+ Karma Yoğun Programlar sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-karma-yogun-programlar/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507896",
+    "sorular": [
+      "Erasmus+ karma yoğun programlar sayfası hangi linkte?",
+      "erasmus karma yogun program (BIP) basvuru sayfasina nasil ulasirim",
+      "Erasmus karma yoğun programlar için iletişim e-postası nedir?",
+      "erasmus karma yogun programlar icin hangi telefonu aramaliyim",
+      "Erasmus+ karma yoğun programlar hakkında Değişim Programları Birimi'ne nasıl ulaşırım?"
+    ]
   },
   {
     "baslik": "Erasmus+ Ders Verme Hareketliliği Başvuruları: Sayfa ve İletişim",
-    "metin": "Erasmus+ Ders Verme Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-ders-verme-hareketliligi-giden-ogretim-uyesi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891"
+    "metin": "Erasmus+ Ders Verme Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-ders-verme-hareketliligi-giden-ogretim-uyesi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891",
+    "sorular": [
+      "Erasmus ders verme hareketliliği başvuru sayfasının linki nedir?",
+      "erasmus ile ders vermeye gidecek ogretim uyesi basvuru sayfasi nerede",
+      "Erasmus+ ders verme hareketliliği için hangi e-posta adresine yazılır?",
+      "erasmus ders verme hareketliligi icin ofis telefonu kac",
+      "Giden öğretim üyesi olarak Erasmus ders verme başvurusu için kime ulaşmalıyım?"
+    ]
   },
   {
     "baslik": "Erasmus+ Eğitim Alma Hareketliliği Başvuruları: Sayfa ve İletişim",
-    "metin": "Erasmus+ Eğitim Alma Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-egitim-alma-hareketliligi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891"
+    "metin": "Erasmus+ Eğitim Alma Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/erasmus-egitim-alma-hareketliligi/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891",
+    "sorular": [
+      "Erasmus eğitim alma hareketliliği başvuru sayfası hangi linkte?",
+      "erasmus egitim alma hareketliligi basvurusunu nereden yapabilirim, sayfasi nerde",
+      "Erasmus+ eğitim alma hareketliliği için iletişim e-postası nedir?",
+      "erasmus egitim alma hareketliligi icin hangi numarayi aramam lazim",
+      "Erasmus eğitim alma hareketliliğiyle ilgili sorularım için Değişim Programları Birimi'ne nasıl ulaşırım?"
+    ]
   },
   {
     "baslik": "Erasmus+ İşletmelerden Personel Davet Etme: Sayfa ve İletişim",
-    "metin": "Erasmus+ İşletmelerden Personel Davet Etme sayfası (bağlantı: https://uio.iyte.edu.tr/isletmelerden-personel-davet-etme/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891"
+    "metin": "Erasmus+ İşletmelerden Personel Davet Etme sayfası (bağlantı: https://uio.iyte.edu.tr/isletmelerden-personel-davet-etme/)\nİletişim: erasmuskoordinator@iyte.edu.tr\nTelefon: +90-232-7507891",
+    "sorular": [
+      "Erasmus+ işletmelerden personel davet etme sayfasının linki nedir?",
+      "erasmus ile isletmelerden personel davet etme sayfasi nerede",
+      "İşletmelerden personel davet etme Erasmus programı için hangi e-posta adresi kullanılıyor?",
+      "erasmus isletmeden personel davet etmek icin ofisi hangi telefondan arayabilirim",
+      "Erasmus kapsamında işletmeden personel davet etmek istiyoruz, iletişim bilgileri neler?"
+    ]
   },
   {
     "baslik": "Mevlana Değişim Programı Hareketliliği Başvuruları: Sayfa ve İletişim",
-    "metin": "Mevlana Değişim Programı Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/mevlana-ogrenim-hareketliligi/)\nİletişim: io-academic@iyte.edu.tr\nTelefon: +90-232-7507890"
+    "metin": "Mevlana Değişim Programı Hareketliliği Başvuruları sayfası (bağlantı: https://uio.iyte.edu.tr/mevlana-ogrenim-hareketliligi/)\nİletişim: io-academic@iyte.edu.tr\nTelefon: +90-232-7507890",
+    "sorular": [
+      "Mevlana değişim programı hareketliliği başvuru sayfasının linki nedir?",
+      "mevlana degisim programi basvuru sayfasina nereden ulasirim",
+      "Mevlana değişim programı için hangi e-posta adresine yazmalıyım?",
+      "mevlana degisim programi hareketliligi icin ofis telefon numarasi ne",
+      "Mevlana programıyla ilgili sorularım için Değişim Programları Birimi'ne nasıl ulaşabilirim?"
+    ]
   }
 ]
