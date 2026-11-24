@@ -24,8 +24,8 @@ from preprocessing.parsers.llm_call import json_array
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw" / "rehber"
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed" / "rehber"
 
-PROMPT = """Aşağıda bir üniversitenin Öğrenci İşleri Daire Başkanlığı bilgilendirme sayfasının
-HTML içeriği var. Bunu bir chatbot'un arama dizinine girecek, kendi başına anlaşılır
+PROMPT = """Aşağıda bir üniversitenin Öğrenci İşleri Daire Başkanlığı ya da Uluslararası İlişkiler
+Ofisi bilgilendirme sayfasının HTML içeriği var. Bunu bir chatbot'un arama dizinine girecek, kendi başına anlaşılır
 parçalara dönüştür.
 
 Kurallar:
@@ -41,8 +41,16 @@ Kurallar:
   şey uydurma.
 - "Akademik takvimde belirtilen tarihlerde" gibi ifadeleri aynen koru,
   kendi tarih ekleme.
-- FİYAT VE ÜCRET TUTARLARINI METNE ALMA — bunlar her yıl değişir ve bayatlar.
-  Bir işlemin ücretli/katkı paylı olduğunu söylemek serbest, tutar yazma.
+- FİYAT, ÜCRET VE HİBE TUTARLARINI METNE ALMA — bunlar her yıl değişir ve bayatlar.
+  Bir işlemin ücretli/katkı paylı ya da hibeli olduğunu söylemek serbest, tutar yazma.
+- Yıllık sonuç listelerini (yerleştirme, hibe dağıtım, başarı puanı listeleri) ve bu
+  listelerin bağlantılarını alma: öğrenci adları içerirler ve her yıl eskirler.
+  Sürecin nasıl işlediğini anlatan bilgiyi al.
+- Anlaşma tablolarını (anlaşmalı üniversiteler) bölüm/anabilim dalı başına ayrı parçalara
+  böl; başlığa bölümü yaz, her satırı "Ülke — Üniversite (alan, varsa kontenjan/kod)"
+  olarak ayrı satıra yaz.
+- Koordinatör ve iletişim listelerinde ad, unvan, e-posta ve telefonu aynen koru, her
+  bölümü ayrı satıra yaz.
 - Menü, gezinme, buton metni gibi sayfa iskeletini alma.
 - HTML'deki önemli bağlantıları (başvuru formu, kılavuz PDF'i, başka birimin
   sayfası) "(bağlantı: URL)" olarak metnin içinde bırak.

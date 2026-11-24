@@ -1,9 +1,11 @@
-"""Scrape process-guide pages from the ÖİDB (öğrenci işleri) site.
+"""Scrape process-guide pages from the ÖİDB (öğrenci işleri) and UİO
+(uluslararası ilişkiler ofisi) sites.
 
 These are the "how does X work" pages the regulations don't spell out
 step by step: ders seçimi, yatay geçiş variants, çift ana dal / yan dal
-applications, lisansüstü başvuru, askerlik. Same WordPress theme as the
-SKS site, so the content extraction is shared. Saved as raw HTML because
+applications, lisansüstü başvuru, askerlik, and Erasmus / exchange
+programs. Same WordPress theme as the SKS site, so the content
+extraction is shared. Saved as raw HTML because
 several pages carry tables the LLM parser needs intact.
 
 The page list is curated by hand, checked against the other corpora so
@@ -14,6 +16,10 @@ the same text isn't indexed twice. Deliberately excluded:
 - katki-payi-ve-ogrenim-ucretleri — fee amounts change every year and
   stale amounts mislead (Ali's no-amounts rule, 2026-07-09)
 - iç kontrol / faaliyet raporu / vizyon-misyon bureaucracy
+- UİO: grant and score result lists (spreadsheets of student names),
+  strategy/policy documents, staff mobility pages (for academics), and
+  the international-student pages (visa, housing, campus life; a
+  possible later addition)
 The yönerge overlap (yatay geçiş, ÇAP/yan dal) is deliberate: mevzuat
 carries the rules, these pages carry the mechanics (where to apply,
 which documents, which departments participate).
@@ -22,6 +28,7 @@ Run again whenever the university updates a page; files are
 re-downloaded unconditionally so revised pages replace stale ones.
 """
 import json
+import re
 
 from bs4 import BeautifulSoup
 
@@ -41,7 +48,27 @@ PAGES = [
     ("basvuru", "https://ogrenciisleri.iyte.edu.tr/lisansustu-programlara-basvuru-bilgileri/"),
     ("basvuru", "https://ogrenciisleri.iyte.edu.tr/lisans-programlarina-yabanci-uyruklu-ogrenci-basvuru-bilgileri/"),
     ("askerlik", "https://ogrenciisleri.iyte.edu.tr/lisansustu-askerlik-islemleri/"),
+    # UİO: going abroad. Students asked about Erasmus and the corpus had
+    # nothing, so the model improvised an office claim and a link
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-giden-ogrenci/"),
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-hareketlilik-asamalari/"),
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-hareketlilik-belgeleri/"),
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-staj-hareketliligi/"),
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-kurumlararasi-anlasmalar/"),
+    ("erasmus", "https://uio.iyte.edu.tr/erasmus-bolum-koordinatorleri-2/"),
+    ("degisim", "https://uio.iyte.edu.tr/erasmus-programi-disindaki-uluslararasi-ogrenci-degisimi-anlasmalari/"),
+    ("degisim", "https://uio.iyte.edu.tr/mevlana-programi-protokoller/"),
+    ("degisim", "https://uio.iyte.edu.tr/degisim-programlari-birimi/"),
+    ("degisim", "https://uio.iyte.edu.tr/iletisim/"),
 ]
+
+UIO_SITE = "https://uio.iyte.edu.tr/"
+# The yearly Erasmus application call (dates, eligibility, how to apply)
+# is a news post with a new URL each year, linked from the KA131
+# announcement page in the UİO menu; found again on every scrape so the
+# newest year's call is the one indexed
+ANNOUNCEMENT_MENU_TEXT = "KA131 Öğrenim Hareketliliği İlanı"
+_ERASMUS_CALL = re.compile(r"/duyuru/(20\d{2})-erasmus-ka-?131[\w-]*/?$")
 
 OUTPUT_DIR = settings.ROOT / "preprocessing" / "data" / "raw" / "rehber"
 MANIFEST_PATH = OUTPUT_DIR / "manifest.json"
@@ -80,14 +107,37 @@ def find_menu_pdfs(html):
     return found
 
 
+def menu_link(html, text_part):
+    """href of the first link whose text contains text_part."""
+    for a in BeautifulSoup(html, "html.parser").find_all("a", href=True):
+        if text_part in " ".join(a.get_text().split()):
+            return a["href"]
+    raise ValueError(f"no link containing {text_part!r} — menu changed?")
+
+
+def newest_erasmus_call(html):
+    """URL of the newest year's Erasmus KA131 call among the page's links."""
+    calls = {}
+    for a in BeautifulSoup(html, "html.parser").find_all("a", href=True):
+        match = _ERASMUS_CALL.search(a["href"])
+        if match:
+            calls[int(match.group(1))] = a["href"]
+    if not calls:
+        raise ValueError("no Erasmus KA131 call linked from the announcement page")
+    return calls[max(calls)]
+
+
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    slugs = [url.rstrip("/").rsplit("/", 1)[-1] for _, url in PAGES]
+    print(f"[erasmus-call] {UIO_SITE}")
+    call_url = newest_erasmus_call(fetch(menu_link(fetch(UIO_SITE).text, ANNOUNCEMENT_MENU_TEXT)).text)
+    pages = PAGES + [("erasmus", call_url)]
+    slugs = [url.rstrip("/").rsplit("/", 1)[-1] for _, url in pages]
     if len(set(slugs)) != len(slugs):
         raise ValueError(f"slug collision in PAGES — two URLs share a last segment: {slugs}")
 
     manifest = []
-    for (topic, url), slug in zip(PAGES, slugs):
+    for (topic, url), slug in zip(pages, slugs):
         print(f"[{topic}] {url}")
         resp = fetch(url)
         title, content = extract_content(resp.text)
