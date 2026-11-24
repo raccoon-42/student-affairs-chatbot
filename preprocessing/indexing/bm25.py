@@ -1,22 +1,24 @@
-"""BM25 as sparse vectors, so Qdrant can search it over a whole collection.
+"""BM25 through Qdrant's full-text index (BM25 scoring, Qdrant 1.20+).
 
-Indexing stores each chunk's per-word BM25 weight (term frequency with
-saturation and length normalization); Qdrant multiplies in IDF at search
-time (Modifier.IDF), counted over the whole collection. The query sends
-weight 1 per word, so the dot product is the BM25 score.
+Qdrant tokenizes, keeps the statistics (IDF, average length) current as
+chunks change, and scores BM25 itself. What it can't do is cut words to
+their first 5 letters, which merges Turkish inflections ("sınav",
+"sınavı", "sınavlar") and measured clearly better than whole words or a
+Turkish stemmer (docs/adr/0004). So every chunk carries a second text
+field, FIELD, holding our tokenizer's output; Qdrant indexes that field
+with a plain word tokenizer, and queries go through the same tokenizer.
 
 tokenize() is shared by both sides: a word only matches if indexing and
-search turn it into the same id. After changing it, rebuild the stored
-vectors: python -m preprocessing.indexing.reindex_bm25
+search cut it the same way. After changing it, rewrite the field:
+python -m preprocessing.indexing.reindex_bm25
 """
 import re
 import unicodedata
-import zlib
-from collections import Counter
-from typing import Dict, Hashable, List
+from typing import List
 
-VECTOR_NAME = "bm25"  # the sparse vector next to each point's unnamed dense one
-K1 = 1.5  # term frequency saturation
+FIELD = "bm25_text"  # payload field with the tokenized text Qdrant scores
+# Qdrant's BM25 defaults; the in-memory test store mirrors them
+K1 = 1.2  # term frequency saturation
 B = 0.75  # length normalization
 # Turkish is agglutinative ("sınav", "sınavı", "sınavlar"); cutting words to
 # their first 5 letters merges most inflections without a stemmer
@@ -36,26 +38,30 @@ def tokenize(text: str) -> List[str]:
             for word in _NON_WORD.split(text) if word]
 
 
-def token_id(token: str) -> int:
-    # crc32, not hash(): hash() is salted per process, and the ids the
-    # indexer writes must match the ones the API searches with
-    return zlib.crc32(token.encode("utf-8"))
+def bm25_text(text: str) -> str:
+    """The FIELD value for a chunk, and the text a query is searched with."""
+    return " ".join(tokenize(text))
 
 
-def sparse_document(tokens: List[str], avg_length: float) -> Dict[int, float]:
-    """BM25 weight per word of one chunk, without IDF (Qdrant adds it)."""
-    length_norm = 1 - B + B * len(tokens) / avg_length if avg_length else 1.0
-    return {token_id(token): tf * (K1 + 1) / (tf + K1 * length_norm)
-            for token, tf in Counter(tokens).items()}
+def bm25_ready(client, collection):
+    """Whether the collection's points carry the indexed BM25 field. The
+    server lists its payload indexes; qdrant-client's local mode (tests)
+    lists none, so an empty list falls back to checking a point for the
+    field. Ours always creates the index before writing the field."""
+    schema = client.get_collection(collection).payload_schema or {}
+    if FIELD in schema:
+        return True
+    if schema:
+        return False
+    points, _ = client.scroll(collection, limit=1, with_payload=[FIELD], with_vectors=False)
+    return bool(points) and FIELD in (points[0].payload or {})
 
 
-def document_vectors(texts: Dict[Hashable, str]) -> Dict[Hashable, Dict[int, float]]:
-    """sparse_document for a whole collection, keyed like the input; the
-    length normalization is against these chunks' average length."""
-    tokens = {key: tokenize(text) for key, text in texts.items()}
-    avg_length = sum(map(len, tokens.values())) / len(tokens) if tokens else 0.0
-    return {key: sparse_document(words, avg_length) for key, words in tokens.items()}
+def index_params():
+    """FIELD's index: the words are already folded and cut, so Qdrant's
+    default text processing (word tokenizer, lowercase) and BM25 scoring
+    are all it needs. Defaults also keep qdrant-client's local mode (tests)
+    able to score it: it only scores default-tokenization indexes."""
+    from qdrant_client.http import models
 
-
-def sparse_query(text: str) -> Dict[int, float]:
-    return {token_id(token): 1.0 for token in tokenize(text)}
+    return models.TextIndexParams(type=models.TextIndexType.TEXT, scoring=True)

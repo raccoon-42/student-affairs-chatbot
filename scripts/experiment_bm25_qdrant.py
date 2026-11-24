@@ -1,15 +1,18 @@
-"""Our BM25 (sparse vectors, 5-letter cut) vs Qdrant's built-in BM25 text
-index, on the retrieval eval set.
+"""Qdrant BM25 text-processing variants on the retrieval eval set.
 
-Each collection is copied into a scratch "<name>__bm25lab" collection with
-the same dense and sparse vectors (no embedding calls) plus three text
-fields, each with a BM25-scored text index:
-  text      words, lowercase, ASCII folding
-  text_stem the same plus the Snowball Turkish stemmer
-  text_cut  our tokenizer's output (folded, words cut to 5 letters), so
-            Qdrant scores BM25 but the 5-letter cut is kept
+Production scores BM25 with Qdrant's text index on a field holding our
+tokenizer's output (folded, words cut to 5 letters). This checks that
+choice against Qdrant's own text processing. Each collection is copied
+into a scratch "<name>__bm25lab" collection with the same dense vectors
+(no embedding calls) and three BM25-scored text fields:
+  bm25_text  our tokenizer's output, as in production
+  text       words, lowercase, ASCII folding
+  text_stem  the same plus the Snowball Turkish stemmer
 Every variant is scored alone and fused with the same dense ranking at
 RRF k=2, like production (without production's filters and list rules).
+
+The first run (2026-11-24, before the switch) also had our own sparse-vector
+BM25 as a row; its numbers, and why we switched, are in docs/adr/0004.
 
 Run:    uv run python scripts/experiment_bm25_qdrant.py
 Clean:  uv run python scripts/experiment_bm25_qdrant.py --drop
@@ -22,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from config import settings  # noqa: E402
-from preprocessing.indexing.bm25 import VECTOR_NAME, sparse_query, tokenize  # noqa: E402
+from preprocessing.indexing.bm25 import FIELD, bm25_text, index_params  # noqa: E402
 from scripts.eval_retrieval import (COLLECTIONS, SOURCES, CachedEmbedder,  # noqa: E402
                                     load_cases, rrf, score)
 
@@ -36,13 +39,12 @@ def build(client, name):
     lab = COLLECTIONS[name] + LAB
     if client.collection_exists(lab):
         return lab
-    client.create_collection(
-        lab, vectors_config=m.VectorParams(size=3072, distance=m.Distance.COSINE),
-        sparse_vectors_config={VECTOR_NAME: m.SparseVectorParams(modifier=m.Modifier.IDF)})
-    for field, stem in (("text", False), ("text_stem", True), ("text_cut", False)):
+    client.create_collection(lab, vectors_config=m.VectorParams(size=3072, distance=m.Distance.COSINE))
+    client.create_payload_index(lab, FIELD, index_params())
+    for field, stem in (("text", False), ("text_stem", True)):
         client.create_payload_index(lab, field, m.TextIndexParams(
             type=m.TextIndexType.TEXT, tokenizer=m.TokenizerType.WORD, lowercase=True,
-            ascii_folding=field != "text_cut", scoring=True,
+            ascii_folding=True, scoring=True,
             stemmer=m.SnowballParams(type=m.Snowball.SNOWBALL, language=m.SnowballLanguage.TURKISH)
             if stem else None))
     offset = None
@@ -50,11 +52,9 @@ def build(client, name):
         points, offset = client.scroll(COLLECTIONS[name], limit=200, offset=offset,
                                        with_payload=True, with_vectors=True)
         client.upsert(lab, points=[m.PointStruct(
-            id=p.id,
-            vector={"": p.vector[""], VECTOR_NAME: p.vector[VECTOR_NAME]} if VECTOR_NAME in p.vector
-            else {"": p.vector[""]},
-            payload={**p.payload, "text_stem": p.payload["text"],
-                     "text_cut": " ".join(tokenize(p.payload["text"]))}) for p in points])
+            id=p.id, vector={"": p.vector[""]},
+            payload={**p.payload, "text_stem": p.payload["text"], FIELD: bm25_text(p.payload["text"])})
+            for p in points])
         if offset is None:
             break
     print(f"built {lab}")
@@ -90,21 +90,15 @@ def main():
         return [(p.id, p.payload["text"], p.payload.get("metadata", {})) for p in points]
 
     def lexical(variant, lab, text):
-        if variant == "sparse, 5-letter cut (now)":
-            sparse = sparse_query(text)
-            return ranking(read(client.query_points, lab, query=m.SparseVector(
-                indices=list(sparse), values=list(sparse.values())), using=VECTOR_NAME,
-                limit=DEPTH, with_payload=True).points) if sparse else []
-        field, query = {"qdrant: words + folding": ("text", text),
-                        "qdrant: + Turkish stemmer": ("text_stem", text),
-                        "qdrant: 5-letter cut field": ("text_cut", " ".join(tokenize(text)))}[variant]
+        field, query = {"5-letter cut field (now)": (FIELD, bm25_text(text)),
+                        "qdrant: words + folding": ("text", text),
+                        "qdrant: + Turkish stemmer": ("text_stem", text)}[variant]
         if not query.strip():
             return []
         return ranking(read(client.query_points, lab, query=m.TextQuery(text=query), using=field,
                             limit=DEPTH, with_payload=True).points)
 
-    variants = ["sparse, 5-letter cut (now)", "qdrant: words + folding",
-                "qdrant: + Turkish stemmer", "qdrant: 5-letter cut field"]
+    variants = ["5-letter cut field (now)", "qdrant: words + folding", "qdrant: + Turkish stemmer"]
     forms = {"both": lambda c: [c["rewritten"], c["query"]] if c.get("rewritten") else [c["query"]],
              "raw": lambda c: [c["query"]]}
     dense_cache = {}
