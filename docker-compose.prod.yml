@@ -8,6 +8,13 @@
 #   - ./data (SQLite) and ./preprocessing/data are bind-mounted so users,
 #     conversations, corpora and index state survive rebuilds
 #   - restart: unless-stopped everywhere
+#   - container logs capped (json-file grows unbounded by default)
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   api:
     build: .
@@ -22,16 +29,17 @@ services:
       QDRANT_URL: http://qdrant:6333
     volumes:
       - ./data:/app/data
-      - hf_cache:/root/.cache/huggingface
     depends_on:
       - qdrant
     restart: unless-stopped
+    logging: *logging
 
   qdrant:
-    image: qdrant/qdrant
+    image: qdrant/qdrant:v1.20.2  # pinned, see docker-compose.yml
     volumes:
       - qdrant_storage:/qdrant/storage
     restart: unless-stopped
+    logging: *logging
 
   check-updates:
     build: .
@@ -44,6 +52,7 @@ services:
     depends_on:
       - qdrant
     restart: unless-stopped
+    logging: *logging
     command:
       - sh
       - -c
@@ -67,5 +76,4 @@ services:
         done
 
 volumes:
-  hf_cache:
   qdrant_storage:
