@@ -15,7 +15,7 @@ import requests
 
 from config import settings
 from app.llm import OpenRouterLLM
-from tests.evaluators.llm_judge import RUN_COSTS, LLMJudge, cited_reference
+from tests.evaluators.llm_judge import RUN_COSTS, LLMJudge, cited_reference, log_failure
 
 OPENROUTER_MODEL_TO_TEST = settings.OPENROUTER_MODEL
 
@@ -96,6 +96,15 @@ def test_llm_response(llm_judge, test_case):
     print(f"Puan: {evaluation['score']}")
     print(f"Mantık yürütme: {evaluation['reasoning']}")
 
+    if evaluation["score"] != 1:
+        RUN_COSTS["failed"] += 1
+        log_failure({
+            "case": f"{test_case['category']}: {test_case['description']}",
+            "query": query, "expected": expected_response, "response": response,
+            "cited_reference": reference, "score": evaluation["score"],
+            "reasoning": evaluation["reasoning"], "verdict": evaluation["verdict"],
+            "chat_model": model_name, "judge_model": settings.JUDGE_MODEL,
+        })
     assert evaluation["score"] == 1, (
         f"{test_case['description']}: judge scored {evaluation['score']} — "
         f"{evaluation['reasoning']}"

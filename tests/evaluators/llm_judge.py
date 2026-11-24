@@ -1,10 +1,18 @@
+import json
 import re
+from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List
 
 from app.llm import chat_with_usage
+from config import settings
 
 # what a run spent, summed across cases; conftest prints it at the end
-RUN_COSTS = {"cases": 0, "judge": 0.0, "chatbot": 0.0}
+RUN_COSTS = {"cases": 0, "failed": 0, "judge": 0.0, "chatbot": 0.0}
+# every failed case, appended across runs (data/ is gitignored): a failure
+# that passes on rerun is otherwise gone, along with whether the answer or
+# the grade was wrong
+FAILURES = Path(settings.ROOT) / "data" / "eval_results" / "judge_failures.jsonl"
 
 JUDGE_PROMPT_TEMPLATE = """Sen bir akademik takvim asistanı chatbot'unun cevaplarını değerlendiren bir uzman değerlendiricisin.
 
@@ -72,8 +80,17 @@ class LLMJudge:
             "query": query,
             "response": response,
             "expected_response": expected_response,
+            "verdict": verdict,
             "usage": usage,
         }
+
+
+def log_failure(entry: Dict[str, Any], path: Path = FAILURES) -> None:
+    """Append one failed case as a JSON line, stamped with the time."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps({"at": datetime.now().isoformat(timespec="seconds"), **entry},
+                           ensure_ascii=False) + "\n")
 
 
 def cited_reference(response: str, entries: List[str]) -> str:

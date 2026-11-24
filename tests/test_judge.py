@@ -1,5 +1,7 @@
 """The judge's parsing logic, tested offline with a fake LLM."""
-from tests.evaluators.llm_judge import LLMJudge, cited_reference, parse_verdict
+import json
+
+from tests.evaluators.llm_judge import LLMJudge, cited_reference, log_failure, parse_verdict
 
 
 class FakeLLM:
@@ -56,3 +58,11 @@ def test_an_answer_citing_nothing_is_flagged_to_the_judge():
     LLMJudge(llm, "any-model").evaluate_response("kaç kredi?", "4 kredi", "4 kredi")
     assert "hiçbir referans maddesine kaynak göstermiyor" in llm.prompt
 
+
+def test_failures_are_appended_as_json_lines(tmp_path):
+    path = tmp_path / "eval_results" / "judge_failures.jsonl"
+    log_failure({"case": "a", "score": 0}, path)
+    log_failure({"case": "b", "reasoning": "Tarih [3]'te yok"}, path)
+    lines = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    assert [line["case"] for line in lines] == ["a", "b"]
+    assert lines[1]["reasoning"] == "Tarih [3]'te yok" and "at" in lines[0]
