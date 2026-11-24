@@ -273,6 +273,9 @@ def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
                     "source_url": page["source_url"],
                     "section": chunk.get("baslik"),
                 },
+                # students' questions this chunk answers (rehber only, see
+                # parsers/guide_questions_llm.py)
+                "questions": chunk.get("sorular", []),
             })
 
     missing = sorted(set(by_stem) - {p.stem for p in parsed})
@@ -550,6 +553,14 @@ def calendar_chunks_from_dir(input_dir):
 POINT_NAMESPACE = uuid.UUID("6c1de2a3-6f3e-4c7d-9a2b-1f4e8b0c5d17")
 
 
+def index_text(payload):
+    """What search matches a chunk on, for both its embedding and its BM25
+    field: the chunk text, plus the student questions it answers when it
+    has them (guides, see parsers/guide_questions_llm.py). The model and
+    the source chip only ever get payload["text"]."""
+    return "\n".join([payload["text"], *payload.get("questions", [])])
+
+
 def point_id(payload):
     """Deterministic point id: UUID5 of the canonical payload JSON.
 
@@ -589,8 +600,8 @@ def rebuild_bm25(qdrant, collection_name):
     while True:
         records, offset = qdrant.scroll(
             collection_name=collection_name, limit=1000, offset=offset,
-            with_payload=["text"], with_vectors=False)
-        texts.update({record.id: record.payload["text"] for record in records})
+            with_payload=["text", "questions"], with_vectors=False)
+        texts.update({record.id: index_text(record.payload) for record in records})
         if offset is None:
             break
     operations = [SetPayloadOperation(set_payload=SetPayload(payload={FIELD: bm25_text(text)}, points=[pid]))
@@ -627,6 +638,9 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     desired = {}  # id -> payload; identical chunks collapse to one point
     for chunk in chunks:
         payload = build_payload(chunk["text"], chunk["metadata"])
+        if chunk.get("questions"):
+            # part of the id: new questions mean a new embedding
+            payload["questions"] = chunk["questions"]
         desired[point_id(payload)] = payload
     if len(desired) < len(chunks):
         print(f"Note: {len(chunks) - len(desired)} duplicate chunks collapsed")
@@ -663,7 +677,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
         embedder = default_embedder()
         print(f"Encoding {len(new_ids)} new/changed chunks "
               f"({len(desired) - len(new_ids)} unchanged, {settings.OPENROUTER_EMBEDDING_MODEL})...")
-        vectors = embedder.embed_documents([desired[pid]["text"] for pid in new_ids])
+        vectors = embedder.embed_documents([index_text(desired[pid]) for pid in new_ids])
 
         if qdrant.collection_exists(collection_name=collection_name):
             configured = qdrant.get_collection(collection_name).config.params.vectors.size
@@ -683,7 +697,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
         # payload the point id hashes: adding it changed no ids
         qdrant.upsert(collection_name=collection_name, points=[
             PointStruct(id=pid, vector={"": vector},
-                        payload={**desired[pid], FIELD: bm25_text(desired[pid]["text"])})
+                        payload={**desired[pid], FIELD: bm25_text(index_text(desired[pid]))})
             for pid, vector in zip(new_ids, vectors)
         ])
 
