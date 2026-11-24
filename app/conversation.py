@@ -341,12 +341,15 @@ class Conversation:
         audience = FAQ_AUDIENCES.get(education_type)
         if self._gate is None:
             yield STAGE_SEARCHING
-            results = self._retriever.retrieve_all(search_query, audience=audience)
+            # the student's own words search too: the rewrite fixes typos and
+            # follow-ups but sometimes misreads ("mbg" expanded wrong)
+            results = self._retriever.retrieve_all(search_query, audience=audience,
+                                                   also=[query])
         else:
             with ThreadPoolExecutor(max_workers=2) as pool:
                 verdict = pool.submit(self._gate.verdict, search_query)
                 speculative = pool.submit(self._retriever.retrieve_all, search_query,
-                                          audience)
+                                          audience, also=[query])
                 answer = verdict.result()
                 self._track("gate", self._gate._model, self._gate.last_usage)
                 self._log_row("gate", f"{time.perf_counter() - start:.2f}s",

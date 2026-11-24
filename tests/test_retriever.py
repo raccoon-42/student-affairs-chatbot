@@ -46,9 +46,9 @@ class InMemoryVectorStoreWrapper:
         self.store = store
         self.last_filters = "unset"
 
-    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
+    def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
         self.last_filters = filters
-        return self.store.search(collection, vector, limit, filters, sparse, rrf_k)
+        return self.store.search(collection, vector, limit, filters, sparse, rrf_k, also)
 
 
 def test_normalize_query_expands_student_abbreviations():
@@ -211,6 +211,25 @@ def test_people_roster_rides_along_when_an_area_chunk_wins():
     assert kinds[0] == "area" and kinds[1] == "roster"
 
 
+def test_the_original_words_search_alongside_a_rewrite():
+    # regression: the rewriter expanded "mbg" into an invented department
+    # name; the raw question found Moleküler Biyoloji ve Genetik, the
+    # rewrite alone did not
+    store = InMemoryVectorStore()
+    for text, vector in (("Malzeme Bilimi ve Mühendisliği", [1.0, 0.0, 0.0, 0.1]),
+                         ("Matematik", [1.0, 0.0, 0.0, 0.1]),
+                         ("Fizik", [1.0, 0.0, 0.0, 0.1]),
+                         ("Moleküler Biyoloji, Genetik (MBG)", [0.0, 0.0, 1.0, 0.1])):
+        store.add(settings.PROGRAMS_COLLECTION, text, {}, vector)
+    retriever = Retriever(store, FakeEmbedder())
+    rewrite = "Mühendislik Bilimleri ve Geometrik sınav"  # the misreading
+
+    alone = retriever.retrieve_all(rewrite)["programs"]
+    assert not any("Moleküler" in r["text"] for r in alone)
+    both = retriever.retrieve_all(rewrite, also=["mbg tatil"])["programs"]
+    assert any("Moleküler" in r["text"] for r in both)
+
+
 def test_people_lists_tied_for_first_all_get_in():
     # regression: "yapay zeka alanında çalışan hocalar" — the AI area list
     # and the assistants' list were dense #1/#2 and BM25 #2/#1, so RRF gave
@@ -226,7 +245,7 @@ def test_people_lists_tied_for_first_all_get_in():
         def __init__(self, order):
             self.order = order
 
-        def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None):
+        def search(self, collection, vector, limit, filters=None, sparse=None, rrf_k=None, also=()):
             return self.order[:limit]
 
     for order in ([area, role, roster, person], [role, area, roster, person]):

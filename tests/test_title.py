@@ -29,7 +29,7 @@ class FakeLLM:
 
 
 class FakeRetriever:
-    def retrieve_all(self, query, audience=None):
+    def retrieve_all(self, query, audience=None, also=()):
         return {}
 
 
