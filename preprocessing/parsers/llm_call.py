@@ -24,6 +24,7 @@ def json_array(prompt, timeout=600):
                     # without it OpenRouter applies its own cap, and the
                     # model's thinking counts against the same budget
                     "max_tokens": settings.PARSER_MAX_TOKENS,
+                    "usage": {"include": True},  # OpenRouter adds the charged cost
                 },
                 timeout=timeout,
             )
@@ -35,13 +36,23 @@ def json_array(prompt, timeout=600):
             print(f"{e.__class__.__name__}, retrying in {wait}s...")
             time.sleep(wait)
     response.raise_for_status()
+    usage = response.json().get("usage") or {}
+    if usage:
+        print(f"  {usage.get('prompt_tokens')} in + {usage.get('completion_tokens')} out tokens"
+              + (f", ${usage['cost']:.4f}" if usage.get("cost") is not None else ""))
     choice = response.json()["choices"][0]
     content = choice["message"]["content"] or ""
     if choice.get("finish_reason") == "length":
         raise ValueError(f"{settings.PARSER_MODEL} stopped at PARSER_MAX_TOKENS="
                          f"{settings.PARSER_MAX_TOKENS}: the JSON is cut off. Raise it or split the input.")
-    # the model may wrap the array in a ```json fence or a sentence
-    match = re.search(r"\[.*\]", content, re.DOTALL)
-    if not match:
-        raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
-    return json.loads(match.group(0))
+    # the model may wrap the array in a ```json fence or a sentence, or add
+    # a note after it that has brackets of its own ("[2] ..."): decode the
+    # first complete array of objects and ignore the rest
+    decoder = json.JSONDecoder()
+    for start in (match.start() for match in re.finditer(r"\[\s*[{\]]", content)):
+        try:
+            value, _ = decoder.raw_decode(content, start)
+        except json.JSONDecodeError:
+            continue
+        return value
+    raise ValueError(f"No JSON array in LLM response:\n{content[:500]}")
