@@ -8,6 +8,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 
+from app.citations import check_citations
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
 from app.retrieval import normalize_query
@@ -103,6 +104,13 @@ GÖREV:
    sayfaya ya da dosyaya yönlendirirken bağlantıyı adıyla ver: [Sayfanın adı](URL) [n]
    (URL yalnızca kural 7'deki gibi). Öğrencinin yazacağı ya da seçeceği tam değerleri
    `böyle` yaz. Tek bilgilik kısa cevapları kısa tut, başlık ekleme.
+9. Referanstaki her madde kendi numarasıyla başlar ([1], [2], ...). Bir bilgiyi hangi
+   maddeden aldıysan, o bilginin geçtiği cümlenin ya da liste satırının sonuna O MADDENİN
+   numarasını koy (örn. "Kayıtlar 8-9 Temmuz'da yapılacak [3]."); birden fazla maddeyi art
+   arda yaz: [1][4]. Bilgi [36] numaralı maddedense işaret [36]'dır: numaraları makale
+   dipnotu gibi 1'den yeniden sıralama, kendi numaranı verme, cevabın sonuna kaynak listesi
+   ya da yalnızca işaretlerden oluşan bir satır ekleme. Referansta olmayan bir numara
+   kullanma; kaynağı olmayan cümleye işaret koyma.
 """
 
 MONTHS_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -223,6 +231,8 @@ class Conversation:
         self._messages = []
         self.last_sources = []  # what the latest answer was grounded on
         self.last_reference = []  # numbered chunk texts sent to the model last turn
+        self.last_answer = None  # the latest answer after the citation check
+        self._chunk_texts = []  # what marker [n] points to: _chunk_texts[n-1]
         self.last_debug = []  # CLI-style log lines for the latest turn
         self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
         self.turn_usage = []  # every LLM call of the latest turn: {kind, model, tokens, cost}
@@ -242,6 +252,7 @@ class Conversation:
             self.turn_usage.append({"kind": kind, "model": model, **usage})
 
     def respond(self, query: str, model: str = None, education_type: str = None) -> str:
+        self.last_answer = None
         verdict = self._prepare(query, education_type)
         if verdict != "ok":
             return REFUSALS[verdict]
@@ -251,12 +262,16 @@ class Conversation:
             self._llm, model or self._model, self._messages)
         self._track("chat", model or self._model, self.last_usage)
         self._log_row("llm", f"{time.perf_counter() - start:.2f}s")
+        answer = self._check_citations(answer)
         self._add_assistant_message(answer)
         return answer
 
     def respond_stream(self, query: str, model: str = None, education_type: str = None,
                        image: str = None):
-        """Same as respond(), but yields the answer token by token."""
+        """Same as respond(), but yields the answer token by token. The
+        citation check runs once the answer is complete, so the tokens
+        already sent can differ from last_answer; the UI re-renders with it."""
+        self.last_answer = None
         query, search_query = self._resolve_search_query(query, image)
         yield STAGE_GATING
         stages = self._gate_and_build(query, search_query, education_type, image)
@@ -294,7 +309,7 @@ class Conversation:
                           f"prompt {self.last_usage['prompt_tokens']} + "
                           f"completion {self.last_usage['completion_tokens']} token"
                           + (f" · ${cost:.4f}" if cost is not None else ""))
-        self._add_assistant_message("".join(tokens))
+        self._add_assistant_message(self._check_citations("".join(tokens)))
 
     def _prepare(self, query, education_type=None, image=None) -> str:
         """Rewrite, then gate + retrieve; see the two halves below."""
@@ -386,9 +401,11 @@ class Conversation:
         # last_sources[n-1] is what marker [n] points to
         numbered = {corpus: [] for corpus in corpora}
         self.last_sources = []
+        self._chunk_texts = []
         for corpus in corpora:
             for result in results.get(corpus, []):
                 self.last_sources.append(self._source_entry(corpus, result))
+                self._chunk_texts.append(result["text"])
                 numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
         self.last_reference = [entry for corpus in corpora for entry in numbered[corpus]]
 
@@ -439,6 +456,15 @@ class Conversation:
         if metadata.get("source_url"):
             source["url"] = metadata["source_url"]
         return source
+
+    def _check_citations(self, answer):
+        answer, removed = check_citations(answer, self._chunk_texts)
+        if removed:
+            self._log_row("citations", f"-{len(removed)}",
+                          "removed " + " ".join(f"[{n}]" for n in sorted(set(removed)))
+                          + ": no word shared with the cited chunk, or a marker-only last line")
+        self.last_answer = answer
+        return answer
 
     def _add_assistant_message(self, answer):
         # the reference data was for this turn only — history keeps the bare

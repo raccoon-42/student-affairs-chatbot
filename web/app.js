@@ -800,6 +800,9 @@ async function send(query, image = null) {
         .catch(() => ({}));
       sources = data.sources ?? [];
       usage = data.usage ?? null;
+      // the server drops citation markers that point at unrelated chunks
+      // after the stream; render and keep its version
+      if (data.answer) answer = data.answer;
       if (usage) {
         conversation.tokens = (conversation.tokens || 0)
           + usage.prompt_tokens + usage.completion_tokens;
