@@ -2,14 +2,17 @@
 
 Each guides chunk carries ~5 questions Sonnet wrote for it
 (preprocessing/parsers/guide_questions_llm.py). Variants, each in a
-scratch "<guides>__qlab_<name>" collection (text vectors copied from the
-live collection, only new texts embedded):
-  now          the live collection: dense and BM25 on the chunk text
-  bm25         BM25 on text + questions, dense unchanged
-  append       dense and BM25 on text + questions
+scratch "<guides>__qlab_<name>" collection (ids copied from the live
+collection, every vector embedded here and disk-cached):
+  now          the live collection: dense and BM25 on text + questions
+               (ADR-0006's "append", in production since)
+  text         dense and BM25 on the chunk text alone, the pre-ADR-0006 index
+  bm25         BM25 on text + questions, dense on the text alone
   multivector  BM25 on text + questions; dense holds the text vector plus
                one vector per question, a chunk scores by its best match
   multi+append the same with the text + questions vector in place of the text one
+  now+qvec     now, plus a third ranking from a separate multivector field
+               holding only the question vectors: three rankings fused
 Every variant fuses dense and BM25 rankings for each phrasing at RRF k=2,
 as production does for guides (no filters there).
 
@@ -32,7 +35,7 @@ from scripts.eval_retrieval import CachedEmbedder, load_cases, rrf, score  # noq
 
 GUIDES = settings.GUIDES_COLLECTION
 LAB = "__qlab_"
-VARIANTS = ("now", "bm25", "append", "multivector", "multi+append")
+VARIANTS = ("now", "text", "bm25", "multivector", "multi+append", "now+qvec")
 DEPTH = settings.HYBRID_PREFETCH
 CACHE = ROOT / "data" / "eval_cache" / "guide_questions.npz"
 
@@ -55,7 +58,8 @@ def appended(chunk):
 
 
 def build(client, embedder, chunks, live):
-    """The scratch collections; live maps chunk text -> (id, vector)."""
+    """The scratch collections; live maps chunk text -> (id, vector). The
+    live vectors embed text + questions, so the text alone is embedded here."""
     from qdrant_client.http import models as m
 
     missing = [c["text"] for c in chunks if c["text"] not in live]
@@ -63,6 +67,8 @@ def build(client, embedder, chunks, live):
         raise SystemExit(f"{len(missing)} parsed chunks are not in {GUIDES}; reindex guides first")
     without = sum(1 for c in chunks if not c.get("questions"))
     print(f"{len(chunks)} chunks, {without} without questions (link entries)")
+    text_vectors = dict(zip((c["text"] for c in chunks),
+                            embedder.embed_many([c["text"] for c in chunks])))
     appended_vectors = dict(zip((appended(c) for c in chunks),
                                 embedder.embed_many([appended(c) for c in chunks])))
     questions = [q for c in chunks for q in c.get("questions", [])]
@@ -74,22 +80,32 @@ def build(client, embedder, chunks, live):
         if client.collection_exists(name):
             client.delete_collection(name)
         multi = m.MultiVectorConfig(comparator=m.MultiVectorComparator.MAX_SIM)
-        client.create_collection(name, vectors_config=m.VectorParams(
+        vectors_config = {"": m.VectorParams(
             size=3072, distance=m.Distance.COSINE,
-            multivector_config=multi if variant.startswith("multi") else None))
+            multivector_config=multi if variant.startswith("multi") else None)}
+        if variant == "now+qvec":
+            vectors_config["questions"] = m.VectorParams(
+                size=3072, distance=m.Distance.COSINE, multivector_config=multi)
+        client.create_collection(name, vectors_config=vectors_config)
         client.create_payload_index(name, FIELD, index_params(), wait=True)
         points = []
         for chunk in chunks:
-            pid, text_vector = live[chunk["text"]]
-            vector = {"bm25": text_vector,
-                      "append": appended_vectors[appended(chunk)],
+            pid, text_vector = live[chunk["text"]][0], text_vectors[chunk["text"]]
+            vector = {"text": text_vector,
+                      "bm25": text_vector,
                       "multivector": [text_vector] + [question_vectors[q] for q in chunk.get("questions", [])],
                       "multi+append": [appended_vectors[appended(chunk)]]
                       + [question_vectors[q] for q in chunk.get("questions", [])],
+                      "now+qvec": appended_vectors[appended(chunk)],
                       }[variant]
-            points.append(m.PointStruct(id=pid, vector={"": vector}, payload={
+            vectors = {"": vector}
+            if variant == "now+qvec":
+                # link entries have no questions: their text stands in
+                vectors["questions"] = ([question_vectors[q] for q in chunk.get("questions", [])]
+                                        or [text_vector])
+            points.append(m.PointStruct(id=pid, vector=vectors, payload={
                 "text": chunk["text"], "metadata": chunk["metadata"],
-                FIELD: bm25_text(appended(chunk))}))
+                FIELD: bm25_text(chunk["text"] if variant == "text" else appended(chunk))}))
         for start in range(0, len(points), 50):
             client.upsert(name, points=points[start:start + 50])
         print(f"built {name}")
@@ -145,6 +161,10 @@ def main():
             rankings.append(ranking(read(client.query_points, name,
                                          query=[vector] if variant.startswith("multi") else vector,
                                          limit=DEPTH, with_payload=True).points))
+            if variant == "now+qvec":
+                rankings.append(ranking(read(client.query_points, name, query=[vector],
+                                             using="questions", limit=DEPTH,
+                                             with_payload=True).points))
             if bm25_text(text).strip():
                 rankings.append(ranking(read(client.query_points, name,
                                              query=m.TextQuery(text=bm25_text(text)), using=FIELD,
@@ -164,7 +184,7 @@ def main():
                 ranks[(form, variant, case["id"])] = result["best"]
     query_cache.save()
 
-    print(f"\n{len(cases)} guides cases; production top_k for guides = 3\n")
+    print(f"\n{len(cases)} guides cases; production top_k for guides = 4\n")
     for form in forms:
         print(f"form: {form}" + (" (what production searches with)" if form == "both" else ""))
         print(f"{'variant':<13}{'cases':<16}{'hit@1':>7}{'hit@3':>7}{'hit@4':>7}{'hit@5':>7}{'MRR':>7}")
