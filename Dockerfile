@@ -12,10 +12,11 @@ WORKDIR /app
 # hard-linked across that boundary
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
-# Install dependencies first so this layer is cached across code changes
+# Install dependencies first so this layer is cached across code changes;
+# --locked fails the build if uv.lock is out of date with pyproject.toml
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+    uv sync --locked --no-dev
 
 COPY . .
 
