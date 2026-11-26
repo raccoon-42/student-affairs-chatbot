@@ -111,7 +111,9 @@ def test_guide_questions_are_searched_but_never_returned(monkeypatch):
 
     vectorizer.store_embedding([dates, rules], "g", vectorizer._sks_payload)
 
-    assert sorted(embedded) == sorted([dates["text"] + "\nerasmus başvuruları ne zaman", rules["text"]])
+    # the text with its questions, and each question once more on its own (docs/adr/0011)
+    assert sorted(embedded) == sorted([dates["text"] + "\nerasmus başvuruları ne zaman", rules["text"],
+                                       "erasmus başvuruları ne zaman"])
     hits = QdrantVectorStore(client=client).search("g", [1.0, 0.0, 0.0], limit=1,
                                                    lexical=bm25_text("ne zaman"))
     assert hits[0].text == dates["text"]  # found by its question, returned without it
@@ -120,13 +122,78 @@ def test_guide_questions_are_searched_but_never_returned(monkeypatch):
     embedded.clear()
     vectorizer.store_embedding([{**dates, "questions": ["erasmus son gün"]}, rules], "g",
                                vectorizer._sks_payload)
-    assert embedded == [dates["text"] + "\nerasmus son gün"]
+    assert embedded == ["erasmus son gün", dates["text"] + "\nerasmus son gün"]
 
     # the BM25 rebuild keeps the questions in the field
     rebuild_bm25(client, "g")
     hits = QdrantVectorStore(client=client).search("g", [1.0, 0.0, 0.0], limit=1,
                                                    lexical=bm25_text("son gün"))
     assert hits[0].text == dates["text"]
+
+
+def test_a_chunk_is_found_by_its_best_question():
+    """docs/adr/0011: question vectors are a third ranking. B's text is only
+    the second closest, but one of its questions matches the query exactly."""
+    from preprocessing.indexing import questions
+
+    def collection(with_questions):
+        client = QdrantClient(":memory:")
+        dense = VectorParams(size=3, distance=Distance.COSINE)
+        client.create_collection("g", vectors_config=(
+            {"": dense, questions.VECTOR: questions.params(3)} if with_questions else dense))
+        chunks = [  # text, text vector, question vectors
+            ("A", [1.0, 0.0, 0.0], [[0.0, 0.0, 1.0]]),
+            ("B", [0.8, 0.6, 0.0], [[0.0, 1.0, 0.0], [1.0, 0.0, 0.0]]),
+            ("C, no questions", [0.0, 1.0, 0.0], None),
+            ("D", [0.0, 0.0, 1.0], [[0.6, 0.8, 0.0]]),
+        ]
+        client.upsert("g", points=[
+            PointStruct(id=i, vector={"": text_vector, **(
+                {questions.VECTOR: question_vectors} if with_questions and question_vectors else {})},
+                        payload={"text": text, "metadata": {}})
+            for i, (text, text_vector, question_vectors) in enumerate(chunks)])
+        return client
+
+    query = [1.0, 0.0, 0.0]
+    assert QdrantVectorStore(client=collection(False)).search("g", query, limit=1)[0].text == "A"
+    assert QdrantVectorStore(client=collection(True)).search("g", query, limit=1)[0].text == "B"
+
+
+def test_question_vectors_are_added_to_an_existing_collection(monkeypatch):
+    """A guides collection indexed before docs/adr/0011 gets the field on its
+    next sync: only the questions are embedded, the text vectors stay."""
+    import qdrant_client
+
+    from app import embeddings
+    from preprocessing.indexing import questions, vectorizer
+
+    client = QdrantClient(":memory:")
+    embedded = []
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            embedded.extend(texts)
+            return [[0.0, 1.0, 0.0] if "\n" not in text else [1.0, 0.0, 0.0] for text in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    dates = {"text": "Başvuru Tarihleri\n17 Mart - 2 Nisan arası online", "metadata": {"topic": "erasmus"},
+             "questions": ["erasmus başvurusu nereden yapılıyor"]}
+    rules = {"text": "Asgari Şartlar\nLisans için en az 2.20 ortalama", "metadata": {"topic": "erasmus"}}
+    vectorizer.store_embedding([dates, rules], "g", vectorizer._sks_payload)
+    client.delete_vector_name("g", questions.VECTOR)  # the collection as it was before
+    assert not questions.has_field(client, "g")
+
+    embedded.clear()
+    vectorizer.store_embedding([dates, rules], "g", vectorizer._sks_payload)
+
+    assert embedded == ["erasmus başvurusu nereden yapılıyor"]
+    assert questions.has_field(client, "g")
+    # a point with only the text vector comes back as a plain list
+    points = {p.payload["text"]: p.vector if isinstance(p.vector, dict) else {"": p.vector}
+              for p in client.scroll("g", with_vectors=True)[0]}
+    assert points[dates["text"]] == {"": [1.0, 0.0, 0.0], questions.VECTOR: [[0.0, 1.0, 0.0]]}
+    assert points[rules["text"]] == {"": [1.0, 0.0, 0.0]}  # no questions, no field
 
 
 def test_collections_are_kept_in_one_segment(monkeypatch):
