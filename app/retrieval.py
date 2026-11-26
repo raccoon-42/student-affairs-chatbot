@@ -293,8 +293,14 @@ class Retriever:
         search, so a rewrite that misreads the question ("mbg" expanded
         wrong) can't hide the chunks the original words find."""
         query = normalize_query(query)
-        others = [text for text in dict.fromkeys(normalize_query(t) for t in also if t)
-                  if text.casefold() != query.casefold()]
+        others = list(dict.fromkeys(normalize_query(t) for t in also if t))
+        # a rewrite that only changes capitals is the student's question as
+        # they wrote it: search their words, once. The embedding isn't
+        # case-blind, and the student's casing did better on the eval
+        # ("erasmus başvuru formunu ..." found the online-application chunk,
+        # "Erasmus başvuru formunu ..." didn't; docs/adr/0011)
+        query = next((text for text in others if text.casefold() == query.casefold()), query)
+        others = [text for text in others if text.casefold() != query.casefold()]
         start = time.perf_counter()
         with ThreadPoolExecutor(max_workers=1 + len(others)) as pool:
             vector, *other_vectors = pool.map(self._embed_query, [query, *others])
