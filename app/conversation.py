@@ -54,7 +54,7 @@ CONTEXT_TEMPLATE = """
     # FORM VE DİLEKÇELER (başlık + kullanım amacı; bağlantı için kaynak işareti yeterli):
     {forms_context}
 
-    # KAMPÜS YAŞAMI (SPOR TESİSLERİ, ÖĞRENCİ TOPLULUKLARI, YEMEKHANE):
+    # KAMPÜS YAŞAMI — Sağlık, Kültür ve Spor (SKS) Daire Başkanlığı (SPOR TESİSLERİ, ÖĞRENCİ TOPLULUKLARI, YEMEKHANE):
     {sks_context}
 
     # BÖLÜM VE PROGRAMLAR:
