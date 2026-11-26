@@ -4,6 +4,8 @@ The model cites reference chunks as [n]. Now and then it numbers them like
 paper footnotes instead: the facts of chunks [36]-[38] come out as [1]-[3]
 with a "[1] [2] [3]" line at the end, and the UI shows chips for whatever
 chunks [1]-[3] were. Checks that catch it without another model call:
+- a comma list of markers ("[26, 27]") becomes separate ones ("[26][27]"),
+  the only form the UI chips and the judge read;
 - a last line of nothing but markers is removed;
 - a marker with no chunk behind it is removed;
 - in an answer shaped like that (markers run [1]..[k], or a footer line),
@@ -21,6 +23,7 @@ from preprocessing.indexing.bm25 import tokenize
 _RUN = re.compile(r"( ?)((?:\[\d+\])+)")  # one or more markers in a row: "[1][4]"
 _MARKER = re.compile(r"\[(\d+)\]")
 _FOOTER = re.compile(r"[ \t]*(?:\[\d+\][ \t]*)+")  # a line of nothing but markers
+_LIST = re.compile(r"\[\d+(?:\s*,\s*\d+)+\]")  # "[26, 27]"
 # shorter text before a marker ("Evet [3].") is too little to judge by shared words
 MIN_WORDS = 4
 # a word in more than half of the turn's chunks ("öğrenci", "iyte") says
@@ -34,6 +37,7 @@ def check_citations(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
     """The answer without unsupported markers, and the marker numbers removed.
     chunks[n - 1] is the text marker [n] points to."""
     removed = []
+    answer = _LIST.sub(lambda m: "".join(f"[{n}]" for n in re.findall(r"\d+", m.group(0))), answer)
     cited = sorted({int(n) for n in _MARKER.findall(answer)})
     # renumbering cites [1]..[k] in order of use; a normal answer cites the
     # numbers of the chunks it used

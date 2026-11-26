@@ -35,6 +35,15 @@ def test_correct_citations_are_kept():
     assert check_citations(answer, CALENDAR + [ERASMUS]) == (answer, [])
 
 
+def test_a_comma_list_of_markers_becomes_separate_markers():
+    # a judge run: "[26, 27]" read as no marker at all, so chunk 27 never
+    # reached the judge, and the UI drew no chips for it
+    answer = "Ofis: 127, e-posta: hoca@iyte.edu.tr [1, 2]. Diğer [1,2 , 3]."
+    cleaned, removed = check_citations(answer, ["ofis 127", "hoca@iyte.edu.tr", "diğer"])
+    assert cleaned == "Ofis: 127, e-posta: hoca@iyte.edu.tr [1][2]. Diğer [1][2][3]."
+    assert removed == []
+
+
 def test_only_the_wrong_marker_of_a_run_is_removed():
     # markers [1]..[2]: the renumbering shape, so the words are checked
     answer = "Almanya'da Heidelberg ve Bonn üniversiteleri var [1][2]. Başka soru?"
