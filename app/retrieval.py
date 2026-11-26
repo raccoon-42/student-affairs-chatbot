@@ -309,14 +309,17 @@ class Retriever:
 
         start = time.perf_counter()
         with ThreadPoolExecutor(max_workers=9) as pool:
+            # every collection's chunks go to every answer, so each cut is
+            # what the retrieval eval showed still holds every needed chunk
+            # (docs/adr/0012); regulations keeps one above that
             calendar = pool.submit(self.retrieve_calendar, query, 10, vector, also=also)
-            regulations = pool.submit(self.retrieve_regulations, query, 5, vector, also=also)
-            faq = pool.submit(self.retrieve_faq, query, 5, vector, audience, also=also)
-            forms = pool.submit(self.retrieve_forms, query, 3, vector, also=also)
-            sks = pool.submit(self.retrieve_sks, query, 4, vector, also=also)
+            regulations = pool.submit(self.retrieve_regulations, query, 3, vector, also=also)
+            faq = pool.submit(self.retrieve_faq, query, 4, vector, audience, also=also)
+            forms = pool.submit(self.retrieve_forms, query, 2, vector, also=also)
+            sks = pool.submit(self.retrieve_sks, query, 2, vector, also=also)
             programs = pool.submit(self.retrieve_programs, query, 3, vector, also=also)
             people = pool.submit(self.retrieve_people, query, 3, vector, also=also)
-            courses = pool.submit(self.retrieve_courses, query, 4, vector, also=also)
+            courses = pool.submit(self.retrieve_courses, query, 3, vector, also=also)
             # 4, not 3: a long page splits into many look-alike chunks
             # (docs/adr/0006)
             guides = pool.submit(self.retrieve_guides, query, 4, vector, also=also)
