@@ -3,7 +3,7 @@ import json
 from datetime import date
 
 from preprocessing.indexing.vectorizer import (
-    _page_corpus_chunks, courses_chunks_from_dir, people_chunks_from_dir,
+    SKS_OWNER, _page_corpus_chunks, courses_chunks_from_dir, people_chunks_from_dir,
     program_chunks_from_json, plan_sync, point_id)
 
 
@@ -140,6 +140,26 @@ def test_page_corpus_link_entries_become_chunks_with_the_pdf_as_source(tmp_path)
     assert "kayıt adımlarını" in link["text"]  # description is the retrieval text
     page = next(c for c in chunks if c["metadata"]["section"] == "İşlem Adımları")
     assert "katkı payı" in page["text"]
+
+
+def test_sks_chunks_name_their_office(tmp_path):
+    # the club page says only "Daire Başkanlığı"; the model guessed
+    # "Öğrenci İşleri", and the office named in the prompt header alone
+    # was one the cited chunk couldn't back
+    manifest = [{"title": "ÖĞRENCİ TOPLULUKLARINA NASIL ÜYE OLUNUR ?", "topic": "topluluklar",
+                 "source_url": "https://sks.iyte.edu.tr/x/", "file": "uyelik.html"}]
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    (tmp_path / "uyelik.json").write_text(json.dumps(
+        [{"baslik": "Üyelik", "metin": "Daire Başkanlığı aracılığıyla üye olunabilir."}],
+        ensure_ascii=False), encoding="utf-8")
+
+    chunks = _page_corpus_chunks(tmp_path, tmp_path / "manifest.json",
+                                 lambda c: f"{c['baslik']}\n{c['metin']}", "sks", owner=SKS_OWNER)
+
+    assert chunks[0]["text"].startswith(SKS_OWNER + "\nÖĞRENCİ TOPLULUKLARINA")
+    rehber = _page_corpus_chunks(tmp_path, tmp_path / "manifest.json",
+                                 lambda c: f"{c['baslik']}\n{c['metin']}", "rehber")
+    assert rehber[0]["text"].startswith("ÖĞRENCİ TOPLULUKLARINA")  # no office: unchanged
 
 
 def test_point_id_is_stable_for_equal_payloads_and_changes_with_content():

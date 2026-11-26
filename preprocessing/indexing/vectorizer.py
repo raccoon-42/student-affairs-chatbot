@@ -12,6 +12,10 @@ from preprocessing.indexing.bm25 import FIELD, bm25_ready, bm25_text, index_para
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
 SKS_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "sks" / "manifest.json"
 GUIDES_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "rehber" / "manifest.json"
+# every sks page is this office's (sks.iyte.edu.tr), but its pages say only
+# "Daire Başkanlığı": the model guessed "Öğrenci İşleri", and a name from the
+# prompt alone was one the cited chunk couldn't back
+SKS_OWNER = "Sağlık, Kültür ve Spor (SKS) Daire Başkanlığı"
 TAKVIM_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "takvim" / "manifest.json"
 
 
@@ -230,13 +234,15 @@ def forms_chunks_from_json(input_file):
     return chunks
 
 
-def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
+def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus, owner=None):
     """Chunks from every parsed page of a curated-page corpus (sks,
     rehber), tagged with its page.
 
     Same shape as mevzuat: the scrape manifest supplies title/topic/
     source_url per page, the embedded text is prefixed with the page
-    title, and source_url makes each citation chip link to its page."""
+    title (after the office the corpus belongs to, when given), and
+    source_url makes each citation chip link to its page."""
+    lead = f"{owner}\n" if owner else ""
     with open(manifest_path, encoding="utf-8") as f:
         manifest = json.load(f)
     by_stem = {Path(entry["file"]).stem: entry
@@ -249,7 +255,7 @@ def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
     for entry in manifest:
         if entry.get("kind") == "link":
             chunks.append({
-                "text": f"{entry['title']}\n{entry['description']}",
+                "text": f"{lead}{entry['title']}\n{entry['description']}",
                 "metadata": {
                     "document_title": entry["title"],
                     "topic": entry["topic"],
@@ -267,7 +273,7 @@ def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
             page_chunks = json.load(f)
         for chunk in page_chunks:
             chunks.append({
-                "text": f"{page['title']}\n{render_chunk(chunk)}",
+                "text": f"{lead}{page['title']}\n{render_chunk(chunk)}",
                 "metadata": {
                     "document_title": page["title"],
                     "topic": page["topic"],
@@ -288,7 +294,7 @@ def _page_corpus_chunks(input_dir, manifest_path, render_chunk, corpus):
 
 def sks_chunks_from_dir(input_dir):
     from preprocessing.parsers.sks_parser_llm import render_chunk
-    return _page_corpus_chunks(input_dir, SKS_MANIFEST, render_chunk, "sks")
+    return _page_corpus_chunks(input_dir, SKS_MANIFEST, render_chunk, "sks", owner=SKS_OWNER)
 
 
 def guides_chunks_from_dir(input_dir):
