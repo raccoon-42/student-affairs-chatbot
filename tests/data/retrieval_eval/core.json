@@ -978,6 +978,146 @@
     }
    ],
    "rewritten": "Uluslararası ilişkiler ofisi nerede?"
+  },
+  {
+   "id": "gd-apply-erasmus-form",
+   "query": "erasmus başvuru formunu nereden indirebilirim?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus başvuru formunu nereden indirebilirim?"
+  },
+  {
+   "id": "gd-apply-erasmus-nereden",
+   "query": "erasmus başvurusu nereden yapılıyor?",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus başvurusu nereden yapılıyor?"
+  },
+  {
+   "id": "gd-apply-erasmus-site",
+   "query": "erasmusa başvurmak için hangi siteye giriyoruz",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus'a başvurmak için hangi siteye girilmesi gerekiyor?"
+  },
+  {
+   "id": "gd-apply-erasmus-ofis",
+   "query": "erasmus başvurusunu ofise gidip mi yapıyoruz yoksa internetten mi",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus başvurusunu ofise gidip mi yapıyoruz yoksa internetten mi?"
+  },
+  {
+   "id": "gd-apply-erasmus-ne-yapmali",
+   "query": "erasmus için başvuru yapmak istiyorum ne yapmalıyım",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Başvuru Tarihleri ve Online"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus için başvuru yapmak istiyorum, ne yapmalıyım?"
+  },
+  {
+   "id": "gd-apply-staj-form",
+   "query": "erasmus staj başvuru formu nerde",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Staj Başvuru Formu"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus staj başvuru formu nerede bulunur?"
+  },
+  {
+   "id": "gd-apply-staj-nereden",
+   "query": "erasmus stajı için başvuruyu nereden yapıcam",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "contains": [
+      "Staj Başvuru Formu"
+     ]
+    }
+   ],
+   "rewritten": "Erasmus stajı için başvuruyu nereden yapacağım?"
+  },
+  {
+   "id": "gd-apply-yatay-ic",
+   "query": "bölüm değiştirmek için yatay geçiş başvurusunu nereye yapıyoruz",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Kurum İçi Yatay Geçiş"
+     }
+    }
+   ],
+   "rewritten": "Bölüm değiştirmek için yatay geçiş başvurusu nereden yapılır?"
+  },
+  {
+   "id": "gd-apply-yatay-dis",
+   "query": "başka üniversiteden yatay geçiş başvurusu nereye yapılır",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Kurumlar Arası Yatay Geçiş"
+     }
+    }
+   ],
+   "rewritten": "Başka bir üniversiteden yatay geçiş başvurusu nereye yapılır?"
+  },
+  {
+   "id": "gd-apply-yl-form",
+   "query": "yüksek lisans başvuru formu nerede",
+   "category": "guides",
+   "relevant": [
+    {
+     "collection": "guides",
+     "metadata": {
+      "document_title": "Lisansüstü Programlara Başvuru Bilgileri"
+     }
+    }
+   ],
+   "rewritten": "Yüksek lisans başvuru formu nerede bulunur?"
   }
  ]
 }
