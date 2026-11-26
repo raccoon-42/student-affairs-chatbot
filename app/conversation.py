@@ -10,6 +10,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 from app.citations import check_citations
+from app.links import check_links
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
 from app.retrieval import normalize_query
@@ -478,11 +479,17 @@ class Conversation:
         return source
 
     def _check_citations(self, answer):
+        """The answer after the deterministic checks: citation markers its
+        chunks don't back, and links no chunk contains."""
         answer, removed = check_citations(answer, self._chunk_texts)
         if removed:
             self._log_row("citations", f"-{len(removed)}",
                           "removed " + " ".join(f"[{n}]" for n in sorted(set(removed)))
                           + ": no word shared with the cited chunk, or a marker-only last line")
+        answer, links = check_links(answer, self._chunk_texts)
+        if links:
+            self._log_row("links", f"-{len(links)}",
+                          "removed " + " ".join(links) + ": in no chunk of this turn")
         self.last_answer = answer
         return answer
 
