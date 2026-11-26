@@ -15,6 +15,7 @@ import requests
 
 from config import settings
 from app.llm import OpenRouterLLM
+from tests.evaluators.claude_cli import ClaudeCLI
 from tests.evaluators.llm_judge import RUN_COSTS, LLMJudge, cited_reference, log_failure
 
 OPENROUTER_MODEL_TO_TEST = settings.OPENROUTER_MODEL
@@ -71,8 +72,11 @@ TEST_CASES = load_test_cases()
 
 @pytest.fixture(scope="module")
 def llm_judge():
-    return LLMJudge(OpenRouterLLM(reasoning_effort=settings.JUDGE_REASONING_EFFORT),
-                    settings.JUDGE_MODEL)
+    if settings.JUDGE_BACKEND == "claude-cli":
+        llm = ClaudeCLI(effort=settings.JUDGE_REASONING_EFFORT)
+    else:
+        llm = OpenRouterLLM(reasoning_effort=settings.JUDGE_REASONING_EFFORT)
+    return LLMJudge(llm, settings.JUDGE_MODEL)
 
 
 @pytest.mark.parametrize(

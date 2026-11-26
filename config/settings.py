@@ -76,6 +76,10 @@ JUDGE_MODEL = os.getenv("JUDGE_MODEL", "anthropic/claude-sonnet-5.5")
 # comparing one answer with an expected one needs little thinking, and
 # thinking is billed as output
 JUDGE_REASONING_EFFORT = os.getenv("JUDGE_REASONING_EFFORT", "low")
+# "claude-cli" runs the judge through the local `claude` CLI on a Claude
+# Code subscription instead of billed OpenRouter calls; the chatbot under
+# test always answers through OpenRouter, as in production
+JUDGE_BACKEND = os.getenv("JUDGE_BACKEND", "openrouter")
 
 # Scope gate: cheap model that decides if a question is university-related
 GUARD_MODEL = os.getenv("GUARD_MODEL", "anthropic/claude-haiku-5.5")
