@@ -259,6 +259,29 @@ def test_the_original_words_search_alongside_a_rewrite():
     assert any("Moleküler" in r["text"] for r in both)
 
 
+def test_a_rewrite_that_only_capitalizes_keeps_the_students_words():
+    # regression: the rewriter returned "Erasmus başvuru formunu ..." for
+    # "erasmus başvuru formunu ...", and the student's words were dropped as
+    # a duplicate. The embedding isn't case-blind: only the student's
+    # lowercase phrasing found the online-application chunk
+    embedded = []
+
+    class Recording(FakeEmbedder):
+        def embed_query(self, text):
+            embedded.append(text)
+            return super().embed_query(text)
+
+    retriever = Retriever(InMemoryVectorStore(), Recording())
+    rewrite, words = "Erasmus başvuru formunu nereden indirebilirim?", "erasmus başvuru formunu nereden indirebilirim?"
+    retriever.retrieve_all(rewrite, also=[words])
+    assert embedded == [words]  # the student's words, searched once
+
+    embedded.clear()
+    real_rewrite = "Erasmus başvuru formu nereden indirilir?"
+    retriever.retrieve_all(real_rewrite, also=[words])  # a real rewrite still searches both
+    assert sorted(embedded) == sorted([real_rewrite, words])
+
+
 def test_people_lists_tied_for_first_all_get_in():
     # regression: "yapay zeka alanında çalışan hocalar" — the AI area list
     # and the assistants' list were dense #1/#2 and BM25 #2/#1, so RRF gave
