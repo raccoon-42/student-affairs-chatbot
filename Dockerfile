@@ -7,11 +7,15 @@ COPY --from=ghcr.io/astral-sh/uv:0.13.9 /uv /uvx /bin/
 RUN useradd --create-home --uid 1000 app
 
 WORKDIR /app
+# bytecode up front: the app user can't write __pycache__ at runtime. copy:
+# the uv cache sits in a build-cache mount, out of the image, and can't be
+# hard-linked across that boundary
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
 # Install dependencies first so this layer is cached across code changes
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
 COPY . .
 
