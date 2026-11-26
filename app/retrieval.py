@@ -23,6 +23,7 @@ import numpy as np
 
 from config import settings
 from preprocessing.extraction import extract_academic_period
+from preprocessing.indexing import questions
 from preprocessing.indexing.bm25 import B, FIELD, K1, bm25_ready, bm25_text, tokenize
 
 
@@ -127,6 +128,7 @@ class QdrantVectorStore:
         self._url = url or settings.QDRANT_URL
         self._client = client  # created on first use, not at import
         self._bm25_ready = set()  # collections known to carry BM25 vectors
+        self._questions = {}  # collection -> (has question vectors, checked at)
 
     def search(self, collection: str, vector: List[float], limit: int,
                filters: Optional[Dict[str, str]] = None,
@@ -156,8 +158,13 @@ class QdrantVectorStore:
         depth = max(settings.HYBRID_PREFETCH, limit)
         prefetch = []
         # `also`: (vector, lexical) of other phrasings, each two more rankings
+        # (three where the chunks carry question vectors, docs/adr/0011)
+        by_question = self._has_questions(collection)
         for dense, words in [(vector, lexical), *also]:
             prefetch.append(Prefetch(query=dense, filter=query_filter, limit=depth))
+            if by_question:
+                prefetch.append(Prefetch(query=[dense], using=questions.VECTOR,
+                                         filter=query_filter, limit=depth))
             if words and self._has_bm25(collection):
                 prefetch.append(Prefetch(query=TextQuery(text=words), using=FIELD,
                                          filter=query_filter, limit=depth))
@@ -188,6 +195,15 @@ class QdrantVectorStore:
                 return False
             self._bm25_ready.add(collection)
         return True
+
+    def _has_questions(self, collection: str) -> bool:
+        # most collections never get the field, so a no is cached too, but
+        # only for a minute: the daily update can add it to a running server
+        known = self._questions.get(collection)
+        if known is None or (not known[0] and time.monotonic() - known[1] > 60):
+            known = (self._read(questions.has_field, self._client, collection), time.monotonic())
+            self._questions[collection] = known
+        return known[0]
 
     @staticmethod
     def _read(request, *args, **kwargs):

@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from config import settings
+from preprocessing.indexing import questions
 from preprocessing.indexing.bm25 import FIELD, bm25_ready, bm25_text, index_params
 
 MEVZUAT_MANIFEST = settings.ROOT / "preprocessing" / "data" / "raw" / "mevzuat" / "manifest.json"
@@ -633,6 +634,16 @@ def keep_one_segment(qdrant, collection_name):
             print(f"{collection_name}: merging {info.segments_count} segments into one")
 
 
+UPSERT_BATCH = 32  # points per write; a guides point carries ~6 vectors of 3072 floats
+
+
+def _dense_size(qdrant, collection_name):
+    """Dimension of the text vectors, whether the collection has one unnamed
+    vector or named ones (the question vectors sit beside it)."""
+    vectors = qdrant.get_collection(collection_name).config.params.vectors
+    return (vectors[""] if isinstance(vectors, dict) else vectors).size
+
+
 def store_embedding(chunks, collection_name, build_payload=_calendar_payload, recreate=False):
     """Sync chunks into Qdrant: the given chunks are the desired state.
 
@@ -644,8 +655,8 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import (Distance, OptimizersConfigDiff, PointIdsList, PointStruct,
-                                           VectorParams)
+    from qdrant_client.http.models import (DenseVectorNameConfig, Distance, OptimizersConfigDiff,
+                                           PointIdsList, PointStruct, PointVectors, VectorParams)
 
     from app.embeddings import default_embedder
 
@@ -662,6 +673,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
         desired[point_id(payload)] = payload
     if len(desired) < len(chunks):
         print(f"Note: {len(chunks) - len(desired)} duplicate chunks collapsed")
+    with_questions = {pid for pid, payload in desired.items() if payload.get("questions")}
 
     print("Connecting to Qdrant...")
     qdrant = QdrantClient(settings.QDRANT_URL)
@@ -673,7 +685,9 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     # keyed by str(id) for the diff, but deletion needs the original id —
     # pre-sync collections have integer ids, which are not valid as strings
     existing = {}
+    needs_field = False
     if qdrant.collection_exists(collection_name=collection_name):
+        needs_field = bool(with_questions) and not questions.has_field(qdrant, collection_name)
         if not has_bm25(qdrant, collection_name):  # indexed before the BM25 field
             rebuild_bm25(qdrant, collection_name)
         keep_one_segment(qdrant, collection_name)
@@ -688,38 +702,68 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
 
     new_ids, stale_keys = plan_sync(desired, existing)
     stale_ids = [existing[key] for key in stale_keys]
-    if not new_ids and not stale_ids:
+    # a collection indexed before question vectors gets the field once, and
+    # its unchanged chunks get their questions embedded; their text vectors stay
+    backfill = [pid for pid in desired if pid in existing and pid in with_questions] if needs_field else []
+    if not new_ids and not stale_ids and not backfill:
         print(f"{collection_name}: up to date ({len(desired)} chunks, nothing embedded)")
         return
 
-    if new_ids:
+    question_vectors = {}
+    if new_ids or backfill:
         embedder = default_embedder()
+        to_ask = [pid for pid in [*new_ids, *backfill] if pid in with_questions]
+        if to_ask:
+            texts = [q for pid in to_ask for q in desired[pid]["questions"]]
+            print(f"Encoding {len(texts)} questions of {len(to_ask)} chunks...")
+            flat = iter(embedder.embed_documents(texts))
+            question_vectors = {pid: [next(flat) for _ in desired[pid]["questions"]] for pid in to_ask}
+
+    if needs_field:
+        size = _dense_size(qdrant, collection_name)
+        qdrant.create_vector_name(collection_name, questions.VECTOR,
+                                  DenseVectorNameConfig(dense=questions.params(size, for_new_field=True)))
+        print(f"{collection_name}: added the '{questions.VECTOR}' vector field")
+        for start in range(0, len(backfill), UPSERT_BATCH):
+            qdrant.update_vectors(collection_name, points=[
+                PointVectors(id=existing[pid], vector={questions.VECTOR: question_vectors[pid]})
+                for pid in backfill[start:start + UPSERT_BATCH]])
+        print(f"{collection_name}: question vectors added to {len(backfill)} existing chunks")
+
+    if new_ids:
         print(f"Encoding {len(new_ids)} new/changed chunks "
               f"({len(desired) - len(new_ids)} unchanged, {settings.OPENROUTER_EMBEDDING_MODEL})...")
         vectors = embedder.embed_documents([index_text(desired[pid]) for pid in new_ids])
 
         if qdrant.collection_exists(collection_name=collection_name):
-            configured = qdrant.get_collection(collection_name).config.params.vectors.size
+            configured = _dense_size(qdrant, collection_name)
             if configured != len(vectors[0]):
                 raise SystemExit(
                     f"{collection_name} holds {configured}-dim vectors but the embedder "
                     f"returned {len(vectors[0])} — rerun with --recreate.")
         else:
             print(f"Creating new collection: {collection_name} (dim {len(vectors[0])})")
+            dense = VectorParams(size=len(vectors[0]), distance=Distance.COSINE)
             qdrant.create_collection(
                 collection_name=collection_name,
-                vectors_config=VectorParams(size=len(vectors[0]), distance=Distance.COSINE),
+                vectors_config=({"": dense, questions.VECTOR: questions.params(len(vectors[0]))}
+                                if with_questions else dense),
                 optimizers_config=OptimizersConfigDiff(default_segment_number=1),  # see keep_one_segment
             )
             qdrant.create_payload_index(collection_name, FIELD, index_params(), wait=True)
 
         # the BM25 field is derived from the text, so it stays out of the
-        # payload the point id hashes: adding it changed no ids
-        qdrant.upsert(collection_name=collection_name, points=[
-            PointStruct(id=pid, vector={"": vector},
+        # payload the point id hashes: adding it changed no ids. Batched:
+        # question vectors make a point several times larger
+        points = [
+            PointStruct(id=pid,
+                        vector={"": vector, **({questions.VECTOR: question_vectors[pid]}
+                                               if pid in question_vectors else {})},
                         payload={**desired[pid], FIELD: bm25_text(index_text(desired[pid]))})
             for pid, vector in zip(new_ids, vectors)
-        ])
+        ]
+        for start in range(0, len(points), UPSERT_BATCH):
+            qdrant.upsert(collection_name=collection_name, points=points[start:start + UPSERT_BATCH])
 
     if stale_ids:
         qdrant.delete(collection_name=collection_name,
