@@ -16,3 +16,8 @@ tests/
 .trunk/
 .pytest_cache/
 .DS_Store
+# local-only: judge output, tool caches and notes
+judge.log
+CLAUDE.md
+.impeccable/
+.ruff_cache/
