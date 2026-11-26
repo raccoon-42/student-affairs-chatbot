@@ -21,6 +21,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY . .
 
 ENV PATH="/app/.venv/bin:$PATH"
+# without a TTY Python block-buffers stdout, delaying and scrambling the logs
+ENV PYTHONUNBUFFERED=1
 USER app
 EXPOSE 8000
 CMD ["uvicorn", "app.api.api:app", "--host", "0.0.0.0", "--port", "8000"]
