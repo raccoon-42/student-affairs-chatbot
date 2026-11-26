@@ -48,8 +48,8 @@ COLLECTIONS = {
 }
 # what Retriever.retrieve_all asks each collection for; the lab's hit@k
 # uses the same cut so its numbers compare with production
-TOP_K = {"calendar": 10, "regulations": 5, "faq": 5, "forms": 3, "sks": 4,
-         "programs": 3, "people": 3, "courses": 4, "guides": 4}
+TOP_K = {"calendar": 10, "regulations": 3, "faq": 4, "forms": 2, "sks": 2,
+         "programs": 3, "people": 3, "courses": 3, "guides": 4}
 
 
 def matches(predicate, text, metadata):
