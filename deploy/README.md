@@ -26,6 +26,11 @@ curl -fsSL https://get.docker.com | sh
 ```bash
 git clone https://github.com/raccoon-42/student-affairs-chatbot.git /opt/iytebot
 cd /opt/iytebot
+
+# the containers run as uid 1000, not root, and must own the folders they
+# write to; data/ isn't in git, and Docker would create it owned by root
+mkdir -p data
+chown -R 1000:1000 data preprocessing/data
 ```
 
 Create `/opt/iytebot/.env` — start from your local one, then change:
@@ -81,6 +86,7 @@ certbot --nginx -d <your-domain>
 
 ```bash
 cd /opt/iytebot && git pull
+chown -R 1000:1000 data preprocessing/data   # files git just wrote are root's
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
