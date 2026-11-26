@@ -55,7 +55,8 @@ class LLMJudge:
     """Scores a chatbot answer against an expected answer.
 
     Takes any LLM adapter with chat(model, messages) -> str: OpenRouter
-    (the default for evaluation) or a fake in unit tests.
+    (the default for evaluation), the local claude CLI
+    (JUDGE_BACKEND=claude-cli) or a fake in unit tests.
     """
 
     def __init__(self, llm, model_name: str):

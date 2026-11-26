@@ -20,9 +20,11 @@ def pytest_terminal_summary(terminalreporter):
 
     if RUN_COSTS["cases"]:
         total = RUN_COSTS["judge"] + RUN_COSTS["chatbot"]
+        judge = ("judge on the Claude Code subscription" if settings.JUDGE_BACKEND == "claude-cli"
+                 else f"judge ${RUN_COSTS['judge']:.3f}")
         terminalreporter.write_line(
             f"judge eval cost: ${total:.3f} for {RUN_COSTS['cases']} cases "
-            f"(judge ${RUN_COSTS['judge']:.3f}, chatbot answers ${RUN_COSTS['chatbot']:.3f})")
+            f"({judge}, chatbot answers ${RUN_COSTS['chatbot']:.3f})")
         if RUN_COSTS["failed"]:
             terminalreporter.write_line(
                 f"{RUN_COSTS['failed']} failed case(s) logged with answer and reasoning to {FAILURES}")
