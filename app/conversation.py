@@ -9,7 +9,8 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, wait
 
-from app.citations import add_date_markers, add_missing_markers, check_citations, correct_markers
+from app.citations import (add_date_markers, add_missing_markers, add_phrase_markers,
+                           check_citations, correct_markers)
 from app.links import check_links
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
@@ -582,6 +583,11 @@ class Conversation:
             self._log_row("markers", f"+{len(dated)}",
                           "added " + " ".join(f"[{n}]" for n in dated)
                           + ": a date the cited chunks lack, from the chunk that has it")
+        answer, phrased = add_phrase_markers(answer, self._chunk_texts)
+        if phrased:
+            self._log_row("markers", f"+{len(phrased)}",
+                          "added " + " ".join(f"[{n}]" for n in phrased)
+                          + ": a phrase the cited chunks lack, from the one chunk that has it")
         answer, added = add_missing_markers(answer, self._chunk_texts)
         if added:
             self._log_row("markers", f"+{len(added)}",

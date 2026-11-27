@@ -1,7 +1,8 @@
 """The citation check: markers whose chunk doesn't back the text are removed."""
 import time
 
-from app.citations import add_date_markers, add_missing_markers, check_citations, correct_markers
+from app.citations import (add_date_markers, add_missing_markers, add_phrase_markers,
+                           check_citations, correct_markers)
 from app.conversation import Conversation
 from tests.test_conversation import FakeLLM, FakeRetriever
 
@@ -301,3 +302,27 @@ def test_word_pairs_pick_the_source_when_every_word_is_in_two():
     out, added = add_missing_markers(answer, [shuffled, right])
     assert added == [2]
     assert out.startswith("Tecil işlemleri Öğrenci İşleri tarafından YÖKSİS üzerinden yapılır [2].")
+
+
+ELECTIVES = "Seçmeli ders kaydı: ÖBS'de Ders Kaydı sekmesine tıklanarak ders seçme işlemlerine geçilir."
+STEPS = "Kayıt adımları: ders seçim işlemleri yapılır, danışman onayı işlemi tamamlanır."
+GUIDE_PDF = ("Öğrenci Ders Kayıt Kılavuzu (PDF): ders kaydı, ders seçme ekranı, şube seçimi ve "
+             "danışman onayına gönderme adımlarını ekran görüntüleriyle anlatır.")
+
+
+def test_a_phrase_only_another_chunk_has_adds_its_marker():
+    # judge run 2026-11-28: the steps came from the guide PDF's chunk but
+    # cited the two others; "onayına gönder" is in the guide's alone
+    answer = "Ders seçme ekranına geçilir, şube seçilir ve danışman onayına gönderilir [1][2]."
+    assert add_phrase_markers(answer, [ELECTIVES, STEPS, GUIDE_PDF]) == (
+        "Ders seçme ekranına geçilir, şube seçilir ve danışman onayına gönderilir [1][2][3].", [3])
+
+
+def test_a_phrase_marker_needs_a_closer_chunk_than_the_cited_one():
+    # replay of the same run: "Pazar günleri" was in the small gym's
+    # timetable alone, but the sentence was about the big hall, which
+    # the answer cited and which shares far more of its words
+    big = "Büyük Salon voleybol: Pazartesi 16.00-20.00, Çarşamba 16.00-20.00, Pazar 15.00-18.00"
+    small = "Aynalı Salon pilates: Pazar günleri 10.00-12.00"
+    answer = "Büyük Salon'da voleybol Pazartesi, Çarşamba ve Pazar günleri var [1]."
+    assert add_phrase_markers(answer, [big, small]) == (answer, [])
