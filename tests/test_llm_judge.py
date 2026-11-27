@@ -23,11 +23,12 @@ OPENROUTER_MODEL_TO_TEST = settings.OPENROUTER_MODEL
 pytestmark = pytest.mark.integration
 
 
-def ask_chatbot(query: str, model_name: str) -> tuple[str, list, dict, list]:
-    """Returns (answer, reference entries, usage, citation check): the
-    numbered chunks the model saw, so the judge can verify facts instead of
-    guessing, what the answer call cost, and the markers the citation check
-    removed (app/citations.py), so a failure shows whether it was the check."""
+def ask_chatbot(query: str, model_name: str) -> tuple[str, list, dict, list, str]:
+    """Returns (answer, reference entries, usage, citation checks, raw
+    answer): the numbered chunks the model saw, so the judge can verify
+    facts instead of guessing, what the answer call cost, what the checks
+    in app/citations.py and app/links.py changed, and the answer as the
+    model wrote it, before them."""
     # generous but finite: a stalled upstream call should fail this one
     # case, not freeze the whole run (the server retries internally too)
     response = requests.post(
@@ -37,7 +38,7 @@ def ask_chatbot(query: str, model_name: str) -> tuple[str, list, dict, list]:
     )
     response.raise_for_status()
     body = response.json()
-    entries, usage, checks = [], None, []
+    entries, usage, checks, raw = [], None, [], None
     debug = requests.get(
         f"{settings.API_URL}/chat/debug",
         params={"session_id": body["session_id"]},
@@ -46,8 +47,10 @@ def ask_chatbot(query: str, model_name: str) -> tuple[str, list, dict, list]:
     if debug.ok:
         entries = debug.json().get("reference", [])
         usage = debug.json().get("usage")
-        checks = [line for line in debug.json().get("debug", []) if line.startswith("citations")]
-    return body["response"], entries, usage, checks
+        checks = [line for line in debug.json().get("debug", [])
+                  if line.startswith(("citations", "markers", "links"))]
+        raw = debug.json().get("raw_answer")
+    return body["response"], entries, usage, checks, raw
 
 
 def load_test_cases():
@@ -87,7 +90,7 @@ def test_llm_response(llm_judge, test_case):
     query = test_case["query"]
     expected_response = test_case["expected"]
 
-    response, entries, answer_usage, citation_check = ask_chatbot(query, model_name)
+    response, entries, answer_usage, citation_check, raw_response = ask_chatbot(query, model_name)
     reference = cited_reference(response, entries)
     evaluation = llm_judge.evaluate_response(query, response, expected_response,
                                              reference=reference)
@@ -110,6 +113,9 @@ def test_llm_response(llm_judge, test_case):
             "cited_reference": reference, "score": evaluation["score"],
             "reasoning": evaluation["reasoning"], "verdict": evaluation["verdict"],
             "citation_check": citation_check,
+            # every chunk of the turn and the answer before the checks: a
+            # new citation check can be replayed on the logged failures
+            "raw_response": raw_response, "reference": entries,
             "chat_model": model_name, "judge_model": settings.JUDGE_MODEL,
         })
     assert evaluation["score"] == 1, (
