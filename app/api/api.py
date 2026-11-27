@@ -86,6 +86,9 @@ MESSAGES = {
     "invalid_image": {"tr": "Geçersiz görsel.", "en": "Invalid image."},
     "image_too_large": {"tr": "Görsel çok büyük.", "en": "The image is too large."},
     "empty_message": {"tr": "Boş mesaj.", "en": "Empty message."},
+    "turn_in_progress": {
+        "tr": "Bu sohbette bir cevap hâlâ yazılıyor. Bitince tekrar gönder.",
+        "en": "An answer is still being written in this chat. Send again once it's done."},
 }
 
 # suffix appended to a partial streamed answer when the upstream drops
@@ -217,6 +220,25 @@ def _register_refusal(request: Request, user, response_text: str) -> None:
         _refusal_limiter.record(_limit_key(request, user))
     if response_text == ABUSE_MESSAGE and _limit_key(request, user) not in settings.ABUSE_EXEMPT:
         _abuse_limiter.record(_limit_key(request, user))
+
+
+TURN_TIMEOUT_SECONDS = 300  # an answer takes seconds; an older claim was never released
+
+
+def _claim_turn(conversation) -> None:
+    """One turn at a time per conversation. A second tab sending while an
+    answer was still being written shared the first turn's history,
+    sources and citation check. The claim lapses on its own, so a stream
+    that never started (the browser left at once) can't lock the chat."""
+    with _sessions_lock:
+        started = conversation.turn_started
+        if started is not None and time.time() - started < TURN_TIMEOUT_SECONDS:
+            raise LocalizedError(409, "turn_in_progress")
+        conversation.turn_started = time.time()
+
+
+def _release_turn(conversation) -> None:
+    conversation.turn_started = None
 
 
 def _authorize_conversation(session_id: str, user) -> None:
@@ -474,6 +496,7 @@ def chat(request: Request, query: str, session_id: str = None, model_name: str =
     _validate_model(model_name)
     model = model_name or settings.OPENROUTER_MODEL
     conversation = get_conversation(session_id)
+    _claim_turn(conversation)
     try:
         response = conversation.respond(
             query, model, education_type=user["education_type"] if user else None)
@@ -481,6 +504,8 @@ def chat(request: Request, query: str, session_id: str = None, model_name: str =
         print(f"[error] chat failed: {error}", file=sys.stderr)  # detail stays server-side
         _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
         raise LocalizedError(503, "service_unavailable")
+    finally:
+        _release_turn(conversation)
     _register_refusal(request, user, response)
     _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
@@ -512,12 +537,14 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     _authorize_conversation(session_id, user)
     _validate_model(model_name)
     conversation = get_conversation(session_id)
+    _claim_turn(conversation)
     stream = conversation.respond_stream(
         query, model_name or settings.OPENROUTER_MODEL,
         education_type=user["education_type"] if user else None, image=image)
 
     def recorded():
         tokens = []
+        finished = False
         try:
             for token in stream:
                 # stage markers go to the browser (cursor animation) but
@@ -525,6 +552,7 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
                 if token not in STAGE_MARKERS:
                     tokens.append(token)
                 yield token
+            finished = True
         except Exception as error:
             # an upstream failure (e.g. out of OpenRouter credits) must not
             # abort the HTTP stream — the browser would show a raw
@@ -541,6 +569,8 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             # turn made are still counted
             stream.close()
             _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
+            if not finished:
+                _release_turn(conversation)
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
         # persist only after the full answer arrived; refusals aren't
@@ -556,6 +586,8 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
                    kwargs={"sources": conversation.last_sources,
                            "usage": conversation.last_usage},
                    daemon=True).start()
+        # only now: the save above reads this turn's sources off the conversation
+        _release_turn(conversation)
 
     return StreamingResponse(
         recorded(),

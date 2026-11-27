@@ -759,6 +759,11 @@ async function send(query, image = null) {
       else showLimitDialog(body?.detail);
       return;
     }
+    if (response.status === 409) { // another tab is still getting an answer here
+      const body = await response.json().catch(() => null);
+      botEl.textContent = body?.detail || t("error", "HTTP 409");
+      return;
+    }
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const reader = response.body.getReader();

@@ -270,6 +270,7 @@ class Conversation:
         self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
         self.turn_usage = []  # every LLM call of the latest turn: {kind, model, tokens, cost}
         self._early = None  # gate + retrieval started on the student's words, see _start
+        self.turn_started = None  # when the API let the running turn start, else None
 
     def _log(self, line):
         print(line, file=sys.stderr)

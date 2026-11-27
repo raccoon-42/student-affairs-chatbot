@@ -99,3 +99,26 @@ def test_llm_and_speech_calls_run_off_the_event_loop(monkeypatch):
     monkeypatch.setattr(api.requests, "post", fake_post)
     assert client.post("/transcribe", content=b"audio").json() == {"text": "merhaba"}
     assert seen and not any(seen)
+
+
+def test_a_conversation_takes_one_turn_at_a_time(monkeypatch):
+    # regression (#2): two tabs sending to one conversation at once shared
+    # its history, sources and citation check
+    import time
+    client = make_client(monkeypatch)
+    assert client.get("/chat", params={"query": "ilk", "session_id": "busy"}).status_code == 200
+    conversation = api._sessions[("openrouter", "busy")][0]
+    assert conversation.turn_started is None  # released after the turn
+
+    conversation.turn_started = time.time()  # another tab's answer is being written
+    blocked = client.post("/chat/stream", json={"query": "ikinci", "session_id": "busy"})
+    assert blocked.status_code == 409
+    assert "hâlâ yazılıyor" in blocked.json()["detail"]
+
+    # a claim left by a stream that never ran lapses instead of locking the chat
+    conversation.turn_started = time.time() - api.TURN_TIMEOUT_SECONDS - 1
+    with client.stream("POST", "/chat/stream",
+                       json={"query": "üçüncü", "session_id": "busy"}) as response:
+        assert response.status_code == 200
+        "".join(response.iter_text())
+    assert conversation.turn_started is None
