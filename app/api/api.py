@@ -495,10 +495,19 @@ def _validate_model(model_name: str) -> None:
         raise LocalizedError(400, "model_unsupported")
 
 
-# a plain def like chat_title: the whole turn runs synchronously
-@app.get("/chat", response_model=ChatResponse)
-def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
-         auth_token: str = Cookie(None)):
+class ChatBody(BaseModel):
+    query: str
+    session_id: str | None = None
+    model_name: str | None = None
+
+
+# POST only, like /chat/stream: a GET carrying the auth cookie could be set
+# off by any link (SameSite=Lax sends it on a top-level GET), sending a
+# message as the signed-in student; an abusive one locked them out.
+# A plain def like chat_title: the whole turn runs synchronously
+@app.post("/chat", response_model=ChatResponse)
+def chat(request: Request, body: ChatBody, auth_token: str = Cookie(None)):
+    query, session_id, model_name = body.query, body.session_id, body.model_name
     if len(query) > MAX_QUERY_CHARS:
         raise LocalizedError(413, "query_too_long")
     session_id = session_id or uuid.uuid4().hex
@@ -621,17 +630,11 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     )
 
 
-@app.get("/chat/stream")
-async def chat_stream(request: Request, query: str, session_id: str = None,
-                      model_name: str = None, auth_token: str = Cookie(None)):
-    return _stream_chat(request, query, session_id, model_name, auth_token)
-
-
 @app.post("/chat/stream")
 async def chat_stream_post(request: Request, body: ChatStreamBody,
                            auth_token: str = Cookie(None)):
-    """Same as the GET route, but a JSON body can carry an image
-    (data URL) that the model sees for this turn."""
+    """The streamed turn; the JSON body can carry an image (data URL)
+    that the model sees for this turn. POST only, see /chat."""
     if body.image is not None:
         if not body.image.startswith("data:image/"):
             raise LocalizedError(400, "invalid_image")

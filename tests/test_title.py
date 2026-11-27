@@ -54,7 +54,7 @@ def stored_title(session_id):
 
 def test_title_lands_after_first_exchange(monkeypatch):
     client = make_client(monkeypatch)
-    client.get("/chat", params={"query": "final ne zaman", "session_id": "conv1"})
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "conv1"})
     # no language is baked into the stored placeholder — clients localize it
     assert stored_title("conv1") == ""
 
@@ -67,7 +67,7 @@ def test_title_survives_cache_eviction(monkeypatch):
     """A restart or the 30-min TTL between answer and title fetch must not
     strand the placeholder — the endpoint rehydrates from SQLite."""
     client = make_client(monkeypatch)
-    client.get("/chat", params={"query": "final ne zaman", "session_id": "conv2"})
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "conv2"})
     api._sessions.clear()
 
     assert client.get("/chat/title",
@@ -104,7 +104,7 @@ def test_failed_title_is_flagged_for_later_retry(monkeypatch):
             return self.reply
 
     client = make_client(monkeypatch, llm=FlakyLLM())
-    client.get("/chat", params={"query": "final ne zaman", "session_id": "conv3"})
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "conv3"})
     assert client.get("/chat/title", params={"session_id": "conv3"}).json()["title"] is None
 
     [row] = client.get("/conversations").json()

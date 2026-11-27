@@ -131,7 +131,7 @@ def test_api_stores_and_serves_the_checked_answer(monkeypatch):
     conversation = Conversation(TokenLLM(reply=[WRONG_THEN_RIGHT]), FakeRetriever(), model="m")
     monkeypatch.setitem(api._sessions, ("openrouter", "cite"), (conversation, time.time()))
 
-    streamed = client.get("/chat/stream", params={"query": "kimlik kaybettim", "session_id": "cite"})
+    streamed = client.post("/chat/stream", json={"query": "kimlik kaybettim", "session_id": "cite"})
     assert WRONG_THEN_RIGHT in streamed.text
     assert client.get("/chat/sources", params={"session_id": "cite"}).json()["answer"] == CHECKED
 

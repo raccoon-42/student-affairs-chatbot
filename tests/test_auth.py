@@ -131,7 +131,7 @@ def test_anonymous_rate_limit_returns_429(monkeypatch):
     monkeypatch.setattr(api, "_anon_limiter", RateLimiter(limit=0))
 
     client = TestClient(api.app)
-    blocked = client.get("/chat/stream", params={"query": "merhaba", "session_id": "rl"})
+    blocked = client.post("/chat/stream", json={"query": "merhaba", "session_id": "rl"})
     assert blocked.status_code == 429
     assert "giriş" in blocked.json()["detail"].lower()
 
@@ -149,7 +149,7 @@ def test_repeated_refusals_trigger_the_spam_brake(monkeypatch):
         api._register_refusal(FakeRequest(), None, list(api.REFUSALS.values())[0])
 
     # ...and the third message is blocked before any model call
-    blocked = client.get("/chat/stream", params={"query": "asdf", "session_id": "spam"})
+    blocked = client.post("/chat/stream", json={"query": "asdf", "session_id": "spam"})
     assert blocked.status_code == 429
     assert "konu dışı" in blocked.json()["detail"]
 
@@ -165,7 +165,7 @@ def test_one_abusive_message_blocks_the_sender(monkeypatch):
         client = type("C", (), {"host": "testclient"})()
     api._register_refusal(FakeRequest(), None, ABUSE_MESSAGE)
 
-    blocked = client.get("/chat/stream", params={"query": "merhaba", "session_id": "x"})
+    blocked = client.post("/chat/stream", json={"query": "merhaba", "session_id": "x"})
     assert blocked.status_code == 429
     assert blocked.headers.get("X-Block-Reason") == "abuse"
 
