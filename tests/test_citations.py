@@ -1,7 +1,7 @@
 """The citation check: markers whose chunk doesn't back the text are removed."""
 import time
 
-from app.citations import check_citations
+from app.citations import add_missing_markers, check_citations, correct_markers
 from app.conversation import Conversation
 from tests.test_conversation import FakeLLM, FakeRetriever
 
@@ -142,3 +142,112 @@ def test_api_stores_and_serves_the_checked_answer(monkeypatch):
             break
         time.sleep(0.02)
     assert stored[-1]["content"] == CHECKED
+
+
+# --- add_missing_markers: real answers the judge failed for a bare fact
+
+GYM_BIG = ("Büyük Salon'un 2025-2026 dönemi haftalık çalışma programı: Pazartesi günü 16.00-20.00 "
+           "saatleri arasında Voleybol, Çarşamba günü 16.00-20.00 Voleybol yapılmaktadır.")
+GYM_MIRROR = ("Aynalı Salon'un 2025-2026 dönemi haftalık çalışma programı: Pazartesi günü 16.00-20.00 "
+              "saatleri arasında Pilates, Çarşamba günü 16.00-20.00 Zumba yapılmaktadır.")
+
+
+def test_a_list_under_a_bare_lead_in_gets_the_source_that_holds_it():
+    # two gym timetables share every day and hour; only one says
+    # "Büyük" and "voleybol"
+    answer = ("Büyük Salon'u yanıtlıyorum [1]. Aynalı Salon voleybol için kullanılmıyor [2].\n\n"
+              "Büyük Salon'da voleybol, 2025-2026 dönemi programına göre:\n"
+              "- Pazartesi: 16.00-20.00 arası\n- Çarşamba: 16.00-20.00 arası\n\n"
+              "Kesin saatler için SKS Daire Başkanlığı'na danışmanızı öneririm.")
+    fixed, added = add_missing_markers(answer, [GYM_BIG, GYM_MIRROR])
+    assert added == [1]
+    assert "Büyük Salon'da voleybol, 2025-2026 dönemi programına göre [1]:" in fixed
+    assert fixed.endswith("danışmanızı öneririm.")  # advice stays bare
+
+
+def test_a_list_split_by_headings_is_covered_from_its_lead_in():
+    departments = ("Çift Ana Dal Programı Olan Bölümler\nMimarlık Fakültesi:\n- Mimarlık\n"
+                   "- Şehir ve Bölge Planlama\nFen Fakültesi:\n- Fizik\n- Kimya")
+    application = "Soru: Çift Ana Dal için nereye başvurulur?\nCevap: Öğrenci İşleri Daire Başkanlığına."
+    answer = ("Çift anadal programı için şu bölümler geçerli:\n\n**Mimarlık Fakültesi**\n- Mimarlık\n"
+              "- Şehir ve Bölge Planlama\n\n**Fen Fakültesi**\n- Fizik\n- Kimya\n\n"
+              "Başvuru Öğrenci İşleri Daire Başkanlığına yapılır [2]. Yönerge için bakabilirsin [1].")
+    fixed, added = add_missing_markers(answer, [departments, application])
+    assert added == [1]
+    assert fixed.startswith("Çift anadal programı için şu bölümler geçerli [1]:")
+
+
+def test_a_sentence_after_the_paragraphs_marker_gets_its_own():
+    profile = "Onur Demirörs — Professor, Bilgisayar Mühendisliği\nofis: 107 | e-posta: onurdemirors@iyte.edu.tr"
+    answer = "Onur Demirörs'ün ofisi 107 numarada [1]. Bölümün Bilgisayar Mühendisliği olduğunu da ekleyeyim."
+    fixed, added = add_missing_markers(answer, [profile])
+    assert added == [1]
+    assert fixed.endswith("Bölümün Bilgisayar Mühendisliği olduğunu da ekleyeyim [1].")
+
+
+def test_nothing_changes_when_every_fact_is_covered_or_unclear():
+    covered = "Final sınavları 11-22 Ocak 2027 arasında [1].\n\nDersler 6 Ocak'ta biter [2]."
+    assert add_missing_markers(covered, ["11 Ocak 2027 ile 22 Ocak 2027 sınavlar", "6 Ocak dersler"]) == (covered, [])
+    # neither cited source has words of its own in the bare sentence
+    unclear = "Kayıt 8 Temmuz'da [1]. Ücret 9 Temmuz'da yatar [2].\n\nİkisi de Temmuz 2027'de yapılır."
+    chunks = ["8 Temmuz 2027 kayıt", "9 Temmuz 2027 ücret"]
+    assert add_missing_markers(unclear, chunks) == (unclear, [])
+    # a source the answer never cites is never added
+    uncited = "Dersler 6 Ocak 2027'de biter."
+    assert add_missing_markers(uncited, ["6 Ocak 2027 dersler biter"]) == (uncited, [])
+
+
+def test_the_answer_gets_the_missing_marker_and_the_dev_log_says_so():
+    # FakeRetriever's [3] is the FAQ "Kimlik kartım kayboldu? Dilekçe verin."
+    reply = "Kimlik kartı kaybolursa dilekçe verilir [3]. Kayıp Kimlik Kartı için Dilekçe yeterli."
+    conversation = Conversation(FakeLLM(reply=reply), FakeRetriever(), model="m")
+
+    assert conversation.respond("kimlik kaybettim").endswith("Dilekçe yeterli [3].")
+    assert any(line.startswith("markers") and "[3]" in line for line in conversation.last_debug)
+
+
+# --- correct_markers: a number the cited chunk lacks and one other chunk has
+
+ONUR = ("Onur Demirörs — Professor / Chair, Bilgisayar Mühendisliği\nHis research areas include "
+        "software process improvement.\nofis: 107 | e-posta: onurdemirors@iyte.edu.tr")
+HUSEYIN = ("Hüseyin Ünlü — Dr., Bilgisayar Mühendisliği\nHe continues his PhD studies under supervision "
+           "of Prof. Dr. Onur Demirörs.\nofis: 138 | e-posta: huseyinunlu@iyte.edu.tr")
+
+
+def test_a_marker_moves_to_the_one_chunk_that_has_the_number():
+    # the two profiles sat side by side and both name Onur Demirörs; the
+    # answer said 107 but cited his student's profile (office 138)
+    answer = "Onur Demirörs'ün ofisi **107** numaralıdır [2]."
+    assert correct_markers(answer, [ONUR, HUSEYIN]) == (
+        "Onur Demirörs'ün ofisi **107** numaralıdır [1].", [(2, 1)])
+
+
+def test_a_marker_stays_when_its_chunk_has_the_number_or_no_single_chunk_does():
+    right = "Onur Demirörs'ün ofisi 107 numaralıdır [1]."
+    assert correct_markers(right, [ONUR, HUSEYIN]) == (right, [])
+    # 2.50 is in both transfer directives: no telling which was meant
+    answer = "Genel not ortalaması en az 2.50 olmalı [1]."
+    chunks = ["Kurum içi: 2.50 şartı", "Kurumlar arası: 2.50 şartı", "Merkezi yerleştirme: taban puan"]
+    assert correct_markers(answer, chunks[2:] + chunks[:2]) == (answer, [])
+    # a number in no chunk is the judge's to catch, not ours to move
+    invented = "Ofis 999 numaradadır [1]."
+    assert correct_markers(invented, [ONUR, HUSEYIN]) == (invented, [])
+
+
+def test_short_numbers_never_move_a_marker():
+    # "6" is in "6 Ocak" of one chunk by chance, not the source of the count
+    answer = "Alanı belirtilmemiş 6 araştırma görevlisi var [1]."
+    assert correct_markers(answer, ["Kadro listesi", "6 Ocak dersler biter"]) == (answer, [])
+
+
+def test_a_fact_next_to_advice_still_gets_its_marker():
+    # judge run 2026-11-27: the dates were bare because the sentence also
+    # sent the student to the Erasmus office, and the whole of it was skipped
+    turna = ("TurnaPortal'dan E-Devlet ile online başvuru. Başvurular 17 Mart 2026 - 02 Nisan 2026 "
+             "saat 16.00'ya kadar yapılır.")
+    answer = ("Başvuru TurnaPortal üzerinden online yapılıyor [1].\n\n"
+              "Başvuru dönemi (17 Mart - 2 Nisan 2026) geçtiği için şu an başvuru yapılamıyor; "
+              "sonraki dönem için Erasmus birimine danışabilirsin.")
+    fixed, added = add_missing_markers(answer, [turna])
+    assert added == [1]
+    assert fixed.endswith("Erasmus birimine danışabilirsin [1].")
