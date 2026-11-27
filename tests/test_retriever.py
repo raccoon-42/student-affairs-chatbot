@@ -415,16 +415,30 @@ def make_faq_retriever():
     store.add(settings.FAQ_COLLECTION, "Kayıt dondurma nasıl yapılır?",
               {"audience": "lisans", "answer": "dilekçe ile"},
               [0.0, 1.0, 0.0, 0.1])
+    store.add(settings.FAQ_COLLECTION, "Hazırlık muafiyet sınavı ne zaman?",
+              {"audience": "hazirlik", "answer": "eylülde"},
+              [1.0, 0.0, 0.0, 0.1])
     return Retriever(InMemoryVectorStoreWrapper(store), FakeEmbedder())
 
 
 def test_faq_audience_filter_selects_the_matching_copy():
     retriever = make_faq_retriever()
     results = retriever.retrieve_faq("sınav sonucuna itiraz", audience="lisansustu")
-    assert retriever._store.filters[0] == {"audience": "lisansustu"}
+    assert retriever._store.filters[0] == {"audience": ["lisansustu", "hazirlik"]}
     matches = [r for r in results if "itiraz" in r["text"]]
     assert len(matches) == 1
     assert matches[0]["metadata"]["audience"] == "lisansustu"
+
+
+def test_every_profile_reaches_the_hazirlik_faq():
+    # no profile maps to hazırlık, so its 12 FAQs were found only by
+    # students without a profile (#7)
+    from app.conversation import FAQ_AUDIENCES
+
+    retriever = make_faq_retriever()
+    for audience in FAQ_AUDIENCES.values():
+        results = retriever.retrieve_faq("hazırlık muafiyet sınavı", audience=audience)
+        assert any(r["metadata"]["audience"] == "hazirlik" for r in results), audience
 
 
 def test_faq_without_profile_dedupes_duplicate_questions():

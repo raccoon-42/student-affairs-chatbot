@@ -52,6 +52,14 @@ def test_filter_applies_to_both_rankings():
     assert {hit.metadata["kind"] for hit in hits} == {"regulation"}
 
 
+def test_a_list_filter_matches_any_of_its_values():
+    store = QdrantVectorStore(client=make_client(with_bm25=True))
+    hits = store.search("c", QUERY, limit=10, filters={"kind": ["regulation", "other"]})
+    assert {hit.metadata["kind"] for hit in hits} == {"regulation", "other"}
+    hits = store.search("c", QUERY, limit=10, filters={"kind": ["other"]})
+    assert {hit.metadata["kind"] for hit in hits} == {"other"}
+
+
 def test_collection_without_bm25_falls_back_to_dense():
     store = QdrantVectorStore(client=make_client(with_bm25=False))
     hits = store.search("c", QUERY, limit=1, lexical=bm25_text("madde 322"))

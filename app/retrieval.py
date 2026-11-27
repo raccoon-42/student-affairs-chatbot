@@ -176,12 +176,15 @@ class QdrantVectorStore:
             from qdrant_client import QdrantClient
             self._client = QdrantClient(self._url)
 
-        from qdrant_client.http.models import (Filter, FieldCondition, MatchValue, Prefetch,
-                                               Rrf, RrfQuery, TextQuery)
+        from qdrant_client.http.models import (Filter, FieldCondition, MatchAny, MatchValue,
+                                               Prefetch, Rrf, RrfQuery, TextQuery)
         query_filter = None
         if filters:
+            # a list matches any of its values
             query_filter = Filter(must=[
-                FieldCondition(key=f"metadata.{key}", match=MatchValue(value=value))
+                FieldCondition(key=f"metadata.{key}",
+                               match=MatchAny(any=value) if isinstance(value, list)
+                               else MatchValue(value=value))
                 for key, value in filters.items()
             ])
 
@@ -311,7 +314,8 @@ class InMemoryVectorStore:
             query = np.array(query_vector, dtype=float)
             dense, lexical_hits = [], []
             for i, (text, metadata, doc_vector) in enumerate(entries):
-                if filters and any(metadata.get(k) != v for k, v in filters.items()):
+                if filters and any(metadata.get(k) not in (v if isinstance(v, list) else [v])
+                                   for k, v in filters.items()):
                     continue
                 denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
                 dense.append((float(np.dot(query, doc_vector) / denom) if denom else 0.0, i))
@@ -517,8 +521,10 @@ class Retriever:
         # FAQ chunks embed only the question; the answer travels in metadata.
         # 34 questions exist verbatim in both the lisans and lisansüstü FAQ
         # PDFs — the session's audience picks the right copy, and without a
-        # profile the text dedupe below keeps the duplicate out of the top_k
-        filters = {"audience": audience} if audience else None
+        # profile the text dedupe below keeps the duplicate out of the top_k.
+        # The hazırlık (English prep) FAQ has no profile of its own and
+        # shares no question with either copy, so every audience gets it too
+        filters = {"audience": [audience, "hazirlik"]} if audience else None
         hits = self._hybrid_search(query, settings.FAQ_COLLECTION, top_k,
                                    filters=filters, vector=vector, also=also)
         results, seen = [], set()
