@@ -800,10 +800,17 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
           f"{len(desired)} chunks total.")
 
 
+# types whose corpus is a directory of documents -> its directory under
+# preprocessing/data/processed; the rest are one file each
+CORPUS_DIRS = {'calendar': 'takvim', 'regulations': 'mevzuat', 'sks': 'sks',
+               'people': 'people', 'courses': 'courses', 'guides': 'rehber'}
+
+
 def main():
     parser = argparse.ArgumentParser(description='Store text chunks in Qdrant vector database')
     parser.add_argument('input_file',
-                      help='Input file, or a directory of parsed JSONs to index as one collection')
+                      help='The corpus: its directory of parsed JSONs (calendar, regulations, sks, '
+                           'people, courses, guides) or its one JSON file (faq, forms, programs)')
     parser.add_argument('--collection', default=None,
                       help='Qdrant collection name (defaults to the configured one for the type)')
     parser.add_argument('--type',
@@ -817,21 +824,18 @@ def main():
 
     args = parser.parse_args()
 
-    from preprocessing.indexing.text_splitter import split_text, split_regulation
+    # The run's chunks are synced as the collection's desired state, so a
+    # multi-document corpus must be indexed from its directory in one go —
+    # a single file would delete every other file's chunks as stale.
+    if args.type in CORPUS_DIRS and not Path(args.input_file).is_dir():
+        parser.error(f"--type {args.type} indexes a whole corpus: pass its directory "
+                     f"(preprocessing/data/processed/{CORPUS_DIRS[args.type]}), not a file — "
+                     f"the other documents' chunks would be deleted")
 
     print(f"Processing: {args.input_file}")
 
-    # The run's chunks are synced as the collection's desired state, so a
-    # multi-document corpus must be indexed from its directory in one go —
-    # indexing file-by-file would delete every other file's chunks as stale.
-    is_dir = Path(args.input_file).is_dir()
-    is_json = args.input_file.endswith('.json')
-
     if args.type == 'calendar':
-        if is_dir:
-            chunks = calendar_chunks_from_dir(args.input_file)
-        else:
-            chunks = calendar_chunks_from_json(args.input_file) if is_json else split_text(args.input_file)
+        chunks = calendar_chunks_from_dir(args.input_file)
         collection = args.collection or settings.CALENDAR_COLLECTION
         payload = _calendar_payload
     elif args.type == 'forms':
@@ -866,10 +870,7 @@ def main():
         collection = args.collection or settings.FAQ_COLLECTION
         payload = _faq_payload
     else:
-        if is_dir:
-            chunks = mevzuat_chunks_from_dir(args.input_file)
-        else:
-            chunks = regulation_chunks_from_json(args.input_file) if is_json else split_regulation(args.input_file)
+        chunks = mevzuat_chunks_from_dir(args.input_file)
         collection = args.collection or settings.REGULATIONS_COLLECTION
         payload = _regulation_payload
 
