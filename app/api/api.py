@@ -1,3 +1,4 @@
+import asyncio
 import hashlib
 import re
 import sys
@@ -369,12 +370,14 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
 
 
 @app.get("/chat/title")
-async def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)):
+def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)):
     """A short LLM-written title for the conversation's first exchange —
     the UI swaps its localized placeholder for it. Uses the cached
     conversation, rehydrating persisted ones on a cache miss; the chat
     that filled it was already rate-limited, and the UI retries only
-    while a conversation is still untitled."""
+    while a conversation is still untitled. A plain def: FastAPI runs it
+    in a worker thread, so the LLM call doesn't stall every other request
+    on the event loop."""
     user = auth.sessions.get(auth_token)
     _authorize_conversation(session_id, user)
     with _sessions_lock:
@@ -458,9 +461,10 @@ def _validate_model(model_name: str) -> None:
         raise LocalizedError(400, "model_unsupported")
 
 
+# a plain def like chat_title: the whole turn runs synchronously
 @app.get("/chat", response_model=ChatResponse)
-async def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
-               auth_token: str = Cookie(None)):
+def chat(request: Request, query: str, session_id: str = None, model_name: str = None,
+         auth_token: str = Cookie(None)):
     if len(query) > MAX_QUERY_CHARS:
         raise LocalizedError(413, "query_too_long")
     session_id = session_id or uuid.uuid4().hex
@@ -614,7 +618,9 @@ async def transcribe(request: Request, auth_token: str = Cookie(None)):
     content_type = request.headers.get("content-type") or "audio/webm"
     extension = "mp4" if "mp4" in content_type else "ogg" if "ogg" in content_type else "webm"
 
-    groq = requests.post(
+    # off the event loop: the upload can wait up to a minute on Groq
+    groq = await asyncio.to_thread(
+        requests.post,
         "https://api.groq.com/openai/v1/audio/transcriptions",
         headers={"Authorization": f"Bearer {settings.GROQ_API_KEY}"},
         files={"file": (f"audio.{extension}", audio, content_type)},

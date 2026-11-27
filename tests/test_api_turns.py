@@ -59,3 +59,43 @@ def test_a_stopped_stream_leaves_no_trace_and_still_counts_its_calls(monkeypatch
     conversation = api._sessions[("openrouter", "stopped")][0]
     assert [m["role"] for m in conversation._messages] in ([], ["system"])
     assert logged == ["testclient"]
+
+
+def on_event_loop():
+    import asyncio
+    try:
+        asyncio.get_running_loop()
+        return True
+    except RuntimeError:
+        return False
+
+
+def test_llm_and_speech_calls_run_off_the_event_loop(monkeypatch):
+    # regression (#11): /chat and /chat/title were async defs calling the
+    # LLM synchronously, and /transcribe waited on Groq the same way, so
+    # every other user's stream froze until the call returned
+    seen = []
+
+    class RecordingLLM(FakeLLM):
+        def chat(self, model, messages):
+            seen.append(on_event_loop())
+            return "Final Tarihleri" if "dört kelimelik" in messages[-1]["content"] else "cevap"
+
+    client = make_client(monkeypatch, llm=RecordingLLM())
+    client.get("/chat", params={"query": "final ne zaman", "session_id": "loop"})
+    client.get("/chat/title", params={"session_id": "loop"})
+
+    class Groq:
+        status_code = 200
+
+        def json(self):
+            return {"text": "merhaba"}
+
+    def fake_post(*args, **kwargs):
+        seen.append(on_event_loop())
+        return Groq()
+
+    monkeypatch.setattr(settings, "GROQ_API_KEY", "test-key")
+    monkeypatch.setattr(api.requests, "post", fake_post)
+    assert client.post("/transcribe", content=b"audio").json() == {"text": "merhaba"}
+    assert seen and not any(seen)
