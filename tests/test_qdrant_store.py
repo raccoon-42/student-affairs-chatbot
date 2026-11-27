@@ -252,3 +252,22 @@ def test_equal_fused_scores_are_ordered_by_point_id():
                                                    lexical=bm25_text("beta gamma"))
     assert hits[0].score == hits[1].score
     assert [hit.text for hit in hits] == ["alpha beta", "beta gamma"]
+
+
+def test_best_score_is_the_closest_chunk_or_question():
+    """docs/adr/0013: routing compares collections by their closest chunk's
+    cosine, counting question vectors where the chunks carry them."""
+    from preprocessing.indexing import questions
+
+    client = QdrantClient(":memory:")
+    client.create_collection("g", vectors_config={
+        "": VectorParams(size=3, distance=Distance.COSINE), questions.VECTOR: questions.params(3)})
+    client.upsert("g", points=[
+        PointStruct(id=0, vector={"": [0.6, 0.8, 0.0], questions.VECTOR: [[1.0, 0.0, 0.0]]},
+                    payload={"text": "A", "metadata": {}}),
+        PointStruct(id=1, vector={"": [0.0, 1.0, 0.0]}, payload={"text": "B", "metadata": {}})])
+    store = QdrantVectorStore(client=client)
+
+    assert abs(store.best_score("g", [[1.0, 0.0, 0.0]]) - 1.0) < 1e-6  # A's question
+    assert abs(store.best_score("g", [[0.0, 0.0, 1.0], [0.0, 1.0, 0.0]]) - 1.0) < 1e-6  # B, 2nd phrasing
+    assert store.best_score("missing", [[1.0, 0.0, 0.0]]) is None
