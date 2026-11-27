@@ -31,7 +31,7 @@
   },
   {
     "query": "erasmus başvuruları ne zaman ve nasıl yapılıyor?",
-    "expected": "2026-2027 dönemi için başvuruların 17 Mart – 2 Nisan 2026 tarihleri arasında Ulusal Ajans'ın Turna portalından e-Devlet ile online yapıldığını söyler; bu tarihlerin geçtiğini belirtmesi ve yeni ilan için UİO'yu göstermesi de kabul edilir. Tarih uydurmaz.",
+    "expected": "Başvuruların Ulusal Ajans'ın Turna portalından e-Devlet ile online yapıldığını söyler. Referanstaki son başvuru dönemi 17 Mart – 2 Nisan 2026: bugün bu tarihten sonraysa geçtiğini belirtir, geçmiş tarihi yaklaşan gibi sunmaz; yeni ilan için UİO'ya yönlendirmesi de kabul edilir. Tarih uydurmaz.",
     "description": "Erasmus başvuru tarihleri ve kanalı"
   },
   {

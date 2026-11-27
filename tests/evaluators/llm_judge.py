@@ -1,6 +1,6 @@
 import json
 import re
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -40,6 +40,7 @@ Mantık yürütme: Hem dönem belirsizliğini gidermek için soru sorulmuş hem 
 Puan: 1
 
 Şimdi şu yanıtı değerlendir:
+Bugünün tarihi: {today}
 Sorulan soru: {query}
 Beklenen cevap: {expected_response}
 Verilen cevap: {response}
@@ -69,7 +70,10 @@ class LLMJudge:
             f"\nCevabın kaynak gösterdiği referans maddeleri:\n{reference}\n"
             if reference else "\nCevap hiçbir referans maddesine kaynak göstermiyor.\n"
         )
+        # expected answers name every year's date and say the one not yet
+        # passed counts; without today the judge guessed it from the answer
         prompt = JUDGE_PROMPT_TEMPLATE.format(
+            today=date.today().isoformat(),
             query=query, expected_response=expected_response, response=response,
             reference_block=reference_block,
         )

@@ -6,12 +6,12 @@
   },
   {
     "query": "mezuniyet ne zaman?",
-    "expected": "24 Temmuz 2026 (2025-2026 mezuniyet töreni). 2026-2027 için 23 Temmuz 2027 de kabul edilir.",
+    "expected": "Henüz geçmemiş olan mezuniyet törenini verir: 2025-2026 için 24 Temmuz 2026, 2026-2027 için 23 Temmuz 2027 (lisans ve lisansüstü öğrencilerin ortak töreni). Geçmiş bir töreni yaklaşan gibi sunmaz. Öğrencinin programı bilinmediği için lisans ve lisansüstü için ayrı ayrı ya da ortak olduğunu söyleyerek cevaplar; lisans için tarih olmadığını söylemez.",
     "description": "Mezuniyet töreni tarihi"
   },
   {
     "query": "bahar dönemi sınavları ne zaman bitiyor?",
-    "expected": "Hangi akademik yılı sorduğunu netleştirir ya da tarih verir: 2025-2026 bahar yarıyıl sonu sınavları 17-30 Haziran 2026 arasındaydı (30 Haziran'da bitti); 2026-2027 için 14-25 Haziran 2027. Bu tarihlerden birini vermesi yeterli.",
+    "expected": "Hangi akademik yılı sorduğunu netleştirir ya da henüz geçmemiş olan bahar yarıyıl sonu sınavlarının bitişini verir: 2025-2026 için 17-30 Haziran 2026, 2026-2027 için 14-25 Haziran 2027. Geçmiş bir tarihi yaklaşan gibi sunmaz; geçmiş yılı ancak geçtiğini belirterek ek bilgi olarak anabilir.",
     "description": "Bahar dönemi sınav bitişi"
   },
   {

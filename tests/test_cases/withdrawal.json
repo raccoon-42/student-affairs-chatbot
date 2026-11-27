@@ -1,12 +1,12 @@
 [
   {
     "query": "dersten çekilmek için son tarih nedir?",
-    "expected": "Hangi dönem için çekilmek istediğini sorar ya da yaklaşan dönemin tarihini verir: 2026-2027 Güz için 4 Aralık 2026, 2026-2027 Bahar için 26 Nisan 2027. (Geçmiş 2025-2026 Bahar tarihi 4 Mayıs 2026'yı tek başına güncel tarihmiş gibi sunmamalı.)",
+    "expected": "Hangi dönem için çekilmek istediğini sorar ya da henüz geçmemiş en yakın son tarihi verir: 2025-2026 Bahar için 4 Mayıs 2026, 2026-2027 Güz için 4 Aralık 2026, 2026-2027 Bahar için 26 Nisan 2027. Geçmiş bir tarihi güncel tarihmiş gibi sunmaz.",
     "description": "Dersten çekilme tarihi (dönem belirtilmemiş)"
   },
   {
     "query": "bahar dönemi için dersten çekilmek için son tarih nedir?",
-    "expected": "2026-2027 Bahar Yarıyılı için 26 Nisan 2027 der; hangi akademik yıl olduğunu netleştirirse 2025-2026 Bahar için 4 Mayıs 2026 (geçmiş) da kabul edilir.",
+    "expected": "Henüz geçmemiş bahar son tarihini verir: 2025-2026 Bahar için 4 Mayıs 2026, 2026-2027 Bahar için 26 Nisan 2027. Akademik yılı netleştirirse geçmiş tarihi geçtiğini belirterek de verebilir; geçmiş tarihi güncel gibi sunmaz.",
     "description": "Bahar dönemi dersten çekilme tarihi"
   }
 ]
