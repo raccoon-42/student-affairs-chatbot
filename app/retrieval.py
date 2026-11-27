@@ -185,6 +185,26 @@ class QdrantVectorStore:
             for hit in results
         ]
 
+    def best_score(self, collection: str, vectors: List[List[float]]) -> Optional[float]:
+        """Cosine of the chunk closest to any of the vectors, or of its
+        closest question where the chunks carry question vectors. Unlike
+        search()'s fused scores these compare across collections: all are
+        embedded by one model. None when the collection doesn't exist."""
+        if self._client is None:
+            from qdrant_client import QdrantClient
+            self._client = QdrantClient(self._url)
+        from qdrant_client.http.models import QueryRequest
+
+        if not self._read(self._client.collection_exists, collection):
+            return None
+        requests = [QueryRequest(query=vector, limit=1) for vector in vectors]
+        if self._has_questions(collection):
+            requests += [QueryRequest(query=[vector], using=questions.VECTOR, limit=1)
+                         for vector in vectors]
+        responses = self._read(self._client.query_batch_points, collection, requests=requests)
+        return max((point.score for response in responses for point in response.points),
+                   default=None)
+
     def _has_bm25(self, collection: str) -> bool:
         # only a yes is cached: a collection indexed before the BM25 field is
         # searched dense-only, and re-checked, until it gets the field
@@ -270,6 +290,15 @@ class InMemoryVectorStore:
         ranked = sorted(fused, key=fused.get, reverse=True)[:limit]
         return [Hit(text=entries[i][0], metadata=entries[i][1], score=fused[i]) for i in ranked]
 
+    def best_score(self, collection, vectors):
+        scores = []
+        for vector in vectors:
+            query = np.array(vector, dtype=float)
+            for _, _, doc_vector in self._collections.get(collection, []):
+                denom = np.linalg.norm(query) * np.linalg.norm(doc_vector)
+                scores.append(float(np.dot(query, doc_vector) / denom) if denom else 0.0)
+        return max(scores, default=None)
+
 
 # people and courses mix single chunks with long "list" chunks. Both tiers
 # come from ONE search so their fused scores can be compared — RRF scores
@@ -308,7 +337,18 @@ class Retriever:
         embed_seconds = time.perf_counter() - start
 
         start = time.perf_counter()
-        with ThreadPoolExecutor(max_workers=9) as pool:
+        collections = {"calendar": settings.CALENDAR_COLLECTION,
+                       "regulations": settings.REGULATIONS_COLLECTION,
+                       "faq": settings.FAQ_COLLECTION, "forms": settings.FORMS_COLLECTION,
+                       "sks": settings.SKS_COLLECTION, "programs": settings.PROGRAMS_COLLECTION,
+                       "people": settings.PEOPLE_COLLECTION,
+                       "courses": settings.COURSES_COLLECTION,
+                       "guides": settings.GUIDES_COLLECTION}
+        # nine searches, the course catalog list and nine closeness checks
+        with ThreadPoolExecutor(max_workers=19) as pool:
+            closest = {name: pool.submit(self._store.best_score, collection,
+                                         [vector, *other_vectors])
+                       for name, collection in collections.items()}
             # every collection's chunks go to every answer, so each cut is
             # what the retrieval eval showed still holds every needed chunk
             # (docs/adr/0012); regulations keeps one above that
@@ -336,6 +376,8 @@ class Retriever:
                 "guides": guides.result(),
                 "course_departments": course_departments.result(),
             }
+            self.last_routing = self._route(results, {name: future.result()
+                                                      for name, future in closest.items()})
         # the conversation logs these per turn (CLI + dev mode in the UI);
         # last-write-wins across sessions is fine for diagnostics
         self.last_timings = {"embed": embed_seconds, "search": time.perf_counter() - start}
@@ -500,6 +542,21 @@ class Retriever:
             {"text": hit.text, "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
+
+    @staticmethod
+    def _route(results, closest):
+        """Empty the collections whose closest chunk is far less close than
+        the best collection's: the answer call would pay for chunks that
+        don't hold the answer (docs/adr/0013). Returns what it decided, for
+        the dev log."""
+        scores = {name: score for name, score in closest.items() if score is not None}
+        dropped = []
+        if settings.ROUTE_GAP is not None and scores:
+            floor = max(scores.values()) - settings.ROUTE_GAP
+            dropped = [name for name, score in scores.items() if score < floor]
+            for name in dropped:
+                results[name] = []
+        return {"scores": scores, "dropped": dropped}
 
     def _embed_query(self, query):
         # any model-specific instruction prefix lives in the embedder

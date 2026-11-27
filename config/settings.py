@@ -42,6 +42,10 @@ RRF_K = 2
 # from 5th to 12th. A flatter k keeps dense's picks in play.
 CALENDAR_RRF_K = 20
 HYBRID_PREFETCH = 50  # how deep each ranking goes before fusion
+# A collection whose closest chunk (dense cosine) is more than this below the
+# best collection's is left out of the answer call. On the retrieval eval a
+# needed collection fell at most 0.162 below (docs/adr/0013). None keeps all.
+ROUTE_GAP = 0.20
 
 # LLM backends
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")

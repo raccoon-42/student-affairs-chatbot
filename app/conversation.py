@@ -412,6 +412,19 @@ class Conversation:
                           f"alongside the gate")
         self._log_row("pipeline", f"{time.perf_counter() - start:.2f}s",
                       "gate + retrieval combined")
+        routing = getattr(self._retriever, "last_routing", None)
+        if routing and routing["scores"]:
+            # every turn, so "nothing left out" reads as a decision, not a gap
+            scores = routing["scores"]
+            best, lowest = max(scores, key=scores.get), min(scores, key=scores.get)
+            detail = f"best {best} {scores[best]:.2f}"
+            if settings.ROUTE_GAP is not None:
+                detail += f" · cutoff {scores[best] - settings.ROUTE_GAP:.2f}"
+            detail += (" · left out " + " · ".join(f"{name} {scores[name]:.2f}"
+                                                  for name in routing["dropped"])
+                       if routing["dropped"] else
+                       f" · nothing left out (lowest {lowest} {scores[lowest]:.2f})")
+            self._log_row("routing", f"-{len(routing['dropped'])}", detail)
         corpora = ("calendar", "regulations", "faq", "forms", "sks", "programs", "people",
                    "courses", "guides")
         counts = [f"{corpus} {len(results.get(corpus, []))}" for corpus in corpora]

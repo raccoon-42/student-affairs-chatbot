@@ -433,3 +433,22 @@ def test_faq_without_profile_dedupes_duplicate_questions():
     assert retriever._store.last_filters is None
     matches = [r for r in results if "itiraz" in r["text"]]
     assert len(matches) == 1
+
+
+def test_a_collection_far_less_close_than_the_best_is_left_out(monkeypatch):
+    # docs/adr/0013: every collection's chunks went to the answer call,
+    # most of them unrelated to the question
+    store = InMemoryVectorStore()
+    store.add(settings.CALENDAR_COLLECTION, "Final sınavları başlıyor", {}, [1.0, 0.0, 0.0, 0.1])
+    store.add(settings.FAQ_COLLECTION, "S: Sınavlar ne zaman?\nC: Takvime bakın.",
+              {"question": "Sınavlar ne zaman?", "answer": "Takvime bakın."}, [1.0, 0.0, 0.2, 0.1])
+    store.add(settings.PROGRAMS_COLLECTION, "Fizik", {}, [0.0, 0.0, 1.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder())
+
+    results = retriever.retrieve_all("sınav ne zaman")
+    assert results["calendar"] and results["faq"]  # within the gap of the best
+    assert results["programs"] == []
+    assert retriever.last_routing["dropped"] == ["programs"]
+
+    monkeypatch.setattr(settings, "ROUTE_GAP", None)
+    assert retriever.retrieve_all("sınav ne zaman")["programs"]
