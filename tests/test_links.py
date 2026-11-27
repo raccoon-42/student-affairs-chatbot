@@ -36,6 +36,22 @@ def test_an_address_from_a_chunk_is_kept():
     assert check_links(answer, [TURNA]) == (answer, [])
 
 
+def test_the_root_of_a_longer_link_is_not_backed_by_it():
+    # a judge run: the chunk had "https://uio.iyte.edu.tr/wp-content/...pdf",
+    # and the answer's invented "https://uio.iyte.edu.tr/" matched it as text
+    guide = "Online Öğrenim Başvuru Formu Rehberi (bağlantı: https://uio.iyte.edu.tr/wp-content/uploads/rehber.pdf)"
+    answer = "Ayrıntılar için [UİO](https://uio.iyte.edu.tr/) sayfasına bak. Rehber: https://uio.iyte.edu.tr/wp-content/uploads/rehber.pdf"
+    cleaned, removed = check_links(answer, [guide])
+    assert cleaned == "Ayrıntılar için UİO sayfasına bak. Rehber: https://uio.iyte.edu.tr/wp-content/uploads/rehber.pdf"
+    assert removed == ["https://uio.iyte.edu.tr/"]
+
+
+def test_a_bare_address_written_in_a_chunk_backs_the_same_in_the_answer():
+    chunk = "Başvurular obs.iyte.edu.tr adresinden yapılır."
+    answer = "Başvuruyu obs.iyte.edu.tr üzerinden yapabilirsin [1]."
+    assert check_links(answer, [chunk]) == (answer, [])
+
+
 def test_an_address_without_its_scheme_is_caught_too():
     # a judge run: "(oidb.iyte.edu.tr)" got past a check for https:// only
     answer = "Bölüme veya Öğrenci İşleri Daire Başkanlığı'na (oidb.iyte.edu.tr) başvurun."

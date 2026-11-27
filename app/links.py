@@ -38,12 +38,13 @@ def _is_address(text):
 
 def check_links(answer: str, chunks: List[str]) -> Tuple[str, List[str]]:
     """The answer without links no chunk contains, and the links removed."""
-    text_of_chunks = "\n".join(chunks).lower()
-    known = {_key(url) for url in _URL.findall(text_of_chunks)}
+    # whole addresses only: "uio.iyte.edu.tr" inside a chunk's longer
+    # "https://uio.iyte.edu.tr/wp-content/..." link doesn't back the bare root
+    text_of_chunks = "\n".join(chunks)
+    known = {_key(address) for address in _URL.findall(text_of_chunks) + _DOMAIN.findall(text_of_chunks)}
 
     def backed(address):
-        key = _key(address)
-        return key in known or (bool(key) and key in text_of_chunks)
+        return _key(address) in known
 
     removed = []
 
