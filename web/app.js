@@ -411,7 +411,10 @@ function renderMarkdown(text) {
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|\s)\*([^*\n]+)\*/g, "$1<em>$2</em>")
     .replace(/`([^`\n]+)`/g, "<code>$1</code>")
-    .replace(/^[-*] /gm, "• "));
+    // a list line is its own box with a hanging indent: when it wraps (a
+    // long line, or the citation chip pushed to the next line) the rest
+    // lines up under the text, not under the bullet
+    .replace(/^[-*] (.*)$/gm, '<span class="list-item"><span class="bullet">•</span>$1</span>'));
 }
 
 /* [page name](https://…) becomes a link named after the page it opens, and
