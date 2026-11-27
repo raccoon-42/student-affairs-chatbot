@@ -514,3 +514,27 @@ def test_the_term_is_worked_out_from_todays_date():
     assert term(date(2027, 7, 1)) == "dönem arası; sıradaki: 2026-2027 Yaz Öğretimi"
     assert term(date(2027, 8, 10)) == "2026-2027 Yaz Öğretimi (sürüyor)"
     assert term(date(2027, 9, 1)) == "takvimde sürmekte olan ya da sıradaki yarıyıl yok"
+
+
+def test_dates_in_guide_text_get_the_calendars_status():
+    # "erasmus başvuruları ne zaman" presented the March-April 2026 call as
+    # open in November: guide dates sit in prose, so the model compared them
+    # itself, and the calendar's DURUM labels never reached them
+    store = InMemoryVectorStore()
+    store.add(settings.GUIDES_COLLECTION,
+              "Başvurular 17 Mart 2026 - 02 Nisan 2026 (saat 16.00’ya kadar) yapılır. "
+              "02 Nisan 2026’dan sonra iptal edilemez. Kabul mektubu son tarih: 15 Mayıs 2027. "
+              "667 sayılı KHK, 15 Temmuz 2016 darbe teşebbüsü. Yönerge: "
+              "https://example.test/Yonerge-14.04.2026.pdf",
+              {}, [1.0, 0.0, 0.0, 0.1])
+    retriever = Retriever(store, FakeEmbedder(), today=lambda: date(2026, 11, 27))
+    text = retriever.retrieve_guides("sınav")[0]["text"]
+
+    assert "17 Mart 2026 - 02 Nisan 2026 (DURUM: geçti) (saat" in text
+    assert "02 Nisan 2026’dan (DURUM: geçti) sonra" in text
+    assert "15 Mayıs 2027 (DURUM: gelecekte, henüz geçmedi)" in text
+    assert "15 Temmuz 2016 darbe" in text  # a reference years back, not a deadline
+    assert "Yonerge-14.04.2026.pdf" in text  # numbers in a link stay as they are
+
+    during = Retriever(store, FakeEmbedder(), today=lambda: date(2026, 3, 20))
+    assert "02 Nisan 2026 (DURUM: şu an devam ediyor)" in during.retrieve_guides("sınav")[0]["text"]

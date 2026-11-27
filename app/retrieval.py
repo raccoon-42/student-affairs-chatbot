@@ -120,6 +120,35 @@ def _calendar_status(metadata: Dict, today: date) -> str:
     return "(DURUM: şu an devam ediyor)"
 
 
+_MONTHS = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos",
+           "Eylül", "Ekim", "Kasım", "Aralık"]
+_TEXT_DATE = r"(\d{1,2}) (" + "|".join(_MONTHS) + r") (\d{4})"
+# "02 Nisan 2026", "17 Mart 2026 - 02 Nisan 2026", with a suffix ("2026’dan")
+_DATE_SPAN = re.compile(_TEXT_DATE + r"(?:\s*[-–]\s*" + _TEXT_DATE + r")?(?:['’]\w+)?")
+# older dates in prose are references ("15 Temmuz 2016", a 2019 law), not
+# deadlines a student could still meet or miss
+DATED_REFERENCE = timedelta(days=365)
+
+
+def _mark_dates(text: str, today: date) -> str:
+    """The calendar's DURUM label after each recent date written out in
+    prose: "17 Mart 2026 - 02 Nisan 2026 (DURUM: geçti)". Guide pages keep
+    their deadlines in sentences, and the model, left to compare them with
+    today, presented a call that closed in April as open in November."""
+    def label(match):
+        day, month, year, end_day, end_month, end_year = match.groups()
+        try:
+            start = date(int(year), _MONTHS.index(month) + 1, int(day))
+            end = date(int(end_year), _MONTHS.index(end_month) + 1, int(end_day)) if end_day else start
+        except ValueError:  # "31 Şubat"
+            return match.group(0)
+        if end < today - DATED_REFERENCE:
+            return match.group(0)
+        status = _calendar_status({"date1": start.isoformat(), "date2": end.isoformat()}, today)
+        return f"{match.group(0)} {status}"
+    return _DATE_SPAN.sub(label, text)
+
+
 @dataclass
 class Hit:
     text: str
@@ -601,8 +630,9 @@ class Retriever:
         # başvuru, askerlik) — chunk text leads with the page title
         hits = self._hybrid_search(query, settings.GUIDES_COLLECTION, top_k, vector=vector,
                                    also=also)
+        today = self._today()
         return [
-            {"text": hit.text, "score": score, "metadata": hit.metadata}
+            {"text": _mark_dates(hit.text, today), "score": score, "metadata": hit.metadata}
             for hit, score in hits
         ]
 
