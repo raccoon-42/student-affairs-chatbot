@@ -1,7 +1,7 @@
 """The citation check: markers whose chunk doesn't back the text are removed."""
 import time
 
-from app.citations import add_missing_markers, check_citations, correct_markers
+from app.citations import add_date_markers, add_missing_markers, check_citations, correct_markers
 from app.conversation import Conversation
 from tests.test_conversation import FakeLLM, FakeRetriever
 
@@ -262,3 +262,29 @@ def test_every_chunk_ends_with_its_own_marker():
     for entry in conversation.last_reference:
         n = entry[:entry.index("]") + 1]
         assert entry.endswith(f" {n}")
+
+
+LISANS_TERM = ("[2026-2027 Güz Yarıyılı] 28 Eylül 2026 Pazartesi ile 6 Ocak 2027 Çarşamba tarihleri "
+               "arasında Lisans/Lisansüstü programlarda I. yarıyıl dersler.")
+HAZIRLIK_TERM = ("[2026-2027 Güz Yarıyılı] 28 Eylül 2026 Pazartesi ile 20 Ocak 2027 Çarşamba tarihleri "
+                 "arasında Hazırlık Sınıfı I. yarıyıl dersler.")
+GUIDE = "Lisans Ders Kaydı Genel Bilgilendirme ve Kayıt İşlem Adımları. Ders seçim işlemleri yapılır."
+
+
+def test_a_date_the_cited_chunk_lacks_gets_the_marker_of_the_chunk_that_has_it():
+    # judge run 2026-11-27: the start of term was cited to the course
+    # registration guide; "2026" is in dozens of chunks, so correct_markers
+    # couldn't move it. Two calendar lines share the date: the lisans one
+    # shares more words with the sentence
+    answer = "Lisans dersleri 28 Eylül 2026'da başladı, ders seçimi ÖBS'den yapılır [3]."
+    assert add_date_markers(answer, [HAZIRLIK_TERM, LISANS_TERM, GUIDE]) == (
+        "Lisans dersleri 28 Eylül 2026'da başladı, ders seçimi ÖBS'den yapılır [3][2].", [2])
+
+
+def test_a_date_stays_with_a_marker_that_backs_it_or_none_can():
+    backed = "Dersler 28 Eylül 2026'da başladı [3][1]."
+    assert add_date_markers(backed, [LISANS_TERM, HAZIRLIK_TERM, GUIDE]) == (backed, [])
+    invented = "Dersler 29 Eylül 2026'da başladı [3]."  # in no chunk: the judge's to catch
+    assert add_date_markers(invented, [LISANS_TERM, GUIDE, GUIDE]) == (invented, [])
+    no_year = "Dersler 28 Eylül'de başladı [3]."  # without a year a date is too loose to place
+    assert add_date_markers(no_year, [LISANS_TERM, GUIDE, GUIDE]) == (no_year, [])

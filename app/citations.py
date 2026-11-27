@@ -253,3 +253,48 @@ def correct_markers(answer: str, chunks: List[str]) -> Tuple[str, List[Tuple[int
         out.append(line[start:])
         lines.append("".join(out))
     return "\n".join(lines), moved
+
+
+_MONTHS = "Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık"
+_DATE = re.compile(rf"(?<!\d)(\d{{1,2}})\s+({_MONTHS})\s+(\d{{4}})(?!\d)", re.IGNORECASE)
+
+
+def _dates(text):
+    """The full dates in a text as (day, month, year): "08" and "8" alike."""
+    return {(int(day), month.lower(), year) for day, month, year in _DATE.findall(text)}
+
+
+def add_date_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
+    """A full date that none of the markers after it backs gets the marker
+    of a chunk that has it, beside the old ones (the rest of the text may
+    still be theirs); the markers added. Judge run 2026-11-27: "I. yarıyıl
+    dersleri 28 Eylül 2026'da başladı" cited a guide chunk [36] while a
+    calendar line of the turn had the date, and correct_markers couldn't
+    help: "2026" is in dozens of chunks. A date in several chunks goes to
+    the one sharing the most words with the text (the first on a tie); a
+    date in no chunk is left to the judge."""
+    chunk_dates = [_dates(chunk) for chunk in chunks]
+    added = []
+    lines = []
+    for line in answer.split("\n"):
+        out, start = [], 0
+        for run in _RUN.finditer(line):
+            text = line[start:run.start()]
+            marker = run.group(0)
+            sources = [int(n) for n in _MARKER.findall(run.group(2))
+                       if 1 <= int(n) <= len(chunks)]
+            words = set(tokenize(text))
+            for date in sorted(_dates(text)):
+                if any(date in chunk_dates[n - 1] for n in sources):
+                    continue
+                holders = [m for m in range(1, len(chunks) + 1) if date in chunk_dates[m - 1]]
+                if holders:
+                    best = max(holders, key=lambda m: (len(words & set(tokenize(chunks[m - 1]))), -m))
+                    sources.append(best)
+                    added.append(best)
+                    marker += f"[{best}]"
+            out.append(text + marker)
+            start = run.end()
+        out.append(line[start:])
+        lines.append("".join(out))
+    return "\n".join(lines), added
