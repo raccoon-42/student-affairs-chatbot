@@ -1,154 +1,90 @@
-# Student Affairs RAG Chatbot
+# İyteBot
 
-A Retrieval-Augmented Generation (RAG) chatbot for university life (Turkish): academic calendars, regulations, FAQs, forms, campus services, degree programs, department people, courses and student guides — nine Qdrant collections kept fresh by a daily update check. Hybrid retrieval (semantic + BM25) over Qdrant, answered by an LLM via OpenRouter, with a ChatGPT-style web UI: streaming answers with inline source citations, Google Sign-In with per-user conversation history, voice input (Whisper) and image questions.
+[![tests](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml)
+![python](https://img.shields.io/badge/python-3.11%2B-3776AB)
+[![license](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)](LICENSE)
 
-See `CONTEXT.md` for the domain vocabulary.
+A Turkish chatbot for İYTE students. It answers from the university's own
+documents — academic calendar, regulations, FAQs, forms, campus services,
+programs, people, courses and student guides — and cites a source for every
+fact.
 
-## Architecture
+FastAPI, Qdrant and a vanilla JS web UI. Models run through OpenRouter:
+Claude Haiku 5.5 writes the answers, Sonnet 5.5 parses documents and judges
+the eval.
 
+![A student asks about Erasmus requirements and gets a cited answer](.github/assets/demo.gif)
+
+## Answering a question
+
+```mermaid
+flowchart TD
+    Q([Student question]) --> RW[Rewrite<br/>standalone question]
+    Q --> G[Scope gate]
+    Q --> R[Hybrid search<br/>9 Qdrant collections]
+    RW -. "words changed:<br/>run again" .-> G
+    RW -.-> R
+    G -- off topic --> X([Refusal])
+    R --> RT[Routing<br/>drop far-off collections]
+    G -- ok --> P
+    RT --> P["Prompt<br/>chunks marked [n], today, current term"]
+    P --> A[Answer LLM, streamed]
+    A --> C[Citation check<br/>remove, move, add markers]
+    C --> UI([Answer with source chips])
 ```
-app/
-├── api/api.py        # FastAPI endpoints (thin shell)
-├── conversation.py   # Conversation: prompt assembly + history + pipeline stages
-├── llm.py            # LLM seam: OpenRouterLLM adapter
-├── embeddings.py     # embedding seam: OpenRouter hosted embeddings
-├── retrieval.py      # Retriever: vector search + hybrid scoring + audience filters
-│                     #   vector store seam: QdrantVectorStore | InMemoryVectorStore
-├── guardrails.py     # scope gate (runs concurrently with retrieval)
-├── auth.py           # Google Sign-In token verification + sessions
-├── ratelimit.py      # per-user/per-IP limits, spam brake, abuse block
-└── storage.py        # SQLite: users, sessions, conversations, sources
-web/                  # vanilla JS chat UI (streaming, citations, i18n, settings)
-config/
-├── settings.py       # ALL configuration resolves here (.env read once)
-└── prompts/          # system prompt
-preprocessing/
-├── check_updates.py  # daily change check: re-scrape, hash, re-parse/reindex only what changed
-├── extraction.py     # date/event extraction (shared by indexing + retrieval)
-├── indexing/         # text_splitter, vectorizer, bm25
-├── parsers/          # PDF/HTML -> structured JSON (LLM parsers)
-└── scrapers/         # mevzuat, takvim, faq, forms, sks, programs, people, courses, guides
-tests/                # offline unit tests + `integration`-marked judge eval
-scripts/              # dev.sh (qdrant + uvicorn) + experiments
+
+- The gate and the search start on the student's own words while the
+  rewrite runs; they run again only if the rewrite changes the words.
+- Search is dense + BM25 in every collection. A collection whose best match
+  is 0.20 below the top one is left out.
+- Every chunk carries a `[n]` marker. After the answer, a rule-based check
+  drops markers the chunk doesn't back, moves misplaced ones and adds
+  missing ones.
+
+## Keeping the data fresh
+
+```mermaid
+flowchart LR
+    S([University sites<br/>PDF + HTML]) -- daily scrape --> H{Changed?}
+    H -- no --> N([Skip])
+    H -- yes --> P[LLM parser] --> E[Embed<br/>dense + BM25] --> Q[(Qdrant)]
 ```
 
-## Quick start (Docker)
+The `check-updates` service runs this every day at 06:30 UTC. Only changed
+sources are parsed and embedded again.
+
+## Run
 
 ```bash
-cp .env.example .env   # add your OPENROUTER_API_KEY
-docker compose up --build
+cp .env.example .env        # add OPENROUTER_API_KEY
+docker compose up --build   # http://localhost:8000
 ```
 
-This starts three services:
+On a fresh clone, `check-updates` indexes everything on first start:
+`docker compose logs -f check-updates`. Production setup: `deploy/README.md`.
 
-- **api** (`:8000`) — FastAPI + the web UI
-- **qdrant** (`:6333`) — vector store, data in the `qdrant_storage` named volume
-- **check-updates** — daily corpus check at 06:30 UTC (09:30 TR), see below
-
-On a fresh clone Qdrant starts empty, and `check-updates` handles that by
-itself: with no recorded index state it runs a baseline check on startup,
-indexing all nine collections (calendar, regulations, faq, forms, sks,
-programs, people, courses, guides) from the git-tracked processed corpora
-and re-downloading the gitignored raw PDFs. Watch it with
-`docker compose logs -f check-updates` — every corpus should end with
-"recording current files as the baseline". Then open http://localhost:8000
-and ask something.
-
-To force a check without waiting for the daily run:
+## Develop
 
 ```bash
-docker compose run --rm check-updates python -m preprocessing.check_updates
+uv sync
+uv run pytest                                            # offline tests
+uv run uvicorn app.api.api:app --reload                  # http://localhost:8000
+uv run python -m preprocessing.check_updates --dry-run   # what changed upstream
 ```
 
-What persists across rebuilds: the Qdrant index (named volume
-`qdrant_storage`), SQLite users/conversations
-(`./data`, bind-mounted), and corpora + index state (`./preprocessing/data`,
-bind-mounted, shared with manual pipeline runs on the host).
-
-For production (VPS, nginx, TLS, backups) see `deploy/README.md` and
-`docker-compose.prod.yml`.
-
-## Keeping the corpora fresh
-
-The `check-updates` service re-runs `preprocessing.check_updates` daily.
-It re-scrapes every source (cheap), hashes the artifacts, and runs the
-expensive steps — LLM parsing, embedding — only for what actually changed;
-state lives in `preprocessing/data/index_state.json`. Run it manually with:
+The LLM judge grades answers against `tests/test_cases/*.json`. It needs
+the stack running and costs money:
 
 ```bash
-uv run python -m preprocessing.check_updates             # all corpora
-uv run python -m preprocessing.check_updates faq sks     # a subset
-uv run python -m preprocessing.check_updates --dry-run   # scrape + report, change nothing
+uv run pytest -m integration tests/test_llm_judge.py -v
 ```
 
-## Rebuilding a corpus from scratch
+## More
 
-Each collection has a scraper in `preprocessing/scrapers/`, most have an
-LLM parser in `preprocessing/parsers/`, and everything is indexed by the
-vectorizer (`--type` selects the collection). The pattern, shown for three
-corpora:
-
-```bash
-# Regulations: scrape all mevzuat PDFs, parse them, index the whole set
-uv run python -m preprocessing.scrapers.mevzuat_scraper
-uv run python preprocessing/parsers/regulation_parser_llm.py --all
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/mevzuat --type regulations
-
-# Calendar: scrape, parse each academic year, index the whole set
-uv run python -m preprocessing.scrapers.takvim_scraper
-uv run python preprocessing/parsers/academic_calendar_parser_llm.py preprocessing/data/raw/takvim/2025-2026-akademik-takvimi.pdf
-uv run python preprocessing/parsers/academic_calendar_parser_llm.py preprocessing/data/raw/takvim/2026-2027-akademik-takvimi.pdf
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/takvim --type calendar
-
-# FAQ: scrape the university FAQ pages, then index (no LLM step)
-uv run python -m preprocessing.scrapers.faq_scraper
-uv run python -m preprocessing.indexing.vectorizer preprocessing/data/processed/faq/faq.json --type faq
-```
-
-The remaining corpora (forms, sks, programs, people, courses, guides)
-follow the same scrape → parse → index shape; `preprocessing/check_updates.py`
-is the authoritative reference for each one's exact steps. The vectorizer
-is incremental (point id = content hash), so reindexing embeds only
-changed chunks.
-
-## Local development
-
-Dependencies are managed with [uv](https://docs.astral.sh/uv/):
-
-```bash
-uv sync                                        # create .venv from uv.lock
-uv run pytest                                  # offline unit tests (no services needed)
-uv run uvicorn app.api.api:app --reload        # API + web UI at http://localhost:8000
-uv run python -m app.conversation              # CLI chat
-./scripts/dev.sh                               # or: start qdrant (docker) + uvicorn together
-```
-
-Note: `--reload` watches only `.py` files — after editing `.env`, touch a `.py` file or restart.
-
-## API
-
-- `POST /chat/stream` — streaming answer (body: `{query, session_id, image?, lang?}`); the stream carries in-band stage markers (`\x02` gate, `\x03` retrieval, `\x01` writing) the UI turns into cursor animations
-- `GET /chat?query=...` — non-streaming answer via OpenRouter
-- `GET /chat/sources?session_id=...` — what the latest answer was grounded on (citation chips)
-- `GET /chat/debug?session_id=...` — per-turn timing/retrieval logs (dev mode)
-- `POST /transcribe` — voice input via Whisper (Groq)
-- `/auth/*`, `/conversations*` — Google Sign-In and per-user history
-
-## Evaluation
-
-LLM-as-judge evaluation, one test per case (judge model configurable via `JUDGE_MODEL`). Needs the full stack running:
-
-```bash
-uv run pytest -m integration tests/test_llm_judge.py -v        # all cases
-uv run pytest -m integration tests/test_llm_judge.py -k dersten  # one case
-```
-
-Test cases live in `tests/test_cases/*.json` as `{query, expected, description}`. Exempt your dev machine from rate limits during eval runs with `RATELIMIT_EXEMPT=127.0.0.1,::1` in `.env` (never in production).
-
-## Configuration
-
-Everything is an environment variable with a sane default — see `.env.example` and `config/settings.py`. The same embedding backend and collection names are used by both the indexer and the retriever, so they cannot diverge. Citation links come from the scrape manifests (each chunk carries its source PDF/page URL), so no per-document URLs need configuring.
+- `CONTEXT.md`: domain vocabulary
+- `.env.example`, `config/settings.py`: configuration
+- `CONTRIBUTING.md`: how changes get in
 
 ## License
 
-CC BY-NC 4.0 — non-commercial use only. See LICENSE.
+CC BY-NC 4.0, non-commercial use only. See `LICENSE`.
