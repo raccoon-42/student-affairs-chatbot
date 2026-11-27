@@ -242,7 +242,8 @@ EDUCATION_LABELS = {
 }
 
 # which FAQ corpus copy fits the profile: the lisans and lisansüstü FAQ
-# PDFs repeat 34 questions verbatim, so retrieval filters to one audience.
+# PDFs repeat 34 questions verbatim, so retrieval filters to one audience
+# (plus hazırlık, which every profile gets: see Retriever.retrieve_faq).
 # Prospective students get the lisans copy; no profile means no filter
 # (the retriever dedupes by question text instead).
 FAQ_AUDIENCES = {
