@@ -28,6 +28,13 @@ def test_page_links_assets_by_content_hash():
     assert asset.status_code == 200 and "modelHaiku" in asset.text
 
 
+def test_page_links_the_logo_as_its_icon():
+    client = TestClient(api.app)
+    assert '<link rel="icon" href="logo.svg" type="image/svg+xml">' in client.get("/").text
+    logo = client.get("/logo.svg")
+    assert logo.status_code == 200 and logo.headers["content-type"].startswith("image/svg+xml")
+
+
 def test_health_answers_for_the_container_healthcheck():
     response = TestClient(api.app).get("/health")
     assert response.status_code == 200
