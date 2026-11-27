@@ -746,6 +746,14 @@ header h1 .logo {
   left: 0.2em;
 }
 
+.message .list-item.sub {
+  padding-left: 2.3em;
+}
+
+.message .list-item.sub .bullet {
+  left: 1.35em;
+}
+
 /* links the model names in its answer ([page](url)); chips keep their own look */
 .message.bot a.answer-link {
   color: inherit;

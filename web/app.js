@@ -413,7 +413,9 @@ function renderMarkdown(text) {
     .replace(/`([^`\n]+)`/g, "<code>$1</code>")
     // a list line is its own box with a hanging indent: when it wraps (a
     // long line, or the citation chip pushed to the next line) the rest
-    // lines up under the text, not under the bullet
+    // lines up under the text, not under the bullet. An indented one is a
+    // sub-item, a step further in; before, it showed as a bare "- " line
+    .replace(/^[ \t]+[-*] (.*)$/gm, '<span class="list-item sub"><span class="bullet">◦</span>$1</span>')
     .replace(/^[-*] (.*)$/gm, '<span class="list-item"><span class="bullet">•</span>$1</span>'));
 }
 
