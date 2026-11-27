@@ -64,7 +64,7 @@ On a fresh clone, `check-updates` indexes everything on first start:
 ```bash
 uv sync
 uv run pytest                                            # offline tests
-uv run uvicorn app.api.api:app --reload                  # http://localhost:8000
+./scripts/dev.sh                                         # qdrant + api, http://localhost:8000
 uv run python -m preprocessing.check_updates --dry-run   # what changed upstream
 ```
 
