@@ -444,3 +444,14 @@ def test_api_sessions_are_isolated_and_expire():
     api._sessions[key] = (conversation, last_used - api.SESSION_TTL_SECONDS - 1)
     api.get_conversation("session-b")  # any call triggers eviction
     assert key not in api._sessions
+
+
+def test_the_prompts_examples_hold_no_facts_to_copy():
+    # rule 9's example "Kayıtlar 8-9 Temmuz'da yapılacak [3]." came back as
+    # "Yaz Öğretimi kayıtları 8-9 Temmuz 2027" (the real dates: 12-13 Temmuz)
+    import re
+    from app.conversation import CONTEXT_TEMPLATE
+    from config import settings
+    months = "Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık"
+    for text in (CONTEXT_TEMPLATE, settings.load_system_prompt()):
+        assert not re.search(rf"\b\d{{1,2}}(?:-\d{{1,2}})?\s+(?:{months})", text)
