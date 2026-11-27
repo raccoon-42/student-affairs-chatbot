@@ -30,6 +30,31 @@ def _extra_body(model, effort=None):
     return body
 
 
+def _cacheable(model, messages):
+    """The messages with the system prompt marked for Anthropic's prompt
+    cache: ~1.9k tokens, identical on every answer call and for every user,
+    so a call within 5 minutes of another reads it at 0.1x the input price
+    (writing it costs 1.25x). Other models, and calls with no system
+    prompt (gate, rewrite: under the 512-token minimum), go as they are."""
+    if (not model.startswith("anthropic/") or not messages
+            or messages[0].get("role") != "system" or not isinstance(messages[0]["content"], str)):
+        return messages
+    marked = {"role": "system", "content": [{"type": "text", "text": messages[0]["content"],
+                                             "cache_control": {"type": "ephemeral"}}]}
+    return [marked, *messages[1:]]
+
+
+def _usage(usage):
+    """Tokens, the charged USD (cache discounts included) and what the
+    prompt cache read and wrote."""
+    details = getattr(usage, "prompt_tokens_details", None)
+    return {"prompt_tokens": usage.prompt_tokens,
+            "completion_tokens": usage.completion_tokens,
+            "cost": getattr(usage, "cost", None),
+            "cached_tokens": getattr(details, "cached_tokens", None) or 0,
+            "cache_write_tokens": getattr(details, "cache_write_tokens", None) or 0}
+
+
 class OpenRouterLLM:
     """Adapter for OpenRouter (OpenAI-compatible API)."""
 
@@ -56,15 +81,11 @@ class OpenRouterLLM:
         accounted, not just the streamed main answer."""
         self._ensure_client()
         completion = self._client.chat.completions.create(
-            model=model, messages=messages, max_tokens=settings.LLM_MAX_TOKENS,
+            model=model, messages=_cacheable(model, messages), max_tokens=settings.LLM_MAX_TOKENS,
             extra_body=_extra_body(model, self._effort))
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")
-        usage = None
-        if completion.usage:
-            usage = {"prompt_tokens": completion.usage.prompt_tokens,
-                     "completion_tokens": completion.usage.completion_tokens,
-                     "cost": getattr(completion.usage, "cost", None)}
+        usage = _usage(completion.usage) if completion.usage else None
         return completion.choices[0].message.content, usage
 
     def chat_stream(self, model, messages):
@@ -72,7 +93,7 @@ class OpenRouterLLM:
         # has cut answers mid-sentence on large (image) requests
         self._ensure_client()
         stream = self._client.chat.completions.create(
-            model=model, messages=messages, stream=True,
+            model=model, messages=_cacheable(model, messages), stream=True,
             max_tokens=settings.LLM_MAX_TOKENS,
             stream_options={"include_usage": True},
             extra_body=_extra_body(model, self._effort))
@@ -81,9 +102,7 @@ class OpenRouterLLM:
         for chunk in stream:
             # with include_usage the last chunk has no choices, only usage
             if getattr(chunk, "usage", None):
-                usage = {"prompt_tokens": chunk.usage.prompt_tokens,
-                         "completion_tokens": chunk.usage.completion_tokens,
-                         "cost": getattr(chunk.usage, "cost", None)}
+                usage = _usage(chunk.usage)
             if chunk.choices:
                 finish_reason = chunk.choices[0].finish_reason or finish_reason
                 if chunk.choices[0].delta.content:
