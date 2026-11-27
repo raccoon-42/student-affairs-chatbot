@@ -238,12 +238,15 @@ def test_rewriter_feeds_retrieval_and_model_sees_both():
     main_llm = FakeLLM(reply="cevap")
     conversation = Conversation(main_llm, retriever, model="test-model",
                                 rewriter=QueryRewriter(rewriter_llm, "small-model"))
-    conversation.respond("kaç kredi lazım")          # first turn: cleaned up
+    conversation.respond("kaç kredi lazım")          # first turn: only a "?" added
     conversation.respond("lisans icin soruyorum")    # follow-up: made standalone
 
-    assert retriever.queries == ["kaç kredi lazım?", "lisans için kaç kredi gerekiyor?"]
-    # the student's own words search alongside the rewrite
-    assert retriever.also == [["kaç kredi lazım"], ["lisans icin soruyorum"]]
+    # each turn searches the student's words while the rewrite runs; the
+    # follow-up's rewrite changed it, so it searches again with both
+    assert retriever.queries == ["kaç kredi lazım", "lisans icin soruyorum",
+                                 "lisans için kaç kredi gerekiyor?"]
+    assert retriever.also == [["kaç kredi lazım"], ["lisans icin soruyorum"],
+                              ["lisans icin soruyorum"]]
     _, messages = main_llm.calls[-1]
     assert "lisans icin soruyorum" in messages[-1]["content"]  # the student's own words
     # regression: "akts kac" after a CENG 322 question got "what do you mean?" —
@@ -261,7 +264,7 @@ def test_first_message_is_rewritten_too():
                                 rewriter=QueryRewriter(rewriter_llm, "small-model"))
     conversation.respond("yl dersleri ne bilgiayarda")
 
-    assert retriever.queries == ["Bilgisayar Mühendisliği yüksek lisans dersleri nelerdir?"]
+    assert retriever.queries[-1] == "Bilgisayar Mühendisliği yüksek lisans dersleri nelerdir?"
     _, prompt = rewriter_llm.calls[0]
     assert "(yok)" in prompt[0]["content"]  # no history yet
     _, messages = main_llm.calls[-1]
@@ -342,6 +345,75 @@ def test_a_rewrite_that_changes_the_university_is_not_used():
     assert rewriter.rewrite(message, []) == message
     spelled_out = QueryRewriter(FakeLLM(reply="İzmir Yüksek Teknoloji Enstitüsü'nde doktora var mı?"), "m")
     assert spelled_out.rewrite(message, []) == "İzmir Yüksek Teknoloji Enstitüsü'nde doktora var mı?"
+
+
+def test_a_rewrite_that_only_changes_capitals_or_punctuation_is_not_used():
+    # "erasmus başvuru formunu ..." came back as "Erasmus başvuru formunu
+    # ...?": the same question, worth neither a new search nor an
+    # "(anlaşılan soru: ...)" line
+    message = "erasmus başvuru formunu nereden indirebilirim"
+    for reply in ("Erasmus başvuru formunu nereden indirebilirim?",
+                  "ERASMUS başvuru formunu, nereden indirebilirim"):
+        assert QueryRewriter(FakeLLM(reply=reply), "small-model").rewrite(message, []) == message
+    assert QueryRewriter(FakeLLM(reply="İYTE'de yaz okulu var mı?"), "small-model").rewrite(
+        "iyte'de yaz okulu var mı", []) == "iyte'de yaz okulu var mı"
+    fixed = QueryRewriter(FakeLLM(reply="Erasmus başvuru formu nasıl alınır?"), "small-model")
+    assert fixed.rewrite("erasmus basvuru formu nasil alinir", []) == "Erasmus başvuru formu nasıl alınır?"
+
+
+class RecordingGate:
+    """Allows anything but the words in `refuse`; records what it saw."""
+    _model = "gate-model"
+    last_usage = None
+
+    def __init__(self, refuse=()):
+        self.refuse = set(refuse)
+        self.seen = []
+
+    def verdict(self, query):
+        self.seen.append(query)
+        return "off_topic" if query in self.refuse else "ok"
+
+
+def test_gate_and_search_start_while_the_rewrite_runs():
+    # the rewrite took ~0.65 s and the gate and search waited for it; most
+    # rewrites give the student's words back, so they start on those
+    import threading
+    searched = threading.Event()
+
+    class Retriever(FakeRetriever):
+        def retrieve_all(self, query, audience=None, also=()):
+            searched.set()
+            return super().retrieve_all(query, audience, also)
+
+    class SlowRewriterLLM(FakeLLM):
+        def chat(self, model, messages):
+            self.searched_before_reply = searched.wait(timeout=2)
+            return super().chat(model, messages)
+
+    retriever, gate = Retriever(), RecordingGate()
+    rewriter_llm = SlowRewriterLLM(reply="Sınavlar ne zaman?")
+    main_llm = FakeLLM()
+    conversation = Conversation(main_llm, retriever, model="test-model", gate=gate,
+                                rewriter=QueryRewriter(rewriter_llm, "small-model"))
+    conversation.respond("sınavlar ne zaman")
+
+    assert rewriter_llm.searched_before_reply
+    assert retriever.queries == gate.seen == ["sınavlar ne zaman"]  # nothing ran twice
+    _, messages = main_llm.calls[-1]
+    assert "anlaşılan soru" not in messages[-1]["content"]
+
+
+def test_a_changed_rewrite_is_gated_and_searched_again():
+    # a bare follow-up can look off-topic on its own: the verdict that
+    # counts is the one on what the rewrite resolved
+    retriever, gate = FakeRetriever(), RecordingGate(refuse=["peki lisans?"])
+    conversation = Conversation(FakeLLM(reply="cevap"), retriever, model="test-model", gate=gate,
+                                rewriter=QueryRewriter(FakeLLM(reply="Lisans için kaç kredi gerekiyor?"),
+                                                       "small-model"))
+    assert conversation.respond("peki lisans?") == "cevap"
+    assert gate.seen == ["peki lisans?", "Lisans için kaç kredi gerekiyor?"]
+    assert retriever.queries == ["peki lisans?", "Lisans için kaç kredi gerekiyor?"]
 
 
 def test_rewriter_failure_falls_back_to_raw_query():

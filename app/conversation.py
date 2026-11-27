@@ -7,7 +7,7 @@ fake in tests) — history is owned by the instance, not the module.
 import re
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait
 
 from app.citations import check_citations
 from app.links import check_links
@@ -164,6 +164,12 @@ IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönde
 _IYTE = re.compile(r"\b[iıIİ]yte\b|izmir\s+yüksek\s+teknoloji", re.IGNORECASE)
 
 
+def _words(text):
+    """The words alone: Turkish lowercase ("İ" -> "i", "I" -> "ı"), no
+    punctuation."""
+    return re.findall(r"\w+", text.replace("İ", "i").replace("I", "ı").lower())
+
+
 class QueryRewriter:
     """Turns messages into clean standalone queries, so retrieval and the
     scope gate see the full intent ("lisans için kaç kredi lazım?") instead
@@ -197,6 +203,10 @@ class QueryRewriter:
                 return query
             if _IYTE.search(query) and not _IYTE.search(rewritten):
                 print(f"[rewrite] dropped İYTE, using raw query: {rewritten[:80]!r}", file=sys.stderr)
+                return query
+            # capitals and punctuation alone don't make a new question (53 of
+            # 197 changed eval rewrites); the prompt can't stop Haiku doing it
+            if _words(rewritten) == _words(query):
                 return query
             return rewritten or query
         except Exception as error:
@@ -259,6 +269,7 @@ class Conversation:
         self.last_debug = []  # CLI-style log lines for the latest turn
         self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
         self.turn_usage = []  # every LLM call of the latest turn: {kind, model, tokens, cost}
+        self._early = None  # gate + retrieval started on the student's words, see _start
 
     def _log(self, line):
         print(line, file=sys.stderr)
@@ -295,7 +306,7 @@ class Conversation:
         citation check runs once the answer is complete, so the tokens
         already sent can differ from last_answer; the UI re-renders with it."""
         self.last_answer = None
-        query, search_query = self._resolve_search_query(query, image)
+        query, search_query = self._resolve_search_query(query, image, education_type)
         yield STAGE_GATING
         stages = self._gate_and_build(query, search_query, education_type, image)
         while True:
@@ -336,7 +347,7 @@ class Conversation:
 
     def _prepare(self, query, education_type=None, image=None) -> str:
         """Rewrite, then gate + retrieve; see the two halves below."""
-        query, search_query = self._resolve_search_query(query, image)
+        query, search_query = self._resolve_search_query(query, image, education_type)
         stages = self._gate_and_build(query, search_query, education_type, image)
         while True:  # non-streaming path: drain the stage events, keep the verdict
             try:
@@ -344,7 +355,7 @@ class Conversation:
             except StopIteration as done:
                 return done.value
 
-    def _resolve_search_query(self, query, image=None):
+    def _resolve_search_query(self, query, image=None, education_type=None):
         """First pipeline stage: turn the raw message into a search query.
 
         Every message gets rewritten into a clean standalone question for
@@ -352,7 +363,12 @@ class Conversation:
         the rewrite next to it.
         Returns (query, search_query) — query changes only for image-only
         messages, where the extracted question stands in as the student's
-        text for the prompt and the history."""
+        text for the prompt and the history.
+
+        The gate and retrieval start on the student's words while the
+        rewrite runs: most rewrites give them back (unchanged or only
+        recapitalized), and then nothing waits for the rewrite twice."""
+        self._early = None
         self.last_debug = []
         self.last_usage = None  # refusals never reach the main call
         self.turn_usage = []
@@ -366,6 +382,7 @@ class Conversation:
             if not query:
                 query = search_query
         elif self._rewriter is not None:
+            self._early = self._start(normalize_query(query), query, education_type)
             rewrite_start = time.perf_counter()
             # the rewriter guesses codes it doesn't know ("mbg" became
             # "Makine Bilgisayar Mühendisliği"), so it gets them named
@@ -388,34 +405,34 @@ class Conversation:
         An image (data URL) rides along for this turn only: the gate,
         rewriter and retrieval see just the text, and history keeps the
         bare question, so the image never bloats later requests."""
-        start = time.perf_counter()
-        audience = FAQ_AUDIENCES.get(education_type)
-        if self._gate is None:
-            yield STAGE_SEARCHING
-            # the student's own words search too: the rewrite fixes typos and
-            # follow-ups but sometimes misreads ("mbg" expanded wrong)
-            results = self._retriever.retrieve_all(search_query, audience=audience,
-                                                   also=[query])
-        else:
-            with ThreadPoolExecutor(max_workers=2) as pool:
-                verdict = pool.submit(self._gate.verdict, search_query)
-                speculative = pool.submit(self._retriever.retrieve_all, search_query,
-                                          audience, also=[query])
-                answer = verdict.result()
+        early, self._early = self._early, None
+        if early is not None and early["text"] != search_query:
+            # the rewrite changed the question: what ran on the student's
+            # words is set aside, after it finishes (its gate call is
+            # counted, and two calls never share the gate's last_usage)
+            wait([future for future in (early["verdict"], early["results"]) if future])
+            if early["verdict"] is not None and early["verdict"].exception() is None:
                 self._track("gate", self._gate._model, self._gate.last_usage)
-                self._log_row("gate", f"{time.perf_counter() - start:.2f}s",
-                              f"verdict {answer}")
-                if answer != "ok":
-                    return answer
-                yield STAGE_SEARCHING
-                results = speculative.result()
+            early = None
+        started = early or self._start(search_query, query, education_type)
+        start = started["start"]
+        if started["verdict"] is not None:
+            answer = started["verdict"].result()
+            self._track("gate", self._gate._model, self._gate.last_usage)
+            self._log_row("gate", f"{time.perf_counter() - start:.2f}s",
+                          f"verdict {answer}")
+            if answer != "ok":
+                return answer
+        yield STAGE_SEARCHING
+        results = started["results"].result()
         timings = getattr(self._retriever, "last_timings", None)
         if timings:
             self._log_row("retrieval", f"{timings['embed'] + timings['search']:.2f}s",
                           f"embed {timings['embed']:.2f}s + search {timings['search']:.2f}s, "
                           f"alongside the gate")
         self._log_row("pipeline", f"{time.perf_counter() - start:.2f}s",
-                      "gate + retrieval combined")
+                      "gate + retrieval, started with the rewrite" if early
+                      else "gate + retrieval combined")
         routing = getattr(self._retriever, "last_routing", None)
         if routing and routing["scores"]:
             # every turn, so "nothing left out" reads as a decision, not a gap
@@ -477,6 +494,22 @@ class Conversation:
         self._messages.append({"role": "user", "content": content})
         self._pending_query = query
         return "ok"
+
+    def _start(self, search_query, query, education_type):
+        """Gate and retrieval for search_query, running in the background.
+        Retrieval is speculative: its result is discarded if the gate
+        blocks."""
+        pool = ThreadPoolExecutor(max_workers=2)
+        started = {
+            "text": search_query, "start": time.perf_counter(),
+            "verdict": pool.submit(self._gate.verdict, search_query) if self._gate else None,
+            # the student's own words search too: the rewrite fixes typos and
+            # follow-ups but sometimes misreads ("mbg" expanded wrong)
+            "results": pool.submit(self._retriever.retrieve_all, search_query,
+                                   FAQ_AUDIENCES.get(education_type), also=[query]),
+        }
+        pool.shutdown(wait=False)  # a refusal doesn't wait for retrieval
+        return started
 
     @staticmethod
     def _source_entry(corpus, result):
