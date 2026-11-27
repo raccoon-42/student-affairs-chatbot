@@ -316,3 +316,56 @@ def add_date_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
         out.append(line[start:])
         lines.append("".join(out))
     return "\n".join(lines), added
+
+
+# a word shorter than this ("ve", "da", "bir") pairs with anything
+MIN_PAIR_WORD = 4
+_URL_TEXT = re.compile(r"\]\([^)]*\)|https?://\S+|\b[\w-]+(?:\.[\w-]+)+\.(?:edu|gov|com|org|net|tr)\S*")
+
+
+def add_phrase_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
+    """A word pair the cited chunks lack, from the one chunk of the turn
+    that has it, adds that chunk's marker beside the old ones; the markers
+    added. Judge run 2026-11-28: "şube seçilir ve danışman onayına
+    gönderilir [5][8]": only [6] said "onayına gönderme". Guards, each
+    from replaying the fully logged failures (scripts/replay_citation_checks.py):
+    one of the pair's words is in that chunk alone, and that chunk shares
+    more of the text's words than any cited one. Without them, six failures
+    got five more markers, three wrong: an assistant's CV for "Mühendisliği
+    bölümü", the small gym's timetable for "Pazar günleri"."""
+    counts = Counter(word for chunk in chunks for word in set(tokenize(chunk)))
+    common = set()
+    if len(chunks) >= MIN_CHUNKS_FOR_COMMON:
+        common = {word for word, count in counts.items() if count > COMMON_SHARE * len(chunks)}
+    chunk_pairs = [_pairs(chunk) for chunk in chunks]
+    chunk_words = [set(tokenize(chunk)) for chunk in chunks]
+    added = []
+    lines = []
+    for line in answer.split("\n"):
+        out, start = [], 0
+        for run in _RUN.finditer(line):
+            # an address is no phrase: "oidb iyte" would back the link
+            # check's own target, a link the cited chunks don't have
+            text = _URL_TEXT.sub(" ", _MARKER.sub("", line[start:run.start()]))
+            marker = run.group(0)
+            cited = [int(n) for n in _MARKER.findall(run.group(2)) if 1 <= int(n) <= len(chunks)]
+            sources = list(cited)
+            words = set(tokenize(text)) - common
+            best_cited = max((len(words & chunk_words[n - 1]) for n in cited), default=0)
+            for pair in sorted(_pairs(text)):
+                if any(len(word) < MIN_PAIR_WORD or word in common or word.isdigit() for word in pair):
+                    continue
+                if not any(counts[word] == 1 for word in pair):
+                    continue
+                if any(pair in chunk_pairs[n - 1] for n in sources):
+                    continue
+                holders = [m for m in range(1, len(chunks) + 1) if pair in chunk_pairs[m - 1]]
+                if len(holders) == 1 and len(words & chunk_words[holders[0] - 1]) > best_cited:
+                    sources.append(holders[0])
+                    added.append(holders[0])
+                    marker += f"[{holders[0]}]"
+            out.append(line[start:run.start()] + marker)
+            start = run.end()
+        out.append(line[start:])
+        lines.append("".join(out))
+    return "\n".join(lines), added
