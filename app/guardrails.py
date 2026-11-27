@@ -39,11 +39,13 @@ class ScopeGate:
             self._llm, self._model,
             [{"role": "user", "content": GATE_PROMPT_TEMPLATE.format(query=query)}],
         )
-        words = reply.strip().lower().split()
+        # Turkish lowercase: str.lower() turns "HAYIR" into "hayir", which
+        # fell open; the ASCII spelling counts as well
+        words = reply.strip().replace("I", "ı").replace("İ", "i").lower().split()
         first = words[0] if words else ""
         if first.startswith("kaba"):
             return "abusive"
-        if first.startswith("hayır"):
+        if first.startswith(("hayır", "hayir")):
             return "off_topic"
         return "ok"
 
