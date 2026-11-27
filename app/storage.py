@@ -154,21 +154,32 @@ def _title_pending(title: str) -> bool:
 
 
 def record_exchange(conversation_id: str, email: str, query: str, answer: str, sources=None,
-                    usage=None):
+                    usage=None, continuing=False):
     """One completed turn: creates the conversation row on first use and
     appends both messages. `sources` documents what the answer was
     grounded on, `usage` what it cost. The title stays empty — the
     question must never serve as one; set_conversation_title fills it
-    with the model-written title shortly after."""
+    with the model-written title shortly after.
+
+    `continuing` says the conversation existed when the turn began: then
+    a missing row means it was deleted while the answer streamed, and
+    the turn is dropped instead of bringing the conversation back."""
     now = time.time()
     title = ""
     with _connect() as conn:
-        conn.execute(
-            """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?)
-               ON CONFLICT(id) DO UPDATE SET updated_at = excluded.updated_at""",
-            (conversation_id, email, title, now, now),
-        )
+        if continuing:
+            updated = conn.execute(
+                "UPDATE conversations SET updated_at = ? WHERE id = ? AND user_email = ?",
+                (now, conversation_id, email))
+            if updated.rowcount == 0:
+                return
+        else:
+            conn.execute(
+                """INSERT INTO conversations (id, user_email, title, created_at, updated_at)
+                   VALUES (?, ?, ?, ?, ?)
+                   ON CONFLICT(id) DO UPDATE SET updated_at = excluded.updated_at""",
+                (conversation_id, email, title, now, now),
+            )
         conn.executemany(
             """INSERT INTO messages (conversation_id, role, content, created_at, sources, "usage")
                VALUES (?, ?, ?, ?, ?, ?)""",

@@ -495,6 +495,7 @@ def chat(request: Request, query: str, session_id: str = None, model_name: str =
     _authorize_conversation(session_id, user)
     _validate_model(model_name)
     model = model_name or settings.OPENROUTER_MODEL
+    continuing = storage.conversation_owner(session_id) is not None
     conversation = get_conversation(session_id)
     _claim_turn(conversation)
     try:
@@ -510,7 +511,7 @@ def chat(request: Request, query: str, session_id: str = None, model_name: str =
     _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
     if user and response not in REFUSALS.values():  # refusals aren't part of the transcript
         storage.record_exchange(session_id, user["email"], query, response,
-                                sources=conversation.last_sources)
+                                sources=conversation.last_sources, continuing=continuing)
     return ChatResponse(query=query, response=response, model=model, session_id=session_id)
 
 
@@ -536,6 +537,8 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     _enforce_rate_limit(request, user)
     _authorize_conversation(session_id, user)
     _validate_model(model_name)
+    # deleted while the answer streams, it must stay deleted
+    continuing = storage.conversation_owner(session_id) is not None
     conversation = get_conversation(session_id)
     _claim_turn(conversation)
     stream = conversation.respond_stream(
@@ -584,7 +587,7 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
                    args=(session_id, user["email"], query or "(görsel)",
                          conversation.last_answer or answer),
                    kwargs={"sources": conversation.last_sources,
-                           "usage": conversation.last_usage},
+                           "usage": conversation.last_usage, "continuing": continuing},
                    daemon=True).start()
         # only now: the save above reads this turn's sources off the conversation
         _release_turn(conversation)
