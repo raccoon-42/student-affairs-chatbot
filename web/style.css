@@ -645,6 +645,18 @@ body.sidebar-collapsed header {
 header h1 {
   font-size: 1rem;
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* the logo as a mask, so it takes the theme's text color */
+header h1 .logo {
+  width: 1.4em;
+  height: 1.4em;
+  background: currentColor;
+  -webkit-mask: url("logo.svg") center / contain no-repeat;
+  mask: url("logo.svg") center / contain no-repeat;
 }
 
 #menu,

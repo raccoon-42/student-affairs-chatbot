@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
+  <img alt="İyteBot logo" src=".github/assets/logo-light.svg" width="72">
+</picture>
+
 # İyteBot
 
 [![tests](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml)
