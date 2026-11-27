@@ -452,7 +452,10 @@ async def chat_debug(session_id: str, auth_token: str = Cookie(None)):
         cached = _sessions.get(("openrouter", session_id))
     return {"debug": cached[0].last_debug if cached else [],
             "reference": cached[0].last_reference if cached else [],
-            "usage": cached[0].last_usage if cached else None}
+            "usage": cached[0].last_usage if cached else None,
+            # before the citation checks: the judge logs it, so a new check
+            # can be replayed on old failures without a judge run
+            "raw_answer": cached[0].last_raw_answer if cached else None}
 
 
 @app.get("/usage/me")

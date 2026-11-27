@@ -277,6 +277,7 @@ class Conversation:
         self.last_sources = []  # what the latest answer was grounded on
         self.last_reference = []  # numbered chunk texts sent to the model last turn
         self.last_answer = None  # the latest answer after the citation check
+        self.last_raw_answer = None  # the same, as the model wrote it (the judge logs both)
         self._chunk_texts = []  # what marker [n] points to: _chunk_texts[n-1]
         self.last_debug = []  # CLI-style log lines for the latest turn
         self.last_usage = None  # {"prompt_tokens", "completion_tokens"} of the latest main call
@@ -565,6 +566,7 @@ class Conversation:
     def _check_citations(self, answer):
         """The answer after the deterministic checks: citation markers its
         chunks don't back, and links no cited chunk contains."""
+        self.last_raw_answer = answer
         answer, removed = check_citations(answer, self._chunk_texts)
         if removed:
             self._log_row("citations", f"-{len(removed)}",

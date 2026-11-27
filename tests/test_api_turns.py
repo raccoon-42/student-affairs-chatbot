@@ -180,3 +180,13 @@ def test_a_link_cannot_send_a_message(monkeypatch):
         assert response.status_code in (404, 405), path
     assert ("openrouter", "link/chat") not in api._sessions
     assert ("openrouter", "link/chat/stream") not in api._sessions
+
+
+def test_the_debug_view_has_the_answer_before_the_citation_checks(monkeypatch):
+    # the judge logs it with every chunk of the turn, so a new citation
+    # check can be replayed on old failures without another judge run
+    client = make_client(monkeypatch, llm=FakeLLM(reply="Final 5 Ocak'ta [99]."))
+    body = client.post("/chat", json={"query": "final ne zaman", "session_id": "raw"}).json()
+    debug = client.get("/chat/debug", params={"session_id": "raw"}).json()
+    assert debug["raw_answer"] == "Final 5 Ocak'ta [99]."
+    assert body["response"] == "Final 5 Ocak'ta."  # the marker with no chunk went
