@@ -96,3 +96,20 @@ def test_respond_returns_the_answer_without_the_invented_link():
     assert answer == "Kimlik kartı kaybolursa Öğrenci İşleri dilekçe ister [3]."
     assert conversation.last_answer == answer
     assert any(line.startswith("links") and "oidb" in line for line in conversation.last_debug)
+
+
+def test_a_link_counts_only_if_a_cited_chunk_has_it():
+    # regression: an FAQ chunk had "https://oidb.iyte.edu.tr"; the answer gave
+    # that root page as a form's link under the form chunk's marker, and the
+    # check let it through because some chunk of the turn had the address
+    class FaqWithLink(FakeRetriever):
+        def retrieve_faq(self, query, top_k=3):
+            return [{"text": "Soru: Kimlik kartım kayboldu?\nCevap: Dilekçeyi https://oidb.iyte.edu.tr "
+                             "adresinden verin.", "score": 1.0, "metadata": {}}]
+
+    under_form = "Öğrenci Kimlik Kartı Formu [Formu](https://oidb.iyte.edu.tr) ile doldurulur [4]."
+    answer = Conversation(FakeLLM(reply=under_form), FaqWithLink(), model="m").respond("kimlik")
+    assert "oidb" not in answer and answer.endswith("doldurulur [4].")
+
+    under_faq = "Dilekçeyi https://oidb.iyte.edu.tr adresinden verin [3]."
+    assert Conversation(FakeLLM(reply=under_faq), FaqWithLink(), model="m").respond("kimlik") == under_faq

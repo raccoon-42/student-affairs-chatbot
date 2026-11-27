@@ -564,7 +564,7 @@ class Conversation:
 
     def _check_citations(self, answer):
         """The answer after the deterministic checks: citation markers its
-        chunks don't back, and links no chunk contains."""
+        chunks don't back, and links no cited chunk contains."""
         answer, removed = check_citations(answer, self._chunk_texts)
         if removed:
             self._log_row("citations", f"-{len(removed)}",
@@ -580,10 +580,15 @@ class Conversation:
             self._log_row("markers", f"+{len(added)}",
                           "added " + " ".join(f"[{n}]" for n in added)
                           + ": a bare fact that a cited chunk holds")
-        answer, links = check_links(answer, self._chunk_texts)
+        # only the chunks the answer cites back a link: an address from an
+        # uncited chunk went into the answer under another chunk's marker
+        # (the oidb root page given as the Mezuniyet Durumu Formu's link)
+        cited = {int(n) for n in re.findall(r"\[(\d+)\]", answer)}
+        answer, links = check_links(answer, [text for n, text in enumerate(self._chunk_texts, 1)
+                                             if n in cited])
         if links:
             self._log_row("links", f"-{len(links)}",
-                          "removed " + " ".join(links) + ": in no chunk of this turn")
+                          "removed " + " ".join(links) + ": in no chunk the answer cites")
         self.last_answer = answer
         return answer
 
