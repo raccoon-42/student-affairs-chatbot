@@ -1,18 +1,12 @@
 # Contributing
 
-## Roles
+`main` is protected: a PR needs the codeowner's (@raccoon-42) approval and
+a green `pytest` run, and the branch must be current with `main`.
 
-- **@raccoon-42** — codeowner. Assigns issues, reviews and merges.
-- **@DrHalley** — contributor. Pushes branches, opens PRs.
+## Before you start
 
-## Getting code in
-
-`main` is protected: a PR needs the codeowner's approval and a green
-`pytest` run, and the branch must be current with `main`.
-
-Work on what is assigned to you; ask before picking up something else.
-
-Before writing code, comment on the issue:
+Open an issue or comment on one; wait for it to be assigned to you. Then
+say how you'll do it:
 
 ```
 Approach: what you'll change, and where
@@ -20,42 +14,34 @@ Test: how you'll prove it works
 Unsure about: anything you're unsure of, or "nothing"
 ```
 
-`Unsure about` is the important line — a question costs a sentence now and
-a rewrite later. Scale the rest to the task: a one-line fix with the
-assertion already written in the issue needs little, a design change
-deserves the detail.
+`Unsure about` is the important line: a question costs a sentence now and
+a rewrite later.
+
+## Getting code in
 
 ```bash
 git switch main && git pull
-git switch -c fix/1-scopegate-hayir   # <type>/<issue>-<slug>
-uv run pytest                         # green before you push
-git push -u origin fix/1-scopegate-hayir
+git switch -c fix/12-gate-refusal   # <type>/<issue>-<slug>
+uv run pytest                       # green before you push
+git push -u origin fix/12-gate-refusal
 gh pr create --fill
 ```
 
-Branches are short-lived; merged ones delete themselves. Every bug fix
+Commits follow conventional commits (`fix(chat): ...`). Every bug fix
 ships with a test that fails before it and passes after.
 
 ## Tests
 
 ```bash
-uv run pytest        # offline suite — no services, no network, no API keys
-```
-
-`pytest.ini` deselects the `integration` marker; those tests hit real
-services and cost money:
-
-```bash
-uv run pytest -m integration tests/test_llm_judge.py -v
+uv run pytest        # offline: no services, no network, no API keys
+uv run pytest -m integration tests/test_llm_judge.py -v   # LLM judge, costs money
 ```
 
 ## Cost
 
-The codeowner funds the contributor's OpenRouter key. Keep it in your
-local `.env` (gitignored); never share or commit it.
+You need your own OpenRouter key in `.env` (gitignored). These cost money:
 
-What costs money:
-
-- first `docker compose up` on an empty Qdrant — embeds every corpus once
-- `vectorizer --recreate` — re-embeds an entire collection
-- `check_updates` without `--dry-run` — runs the LLM parsing steps
+- the judge eval
+- the first `docker compose up` on an empty Qdrant: embeds every corpus
+- `vectorizer --recreate`: re-embeds a whole collection
+- `check_updates` without `--dry-run`: runs the LLM parsers
