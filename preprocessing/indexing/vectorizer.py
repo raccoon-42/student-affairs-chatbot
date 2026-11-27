@@ -655,14 +655,15 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
 
     Only new/changed chunks are embedded; points whose chunk is gone are
     deleted. A corpus whose source didn't change costs zero embedding
-    calls. --recreate drops the collection first — needed when the
-    embedding backend/dimension changes (ids don't cover the vector
-    space). The payload shape is the only thing that differs between
-    document types, so it's a parameter.
+    calls. --recreate re-embeds everything and replaces the collection —
+    needed when the embedding backend/dimension changes (ids don't cover
+    the vector space). The payload shape is the only thing that differs
+    between document types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
-    from qdrant_client.http.models import (DenseVectorNameConfig, Distance, OptimizersConfigDiff,
-                                           PointIdsList, PointStruct, PointVectors, VectorParams)
+    from qdrant_client.http.models import (DeleteOperation, DenseVectorNameConfig, Distance,
+                                           OptimizersConfigDiff, PointIdsList, PointsList,
+                                           PointStruct, PointVectors, UpsertOperation, VectorParams)
 
     from app.embeddings import default_embedder
 
@@ -684,15 +685,13 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     print("Connecting to Qdrant...")
     qdrant = QdrantClient(settings.QDRANT_URL)
 
-    if recreate and qdrant.collection_exists(collection_name=collection_name):
-        print(f"Deleting existing collection: {collection_name}")
-        qdrant.delete_collection(collection_name=collection_name)
-
     # keyed by str(id) for the diff, but deletion needs the original id —
-    # pre-sync collections have integer ids, which are not valid as strings
+    # pre-sync collections have integer ids, which are not valid as strings.
+    # --recreate treats the collection as empty: everything is embedded, and
+    # the old collection keeps answering searches until the write
     existing = {}
     needs_field = False
-    if qdrant.collection_exists(collection_name=collection_name):
+    if not recreate and qdrant.collection_exists(collection_name=collection_name):
         needs_field = bool(with_questions) and not questions.has_field(qdrant, collection_name)
         if not has_bm25(qdrant, collection_name):  # indexed before the BM25 field
             rebuild_bm25(qdrant, collection_name)
@@ -736,11 +735,15 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
                 for pid in backfill[start:start + UPSERT_BATCH]])
         print(f"{collection_name}: question vectors added to {len(backfill)} existing chunks")
 
+    points = []
     if new_ids:
         print(f"Encoding {len(new_ids)} new/changed chunks "
               f"({len(desired) - len(new_ids)} unchanged, {settings.OPENROUTER_EMBEDDING_MODEL})...")
         vectors = embedder.embed_documents([index_text(desired[pid]) for pid in new_ids])
 
+        if recreate and qdrant.collection_exists(collection_name=collection_name):
+            print(f"Deleting existing collection: {collection_name}")
+            qdrant.delete_collection(collection_name=collection_name)
         if qdrant.collection_exists(collection_name=collection_name):
             configured = _dense_size(qdrant, collection_name)
             if configured != len(vectors[0]):
@@ -768,12 +771,18 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
                         payload={**desired[pid], FIELD: bm25_text(index_text(desired[pid]))})
             for pid, vector in zip(new_ids, vectors)
         ]
-        for start in range(0, len(points), UPSERT_BATCH):
-            qdrant.upsert(collection_name=collection_name, points=points[start:start + UPSERT_BATCH])
 
+    # the stale delete rides in the request with the last upsert: a live
+    # search saw a changed chunk's old and new version side by side between
+    # the two calls. Qdrant has no transactions, but one request's operations
+    # run back to back, so a sync of up to UPSERT_BATCH chunks lands at once
+    writes = [[UpsertOperation(upsert=PointsList(points=points[start:start + UPSERT_BATCH]))]
+                for start in range(0, len(points), UPSERT_BATCH)] or [[]]
     if stale_ids:
-        qdrant.delete(collection_name=collection_name,
-                      points_selector=PointIdsList(points=stale_ids))
+        writes[-1].append(DeleteOperation(delete=PointIdsList(points=stale_ids)))
+    for operations in writes:
+        if operations:
+            qdrant.batch_update_points(collection_name, operations)
 
     print(f"{collection_name}: {len(new_ids)} upserted, {len(stale_ids)} deleted, "
           f"{len(desired)} chunks total.")
@@ -791,7 +800,8 @@ def main():
                       required=True,
                       help='Type of content being processed')
     parser.add_argument('--recreate', action='store_true',
-                      help='Drop the collection first (needed when the embedding backend/dim changes)')
+                      help='Re-embed everything, then replace the collection (needed when the '
+                           'embedding backend/dim changes)')
 
     args = parser.parse_args()
 

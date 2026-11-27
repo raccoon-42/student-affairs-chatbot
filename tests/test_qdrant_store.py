@@ -271,3 +271,68 @@ def test_best_score_is_the_closest_chunk_or_question():
     assert abs(store.best_score("g", [[1.0, 0.0, 0.0]]) - 1.0) < 1e-6  # A's question
     assert abs(store.best_score("g", [[0.0, 0.0, 1.0], [0.0, 1.0, 0.0]]) - 1.0) < 1e-6  # B, 2nd phrasing
     assert store.best_score("missing", [[1.0, 0.0, 0.0]]) is None
+
+
+def test_a_changed_chunk_never_shows_old_and_new_side_by_side(monkeypatch):
+    """The stale delete went out after the upsert, so a live search in
+    between got both versions of a changed article (#6). Every write is
+    checked from outside, as a search between two requests would see it."""
+    import qdrant_client
+
+    from app import embeddings
+    from preprocessing.indexing import vectorizer
+
+    client = QdrantClient(":memory:")
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            return [[1.0, 0.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    old = {"text": "MADDE 5 — eski metin", "metadata": {}}
+    new = {"text": "MADDE 5 — yeni metin", "metadata": {}}
+    other = {"text": "MADDE 6", "metadata": {}}
+    vectorizer.store_embedding([old, other], "c", vectorizer._sks_payload)
+
+    seen = []
+    for method in ("upsert", "delete", "batch_update_points"):
+        real = getattr(client, method)
+        monkeypatch.setattr(client, method, lambda *a, _real=real, **k: (
+            _real(*a, **k), seen.append({p.payload["text"] for p in client.scroll("c")[0]}))[0])
+
+    vectorizer.store_embedding([new, other], "c", vectorizer._sks_payload)
+
+    assert seen and seen[-1] == {new["text"], other["text"]}
+    assert not any(old["text"] in texts and new["text"] in texts for texts in seen)
+
+
+def test_recreate_keeps_the_old_collection_until_the_new_vectors_are_ready(monkeypatch):
+    """--recreate dropped the collection before embedding, so searches got
+    nothing for as long as the embedding calls took (#6)."""
+    import qdrant_client
+
+    from app import embeddings
+    from preprocessing.indexing import vectorizer
+
+    client = QdrantClient(":memory:")
+    dim, during = [3], []
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            if client.collection_exists("c"):
+                during.append(client.count("c").count)
+            return [[1.0] + [0.0] * (dim[0] - 1) for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    chunk = {"text": "Final sınavları", "metadata": {}}
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload)
+
+    during.clear()
+    dim[0] = 4  # a new embedding model: only --recreate can switch
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload, recreate=True)
+
+    assert during == [1]  # still searchable while the new vectors were made
+    assert vectorizer._dense_size(client, "c") == 4
+    assert client.count("c").count == 1
