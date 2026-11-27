@@ -18,4 +18,9 @@ if ! curl -sf -m 2 "$QDRANT_URL/healthz" > /dev/null; then
 fi
 echo "[dev] qdrant ok at $QDRANT_URL"
 
-exec uv run uvicorn app.api.api:app --reload
+# watch only the server's code: by default the whole directory is watched,
+# agent worktrees under .claude/ included, and their edits restarted the
+# server mid judge run (the in-memory turn data the judge reads was lost).
+# --reload-exclude would need watchfiles, which isn't installed
+exec uv run uvicorn app.api.api:app --reload \
+    --reload-dir app --reload-dir config --reload-dir preprocessing
