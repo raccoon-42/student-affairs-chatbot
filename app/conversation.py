@@ -9,7 +9,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, wait
 
-from app.citations import check_citations
+from app.citations import add_missing_markers, check_citations, correct_markers
 from app.links import check_links
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
@@ -537,6 +537,16 @@ class Conversation:
             self._log_row("citations", f"-{len(removed)}",
                           "removed " + " ".join(f"[{n}]" for n in sorted(set(removed)))
                           + ": no word shared with the cited chunk, or a marker-only last line")
+        answer, moved = correct_markers(answer, self._chunk_texts)
+        if moved:
+            self._log_row("markers", f"~{len(moved)}",
+                          "moved " + " ".join(f"[{a}]→[{b}]" for a, b in moved)
+                          + ": the number is in the other chunk only")
+        answer, added = add_missing_markers(answer, self._chunk_texts)
+        if added:
+            self._log_row("markers", f"+{len(added)}",
+                          "added " + " ".join(f"[{n}]" for n in added)
+                          + ": a bare fact that a cited chunk holds")
         answer, links = check_links(answer, self._chunk_texts)
         if links:
             self._log_row("links", f"-{len(links)}",
