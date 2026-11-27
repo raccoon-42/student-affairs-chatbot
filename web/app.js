@@ -560,9 +560,34 @@ function withCitations(html, sources) {
   });
 }
 
+/* a list whose every line cites the same source shows that chip once, on
+ * the ":" line that introduces the list: the model marks each line, and
+ * with repeats dropped the one chip sat on the first item as if it backed
+ * only that line. Lists citing different sources keep a chip per line.
+ * Display only: the stored answer keeps its markers. */
+function liftListCitations(text) {
+  const lines = text.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    if (!/:\s*$/.test(lines[i]) || /^[-*] /.test(lines[i])) continue;
+    let j = i + 1;
+    while (j < lines.length && !lines[j].trim()) j++;
+    const items = [];
+    for (; j < lines.length && /^[-*] /.test(lines[j]); j++) items.push(j);
+    if (items.length < 2) continue;
+    const cites = items.map(k => (lines[k].match(/\[\d+\]/g) || []).join(""));
+    if (!cites[0] || cites.some(c => c !== cites[0])) continue;
+    for (const k of items) lines[k] = lines[k].replace(/ ?\[\d+\]/g, "");
+    lines[i] = `${lines[i].trimEnd()} ${cites[0]}`;  // after the ":", so it never dangles
+  }
+  return lines.join("\n");
+}
+
 function setBubbleText(el, role, text, sources) {
-  if (role === "bot") el.innerHTML = withCitations(renderMarkdown(text), sources);
-  else el.textContent = text;
+  // chips come with the sources, in the final pass; the lift waits for them
+  if (role === "bot") {
+    const shown = sources?.length ? liftListCitations(text) : text;
+    el.innerHTML = withCitations(renderMarkdown(shown), sources);
+  } else el.textContent = text;
 }
 
 function addBubble(role, text) {
