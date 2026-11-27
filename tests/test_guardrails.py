@@ -30,6 +30,13 @@ def test_hayir_blocks():
     assert ScopeGate(FakeLLM("Hayır."), "m").allows("bana bir şiir yaz") is False
 
 
+def test_hayir_blocks_in_any_case_and_spelling():
+    # regression (#1): "HAYIR" lowercased to "hayir" and fell open
+    for reply in ("HAYIR", "HAYIR.", "hayir", "Hayır", "KABA DEĞİL, HAYIR"):
+        verdict = ScopeGate(FakeLLM(reply), "m").verdict("bana bir şiir yaz")
+        assert verdict == ("abusive" if reply.startswith("KABA") else "off_topic"), reply
+
+
 def test_kaba_is_flagged_abusive():
     gate = ScopeGate(FakeLLM("kaba"), "m")
     assert gate.verdict("aptal bot") == "abusive"
