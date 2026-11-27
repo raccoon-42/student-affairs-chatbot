@@ -86,7 +86,7 @@ GÖREV:
    bilgisayar). Netleştirme sorusunu yalnızca makul hiçbir okuma yoksa sor.
 4. Referans verilerini doğrudan paylaşma, sadece soruya yanıt vermek için kullan (istisna: 6).
 5. Bugünün tarihi <current_datetime> etiketinde verilmiştir. Takvim maddelerinin sonundaki
-   (DURUM: ...) etiketi bugüne göre HESAPLANMIŞTIR — geçti/gelecek kararını yalnızca bu
+   ve rehberlerdeki tarihlerin yanındaki (DURUM: ...) etiketi bugüne göre HESAPLANMIŞTIR — geçti/gelecek kararını yalnızca bu
    etikete dayandır, kendi tarih karşılaştırmanı yapma. "geçti" etiketli tarihi gelecekmiş
    gibi sunma; "gelecekte" veya "devam ediyor" etiketli tarihe "geçti" deme. Konuşma
    geçmişinde bunlarla çelişen bir ifaden varsa etikete güven, eski ifadeni tekrarlama.
