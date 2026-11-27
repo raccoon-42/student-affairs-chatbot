@@ -34,6 +34,10 @@ CONTEXT_TEMPLATE = """
     {now}
     </current_datetime>
 
+    <current_term>
+    {term}
+    </current_term>
+
     <student_question>
     {query}
     </student_question>
@@ -449,6 +453,7 @@ class Conversation:
         context = CONTEXT_TEMPLATE.format(
             query=question,
             now=_now_tr(),
+            term=results.get("term") or "bilinmiyor",
             profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
             calendar_context="\n".join(numbered["calendar"]),
             regulations_context="\n".join(numbered["regulations"]),

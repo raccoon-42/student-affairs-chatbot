@@ -80,6 +80,15 @@ def _course_level(query: str) -> Optional[str]:
 _YEAR = re.compile(r'\b20\d{2}\b')
 CALENDAR_POOL = 50  # fetched before ended events are dropped, then cut to top_k
 CALENDAR_GRACE_DAYS = 14  # "notlar açıklandı mı" right after an event still finds it
+# the term's lines (see _current_term): its teaching periods ("... I.
+# yarıyıl dersler", "Yaz Öğretimi dersleri") and its final exams ("...
+# yarıyıl sonu sınavları", "Yaz Öğretimi sınavları"; not the grade
+# deadlines after them)
+TEACHING_PERIOD = re.compile(r"yarıyıl ders|Yaz Öğretimi dersleri")
+FINAL_EXAMS = re.compile(r"yarıyıl sonu sınavları\b|Yaz Öğretimi sınavları")
+TERM_POOL = 200  # every event of a type: 58 exams, 44 courses
+# render_line puts the term first: "[2026-2027 Güz Yarıyılı] 28 Eylül ..."
+_TERM_NAME = re.compile(r"^\[([^\]]+)\]")
 
 
 def _event_dates(metadata: Dict):
@@ -344,8 +353,8 @@ class Retriever:
                        "people": settings.PEOPLE_COLLECTION,
                        "courses": settings.COURSES_COLLECTION,
                        "guides": settings.GUIDES_COLLECTION}
-        # nine searches, the course catalog list and nine closeness checks
-        with ThreadPoolExecutor(max_workers=19) as pool:
+        # nine searches, the course catalog list, the term and nine closeness checks
+        with ThreadPoolExecutor(max_workers=20) as pool:
             closest = {name: pool.submit(self._store.best_score, collection,
                                          [vector, *other_vectors])
                        for name, collection in collections.items()}
@@ -364,6 +373,7 @@ class Retriever:
             # (docs/adr/0006)
             guides = pool.submit(self.retrieve_guides, query, 4, vector, also=also)
             course_departments = pool.submit(self.retrieve_course_departments, vector)
+            term = pool.submit(self._term, vector, self._today())
             results = {
                 "calendar": calendar.result(),
                 "regulations": regulations.result(),
@@ -375,6 +385,7 @@ class Retriever:
                 "courses": courses.result(),
                 "guides": guides.result(),
                 "course_departments": course_departments.result(),
+                "term": term.result(),
             }
             self.last_routing = self._route(results, {name: future.result()
                                                       for name, future in closest.items()})
@@ -389,6 +400,8 @@ class Retriever:
         # ("Kayıt işlemleri" -> registration) often disagree, and a hard
         # filter then excludes the right answer. Hybrid scoring already
         # rewards matching terms, so event_type stays out of the filter.
+        if vector is None:  # embedded once, for the search and the current term
+            vector = self._embed_query(normalize_query(query))
         filters = {}
         academic_period = extract_academic_period(query)
         if academic_period:
@@ -407,10 +420,60 @@ class Retriever:
             current = [(hit, score) for hit, score in hits
                        if not _ended_before(hit.metadata, cutoff)]
             hits = current or hits
+        hits = hits[:top_k]
+        if not _YEAR.search(query):
+            shown = {hit.text for hit, _ in hits}
+            hits += [(hit, hit.score) for hit in self._current_term(vector, today)
+                     if hit.text not in shown]
         return [
             {"text": self._format_calendar(hit, today), "score": score, "metadata": hit.metadata}
-            for hit, score in hits[:top_k]
+            for hit, score in hits
         ]
+
+    def _current_term(self, vector, today) -> List[Hit]:
+        """The term under way, or between terms the next one: its teaching
+        periods and its final exams (docs/adr/0015). "dönem ne zaman
+        bitiyor?" means that term, but the lecture period's line ("28 Eylül
+        ile 6 Ocak tarihleri arasında ... I. yarıyıl dersler") shares no
+        words with "bitiyor" and ranked past 40, so the model guessed the end
+        date; the rewrite of "okul ne zaman kapanıyor?" kept the lectures and
+        dropped the exams. Two or three short lines, every time."""
+        return (self._under_way_or_next(vector, today, "course", TEACHING_PERIOD)
+                + self._under_way_or_next(vector, today, "exam", FINAL_EXAMS))
+
+    def _term(self, vector, today) -> str:
+        """Which term today falls in, for the prompt (docs/adr/0015): the
+        model then needs no date math for "bu dönem", and knows it even when
+        routing leaves the calendar out. Its dates still come from the
+        calendar lines, with markers."""
+        hits = self._current_term(vector, today)
+
+        def name(hit):
+            match = _TERM_NAME.match(hit.text)
+            return match.group(1) if match else None
+
+        under_way = [hit for hit in hits if (dates := _event_dates(hit.metadata))
+                     and dates[0] <= today <= dates[1] and name(hit)]
+        if under_way:
+            return f"{name(under_way[0])} (sürüyor)"
+        upcoming = [name(hit) for hit in hits
+                    if hit.metadata.get("event_type") == "course" and name(hit)]
+        if upcoming:
+            return f"dönem arası; sıradaki: {upcoming[0]}"
+        return "takvimde sürmekte olan ya da sıradaki yarıyıl yok"
+
+    def _under_way_or_next(self, vector, today, event_type, period) -> List[Hit]:
+        hits = self._store.search(settings.CALENDAR_COLLECTION, vector, limit=TERM_POOL,
+                                  filters={"event_type": event_type})
+        periods = [(hit, dates) for hit in hits
+                   if period.search(hit.metadata.get("event", ""))
+                   and (dates := _event_dates(hit.metadata))]
+        under_way = [hit for hit, (start, end) in periods if start <= today <= end]
+        if under_way:
+            return under_way
+        upcoming = [(hit, start) for hit, (start, _) in periods if start > today]
+        first = min((start for _, start in upcoming), default=None)
+        return [hit for hit, start in upcoming if start == first]
 
     def retrieve_regulations(self, query: str, top_k: int = 5, vector=None, also=()) -> List[Dict]:
         hits = self._hybrid_search(query, settings.REGULATIONS_COLLECTION, top_k, vector=vector,

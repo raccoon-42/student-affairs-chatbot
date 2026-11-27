@@ -292,6 +292,17 @@ def test_abbreviations_reach_retrieval_and_the_model_expanded():
     assert "(anlaşılan soru: yüksek lisans dersleri ne)" in messages[-1]["content"]
 
 
+def test_prompt_states_the_current_term():
+    class TermRetriever(FakeRetriever):
+        def retrieve_all(self, query, audience=None, also=()):
+            return {**super().retrieve_all(query, audience), "term": "2026-2027 Güz Yarıyılı (sürüyor)"}
+
+    main_llm = FakeLLM()
+    Conversation(main_llm, TermRetriever(), model="test-model").respond("dönem ne zaman bitiyor")
+    _, messages = main_llm.calls[-1]
+    assert "<current_term>\n    2026-2027 Güz Yarıyılı (sürüyor)\n    </current_term>" in messages[-1]["content"]
+
+
 def test_prompt_states_which_departments_have_a_course_catalog():
     class CatalogRetriever(FakeRetriever):
         def retrieve_all(self, query, audience=None, also=()):
