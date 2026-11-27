@@ -122,3 +122,27 @@ def test_a_conversation_takes_one_turn_at_a_time(monkeypatch):
         assert response.status_code == 200
         "".join(response.iter_text())
     assert conversation.turn_started is None
+
+
+def test_a_conversation_deleted_while_its_answer_streams_stays_deleted(monkeypatch):
+    # regression (#3): the stream's save upserted the conversation row, so a
+    # chat deleted mid-answer came back on reload with just the last exchange.
+    # The body generator is driven by hand so the delete lands mid-stream
+    from app import storage
+    saved = []
+    monkeypatch.setattr(api, "Thread", lambda target, args, kwargs, daemon: type(
+        "Now", (), {"start": lambda self: saved.append(target(*args, **kwargs))})())
+    monkeypatch.setattr(api, "StreamingResponse", lambda body, **kwargs: body)
+    client = make_client(monkeypatch)
+    client.get("/chat", params={"query": "ilk", "session_id": "gone"})
+    assert storage.conversation_owner("gone") == "ali@gmail.com"
+
+    body = api._stream_chat(anonymous_request(), "ikinci", "gone", None,
+                            client.cookies["auth_token"])
+    for token in body:
+        if token not in api.STAGE_MARKERS:
+            break  # the answer is streaming
+    storage.delete_conversation("gone", "ali@gmail.com")
+    list(body)  # the answer finishes and the turn is saved
+    assert saved  # the save ran
+    assert storage.conversation_owner("gone") is None
