@@ -9,7 +9,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, wait
 
-from app.citations import add_missing_markers, check_citations, correct_markers
+from app.citations import add_date_markers, add_missing_markers, check_citations, correct_markers
 from app.links import check_links
 from app.guardrails import REFUSALS
 from app.llm import chat_with_usage
@@ -575,6 +575,11 @@ class Conversation:
             self._log_row("markers", f"~{len(moved)}",
                           "moved " + " ".join(f"[{a}]→[{b}]" for a, b in moved)
                           + ": the number is in the other chunk only")
+        answer, dated = add_date_markers(answer, self._chunk_texts)
+        if dated:
+            self._log_row("markers", f"+{len(dated)}",
+                          "added " + " ".join(f"[{n}]" for n in dated)
+                          + ": a date the cited chunks lack, from the chunk that has it")
         answer, added = add_missing_markers(answer, self._chunk_texts)
         if added:
             self._log_row("markers", f"+{len(added)}",
