@@ -339,9 +339,13 @@ class Conversation:
                       f"first token {first_token_at:.2f}s")
         if self.last_usage:
             cost = self.last_usage.get("cost")
+            cached = self.last_usage.get("cached_tokens") or 0
+            written = self.last_usage.get("cache_write_tokens") or 0
             self._log_row("usage", "",
                           f"prompt {self.last_usage['prompt_tokens']} + "
                           f"completion {self.last_usage['completion_tokens']} token"
+                          + (f" · cache read {cached}" if cached else "")
+                          + (f" · cache write {written}" if written else "")
                           + (f" · ${cost:.4f}" if cost is not None else ""))
         self._add_assistant_message(self._check_citations("".join(tokens)))
 
