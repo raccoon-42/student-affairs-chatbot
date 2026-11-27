@@ -344,3 +344,73 @@ def test_recreate_keeps_the_old_collection_until_the_new_vectors_are_ready(monke
     assert during == [1]  # still searchable while the new vectors were made
     assert vectorizer._dense_size(client, "c") == 4
     assert client.count("c").count == 1
+
+
+def test_a_collection_built_with_another_model_is_refused(monkeypatch):
+    """Point ids are content hashes, so after a model change of the same
+    dimension unchanged chunks kept the old model's vectors and the search
+    compared them with the new model's queries, silently (#8)."""
+    import pytest
+    import qdrant_client
+
+    from app import embeddings
+    from config import settings
+    from preprocessing.indexing import vectorizer
+
+    client = QdrantClient(":memory:")
+    embedded = []
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            embedded.extend(texts)
+            return [[1.0, 0.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    monkeypatch.setattr(settings, "OPENROUTER_EMBEDDING_MODEL", "old/model")
+    chunk = {"text": "Final sınavları", "metadata": {}}
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload)
+
+    monkeypatch.setattr(settings, "OPENROUTER_EMBEDDING_MODEL", "new/model")
+    embedded.clear()
+    with pytest.raises(SystemExit, match="old/model.*new/model.*--recreate"):
+        vectorizer.store_embedding([chunk, {"text": "Bahar kayıtları", "metadata": {}}], "c",
+                                   vectorizer._sks_payload)
+    assert embedded == []  # refused before any embedding call
+    with pytest.raises(RuntimeError, match="old/model.*new/model.*--recreate"):
+        QdrantVectorStore(client=client).search("c", [1.0, 0.0, 0.0], limit=1)
+
+    vectorizer.store_embedding([chunk], "c", vectorizer._sks_payload, recreate=True)
+    assert embeddings.recorded_model(client, "c") == "new/model"
+    assert QdrantVectorStore(client=client).search("c", [1.0, 0.0, 0.0], limit=1)[0].text == chunk["text"]
+
+
+def test_a_collection_without_a_recorded_model_keeps_working(monkeypatch):
+    """Collections indexed before the model was recorded are searched, with
+    a warning, and their next sync records the model. The search checks
+    each collection once, not on every query."""
+    import qdrant_client
+
+    from app import embeddings
+    from config import settings
+    from preprocessing.indexing import vectorizer
+
+    client = make_client(with_bm25=True)  # no recorded model
+    checked = []
+    real = embeddings.recorded_model
+    monkeypatch.setattr(embeddings, "recorded_model",
+                        lambda client, collection: checked.append(collection) or real(client, collection))
+    store = QdrantVectorStore(client=client)
+    for _ in range(3):
+        assert store.search("c", QUERY, limit=1)[0].text == "Genel hükümler"
+    store.best_score("c", [QUERY])
+    assert checked == ["c"]
+
+    class FakeEmbedder:
+        def embed_documents(self, texts):
+            return [[1.0, 0.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: client)
+    monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
+    vectorizer.store_embedding([{"text": "Genel hükümler", "metadata": {}}], "c", vectorizer._sks_payload)
+    assert real(client, "c") == settings.OPENROUTER_EMBEDDING_MODEL

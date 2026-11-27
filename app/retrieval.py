@@ -162,11 +162,13 @@ TIE_MARGIN = 10
 
 
 class QdrantVectorStore:
-    def __init__(self, url=None, client=None):
+    def __init__(self, url=None, client=None, embedding_model=None):
         self._url = url or settings.QDRANT_URL
         self._client = client  # created on first use, not at import
+        self._model = embedding_model or settings.OPENROUTER_EMBEDDING_MODEL  # the queries'
         self._bm25_ready = set()  # collections known to carry BM25 vectors
         self._questions = {}  # collection -> (has question vectors, checked at)
+        self._model_ok = set()  # collections not embedded with another model
 
     def search(self, collection: str, vector: List[float], limit: int,
                filters: Optional[Dict[str, str]] = None,
@@ -193,6 +195,7 @@ class QdrantVectorStore:
             # instead of taking the whole conversation down
             print(f"Warning: collection '{collection}' does not exist in Qdrant — skipping")
             return []
+        self._check_model(collection)
 
         # the filter goes on each ranking: the server would push a top-level
         # one down, but qdrant-client's local mode (tests) doesn't
@@ -238,6 +241,7 @@ class QdrantVectorStore:
 
         if not self._read(self._client.collection_exists, collection):
             return None
+        self._check_model(collection)
         requests = [QueryRequest(query=vector, limit=1) for vector in vectors]
         if self._has_questions(collection):
             requests += [QueryRequest(query=[vector], using=questions.VECTOR, limit=1)
@@ -265,6 +269,27 @@ class QdrantVectorStore:
             known = (self._read(questions.has_field, self._client, collection), time.monotonic())
             self._questions[collection] = known
         return known[0]
+
+    def _check_model(self, collection: str):
+        """Vectors from another embedding model live in another space: with
+        the same dimension the search returns noise and no error, so it
+        fails instead. Only a pass is cached: after a --recreate a mismatch
+        clears without a restart. A collection indexed before the model was
+        recorded is searched, with a warning."""
+        from app.embeddings import recorded_model
+
+        if collection in self._model_ok:
+            return
+        recorded = self._read(recorded_model, self._client, collection)
+        if recorded is None:
+            print(f"Warning: collection '{collection}' records no embedding model — assuming "
+                  f"{self._model}. Its next vectorizer run records it")
+        elif recorded != self._model:
+            raise RuntimeError(
+                f"collection '{collection}' was embedded with {recorded}, but queries are "
+                f"embedded with {self._model} (OPENROUTER_EMBEDDING_MODEL). Rerun its "
+                f"vectorizer with --recreate, or set the model back")
+        self._model_ok.add(collection)
 
     @staticmethod
     def _read(request, *args, **kwargs):
