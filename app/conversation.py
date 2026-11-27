@@ -164,6 +164,17 @@ IMAGE_QUERY_PROMPT = """Bir üniversite öğrencisi aşağıdaki görseli gönde
 _IYTE = re.compile(r"\b[iıIİ]yte\b|izmir\s+yüksek\s+teknoloji", re.IGNORECASE)
 
 
+_TAG_OPENING = re.compile(r"<(?=/?[A-Za-z_])")
+
+
+def _as_data(text):
+    """Text that goes inside the prompt's tags can't open or close one: a
+    student's "</student_question>", or markup on a scraped page, ended the
+    block early and passed what followed as instructions. Only "<" before
+    a tag name changes; "GNO < 2.00" stays."""
+    return _TAG_OPENING.sub("‹", text)
+
+
 def _words(text):
     """The words alone: Turkish lowercase ("İ" -> "i", "I" -> "ı"), no
     punctuation."""
@@ -482,14 +493,14 @@ class Conversation:
                 # (an office number) sat right before the NEXT chunk's marker,
                 # and the model cited that one (4 of 10 office answers)
                 n = len(self.last_sources)
-                numbered[corpus].append(f"[{n}] {result['text']} [{n}]")
+                numbered[corpus].append(f"[{n}] {_as_data(result['text'])} [{n}]")
         self.last_reference = [entry for corpus in corpora for entry in numbered[corpus]]
 
         # a follow-up ("akts kac") only makes sense with the history; without
         # the resolved question next to it, the model asked what was meant
         question = query if search_query == query else f"{query}\n    (anlaşılan soru: {search_query})"
         context = CONTEXT_TEMPLATE.format(
-            query=question,
+            query=_as_data(question),
             now=_now_tr(),
             term=results.get("term") or "bilinmiyor",
             profile=EDUCATION_LABELS.get(education_type, "bilinmiyor"),
@@ -507,7 +518,7 @@ class Conversation:
 
         if not self._messages:
             self._messages.append({"role": "system", "content": settings.load_system_prompt()})
-        text = f"Öğrenci: {query}\n\n{context}"
+        text = f"Öğrenci: {_as_data(query)}\n\n{context}"
         content = text if image is None else [
             {"type": "text", "text": text},
             {"type": "image_url", "image_url": {"url": image}},
