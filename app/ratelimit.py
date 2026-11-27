@@ -30,6 +30,13 @@ class RateLimiter:
         with self._lock:
             self._hits[key].append(time.time())
 
+    def release(self, key: str):
+        """Give back the latest hit, for a request that failed on our side."""
+        with self._lock:
+            hits = self._hits.get(key)
+            if hits:
+                hits.pop()
+
     def is_blocked(self, key: str) -> bool:
         with self._lock:
             return self._over_limit(key)

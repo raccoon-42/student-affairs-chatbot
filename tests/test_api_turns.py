@@ -146,3 +146,26 @@ def test_a_conversation_deleted_while_its_answer_streams_stays_deleted(monkeypat
     list(body)  # the answer finishes and the turn is saved
     assert saved  # the save ran
     assert storage.conversation_owner("gone") is None
+
+
+def test_a_turn_that_fails_on_our_side_gives_its_slot_back(monkeypatch):
+    # regression (#13): the quota was taken before the turn and kept when the
+    # LLM failed, so retries during an outage locked anonymous users out
+    from app.ratelimit import RateLimiter
+
+    class DownLLM(FakeLLM):
+        def chat(self, model, messages):
+            raise RuntimeError("upstream down")
+
+        def chat_stream(self, model, messages):
+            raise RuntimeError("upstream down")
+            yield
+
+    limiter = RateLimiter(limit=2)
+    monkeypatch.setattr(api, "_user_limiter", limiter)
+    client = make_client(monkeypatch, llm=DownLLM(), exempt=False)
+    monkeypatch.setattr(settings, "RATELIMIT_EXEMPT", set())
+    for _ in range(3):
+        assert client.get("/chat", params={"query": "soru", "session_id": "down"}).status_code == 503
+        client.post("/chat/stream", json={"query": "soru", "session_id": "down"}).text
+    assert limiter.allow("ali@gmail.com")  # nothing was used up
