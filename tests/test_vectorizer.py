@@ -1,6 +1,10 @@
-"""Chunk builders tested offline — pure JSON-to-chunks logic, no Qdrant."""
+"""Chunk builders tested offline — pure JSON-to-chunks logic, no Qdrant —
+and the CLI's input check."""
 import json
+import sys
 from datetime import date
+
+import pytest
 
 from preprocessing.indexing.vectorizer import (
     SKS_OWNER, _page_corpus_chunks, courses_chunks_from_dir, people_chunks_from_dir,
@@ -205,3 +209,34 @@ def test_guide_questions_ride_along_and_extend_only_the_searched_text(tmp_path):
     assert "ne zaman" not in chunk["text"]  # the model reads the text without them
     assert index_text({"text": chunk["text"], "questions": chunk["questions"]}) == chunk["text"] + "\nne zaman"
     assert index_text({"text": "MADDE 5"}) == "MADDE 5"  # corpora without questions: unchanged
+
+
+def run_main(monkeypatch, *argv):
+    from preprocessing.indexing import vectorizer
+
+    stored = []
+    monkeypatch.setattr(vectorizer, "store_embedding", lambda *a, **k: stored.append(a[1]))
+    monkeypatch.setattr(sys, "argv", ["vectorizer", *map(str, argv)])
+    vectorizer.main()
+    return stored
+
+
+@pytest.mark.parametrize("content_type", ["calendar", "regulations", "sks", "people", "courses",
+                                          "guides"])
+def test_a_multi_document_corpus_refuses_a_single_file(content_type, tmp_path, monkeypatch, capsys):
+    # a run's chunks are the collection's whole desired state: one file of
+    # guides kept the two manifest links and deleted every page (#15)
+    single = tmp_path / "one.json"
+    single.write_text("[]", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        run_main(monkeypatch, single, "--type", content_type)
+    assert "pass its directory" in capsys.readouterr().err
+
+
+def test_corpus_directories_and_single_file_corpora_still_index(tmp_path, monkeypatch):
+    # what check_updates passes: a directory, or the one JSON of faq/forms/programs
+    from config import settings
+
+    (tmp_path / "faq.json").write_text("[]", encoding="utf-8")
+    assert run_main(monkeypatch, tmp_path, "--type", "courses") == [settings.COURSES_COLLECTION]
+    assert run_main(monkeypatch, tmp_path / "faq.json", "--type", "faq") == [settings.FAQ_COLLECTION]
