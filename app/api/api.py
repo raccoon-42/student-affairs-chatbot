@@ -198,6 +198,18 @@ def _enforce_rate_limit(request: Request, user) -> None:
             raise LocalizedError(429, "limit_anon")
 
 
+def _refund_rate_limit(request: Request, user) -> None:
+    """A turn that failed on our side (the LLM down, another turn still
+    running) gives its slot back. During an outage the retries used up an
+    anonymous visitor's few messages an hour on error replies."""
+    if _limit_key(request, user) in settings.RATELIMIT_EXEMPT:
+        return
+    if user:
+        _user_limiter.release(user["email"])
+    else:
+        _anon_limiter.release(request.client.host if request.client else "unknown")
+
+
 def _record_turn_usage(key: str, entries: list) -> None:
     """One usage_log row per LLM call of a finished turn (gate, rewrite,
     image, chat), written off-thread. Anonymous traffic counts too, and
@@ -497,13 +509,18 @@ def chat(request: Request, query: str, session_id: str = None, model_name: str =
     model = model_name or settings.OPENROUTER_MODEL
     continuing = storage.conversation_owner(session_id) is not None
     conversation = get_conversation(session_id)
-    _claim_turn(conversation)
+    try:
+        _claim_turn(conversation)
+    except LocalizedError:
+        _refund_rate_limit(request, user)
+        raise
     try:
         response = conversation.respond(
             query, model, education_type=user["education_type"] if user else None)
     except Exception as error:  # upstream LLM stall/failure — not a server bug
         print(f"[error] chat failed: {error}", file=sys.stderr)  # detail stays server-side
         _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
+        _refund_rate_limit(request, user)
         raise LocalizedError(503, "service_unavailable")
     finally:
         _release_turn(conversation)
@@ -540,7 +557,11 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     # deleted while the answer streams, it must stay deleted
     continuing = storage.conversation_owner(session_id) is not None
     conversation = get_conversation(session_id)
-    _claim_turn(conversation)
+    try:
+        _claim_turn(conversation)
+    except LocalizedError:
+        _refund_rate_limit(request, user)
+        raise
     stream = conversation.respond_stream(
         query, model_name or settings.OPENROUTER_MODEL,
         education_type=user["education_type"] if user else None, image=image)
@@ -561,6 +582,7 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             # abort the HTTP stream — the browser would show a raw
             # NetworkError instead of a readable message
             print(f"[error] llm stream failed: {error}", file=sys.stderr)
+            _refund_rate_limit(request, user)
             # partial answer already on screen: say it broke instead of
             # stopping silently mid-sentence
             yield BROKE_OFF[lang] if tokens else MESSAGES["service_unavailable"][lang]
