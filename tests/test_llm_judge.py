@@ -30,9 +30,9 @@ def ask_chatbot(query: str, model_name: str) -> tuple[str, list, dict, list]:
     removed (app/citations.py), so a failure shows whether it was the check."""
     # generous but finite: a stalled upstream call should fail this one
     # case, not freeze the whole run (the server retries internally too)
-    response = requests.get(
+    response = requests.post(
         f"{settings.API_URL}/chat",
-        params={"query": query, "model_name": model_name},
+        json={"query": query, "model_name": model_name},
         timeout=300,
     )
     response.raise_for_status()

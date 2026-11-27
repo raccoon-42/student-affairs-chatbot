@@ -82,7 +82,7 @@ def test_llm_and_speech_calls_run_off_the_event_loop(monkeypatch):
             return "Final Tarihleri" if "dört kelimelik" in messages[-1]["content"] else "cevap"
 
     client = make_client(monkeypatch, llm=RecordingLLM())
-    client.get("/chat", params={"query": "final ne zaman", "session_id": "loop"})
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "loop"})
     client.get("/chat/title", params={"session_id": "loop"})
 
     class Groq:
@@ -106,7 +106,7 @@ def test_a_conversation_takes_one_turn_at_a_time(monkeypatch):
     # its history, sources and citation check
     import time
     client = make_client(monkeypatch)
-    assert client.get("/chat", params={"query": "ilk", "session_id": "busy"}).status_code == 200
+    assert client.post("/chat", json={"query": "ilk", "session_id": "busy"}).status_code == 200
     conversation = api._sessions[("openrouter", "busy")][0]
     assert conversation.turn_started is None  # released after the turn
 
@@ -134,7 +134,7 @@ def test_a_conversation_deleted_while_its_answer_streams_stays_deleted(monkeypat
         "Now", (), {"start": lambda self: saved.append(target(*args, **kwargs))})())
     monkeypatch.setattr(api, "StreamingResponse", lambda body, **kwargs: body)
     client = make_client(monkeypatch)
-    client.get("/chat", params={"query": "ilk", "session_id": "gone"})
+    client.post("/chat", json={"query": "ilk", "session_id": "gone"})
     assert storage.conversation_owner("gone") == "ali@gmail.com"
 
     body = api._stream_chat(anonymous_request(), "ikinci", "gone", None,
@@ -166,6 +166,17 @@ def test_a_turn_that_fails_on_our_side_gives_its_slot_back(monkeypatch):
     client = make_client(monkeypatch, llm=DownLLM(), exempt=False)
     monkeypatch.setattr(settings, "RATELIMIT_EXEMPT", set())
     for _ in range(3):
-        assert client.get("/chat", params={"query": "soru", "session_id": "down"}).status_code == 503
+        assert client.post("/chat", json={"query": "soru", "session_id": "down"}).status_code == 503
         client.post("/chat/stream", json={"query": "soru", "session_id": "down"}).text
     assert limiter.allow("ali@gmail.com")  # nothing was used up
+
+
+def test_a_link_cannot_send_a_message(monkeypatch):
+    # regression (#10): GET /chat and GET /chat/stream ran a turn with the
+    # auth cookie, which SameSite=Lax sends on any top-level link click
+    client = make_client(monkeypatch)
+    for path in ("/chat", "/chat/stream"):
+        response = client.get(path, params={"query": "merhaba", "session_id": f"link{path}"})
+        assert response.status_code in (404, 405), path
+    assert ("openrouter", "link/chat") not in api._sessions
+    assert ("openrouter", "link/chat/stream") not in api._sessions
