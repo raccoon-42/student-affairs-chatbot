@@ -3,6 +3,10 @@
 Indexing and querying both go through `embed_documents(texts)` /
 `embed_query(text)`, so the two sides can never disagree on model or
 prefix. `default_embedder()` returns the OpenRouter adapter.
+
+A collection outlives a model change (point ids are content hashes), so
+each one records the model that built it in its Qdrant metadata; the
+vectorizer and the search both check it against the configured model.
 """
 import time
 from typing import List
@@ -58,3 +62,12 @@ class OpenRouterEmbedder:
 
 def default_embedder():
     return OpenRouterEmbedder()
+
+
+MODEL_KEY = "embedding_model"  # in the collection's metadata
+
+
+def recorded_model(client, collection):
+    """The model a collection was embedded with; None for one indexed
+    before the model was recorded."""
+    return (client.get_collection(collection).config.metadata or {}).get(MODEL_KEY)

@@ -656,17 +656,19 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     Only new/changed chunks are embedded; points whose chunk is gone are
     deleted. A corpus whose source didn't change costs zero embedding
     calls. --recreate re-embeds everything and replaces the collection —
-    needed when the embedding backend/dimension changes (ids don't cover
-    the vector space). The payload shape is the only thing that differs
-    between document types, so it's a parameter.
+    needed when the embedding model changes (ids don't cover the vector
+    space; the collection records its model and a sync refuses another).
+    The payload shape is the only thing that differs between document
+    types, so it's a parameter.
     """
     from qdrant_client import QdrantClient
     from qdrant_client.http.models import (DeleteOperation, DenseVectorNameConfig, Distance,
                                            OptimizersConfigDiff, PointIdsList, PointsList,
                                            PointStruct, PointVectors, UpsertOperation, VectorParams)
 
-    from app.embeddings import default_embedder
+    from app.embeddings import MODEL_KEY, default_embedder, recorded_model
 
+    model = settings.OPENROUTER_EMBEDDING_MODEL
     if not chunks:
         raise SystemExit("No chunks produced — refusing to empty the collection. "
                          "If that is intended, delete it in Qdrant directly.")
@@ -692,6 +694,15 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     existing = {}
     needs_field = False
     if not recreate and qdrant.collection_exists(collection_name=collection_name):
+        # unchanged chunks keep their ids, and their vectors, across a model
+        # change: new vectors beside them would mix two vector spaces
+        recorded = recorded_model(qdrant, collection_name)
+        if recorded is None:  # indexed before the model was recorded
+            print(f"Warning: {collection_name} records no embedding model — assuming {model}")
+            qdrant.update_collection(collection_name, metadata={MODEL_KEY: model})
+        elif recorded != model:
+            raise SystemExit(f"{collection_name} was embedded with {recorded}, but the "
+                             f"configured model is {model} — rerun with --recreate.")
         needs_field = bool(with_questions) and not questions.has_field(qdrant, collection_name)
         if not has_bm25(qdrant, collection_name):  # indexed before the BM25 field
             rebuild_bm25(qdrant, collection_name)
@@ -738,7 +749,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     points = []
     if new_ids:
         print(f"Encoding {len(new_ids)} new/changed chunks "
-              f"({len(desired) - len(new_ids)} unchanged, {settings.OPENROUTER_EMBEDDING_MODEL})...")
+              f"({len(desired) - len(new_ids)} unchanged, {model})...")
         vectors = embedder.embed_documents([index_text(desired[pid]) for pid in new_ids])
 
         if recreate and qdrant.collection_exists(collection_name=collection_name):
@@ -758,6 +769,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
                 vectors_config=({"": dense, questions.VECTOR: questions.params(len(vectors[0]))}
                                 if with_questions else dense),
                 optimizers_config=OptimizersConfigDiff(default_segment_number=1),  # see keep_one_segment
+                metadata={MODEL_KEY: model},
             )
             qdrant.create_payload_index(collection_name, FIELD, index_params(), wait=True)
 
@@ -801,7 +813,7 @@ def main():
                       help='Type of content being processed')
     parser.add_argument('--recreate', action='store_true',
                       help='Re-embed everything, then replace the collection (needed when the '
-                           'embedding backend/dim changes)')
+                           'embedding model changes)')
 
     args = parser.parse_args()
 
