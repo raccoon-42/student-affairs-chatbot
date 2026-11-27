@@ -288,3 +288,16 @@ def test_a_date_stays_with_a_marker_that_backs_it_or_none_can():
     assert add_date_markers(invented, [LISANS_TERM, GUIDE, GUIDE]) == (invented, [])
     no_year = "Dersler 28 Eylül'de başladı [3]."  # without a year a date is too loose to place
     assert add_date_markers(no_year, [LISANS_TERM, GUIDE, GUIDE]) == (no_year, [])
+
+
+def test_word_pairs_pick_the_source_when_every_word_is_in_two():
+    # judge run 2026-11-27: an unmarked paragraph on askerlik tecili; each
+    # of its words was in two or more of the four cited askerlik sources,
+    # so no source had a word of its own and none was picked
+    right = "Tecil işlemleri Öğrenci İşleri tarafından YÖKSİS üzerinden yapılır."
+    shuffled = "YÖKSİS ile işlemleri üzerinden tecil, Öğrenci yapılır tarafından İşleri."
+    answer = ("Tecil işlemleri Öğrenci İşleri tarafından YÖKSİS üzerinden yapılır.\n\n"
+              "- Takip öğrenciye aittir [1][2].")
+    out, added = add_missing_markers(answer, [shuffled, right])
+    assert added == [2]
+    assert out.startswith("Tecil işlemleri Öğrenci İşleri tarafından YÖKSİS üzerinden yapılır [2].")
