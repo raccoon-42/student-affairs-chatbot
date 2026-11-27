@@ -18,3 +18,19 @@ def test_window_expiry_frees_slots(monkeypatch):
 
     monkeypatch.setattr("app.ratelimit.time.time", lambda: 10**10)  # far future
     assert limiter.allow("ip")
+
+
+def test_expired_keys_are_forgotten(monkeypatch):
+    # regression (#18): every key stayed in memory until a restart, and a
+    # check alone added an empty entry
+    clock = [1000.0]
+    monkeypatch.setattr("app.ratelimit.time.time", lambda: clock[0])
+    limiter = RateLimiter(limit=5, window_seconds=60)
+    assert not limiter.is_blocked("never-sent")
+    for n in range(100):
+        limiter.allow(f"visitor-{n}")
+    assert len(limiter._hits) == 100
+
+    clock[0] += 61  # a window later; none of them came back
+    limiter.allow("new-visitor")
+    assert list(limiter._hits) == ["new-visitor"]
