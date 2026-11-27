@@ -17,21 +17,10 @@ the eval.
 
 ## Answering a question
 
-```mermaid
-flowchart TD
-    Q([Student question]) --> RW[Rewrite<br/>standalone question]
-    Q --> G[Scope gate]
-    Q --> R[Hybrid search<br/>9 Qdrant collections]
-    RW -. "words changed:<br/>run again" .-> G
-    RW -.-> R
-    G -- off topic --> X([Refusal])
-    R --> RT[Routing<br/>drop far-off collections]
-    G -- ok --> P
-    RT --> P["Prompt<br/>chunks marked [n], today, current term"]
-    P --> A[Answer LLM, streamed]
-    A --> C[Citation check<br/>remove, move, add markers]
-    C --> UI([Answer with source chips])
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/answer-dark.svg">
+  <img alt="Rewrite, scope gate and hybrid search start together; routing drops far-off collections; the prompt carries [n]-marked chunks; the answer model streams; a citation check fixes markers; the answer shows source chips." src=".github/assets/answer-light.svg">
+</picture>
 
 - The gate and the search start on the student's own words while the
   rewrite runs; they run again only if the rewrite changes the words.
@@ -43,12 +32,10 @@ flowchart TD
 
 ## Keeping the data fresh
 
-```mermaid
-flowchart LR
-    S([University sites<br/>PDF + HTML]) -- daily scrape --> H{Changed?}
-    H -- no --> N([Skip])
-    H -- yes --> P[LLM parser] --> E[Embed<br/>dense + BM25] --> Q[(Qdrant)]
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/data-dark.svg">
+  <img alt="A daily scrape of the university sites; only changed sources are parsed, embedded and written to Qdrant." src=".github/assets/data-light.svg">
+</picture>
 
 The `check-updates` service runs this every day at 06:30 UTC. Only changed
 sources are parsed and embedded again.
