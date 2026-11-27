@@ -1,3 +1,5 @@
+<div align="center">
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
   <img alt="İyteBot logo" src=".github/assets/logo-light.svg" width="72">
@@ -8,6 +10,8 @@
 [![tests](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/raccoon-42/student-affairs-chatbot/actions/workflows/tests.yml)
 ![python](https://img.shields.io/badge/python-3.11%2B-3776AB)
 [![license](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)](LICENSE)
+
+</div>
 
 A Turkish chatbot for İYTE students. It answers from the university's own
 documents — academic calendar, regulations, FAQs, forms, campus services,
