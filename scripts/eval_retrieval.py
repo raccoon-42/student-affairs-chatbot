@@ -66,11 +66,13 @@ def first_rank(predicate, ranking):
                  if matches(predicate, text, metadata)), None)
 
 
-def score(case, rankings):
-    """Ranks of the case's relevant chunks in rankings[collection]."""
+def score(case, rankings, sent=False):
+    """Ranks of the case's relevant chunks in rankings[collection]. sent:
+    the rankings are what production sends (top_k plus anything added
+    after it, like the teaching period), so all of each counts as kept."""
     ranks = [first_rank(p, rankings.get(p["collection"], [])) for p in case["relevant"]]
     found = [r for r in ranks if r is not None]
-    within_k = [r is not None and r < TOP_K[p["collection"]]
+    within_k = [r is not None and (sent or r < TOP_K[p["collection"]])
                 for p, r in zip(case["relevant"], ranks)]
     best = min(found) if found else None
     return {
@@ -200,7 +202,7 @@ def run(cases, make_client, embedder):
                           for name in COLLECTIONS}
             record = {"case": case, "form": form, "text": text,
                       "production": production,
-                      "scores": {"production": score(case, production)}}
+                      "scores": {"production": score(case, production, sent=True)}}
             # one phrasing: the plain rankings; two: their RRF, like production
             dense = {name: [lab[part][name][0] for part in parts] for name in names}
             lexical = {name: [lab[part][name][1] for part in parts] for name in names}

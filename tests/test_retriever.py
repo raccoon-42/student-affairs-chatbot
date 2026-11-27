@@ -44,10 +44,10 @@ class InMemoryVectorStoreWrapper:
 
     def __init__(self, store):
         self.store = store
-        self.last_filters = "unset"
+        self.filters = []  # per search call; the main search comes first
 
     def search(self, collection, vector, limit, filters=None, lexical=None, rrf_k=None, also=()):
-        self.last_filters = filters
+        self.filters.append(filters)
         return self.store.search(collection, vector, limit, filters, lexical, rrf_k, also)
 
 
@@ -91,13 +91,13 @@ def test_normalize_query_is_idempotent():
 def test_query_filter_extraction_reaches_the_store():
     retriever = make_retriever()
     retriever.retrieve_calendar("güz dönemi sınavları ne zaman")
-    assert retriever._store.last_filters == {"academic_period": "fall"}
+    assert retriever._store.filters[0] == {"academic_period": "fall"}
 
 
 def test_no_signals_means_no_filter():
     retriever = make_retriever()
     retriever.retrieve_calendar("okul hakkında bilgi")
-    assert retriever._store.last_filters is None
+    assert retriever._store.filters[0] is None
 
 
 def test_most_relevant_calendar_chunk_ranks_first():
@@ -140,7 +140,7 @@ def test_retrieve_all_embeds_the_query_exactly_once():
 
     assert embedder.calls == 1  # one embed shared by all nine searches
     assert set(results) == {"calendar", "regulations", "faq", "forms", "sks", "programs",
-                            "people", "courses", "guides", "course_departments"}
+                            "people", "courses", "guides", "course_departments", "term"}
 
 
 def test_retrieve_all_names_the_departments_with_a_course_catalog():
@@ -421,7 +421,7 @@ def make_faq_retriever():
 def test_faq_audience_filter_selects_the_matching_copy():
     retriever = make_faq_retriever()
     results = retriever.retrieve_faq("sınav sonucuna itiraz", audience="lisansustu")
-    assert retriever._store.last_filters == {"audience": "lisansustu"}
+    assert retriever._store.filters[0] == {"audience": "lisansustu"}
     matches = [r for r in results if "itiraz" in r["text"]]
     assert len(matches) == 1
     assert matches[0]["metadata"]["audience"] == "lisansustu"
@@ -430,7 +430,7 @@ def test_faq_audience_filter_selects_the_matching_copy():
 def test_faq_without_profile_dedupes_duplicate_questions():
     retriever = make_faq_retriever()
     results = retriever.retrieve_faq("sınav sonucuna itiraz")
-    assert retriever._store.last_filters is None
+    assert retriever._store.filters[0] is None
     matches = [r for r in results if "itiraz" in r["text"]]
     assert len(matches) == 1
 
@@ -452,3 +452,65 @@ def test_a_collection_far_less_close_than_the_best_is_left_out(monkeypatch):
 
     monkeypatch.setattr(settings, "ROUTE_GAP", None)
     assert retriever.retrieve_all("sınav ne zaman")["programs"]
+
+
+def test_the_term_under_way_always_comes_along():
+    # "dönem ne zaman bitiyor?": the lecture period's line ("28 Eylül ile
+    # 6 Ocak tarihleri arasında ... I. yarıyıl dersler") shares no words with
+    # "bitiyor" and ranked past 40, so the model guessed the end date; for
+    # "okul ne zaman kapanıyor?" the rewrite kept the lectures and dropped
+    # the exams, so the final-exam period never came back
+    store = InMemoryVectorStore()
+    store.add(settings.CALENDAR_COLLECTION, "22 Ocak 2027 tez derslerinin son günü",
+              {"event_type": "deadline", "date1": "2027-01-22", "event": "tez derslerinin son günü"},
+              [1.0, 0.0, 0.0, 0.1])
+    for start, end, event in (("2026-09-28", "2027-01-06", "I. yarıyıl dersler"),
+                              ("2027-02-15", "2027-06-10", "II. yarıyıl dersler")):
+        store.add(settings.CALENDAR_COLLECTION, f"{start} ile {end} arasında {event}",
+                  {"event_type": "course", "date1": start, "date2": end, "event": event},
+                  [0.0, 0.0, 1.0, 0.1])
+    # the text says "finaller" so only the pin can bring them: the event
+    # field is what the pin reads
+    for start, end, event in (("2027-01-11", "2027-01-22", "yarıyıl sonu sınavları"),
+                              ("2027-06-14", "2027-06-25", "yarıyıl sonu sınavları"),
+                              ("2027-01-27", "2027-01-27", "yarıyıl sonu sınav notlarının girilmesi")):
+        store.add(settings.CALENDAR_COLLECTION, f"{start} ile {end} finaller",
+                  {"event_type": "exam", "date1": start, "date2": end, "event": event},
+                  [0.0, 1.0, 0.0, 0.1])
+
+    def texts(today, top_k=1):
+        retriever = Retriever(store, FakeEmbedder(), today=lambda: today)
+        return [r["text"].split(" (DURUM")[0]
+                for r in retriever.retrieve_calendar("sınav ne zaman bitiyor", top_k=top_k)]
+
+    assert texts(date(2026, 11, 27)) == ["22 Ocak 2027 tez derslerinin son günü",
+                                         "2026-09-28 ile 2027-01-06 arasında I. yarıyıl dersler",
+                                         "2027-01-11 ile 2027-01-22 finaller"]
+    # between terms: the next one
+    assert texts(date(2027, 1, 30))[1:] == ["2027-02-15 ile 2027-06-10 arasında II. yarıyıl dersler",
+                                            "2027-06-14 ile 2027-06-25 finaller"]
+    # already among the results: not twice
+    assert len(texts(date(2026, 11, 27), top_k=6)) == 6
+
+
+def test_the_term_is_worked_out_from_todays_date():
+    # the model is told which term it is, so "bu dönem" needs no date math
+    # and survives routing leaving the calendar out
+    store = InMemoryVectorStore()
+    for term, start, end, event, kind in (
+            ("2026-2027 Güz Yarıyılı", "2026-09-28", "2027-01-06", "I. yarıyıl dersler", "course"),
+            ("2026-2027 Güz Yarıyılı", "2027-01-11", "2027-01-22", "yarıyıl sonu sınavları", "exam"),
+            ("2026-2027 Bahar Yarıyılı", "2027-02-15", "2027-06-10", "II. yarıyıl dersler", "course"),
+            ("2026-2027 Yaz Öğretimi", "2027-07-19", "2027-08-27", "Yaz Öğretimi dersleri.", "course")):
+        store.add(settings.CALENDAR_COLLECTION, f"[{term}] {start} ile {end} arasında {event}.",
+                  {"event_type": kind, "date1": start, "date2": end, "event": event}, [0.0, 0.0, 1.0, 0.1])
+
+    def term(today):
+        return Retriever(store, FakeEmbedder(), today=lambda: today).retrieve_all("x")["term"]
+
+    assert term(date(2026, 11, 27)) == "2026-2027 Güz Yarıyılı (sürüyor)"
+    assert term(date(2027, 1, 15)) == "2026-2027 Güz Yarıyılı (sürüyor)"  # finals week
+    assert term(date(2027, 1, 30)) == "dönem arası; sıradaki: 2026-2027 Bahar Yarıyılı"
+    assert term(date(2027, 7, 1)) == "dönem arası; sıradaki: 2026-2027 Yaz Öğretimi"
+    assert term(date(2027, 8, 10)) == "2026-2027 Yaz Öğretimi (sürüyor)"
+    assert term(date(2027, 9, 1)) == "takvimde sürmekte olan ya da sıradaki yarıyıl yok"
