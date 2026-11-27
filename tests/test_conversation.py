@@ -455,3 +455,31 @@ def test_the_prompts_examples_hold_no_facts_to_copy():
     months = "Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık"
     for text in (CONTEXT_TEMPLATE, settings.load_system_prompt()):
         assert not re.search(rf"\b\d{{1,2}}(?:-\d{{1,2}})?\s+(?:{months})", text)
+
+
+def test_a_stopped_or_failed_turn_leaves_no_trace_in_the_history():
+    # regression (#4): Stop closed the stream before the turn was finalized,
+    # so its whole reference-data message stayed in the history and went to
+    # every later call beside the next question
+    conversation = make_conversation(FakeLLM(reply="uzun bir cevap burada"))
+    conversation.respond("ilk soru")
+    before = [dict(m) for m in conversation._messages]
+
+    stream = conversation.respond_stream("ikinci soru")
+    for token in stream:
+        if token not in (STAGE_GATING, STAGE_SEARCHING, STAGE_WRITING):
+            break  # the first answer token is on screen; the student stops
+    stream.close()
+    assert conversation._messages == before
+
+    class FailingLLM(FakeLLM):
+        def chat(self, model, messages):
+            raise RuntimeError("upstream down")
+
+    failing = Conversation(FailingLLM(), FakeRetriever(), model="test-model")
+    failing._messages = [dict(m) for m in before]
+    try:
+        failing.respond("üçüncü soru")
+    except RuntimeError:
+        pass
+    assert failing._messages == before

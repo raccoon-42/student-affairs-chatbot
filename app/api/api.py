@@ -475,6 +475,7 @@ async def chat(request: Request, query: str, session_id: str = None, model_name:
             query, model, education_type=user["education_type"] if user else None)
     except Exception as error:  # upstream LLM stall/failure — not a server bug
         print(f"[error] chat failed: {error}", file=sys.stderr)  # detail stays server-side
+        _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
         raise LocalizedError(503, "service_unavailable")
     _register_refusal(request, user, response)
     _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
@@ -529,9 +530,15 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
             # stopping silently mid-sentence
             yield BROKE_OFF[lang] if tokens else MESSAGES["service_unavailable"][lang]
             return
+        finally:
+            # also when the student presses Stop and the server closes this
+            # generator: closing the conversation's stream now makes it
+            # forget the unfinished turn, and the gate and rewrite calls the
+            # turn made are still counted
+            stream.close()
+            _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
         answer = "".join(tokens)
         _register_refusal(request, user, answer)
-        _record_turn_usage(_limit_key(request, user), list(conversation.turn_usage))
         # persist only after the full answer arrived; refusals aren't
         # part of the transcript. The write happens off-thread: the HTTP
         # stream stays open until this generator returns, so a slow SQLite

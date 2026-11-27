@@ -292,8 +292,12 @@ class Conversation:
             return REFUSALS[verdict]
 
         start = time.perf_counter()
-        answer, self.last_usage = chat_with_usage(
-            self._llm, model or self._model, self._messages)
+        try:
+            answer, self.last_usage = chat_with_usage(
+                self._llm, model or self._model, self._messages)
+        except Exception:
+            self._drop_turn()
+            raise
         self._track("chat", model or self._model, self.last_usage)
         self._log_row("llm", f"{time.perf_counter() - start:.2f}s")
         answer = self._check_citations(answer)
@@ -319,35 +323,43 @@ class Conversation:
             yield REFUSALS[verdict]
             return
 
-        yield STAGE_WRITING
-        start = time.perf_counter()
-        first_token_at = None
-        tokens = []
-        stream = self._llm.chat_stream(model or self._model, self._messages)
-        while True:  # manual next(): the generator's return value is the usage
-            try:
-                token = next(stream)
-            except StopIteration as done:
-                self.last_usage = done.value
-                self._track("chat", model or self._model, self.last_usage)
-                break
-            if first_token_at is None:
-                first_token_at = time.perf_counter() - start
-            tokens.append(token)
-            yield token
-        self._log_row("llm", f"{time.perf_counter() - start:.2f}s",
-                      f"first token {first_token_at:.2f}s")
-        if self.last_usage:
-            cost = self.last_usage.get("cost")
-            cached = self.last_usage.get("cached_tokens") or 0
-            written = self.last_usage.get("cache_write_tokens") or 0
-            self._log_row("usage", "",
-                          f"prompt {self.last_usage['prompt_tokens']} + "
-                          f"completion {self.last_usage['completion_tokens']} token"
-                          + (f" · cache read {cached}" if cached else "")
-                          + (f" · cache write {written}" if written else "")
-                          + (f" · ${cost:.4f}" if cost is not None else ""))
-        self._add_assistant_message(self._check_citations("".join(tokens)))
+        finished = False
+        try:
+            yield STAGE_WRITING
+            start = time.perf_counter()
+            first_token_at = None
+            tokens = []
+            stream = self._llm.chat_stream(model or self._model, self._messages)
+            while True:  # manual next(): the generator's return value is the usage
+                try:
+                    token = next(stream)
+                except StopIteration as done:
+                    self.last_usage = done.value
+                    self._track("chat", model or self._model, self.last_usage)
+                    break
+                if first_token_at is None:
+                    first_token_at = time.perf_counter() - start
+                tokens.append(token)
+                yield token
+            self._log_row("llm", f"{time.perf_counter() - start:.2f}s",
+                          f"first token {first_token_at:.2f}s")
+            if self.last_usage:
+                cost = self.last_usage.get("cost")
+                cached = self.last_usage.get("cached_tokens") or 0
+                written = self.last_usage.get("cache_write_tokens") or 0
+                self._log_row("usage", "",
+                              f"prompt {self.last_usage['prompt_tokens']} + "
+                              f"completion {self.last_usage['completion_tokens']} token"
+                              + (f" · cache read {cached}" if cached else "")
+                              + (f" · cache write {written}" if written else "")
+                              + (f" · ${cost:.4f}" if cost is not None else ""))
+            self._add_assistant_message(self._check_citations("".join(tokens)))
+            finished = True
+        finally:
+            # an upstream failure, or the student pressing Stop (the server
+            # closes this generator), ends the turn here
+            if not finished:
+                self._drop_turn()
 
     def _prepare(self, query, education_type=None, image=None) -> str:
         """Rewrite, then gate + retrieve; see the two halves below."""
@@ -561,6 +573,14 @@ class Conversation:
                           "removed " + " ".join(links) + ": in no chunk of this turn")
         self.last_answer = answer
         return answer
+
+    def _drop_turn(self):
+        """Forget a turn that never finished. Its message carries the whole
+        reference data; left in the history it went to every later call
+        (and the rewriter) for five more turns, beside the next question."""
+        if self._messages and self._messages[-1]["role"] == "user":
+            self._messages.pop()
+        self._pending_query = None
 
     def _add_assistant_message(self, answer):
         # the reference data was for this turn only — history keeps the bare
