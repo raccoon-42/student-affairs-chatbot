@@ -21,6 +21,7 @@ Meant for a daily cron once trusted:
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -35,6 +36,31 @@ STATE_PATH = DATA / "index_state.json"
 
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def load_state():
+    """The recorded hashes. An unreadable file counts as empty, so every
+    corpus records a new baseline instead of every later run crashing."""
+    if not STATE_PATH.exists():
+        return {}
+    try:
+        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    except ValueError as error:
+        print(f"WARNING: {STATE_PATH} is corrupt ({error}) — treating it as empty; "
+              f"every corpus records a new baseline", file=sys.stderr)
+        return {}
+
+
+def record_state(name, hashes):
+    """Record one corpus's hashes. The file is read again right before, so
+    the corpora a parallel run recorded meanwhile are kept, and replaced
+    by a rename, so a run stopped mid-write leaves the old file whole."""
+    state = load_state()
+    state[name] = hashes
+    temp = STATE_PATH.with_name(f"{STATE_PATH.name}.{os.getpid()}.tmp")
+    temp.write_text(json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8")
+    os.replace(temp, STATE_PATH)
 
 
 def run_module(module, *args):
@@ -379,7 +405,7 @@ def main():
     if unknown:
         parser.error(f"unknown corpora {unknown}; choose from: {', '.join(SYNCS)}")
 
-    state = json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
+    state = load_state()
     failed = []
     for name in args.corpora or SYNCS:
         print(f"\n=== {name} ===")
@@ -390,10 +416,7 @@ def main():
             failed.append(name)
             continue
         if new is not None:
-            state[name] = new
-            STATE_PATH.write_text(
-                json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                encoding="utf-8")
+            record_state(name, new)
 
     if failed:
         sys.exit(f"\nfailed: {', '.join(failed)} — state kept, will retry next run")
