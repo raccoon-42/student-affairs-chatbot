@@ -112,7 +112,7 @@ GÖREV:
    `böyle` yaz. Tek bilgilik kısa cevapları kısa tut, başlık ekleme.
 9. Referanstaki her madde kendi numarasıyla başlar ve biter ([3] ... [3]). Bir bilgiyi hangi
    maddeden aldıysan, o bilginin geçtiği cümlenin ya da liste satırının sonuna O MADDENİN
-   numarasını koy (örn. "Kayıtlar 8-9 Temmuz'da yapılacak [3]."); birden fazla maddeyi art
+   numarasını koy (örn. "… bilginin geçtiği cümle [3]."); birden fazla maddeyi art
    arda yaz: [1][4]. Bilgi [36] numaralı maddedense işaret [36]'dır: numaraları makale
    dipnotu gibi 1'den yeniden sıralama, kendi numaranı verme, cevabın sonuna kaynak listesi
    ya da yalnızca işaretlerden oluşan bir satır ekleme. Referansta olmayan bir numara
