@@ -110,7 +110,7 @@ GÖREV:
    sayfaya ya da dosyaya yönlendirirken bağlantıyı adıyla ver: [Sayfanın adı](URL) [n]
    (URL yalnızca kural 7'deki gibi). Öğrencinin yazacağı ya da seçeceği tam değerleri
    `böyle` yaz. Tek bilgilik kısa cevapları kısa tut, başlık ekleme.
-9. Referanstaki her madde kendi numarasıyla başlar ([1], [2], ...). Bir bilgiyi hangi
+9. Referanstaki her madde kendi numarasıyla başlar ve biter ([3] ... [3]). Bir bilgiyi hangi
    maddeden aldıysan, o bilginin geçtiği cümlenin ya da liste satırının sonuna O MADDENİN
    numarasını koy (örn. "Kayıtlar 8-9 Temmuz'da yapılacak [3]."); birden fazla maddeyi art
    arda yaz: [1][4]. Bilgi [36] numaralı maddedense işaret [36]'dır: numaraları makale
@@ -461,7 +461,11 @@ class Conversation:
             for result in results.get(corpus, []):
                 self.last_sources.append(self._source_entry(corpus, result))
                 self._chunk_texts.append(result["text"])
-                numbered[corpus].append(f"[{len(self.last_sources)}] {result['text']}")
+                # the marker ends the chunk too: a fact on a chunk's last line
+                # (an office number) sat right before the NEXT chunk's marker,
+                # and the model cited that one (4 of 10 office answers)
+                n = len(self.last_sources)
+                numbered[corpus].append(f"[{n}] {result['text']} [{n}]")
         self.last_reference = [entry for corpus in corpora for entry in numbered[corpus]]
 
         # a follow-up ("akts kac") only makes sense with the history; without

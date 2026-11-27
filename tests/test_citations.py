@@ -251,3 +251,14 @@ def test_a_fact_next_to_advice_still_gets_its_marker():
     fixed, added = add_missing_markers(answer, [turna])
     assert added == [1]
     assert fixed.endswith("Erasmus birimine danışabilirsin [1].")
+
+
+def test_every_chunk_ends_with_its_own_marker():
+    # an office number on a profile's last line sat right before the next
+    # profile's marker, and the model cited that one (4 of 10 answers)
+    conversation = Conversation(FakeLLM(reply="cevap"), FakeRetriever(), model="m")
+    conversation.respond("kimlik kaybettim")
+    assert conversation.last_reference
+    for entry in conversation.last_reference:
+        n = entry[:entry.index("]") + 1]
+        assert entry.endswith(f" {n}")
