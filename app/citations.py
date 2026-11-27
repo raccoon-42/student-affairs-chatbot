@@ -114,6 +114,13 @@ def _concrete(text):
     return False
 
 
+def _pairs(text):
+    """Adjacent word pairs: "YÖKSİS üzerinden yapılır" tells two sources
+    apart when both have all three words."""
+    words = tokenize(text)
+    return set(zip(words, words[1:]))
+
+
 def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
     """Facts no marker covers get the marker of a source the answer already
     cites, when one clearly holds them; the markers added. The model now
@@ -127,6 +134,7 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
     if not cited:
         return answer, []
     words_of = {n: set(tokenize(chunks[n - 1])) for n in cited}
+    pairs_of = {n: _pairs(chunks[n - 1]) for n in cited}
     common = set()
     if len(chunks) >= MIN_CHUNKS_FOR_COMMON:
         counts = Counter(word for chunk in chunks for word in set(tokenize(chunk)))
@@ -143,6 +151,16 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
         scores = sorted(((len(own[n]), n) for n in cited), reverse=True)
         best, n = scores[0]
         runner_up = scores[1][0] if len(scores) > 1 else 0
+        if best == runner_up:
+            # no word is one source's alone: four askerlik sources each had
+            # every word of "... Öğrenci İşleri tarafından YÖKSİS üzerinden
+            # yapılır", only one had its word pairs
+            pairs = _pairs(_MARKER.sub("", text))
+            own = {n: pairs & pairs_of[n] - set().union(*(pairs_of[m] for m in cited if m != n))
+                   for n in cited}
+            scores = sorted(((len(own[n]), n) for n in cited), reverse=True)
+            best, n = scores[0]
+            runner_up = scores[1][0] if len(scores) > 1 else 0
         if best > runner_up and len(words & words_of[n]) >= MIN_SHARED:
             return n
         return None
