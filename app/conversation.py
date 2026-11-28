@@ -357,7 +357,8 @@ class Conversation:
                 tokens.append(token)
                 yield token
             self._log_row("llm", f"{time.perf_counter() - start:.2f}s",
-                          f"first token {first_token_at:.2f}s")
+                          f"first token {first_token_at:.2f}s" if first_token_at is not None
+                          else "no tokens")
             if self.last_usage:
                 cost = self.last_usage.get("cost")
                 cached = self.last_usage.get("cached_tokens") or 0
@@ -368,6 +369,10 @@ class Conversation:
                               + (f" · cache read {cached}" if cached else "")
                               + (f" · cache write {written}" if written else "")
                               + (f" · ${cost:.4f}" if cost is not None else ""))
+            if not "".join(tokens).strip():
+                # nothing to show or keep: fails like the upstream, so the
+                # student gets the service message and the slot back
+                raise RuntimeError("the model returned an empty answer")
             self._add_assistant_message(self._check_citations("".join(tokens)))
             finished = True
         finally:

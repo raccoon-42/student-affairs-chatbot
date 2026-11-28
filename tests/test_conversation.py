@@ -133,6 +133,23 @@ def test_stream_yields_tokens_and_stores_full_answer():
     assert conversation._messages[-1] == {"role": "assistant", "content": "parçaparçacevap"}
 
 
+def test_an_empty_streamed_answer_fails_the_turn():
+    # it used to crash on the timing log line by accident; now it fails on
+    # purpose, leaving no empty answer in the history
+    import pytest
+
+    class EmptyLLM(FakeLLM):
+        def chat_stream(self, model, messages):
+            return
+            yield
+
+    conversation = make_conversation(EmptyLLM())
+    with pytest.raises(RuntimeError, match="empty answer"):
+        list(conversation.respond_stream("soru"))
+    assert [m for m in conversation._messages if m["role"] != "system"] == []
+    assert any(line.startswith("llm") and "no tokens" in line for line in conversation.last_debug)
+
+
 def test_stream_captures_usage_from_generator_return():
     class UsageLLM(FakeLLM):
         def chat_stream(self, model, messages):
