@@ -52,7 +52,7 @@ sources are parsed and embedded again.
 ## Run
 
 ```bash
-cp .env.example .env        # add OPENROUTER_API_KEY
+cp .env.example .env        # add OPENROUTER_API_KEY and QDRANT_API_KEY
 docker compose up --build   # http://localhost:8000
 ```
 

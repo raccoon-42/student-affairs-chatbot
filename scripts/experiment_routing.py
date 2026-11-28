@@ -150,7 +150,8 @@ def main():
     from app.embeddings import default_embedder
 
     cases = load_cases(args.source)
-    client = QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                          check_compatibility=False)
     embedder = CachedEmbedder(default_embedder())
     try:
         rows = measure(cases, client, embedder)

@@ -15,7 +15,7 @@ from preprocessing.indexing.vectorizer import keep_one_segment
 def main():
     from qdrant_client import QdrantClient
 
-    qdrant = QdrantClient(settings.QDRANT_URL)
+    qdrant = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
     names = [name for name in COLLECTIONS if qdrant.collection_exists(collection_name=name)]
     for name in names:
         keep_one_segment(qdrant, name)

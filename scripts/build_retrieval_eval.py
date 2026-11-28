@@ -152,7 +152,8 @@ def main():
         freeze_rewrites()
         return
     from qdrant_client import QdrantClient
-    client = QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                          check_compatibility=False)
     if args.step == "faq":
         build_faq(client)
     else:

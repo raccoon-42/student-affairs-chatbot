@@ -685,7 +685,7 @@ def store_embedding(chunks, collection_name, build_payload=_calendar_payload, re
     with_questions = {pid for pid, payload in desired.items() if payload.get("questions")}
 
     print("Connecting to Qdrant...")
-    qdrant = QdrantClient(settings.QDRANT_URL)
+    qdrant = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
 
     # keyed by str(id) for the diff, but deletion needs the original id —
     # pre-sync collections have integer ids, which are not valid as strings.

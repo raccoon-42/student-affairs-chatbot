@@ -18,7 +18,7 @@ COLLECTIONS = (
 def main():
     from qdrant_client import QdrantClient
 
-    qdrant = QdrantClient(settings.QDRANT_URL)
+    qdrant = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
     for name in COLLECTIONS:
         if not qdrant.collection_exists(collection_name=name):
             print(f"{name}: not indexed yet, skipping")
