@@ -15,8 +15,10 @@ import re
 from typing import List, Tuple
 
 # link text that is only a number is a citation marker followed by a
-# parenthesis ("[38](PDF)"), not a link
-_MARKDOWN = re.compile(r"\[(?!\d+\])([^\]]*)\]\(([^)\n]+)\)")
+# parenthesis ("[38](PDF)"), not a link. A "[" that starts no link matches
+# too, up to where the next link can start, and is kept: tried again from
+# each "[" of a long run, the rest of the answer was rescanned once per "["
+_MARKDOWN = re.compile(r"\[(?!\d+\])([^\]]*)(?:\]\(([^)\n]+)\)|\]\([^)\n]*\])?")
 _URL = re.compile(r"https?://[^\s)\]>\"']+")
 # a web address written without its scheme; not after "@" (e-mail), "/" or
 # ":" (inside a URL), "." or a letter (inside a longer name)
@@ -49,6 +51,8 @@ def check_links(answer: str, chunks: List[str]) -> Tuple[str, List[str]]:
     removed = []
 
     def markdown(match):
+        if match.group(2) is None:
+            return match.group(0)  # no link
         text, target = match.group(1), match.group(2).strip()
         if (_URL.fullmatch(target) or _DOMAIN.fullmatch(target)) and backed(target):
             return match.group(0)
