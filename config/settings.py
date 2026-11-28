@@ -124,6 +124,11 @@ CHAT_REFUSAL_LIMIT = int(os.getenv("CHAT_REFUSAL_LIMIT", "3"))
 # A single abusive message blocks the sender for this long (minutes)
 ABUSE_BLOCK_MINUTES = int(os.getenv("ABUSE_BLOCK_MINUTES", "10"))
 
+# Conversation imports (sign-in adopts the browser's local chat) per hour,
+# and the stored-message size past which an account can't import more
+IMPORT_LIMIT = int(os.getenv("IMPORT_LIMIT", "5"))
+IMPORT_MAX_MB = int(os.getenv("IMPORT_MAX_MB", "50"))
+
 # Comma-separated emails/IPs exempt from the abuse block only (dev use);
 # message limits and the spam brake still apply to these keys
 ABUSE_EXEMPT = {key.strip() for key in os.getenv("ABUSE_EXEMPT", "").split(",") if key.strip()}

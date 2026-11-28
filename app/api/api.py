@@ -89,6 +89,12 @@ MESSAGES = {
     "turn_in_progress": {
         "tr": "Bu sohbette bir cevap hâlâ yazılıyor. Bitince tekrar gönder.",
         "en": "An answer is still being written in this chat. Send again once it's done."},
+    "import_limit": {
+        "tr": "Çok fazla konuşma aktardın. Lütfen bir süre sonra tekrar dene.",
+        "en": "Too many conversations imported. Please try again later."},
+    "import_quota": {
+        "tr": "Kayıtlı konuşmaların depolama sınırına ulaştı.",
+        "en": "Your saved conversations have reached the storage limit."},
 }
 
 # suffix appended to a partial streamed answer when the upstream drops
@@ -329,6 +335,10 @@ async def conversations(auth_token: str = Cookie(None)):
     return storage.list_conversations(user["email"])
 
 
+# the UI imports once per sign-in; a loop of imports filled the disk
+_import_limiter = RateLimiter(settings.IMPORT_LIMIT)
+
+
 class ImportedMessage(BaseModel):
     role: str
     text: str
@@ -352,8 +362,14 @@ async def conversation_import(body: ConversationImport, auth_token: str = Cookie
         return {"ok": True}  # already adopted (e.g. repeated sign-in)
     if owner:
         raise LocalizedError(403, "not_your_conversation")
-    if not (0 < len(body.messages) <= 200) or any(len(m.text) > 20000 for m in body.messages):
+    if (len(body.id) > MAX_CONVERSATION_ID_CHARS or not (0 < len(body.messages) <= 200)
+            or any(len(m.text) > 20000 for m in body.messages)):
         raise LocalizedError(422, "invalid_conversation")
+    size = sum(len(m.text.encode()) for m in body.messages)
+    if storage.stored_message_bytes(user["email"]) + size > settings.IMPORT_MAX_MB * 1_000_000:
+        raise LocalizedError(413, "import_quota")
+    if not _import_limiter.allow(user["email"]):
+        raise LocalizedError(429, "import_limit")
     storage.import_conversation(body.id, user["email"], [
         {"role": "assistant" if m.role == "bot" else "user", "content": m.text}
         for m in body.messages
@@ -513,6 +529,8 @@ def chat(request: Request, body: ChatBody, auth_token: str = Cookie(None)):
     query, session_id, model_name = body.query, body.session_id, body.model_name
     if len(query) > MAX_QUERY_CHARS:
         raise LocalizedError(413, "query_too_long")
+    if session_id and len(session_id) > MAX_CONVERSATION_ID_CHARS:
+        raise LocalizedError(422, "invalid_conversation")
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
@@ -547,6 +565,8 @@ def chat(request: Request, body: ChatBody, auth_token: str = Cookie(None)):
 MAX_IMAGE_CHARS = 8_000_000  # ~6 MB of image as a base64 data URL
 MAX_QUERY_CHARS = 4_000  # matches the composer's maxlength; a query
 # beyond this is either abuse or a paste that belongs in an image
+MAX_CONVERSATION_ID_CHARS = 64  # the browser sends 32 hex; every message
+# row repeats the id, so a long one multiplied what a turn wrote to disk
 
 
 class ChatStreamBody(BaseModel):
@@ -561,6 +581,8 @@ def _stream_chat(request, query, session_id, model_name, auth_token, image=None,
     lang = lang if lang in ("tr", "en") else "tr"
     if len(query) > MAX_QUERY_CHARS:
         raise LocalizedError(413, "query_too_long")
+    if session_id and len(session_id) > MAX_CONVERSATION_ID_CHARS:
+        raise LocalizedError(422, "invalid_conversation")
     session_id = session_id or uuid.uuid4().hex
     user = auth.sessions.get(auth_token)
     _enforce_rate_limit(request, user)
