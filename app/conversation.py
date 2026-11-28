@@ -596,7 +596,7 @@ class Conversation:
         # only the chunks the answer cites back a link: an address from an
         # uncited chunk went into the answer under another chunk's marker
         # (the oidb root page given as the Mezuniyet Durumu Formu's link)
-        cited = {int(n) for n in re.findall(r"\[(\d+)\]", answer)}
+        cited = {int(n) for n in re.findall(r"\[(\d{1,4300})\]", answer)}
         answer, links = check_links(answer, [text for n, text in enumerate(self._chunk_texts, 1)
                                              if n in cited])
         if links:

@@ -21,7 +21,7 @@ from typing import List, Tuple
 from preprocessing.indexing.bm25 import tokenize
 
 _RUN = re.compile(r"( ?)((?:\[\d+\])+)")  # one or more markers in a row: "[1][4]"
-_MARKER = re.compile(r"\[(\d+)\]")
+_MARKER = re.compile(r"\[(\d{1,4300})\]")  # int() raises on a longer number
 _FOOTER = re.compile(r"[ \t]*(?:\[\d+\][ \t]*)+")  # a line of nothing but markers
 _LIST = re.compile(r"\[\d+(?:\s*,\s*\d+)+\]")  # "[26, 27]"
 # shorter text before a marker ("Evet [3].") is too little to judge by shared words
