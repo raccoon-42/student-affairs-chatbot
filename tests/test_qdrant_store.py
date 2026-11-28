@@ -414,3 +414,17 @@ def test_a_collection_without_a_recorded_model_keeps_working(monkeypatch):
     monkeypatch.setattr(embeddings, "default_embedder", FakeEmbedder)
     vectorizer.store_embedding([{"text": "Genel hükümler", "metadata": {}}], "c", vectorizer._sks_payload)
     assert real(client, "c") == settings.OPENROUTER_EMBEDDING_MODEL
+
+
+def test_store_sends_the_configured_api_key(monkeypatch):
+    """docker-compose.yml's Qdrant refuses requests without the key."""
+    import qdrant_client
+
+    from config import settings
+
+    client = make_client(with_bm25=True)
+    seen = []
+    monkeypatch.setattr(settings, "QDRANT_API_KEY", "k")
+    monkeypatch.setattr(qdrant_client, "QdrantClient", lambda *a, **k: seen.append(k) or client)
+    QdrantVectorStore().search("c", QUERY, limit=1)
+    assert seen == [{"api_key": "k"}]

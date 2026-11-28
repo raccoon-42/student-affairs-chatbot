@@ -293,7 +293,8 @@ def main():
     if not cases:
         sys.exit("no cases")
     def make_client():
-        return QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+        return QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                            check_compatibility=False)
 
     stale = stale_labels(cases, make_client())
     for case, predicate in stale:

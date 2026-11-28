@@ -123,7 +123,8 @@ def main():
     from app.retrieval import QdrantVectorStore, normalize_query
     from preprocessing.indexing.vectorizer import guides_chunks_from_dir
 
-    client = QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                          check_compatibility=False)
     if args.drop:
         for variant in VARIANTS[1:]:
             if client.collection_exists(GUIDES + LAB + variant):

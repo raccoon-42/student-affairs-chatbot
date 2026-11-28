@@ -65,6 +65,7 @@ def ranks(collection):
 
     embedder = CachedEmbedder(default_embedder())
     retriever = Retriever(QdrantVectorStore(client=QdrantClient(settings.QDRANT_URL,
+                                                                api_key=settings.QDRANT_API_KEY,
                                                                 check_compatibility=False)), embedder)
     print(f"collection {settings.CALENDAR_COLLECTION}: rank of the fall lecture period (top_k 10)")
     for query, also in QUERIES:
@@ -86,7 +87,7 @@ def main():
         from qdrant_client import QdrantClient
 
         from config import settings
-        QdrantClient(settings.QDRANT_URL).delete_collection(LAB)
+        QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY).delete_collection(LAB)
         print(f"dropped {LAB}")
     elif args.ranks:
         ranks(args.collection)

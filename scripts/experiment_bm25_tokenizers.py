@@ -114,7 +114,8 @@ def main():
         print("snowballstemmer not installed: stemmer variants skipped (see the docstring)\n")
 
     cases = load_cases(SOURCES)
-    client = QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                          check_compatibility=False)
     embedder = CachedEmbedder(default_embedder())
     names = sorted({p["collection"] for case in cases for p in case["relevant"]})
 

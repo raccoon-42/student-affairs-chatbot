@@ -41,7 +41,7 @@ CANDIDATES = [
 def scroll_collection(collection):
     """All points (text + payload) from a Qdrant collection."""
     from qdrant_client import QdrantClient
-    client = QdrantClient(settings.QDRANT_URL)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
     points, _ = client.scroll(collection_name=collection, limit=1000, with_payload=True)
     return [(p.payload["text"], p.payload) for p in points]
 

@@ -176,7 +176,7 @@ class QdrantVectorStore:
                rrf_k: Optional[int] = None, also=()) -> List[Hit]:
         if self._client is None:
             from qdrant_client import QdrantClient
-            self._client = QdrantClient(self._url)
+            self._client = QdrantClient(self._url, api_key=settings.QDRANT_API_KEY)
 
         from qdrant_client.http.models import (Filter, FieldCondition, MatchAny, MatchValue,
                                                Prefetch, Rrf, RrfQuery, TextQuery)
@@ -236,7 +236,7 @@ class QdrantVectorStore:
         embedded by one model. None when the collection doesn't exist."""
         if self._client is None:
             from qdrant_client import QdrantClient
-            self._client = QdrantClient(self._url)
+            self._client = QdrantClient(self._url, api_key=settings.QDRANT_API_KEY)
         from qdrant_client.http.models import QueryRequest
 
         if not self._read(self._client.collection_exists, collection):

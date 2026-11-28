@@ -72,7 +72,8 @@ def main():
     from app.embeddings import default_embedder
     from app.retrieval import QdrantVectorStore, normalize_query
 
-    client = QdrantClient(settings.QDRANT_URL, check_compatibility=False)
+    client = QdrantClient(settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY,
+                          check_compatibility=False)
     if args.drop:
         for collection in COLLECTIONS.values():
             if client.collection_exists(collection + LAB):

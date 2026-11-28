@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Vector store
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+# sent to Qdrant as its api-key; the server in docker-compose.yml requires
+# it. Unset sends none (a server without a key, the tests' in-memory one)
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY") or None
 CALENDAR_COLLECTION = os.getenv("CALENDAR_COLLECTION", "calendar")
 REGULATIONS_COLLECTION = os.getenv("REGULATIONS_COLLECTION", "regulations")
 FAQ_COLLECTION = os.getenv("FAQ_COLLECTION", "faq")
