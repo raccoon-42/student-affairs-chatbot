@@ -11,10 +11,13 @@ import sys
 from config import settings
 
 
-def chat_with_usage(llm, model, messages):
+def chat_with_usage(llm, model, messages, max_tokens=None):
     """(text, usage) from any adapter: uses the adapter's usage-aware call
-    when it has one, plain chat otherwise (fakes in tests)."""
+    when it has one, plain chat otherwise (fakes in tests). `max_tokens`
+    lowers the reply cap for short calls (titles)."""
     if hasattr(llm, "chat_with_usage"):
+        if max_tokens:
+            return llm.chat_with_usage(model, messages, max_tokens=max_tokens)
         return llm.chat_with_usage(model, messages)
     return llm.chat(model, messages), None
 
@@ -75,13 +78,14 @@ class OpenRouterLLM:
     def chat(self, model, messages):
         return self.chat_with_usage(model, messages)[0]
 
-    def chat_with_usage(self, model, messages):
+    def chat_with_usage(self, model, messages, max_tokens=None):
         """(text, usage) — usage carries prompt/completion tokens and the
         charged USD, so every call kind (gate, rewrite, title, …) can be
         accounted, not just the streamed main answer."""
         self._ensure_client()
         completion = self._client.chat.completions.create(
-            model=model, messages=_cacheable(model, messages), max_tokens=settings.LLM_MAX_TOKENS,
+            model=model, messages=_cacheable(model, messages),
+            max_tokens=max_tokens or settings.LLM_MAX_TOKENS,
             extra_body=_extra_body(model, self._effort))
         if not completion.choices:
             raise RuntimeError(f"OpenRouter returned no choices: {completion}")

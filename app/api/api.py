@@ -79,6 +79,9 @@ MESSAGES = {
         "tr": "Ses tanıma limitine ulaştın. Lütfen bir süre sonra tekrar dene.",
         "en": "You've reached the speech-recognition limit. Please try "
               "again later."},
+    "title_limit": {
+        "tr": "Sohbet başlığı limitine ulaştın. Lütfen bir süre sonra tekrar dene.",
+        "en": "You've reached the chat-title limit. Please try again later."},
     "no_audio": {"tr": "Ses verisi yok.", "en": "No audio data."},
     "audio_too_long": {"tr": "Kayıt çok uzun.", "en": "The recording is too long."},
     "stt_failed": {"tr": "Ses tanıma başarısız oldu.",
@@ -180,6 +183,9 @@ _refusal_limiter = RateLimiter(settings.CHAT_REFUSAL_LIMIT, window_seconds=600)
 _abuse_limiter = RateLimiter(limit=1, window_seconds=settings.ABUSE_BLOCK_MINUTES * 60)
 # voice input has its own quota so a transcription doesn't eat a chat slot
 _stt_limiter = RateLimiter(settings.STT_LIMIT)
+# each title is a model call; a reply the model rambled into is no title,
+# so nothing stops a client asking again but this quota
+_title_limiter = RateLimiter(settings.TITLE_LIMIT)
 
 
 def _limit_key(request: Request, user) -> str:
@@ -423,13 +429,16 @@ async def chat_sources(session_id: str, auth_token: str = Cookie(None)):
 def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)):
     """A short LLM-written title for the conversation's first exchange —
     the UI swaps its localized placeholder for it. Uses the cached
-    conversation, rehydrating persisted ones on a cache miss; the chat
-    that filled it was already rate-limited, and the UI retries only
-    while a conversation is still untitled. A plain def: FastAPI runs it
-    in a worker thread, so the LLM call doesn't stall every other request
-    on the event loop."""
+    conversation, rehydrating persisted ones on a cache miss. A titled
+    conversation gets its stored title back without a model call; the
+    calls that reach the model have their own quota (TITLE_LIMIT). A
+    plain def: FastAPI runs it in a worker thread, so the LLM call
+    doesn't stall every other request on the event loop."""
     user = auth.sessions.get(auth_token)
     _authorize_conversation(session_id, user)
+    stored = storage.conversation_title(session_id)
+    if stored:  # titled already: the stored title, no model call
+        return {"title": stored}
     with _sessions_lock:
         cached = _sessions.get(("openrouter", session_id))
     if cached:
@@ -442,12 +451,18 @@ def chat_title(request: Request, session_id: str, auth_token: str = Cookie(None)
         conversation = get_conversation(session_id)
     else:
         return {"title": None}
+    key = _limit_key(request, user)
+    limited = key not in settings.RATELIMIT_EXEMPT
+    if limited and not _title_limiter.allow(key):
+        raise LocalizedError(429, "title_limit")
     _, _, _, small_model = _backend("openrouter")
     try:
         title, usage = conversation.suggest_title(small_model)
     except Exception as error:  # a failed title is not worth an error state
         print(f"[title] generation failed: {error}", file=sys.stderr)
         return {"title": None}
+    if limited and title is None and usage is None:
+        _title_limiter.release(key)  # no exchange yet: no model call, no slot
     if usage:
         storage.record_usage(_limit_key(request, user), small_model, "title",
                              usage["prompt_tokens"], usage["completion_tokens"],

@@ -304,6 +304,15 @@ def set_conversation_title(conversation_id: str, title: str):
                      (title, conversation_id))
 
 
+def conversation_title(conversation_id: str) -> str | None:
+    """The stored title; None while it is pending, and for anonymous
+    conversations (no row)."""
+    with _connect() as conn:
+        row = conn.execute("SELECT title FROM conversations WHERE id = ?",
+                           (conversation_id,)).fetchone()
+    return row["title"] if row and not _title_pending(row["title"]) else None
+
+
 def conversation_owner(conversation_id: str) -> str | None:
     with _connect() as conn:
         row = conn.execute("SELECT user_email FROM conversations WHERE id = ?",

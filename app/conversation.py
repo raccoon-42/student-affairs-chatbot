@@ -627,14 +627,16 @@ class Conversation:
     def suggest_title(self, model):
         """(title, usage): a short sidebar title for the first exchange,
         written in the student's language; (None, None) when there is no
-        exchange to summarize. The answer is clipped — four title words
-        don't need all of it."""
+        exchange to summarize. Both sides are clipped — four title words
+        don't need all of them, and an imported first message can run to
+        20000 characters — and so is the reply (TITLE_MAX_TOKENS)."""
         exchange = [m for m in self._messages if m["role"] != "system"]
         if len(exchange) < 2:
             return None, None
         title, usage = chat_with_usage(self._llm, model, [
             {"role": "user", "content": TITLE_PROMPT.format(
-                query=exchange[0]["content"], answer=exchange[1]["content"][:500])}])
+                query=exchange[0]["content"][:500], answer=exchange[1]["content"][:500])}],
+            max_tokens=settings.TITLE_MAX_TOKENS)
         return title.strip().strip('"\'') or None, usage
 
     def reset(self):
