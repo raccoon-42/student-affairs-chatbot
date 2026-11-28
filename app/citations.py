@@ -82,7 +82,10 @@ def check_citations(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
 # a list line ("- Fizik", "1. Kayıt") or a bold heading line ("**Fen Fakültesi**")
 _ITEM = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s+\S")
 _HEADING = re.compile(r"^\s*\*\*[^*]+\*\*:?\s*$")
-_LEAD = re.compile(r"(\[\d+\])*\s*:\s*$")  # a line introducing a list ends with ":"
+# a line introducing a list ends with ":" ("Şunlar [3]:" too). The markers
+# and spaces before it go unmatched: tried at each one of a long run, they
+# rescanned the run each time
+_LEAD = re.compile(r":\s*$")
 _SENTENCE = re.compile(r"(?<=[.!?])\s+(?=\S)")
 # shared words a source needs before its marker is added: one shared
 # word ("bölüm") says little, two distinctive ones ("voleybol", "16.00") do
@@ -90,12 +93,16 @@ MIN_SHARED = 2
 # sentences that need no marker, so get none: a question back, sending the
 # student somewhere ("SKS'ye danışmanızı öneririm"), saying the data lacks
 # something. A marker there makes the judge check them against a source
-# that doesn't say them, failing an answer that passed
+# that doesn't say them, failing an answer that passed. The offer is matched
+# from a word's start and "elimde ... yok" not past the next "elimde":
+# tried from each letter of a long word, or each "elimde" of a long clause,
+# they rescanned the rest once per try
+_IN_DATA = r"\b(?:referansta|verilerde|elimde(?:ki)?)\b"
 _NOT_A_FACT = re.compile(
     r"\?\s*$|danış|iletişime geç|öneri|teyit|takip e|kontrol et|başvurabilir|bilgi alabilir|"
     r"öğrenebilir|sorabilir|en doğrusu|\bbugün|"  # today's date is the system's, not a source's
-    r"\w+(?:abil|ebil)irim\b|"  # an offer: "gruplayabilirim", "belirtebilirim"
-    r"\b(?:referansta|verilerde|elimde(?:ki)?)\b[^.;]*\b(?:yok|yer almıyor|bulunmuyor|değil)\b|"
+    r"\b\w+(?:abil|ebil)irim\b|"  # an offer: "gruplayabilirim", "belirtebilirim"
+    rf"{_IN_DATA}(?:(?!{_IN_DATA})[^.;])*\b(?:yok|yer almıyor|bulunmuyor|değil)\b|"
     r"aktaramıyorum|doğrulayamadım|bilmiyorum",
     re.IGNORECASE)
 
@@ -204,7 +211,8 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
                 if n:
                     added.append(n)
                     if lead is not None:
-                        lines[lead] = re.sub(r"\s*:\s*$", f" [{n}]:", lines[lead])
+                        # (?<!\s): tried at each space of a long run, it rescanned the run
+                        lines[lead] = re.sub(r"(?<!\s)\s*:\s*$", f" [{n}]:", lines[lead])
                     else:
                         lines[items[-1]] = lines[items[-1]].rstrip() + f" [{n}]"
             i = end
@@ -227,7 +235,8 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
             home = next((k for k in range(i, end) if target in lines[k]), None)
             if n and home is not None:  # a sentence split over lines is left alone
                 added.append(n)
-                marked = re.sub(r"\s*([.!?:]?)$", f" [{n}]\\1", target.rstrip(), count=1)
+                # (?<!\s) as on the ":" line above
+                marked = re.sub(r"(?<!\s)\s*([.!?:]?)$", f" [{n}]\\1", target.rstrip(), count=1)
                 lines[home] = lines[home].replace(target.rstrip(), marked, 1)
         i = end
     return "\n".join(lines), added
@@ -320,7 +329,21 @@ def add_date_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
 
 # a word shorter than this ("ve", "da", "bir") pairs with anything
 MIN_PAIR_WORD = 4
-_URL_TEXT = re.compile(r"\]\([^)]*\)|https?://\S+|\b[\w-]+(?:\.[\w-]+)+\.(?:edu|gov|com|org|net|tr)\S*")
+# a bare address is matched from its name's start, the "-" and "." before
+# its first letter included (they hold no word): tried again at each later
+# letter and dot, a long dotted or hyphenated name was rescanned each time
+_ADDRESS = re.compile(r"https?://\S+|(?<![\w-])(?<![\w-]\.)(?:-+\.)*-*"
+                      r"\b[\w-]+(?:\.[\w-]+)+\.(?:edu|gov|com|org|net|tr)\S*")
+_URL_TEXT = re.compile(r"\]\([^)]*+(\)?)|" + _ADDRESS.pattern)
+
+
+def _blank_url(match):
+    """A link target or an address becomes a space. A "](" no ")" closes
+    takes the rest of the text, its addresses blanked: no later "](" is
+    closed either, and each one rescanned the rest to find that out."""
+    if match.group(1) == "":
+        return "](" + _ADDRESS.sub(" ", match.group(0)[2:])
+    return " "
 
 
 def add_phrase_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
@@ -346,7 +369,7 @@ def add_phrase_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
         for run in _RUN.finditer(line):
             # an address is no phrase: "oidb iyte" would back the link
             # check's own target, a link the cited chunks don't have
-            text = _URL_TEXT.sub(" ", _MARKER.sub("", line[start:run.start()]))
+            text = _URL_TEXT.sub(_blank_url, _MARKER.sub("", line[start:run.start()]))
             marker = run.group(0)
             cited = [int(n) for n in _MARKER.findall(run.group(2)) if 1 <= int(n) <= len(chunks)]
             sources = list(cited)
