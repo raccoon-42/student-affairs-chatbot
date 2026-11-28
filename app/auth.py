@@ -37,6 +37,10 @@ def verify_google_token(credential: str) -> dict:
     claims = id_token.verify_oauth2_token(
         credential, google_requests.Request(), settings.GOOGLE_CLIENT_ID
     )
+    # a Google account can be opened with any address; until its owner
+    # proves it, the email (and the member/admin status it decides) is a claim
+    if claims.get("email_verified") is not True:
+        raise ValueError("Google has not verified this email")
     return {
         "email": claims["email"],
         "name": claims.get("name", ""),
