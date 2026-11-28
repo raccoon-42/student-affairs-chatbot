@@ -124,6 +124,41 @@ def test_import_adopts_anonymous_conversation(monkeypatch):
     assert TestClient(api.app).post("/conversations/import", json=payload).status_code == 401
 
 
+def test_imports_are_bounded_per_account(monkeypatch):
+    from app.ratelimit import RateLimiter
+    from config import settings
+
+    ali = {"email": "ali@gmail.com", "name": "Ali", "picture": "", "member": False}
+    client = make_client(monkeypatch, ali)
+    client.post("/auth/google", json={"credential": "fake"})
+    monkeypatch.setattr(api, "_import_limiter", RateLimiter(limit=1))
+
+    def payload(conversation_id):
+        return {"id": conversation_id, "messages": [
+            {"role": "user", "text": "soru"}, {"role": "bot", "text": "cevap"}]}
+
+    # an id longer than any the browser makes is refused before anything is written
+    assert client.post("/conversations/import", json=payload("x" * 65)).status_code == 422
+    assert client.post("/conversations/import", json=payload("first")).status_code == 200
+    # adopting the same one again costs nothing; a new one is over the hourly limit
+    assert client.post("/conversations/import", json=payload("first")).status_code == 200
+    assert client.post("/conversations/import", json=payload("second")).status_code == 429
+
+    # past the stored-size cap no more imports are taken, whatever the hourly count
+    monkeypatch.setattr(api, "_import_limiter", RateLimiter(limit=10))
+    monkeypatch.setattr(settings, "IMPORT_MAX_MB", 0)
+    assert client.post("/conversations/import", json=payload("third")).status_code == 413
+    assert [c["id"] for c in client.get("/conversations").json()] == ["first"]
+
+
+def test_a_chat_with_an_overlong_id_is_refused():
+    # every stored message repeats the id; refused before any model call
+    client = TestClient(api.app)
+    for path in ("/chat", "/chat/stream"):
+        response = client.post(path, json={"query": "merhaba", "session_id": "x" * 65})
+        assert response.status_code == 422
+
+
 def test_anonymous_rate_limit_returns_429(monkeypatch):
     from app.ratelimit import RateLimiter
     # limit 0 blocks immediately — the check runs before any model call,

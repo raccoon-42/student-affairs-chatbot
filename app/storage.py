@@ -206,6 +206,16 @@ def record_exchange(conversation_id: str, email: str, query: str, answer: str, s
         )
 
 
+def stored_message_bytes(email: str) -> int:
+    """UTF-8 size of every message the account has stored."""
+    with _connect() as conn:
+        row = conn.execute(
+            """SELECT COALESCE(SUM(LENGTH(CAST(m.content AS BLOB))), 0) FROM messages m
+               JOIN conversations c ON c.id = m.conversation_id
+               WHERE c.user_email = ?""", (email,)).fetchone()
+    return row[0]
+
+
 def import_conversation(conversation_id: str, email: str, messages: list, title: str = None):
     """Adopt an anonymous conversation into an account: the browser sends
     the transcript it kept locally (plus the model-written title it
