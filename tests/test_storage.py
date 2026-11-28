@@ -25,6 +25,45 @@ def test_auth_session_roundtrip():
     assert storage.get_auth_user("token1") is None
 
 
+def test_a_copy_of_the_database_holds_no_working_session():
+    storage.upsert_user(USER)
+    storage.create_auth_session("secret-token", USER["email"])
+
+    with storage._connect() as conn:
+        [stored] = [row[0] for row in conn.execute("SELECT token_hash FROM auth_sessions")]
+    assert stored != "secret-token"
+    # the stored value itself, sent as the cookie, signs nobody in
+    assert storage.get_auth_user(stored) is None
+    assert storage.get_auth_user("secret-token")["email"] == USER["email"]
+
+
+def test_cleartext_sessions_are_dropped_by_the_migration():
+    import sqlite3
+
+    from config import settings
+
+    # a database from before hashing: the token itself is the key
+    conn = sqlite3.connect(settings.DB_PATH)
+    conn.executescript("""
+        CREATE TABLE users (email TEXT PRIMARY KEY, name TEXT NOT NULL DEFAULT '',
+            picture TEXT NOT NULL DEFAULT '', member INTEGER NOT NULL DEFAULT 0,
+            education_type TEXT, created_at REAL NOT NULL);
+        CREATE TABLE auth_sessions (token TEXT PRIMARY KEY,
+            email TEXT NOT NULL REFERENCES users(email) ON DELETE CASCADE,
+            created_at REAL NOT NULL);
+        INSERT INTO users (email, created_at) VALUES ('ali@std.iyte.edu.tr', 0);
+        INSERT INTO auth_sessions VALUES ('legacy-token', 'ali@std.iyte.edu.tr', 1e12);
+    """)
+    conn.commit()
+    conn.close()
+
+    # a token taken from an old copy of the file no longer signs in...
+    assert storage.get_auth_user("legacy-token") is None
+    # ...and new sessions work after the upgrade
+    storage.create_auth_session("fresh-token", USER["email"])
+    assert storage.get_auth_user("fresh-token")["email"] == USER["email"]
+
+
 def test_exchanges_accumulate_with_placeholder_title():
     storage.upsert_user(USER)
     storage.record_exchange("conv1", USER["email"], "ilk soru", "ilk cevap")

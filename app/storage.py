@@ -8,6 +8,7 @@ conversation cache.
 sqlite3 from the stdlib, one short-lived connection per operation:
 no pooling, no ORM, no extra dependency. Fine at this scale.
 """
+import hashlib
 import json
 import sqlite3
 import time
@@ -25,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at REAL NOT NULL
 );
 CREATE TABLE IF NOT EXISTS auth_sessions (
-    token TEXT PRIMARY KEY,
+    token_hash TEXT PRIMARY KEY,
     email TEXT NOT NULL REFERENCES users(email) ON DELETE CASCADE,
     created_at REAL NOT NULL
 );
@@ -77,7 +78,21 @@ def _connect():
     columns = [row[1] for row in conn.execute("PRAGMA table_info(messages)")]
     if "usage" not in columns:
         conn.execute('ALTER TABLE messages ADD COLUMN "usage" TEXT')
+    # migration: sessions were stored as cleartext tokens. Those rows are
+    # dropped, not hashed in place, so a token read from an older copy of
+    # the file signs nobody in; their users sign in once more.
+    columns = [row[1] for row in conn.execute("PRAGMA table_info(auth_sessions)")]
+    if "token" in columns:
+        conn.execute("DELETE FROM auth_sessions")
+        conn.execute("ALTER TABLE auth_sessions RENAME COLUMN token TO token_hash")
     return conn
+
+
+def _hash_token(token: str) -> str:
+    """Only a hash of the cookie value is stored, so a copy of the database
+    holds no working session. The token is random (uuid4), so a plain
+    SHA-256 needs no salt."""
+    return hashlib.sha256(token.encode()).hexdigest()
 
 
 def _user_dict(row) -> dict:
@@ -119,8 +134,8 @@ def create_auth_session(token: str, email: str):
         # the table can't grow without bound
         conn.execute("DELETE FROM auth_sessions WHERE created_at < ?",
                      (now - settings.AUTH_SESSION_TTL_DAYS * 86400,))
-        conn.execute("INSERT INTO auth_sessions (token, email, created_at) VALUES (?, ?, ?)",
-                     (token, email, now))
+        conn.execute("INSERT INTO auth_sessions (token_hash, email, created_at) VALUES (?, ?, ?)",
+                     (_hash_token(token), email, now))
 
 
 def get_auth_user(token) -> dict | None:
@@ -130,7 +145,8 @@ def get_auth_user(token) -> dict | None:
     with _connect() as conn:
         row = conn.execute(
             """SELECT u.* FROM auth_sessions s JOIN users u ON u.email = s.email
-               WHERE s.token = ? AND s.created_at >= ?""", (token, cutoff)).fetchone()
+               WHERE s.token_hash = ? AND s.created_at >= ?""",
+            (_hash_token(token), cutoff)).fetchone()
     return _user_dict(row) if row else None
 
 
@@ -138,7 +154,7 @@ def drop_auth_session(token):
     if not token:
         return
     with _connect() as conn:
-        conn.execute("DELETE FROM auth_sessions WHERE token = ?", (token,))
+        conn.execute("DELETE FROM auth_sessions WHERE token_hash = ?", (_hash_token(token),))
 
 
 # ---------- conversations & messages ----------

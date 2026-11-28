@@ -213,15 +213,15 @@ def test_expired_session_is_rejected_and_pruned():
     # age the token past the TTL: it must no longer authenticate...
     stale = time.time() - (settings.AUTH_SESSION_TTL_DAYS + 1) * 86400
     with storage._connect() as conn:
-        conn.execute("UPDATE auth_sessions SET created_at = ? WHERE token = ?",
-                     (stale, "tok-old"))
+        conn.execute("UPDATE auth_sessions SET created_at = ? WHERE token_hash = ?",
+                     (stale, storage._hash_token("tok-old")))
     assert storage.get_auth_user("tok-old") is None
 
     # ...and the next login prunes the expired row rather than letting it linger
     storage.create_auth_session("tok-new", "old@gmail.com")
     with storage._connect() as conn:
-        tokens = {r["token"] for r in conn.execute("SELECT token FROM auth_sessions")}
-    assert tokens == {"tok-new"}
+        tokens = {r["token_hash"] for r in conn.execute("SELECT token_hash FROM auth_sessions")}
+    assert tokens == {storage._hash_token("tok-new")}
 
 
 def test_delete_conversation(monkeypatch):
