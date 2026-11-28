@@ -73,6 +73,15 @@ def test_markers_past_the_reference_are_removed():
     assert removed == [9]
 
 
+def test_a_marker_too_long_for_int_is_removed_without_an_error():
+    # int() raises past 4300 digits: a model told to close with such a
+    # marker turned a delivered answer into a failed turn
+    answer = "Bahar yarıyılı dersleri 15 Şubat'ta başlar [3][12345][" + "9" * 4301 + "]."
+    cleaned, removed = check_citations(answer, CALENDAR)
+    assert cleaned == "Bahar yarıyılı dersleri 15 Şubat'ta başlar [3]."
+    assert removed == [12345]
+
+
 def test_words_in_most_chunks_do_not_count():
     chunks = [f"Öğrenci konu {i}: ayrıntı{i}" for i in range(12)]
     answer = "Öğrenci kimlik kartı yenileme işlemi [1]."
@@ -108,6 +117,13 @@ def test_respond_returns_and_remembers_the_checked_answer():
     assert conversation.last_answer == CHECKED
     assert conversation._messages[-1]["content"] == CHECKED
     assert any(line.startswith("citations") and "[1]" in line for line in conversation.last_debug)
+
+
+def test_respond_checks_an_answer_with_a_marker_too_long_for_int():
+    reply = "Kimlik kartı kaybolursa dilekçe verilir [3][" + "9" * 4301 + "]."
+    conversation = Conversation(FakeLLM(reply=reply), FakeRetriever(), model="m")
+
+    assert conversation.respond("kimlik kaybettim") == CHECKED
 
 
 def test_stream_sends_the_tokens_but_keeps_the_checked_answer():
