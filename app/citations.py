@@ -128,6 +128,12 @@ def _pairs(text):
     return set(zip(words, words[1:]))
 
 
+def _only_own(sets_of):
+    """For each source, what no other one has."""
+    return {n: own - set().union(*(other for m, other in sets_of.items() if m != n))
+            for n, own in sets_of.items()}
+
+
 def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]:
     """Facts no marker covers get the marker of a source the answer already
     cites, when one clearly holds them; the markers added. The model now
@@ -146,15 +152,18 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
     if len(chunks) >= MIN_CHUNKS_FOR_COMMON:
         counts = Counter(word for chunk in chunks for word in set(tokenize(chunk)))
         common = {word for word, count in counts.items() if count > COMMON_SHARE * len(chunks)}
+    # what tells sources apart is the words only one of them has: two gym
+    # timetables share every day and hour, only one says "voleybol". Worked
+    # out once per answer: rebuilt per sentence, an answer citing 40 chunks
+    # and then listing thousands of short facts took half a minute
+    only_words = _only_own(words_of)
+    only_pairs = _only_own(pairs_of)
 
     def source_for(text):
         if not _concrete(text):
             return None
         words = set(tokenize(_MARKER.sub("", text))) - common
-        # what tells sources apart is the words only one of them has: two
-        # gym timetables share every day and hour, only one says "voleybol"
-        own = {n: words & words_of[n] - set().union(*(words_of[m] for m in cited if m != n))
-               for n in cited}
+        own = {n: words & only_words[n] for n in cited}
         scores = sorted(((len(own[n]), n) for n in cited), reverse=True)
         best, n = scores[0]
         runner_up = scores[1][0] if len(scores) > 1 else 0
@@ -163,8 +172,7 @@ def add_missing_markers(answer: str, chunks: List[str]) -> Tuple[str, List[int]]
             # every word of "... Öğrenci İşleri tarafından YÖKSİS üzerinden
             # yapılır", only one had its word pairs
             pairs = _pairs(_MARKER.sub("", text))
-            own = {n: pairs & pairs_of[n] - set().union(*(pairs_of[m] for m in cited if m != n))
-                   for n in cited}
+            own = {n: pairs & only_pairs[n] for n in cited}
             scores = sorted(((len(own[n]), n) for n in cited), reverse=True)
             best, n = scores[0]
             runner_up = scores[1][0] if len(scores) > 1 else 0
