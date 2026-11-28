@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 
-from app.llm import OpenRouterLLM, _cacheable, _usage
+from app.llm import OpenRouterLLM, _cacheable, _usage, chat_with_usage
+from config import settings
 
 
 class FakeCompletions:
@@ -79,3 +80,12 @@ def test_the_adapter_sends_the_marked_system_prompt():
     llm, completions = make_llm()
     llm.chat("anthropic/claude-haiku-5.5", [SYSTEM, QUESTION])
     assert completions.kwargs["messages"][0]["content"][0]["cache_control"] == {"type": "ephemeral"}
+
+
+def test_a_short_call_can_lower_the_reply_cap():
+    # titles: a model talked into an essay stops at the call's own cap
+    llm, completions = make_llm()
+    chat_with_usage(llm, "anthropic/claude-haiku-5.5", [QUESTION], max_tokens=64)
+    assert completions.kwargs["max_tokens"] == 64
+    chat_with_usage(llm, "anthropic/claude-haiku-5.5", [QUESTION])
+    assert completions.kwargs["max_tokens"] == settings.LLM_MAX_TOKENS

@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 
 from app import auth, storage
 from app.api import api
+from app.ratelimit import RateLimiter
 from config import settings
 
 
@@ -26,6 +27,16 @@ class FakeLLM:
 
     def chat_stream(self, model, messages):
         yield from self.reply.split(" ")
+
+
+class CountingLLM(FakeLLM):
+    def __init__(self, title="Final Sınavı Tarihleri"):
+        super().__init__(title=title)
+        self.title_calls = 0
+
+    def chat(self, model, messages):
+        self.title_calls += self._is_title_prompt(messages)
+        return super().chat(model, messages)
 
 
 class FakeRetriever:
@@ -119,3 +130,45 @@ def test_failed_title_is_flagged_for_later_retry(monkeypatch):
                       params={"session_id": "conv3"}).json()["title"] == "Final Sınavı Tarihleri"
     [row] = client.get("/conversations").json()
     assert row["pending"] is False
+
+
+def test_titled_conversation_is_not_retitled(monkeypatch):
+    """A repeat call for a titled chat (another tab) gets the stored title
+    back: no model call, no quota slot."""
+    llm = CountingLLM()
+    client = make_client(monkeypatch, llm=llm)
+    monkeypatch.setattr(api, "_title_limiter", RateLimiter(limit=1))
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "conv4"})
+
+    for _ in range(3):
+        assert client.get("/chat/title",
+                          params={"session_id": "conv4"}).json()["title"] == "Final Sınavı Tarihleri"
+    assert llm.title_calls == 1
+
+
+def test_untitled_repeats_hit_the_title_quota(monkeypatch):
+    """A first message that talks the model out of a title (a rambling reply
+    is no title) must not buy one model call per request."""
+    llm = CountingLLM(title="uzun " * 40)
+    client = make_client(monkeypatch, llm=llm)
+    monkeypatch.setattr(api, "_title_limiter", RateLimiter(limit=2))
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "conv5"})
+
+    for _ in range(2):
+        assert client.get("/chat/title", params={"session_id": "conv5"}).json()["title"] is None
+    assert client.get("/chat/title", params={"session_id": "conv5"}).status_code == 429
+    assert llm.title_calls == 2
+
+
+def test_nothing_to_title_costs_no_slot(monkeypatch):
+    """A cached chat whose first turn failed has no exchange: no model call,
+    so the UI's retry after the error reply must not use up the quota."""
+    client = make_client(monkeypatch)
+    monkeypatch.setattr(api, "_title_limiter", RateLimiter(limit=1))
+    api.get_conversation("empty")
+
+    for _ in range(3):
+        assert client.get("/chat/title", params={"session_id": "empty"}).json()["title"] is None
+    client.post("/chat", json={"query": "final ne zaman", "session_id": "empty"})
+    assert client.get("/chat/title",
+                      params={"session_id": "empty"}).json()["title"] == "Final Sınavı Tarihleri"

@@ -66,6 +66,10 @@ REASONING_OFF_MODELS = {m.strip() for m in os.getenv(
 # Haiku 5.5 / Sonnet 5.5 think by default and thinking counts against it,
 # so it leaves room for thinking plus a full course list
 LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "8192"))
+# chat title cap: four words fit easily, and a first message that talks the
+# model into an essay stops here, not at LLM_MAX_TOKENS (over 80 characters
+# is thrown away anyway)
+TITLE_MAX_TOKENS = int(os.getenv("TITLE_MAX_TOKENS", "64"))
 
 # context window of the chat models (Haiku 5.5 and Sonnet 5.5 are both 1M);
 # only used for the context-fill percentage shown in the UI
@@ -116,6 +120,12 @@ CHAT_LIMIT_USER = int(os.getenv("CHAT_LIMIT_USER", "60"))
 
 # Voice transcriptions per hour (per user/IP, separate from the chat quota)
 STT_LIMIT = int(os.getenv("STT_LIMIT", "30"))
+
+# Chat title calls per hour (per user/IP). Only calls that reach the model
+# count: a chat is titled after its first answer, and a failed title retries
+# after the next answer or when the chat is opened. Twice the signed-in chat
+# quota leaves room for those retries.
+TITLE_LIMIT = int(os.getenv("TITLE_LIMIT", str(2 * CHAT_LIMIT_USER)))
 
 # Spam brake: this many scope-gate refusals within 10 minutes blocks further
 # messages until the window clears

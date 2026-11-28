@@ -1,5 +1,6 @@
 """Conversation tested with fakes on both seams: no LLM, no vector store."""
 from app.conversation import Conversation, QueryRewriter, STAGE_GATING, STAGE_SEARCHING, STAGE_WRITING
+from config import settings
 
 
 class FakeLLM:
@@ -164,6 +165,25 @@ def test_suggest_title_summarizes_first_exchange():
     # the title prompt carries the exchange, not the retrieval context
     prompt = llm.calls[-1][1][-1]["content"]
     assert "dersten çekilme ne zaman" in prompt
+
+
+def test_suggest_title_clips_the_prompt_and_the_reply():
+    """An imported first message can run to 20000 characters, and one that
+    talks the model into an essay must not be billed up to LLM_MAX_TOKENS."""
+    class UsageLLM(FakeLLM):
+        def chat_with_usage(self, model, messages, max_tokens=None):
+            self.max_tokens = max_tokens
+            return self.chat(model, messages), None
+
+    llm = UsageLLM(reply="Başlık")
+    conversation = make_conversation(llm)
+    conversation.load_history([{"role": "user", "content": "a" * 20000},
+                               {"role": "assistant", "content": "cevap"}])
+
+    assert conversation.suggest_title("model") == ("Başlık", None)
+    prompt = llm.calls[-1][1][-1]["content"]
+    assert "a" * 500 in prompt and "a" * 501 not in prompt
+    assert llm.max_tokens == settings.TITLE_MAX_TOKENS
 
 
 def test_stream_history_matches_respond_history():
