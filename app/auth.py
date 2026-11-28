@@ -27,6 +27,10 @@ def is_member(email: str) -> bool:
 
 def verify_google_token(credential: str) -> dict:
     """Raises ValueError when the token is invalid, expired, or not ours."""
+    # with no client id the library skips the audience check and would
+    # accept a token minted for any other Google client
+    if not settings.GOOGLE_CLIENT_ID:
+        raise ValueError("Google Sign-In is not configured")
     from google.oauth2 import id_token
     from google.auth.transport import requests as google_requests
 

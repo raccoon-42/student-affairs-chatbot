@@ -41,6 +41,17 @@ def test_invalid_token_is_rejected(monkeypatch):
     assert response.status_code == 401
 
 
+def test_signin_without_client_id_is_rejected(monkeypatch):
+    # a Google-signed token for another client must not get a session
+    from google.oauth2 import id_token
+    monkeypatch.setattr(api.settings, "GOOGLE_CLIENT_ID", None)
+    monkeypatch.setattr(id_token, "verify_oauth2_token",
+                        lambda *a, **k: {"email": "ali@gmail.com"})
+    response = TestClient(api.app).post("/auth/google", json={"credential": "other-client"})
+    assert response.status_code == 401
+    assert "auth_token" not in response.cookies
+
+
 def test_logout_ends_the_session(monkeypatch):
     user = {"email": "ali@gmail.com", "name": "Ali", "picture": "", "member": False}
     client = make_client(monkeypatch, user)
