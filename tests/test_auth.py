@@ -52,6 +52,21 @@ def test_signin_without_client_id_is_rejected(monkeypatch):
     assert "auth_token" not in response.cookies
 
 
+def test_signin_with_an_unverified_email_is_rejected(monkeypatch):
+    # an account opened with someone's iyte address must not sign in as them
+    from google.oauth2 import id_token
+    monkeypatch.setattr(api.settings, "GOOGLE_CLIENT_ID", "our-client")
+    claims = {"email": "ali@std.iyte.edu.tr", "email_verified": False}
+    monkeypatch.setattr(id_token, "verify_oauth2_token", lambda *a, **k: dict(claims))
+    client = TestClient(api.app)
+    assert client.post("/auth/google", json={"credential": "x"}).status_code == 401
+
+    claims["email_verified"] = True
+    response = client.post("/auth/google", json={"credential": "x"})
+    assert response.status_code == 200
+    assert response.json()["member"] is True
+
+
 def test_logout_ends_the_session(monkeypatch):
     user = {"email": "ali@gmail.com", "name": "Ali", "picture": "", "member": False}
     client = make_client(monkeypatch, user)
